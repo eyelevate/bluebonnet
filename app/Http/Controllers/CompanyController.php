@@ -15,6 +15,8 @@ class CompanyController extends Controller
     public function index()
     {
         // this is an edit made by wondo for testing github and its abilities to sync files together and version control
+
+        //GOGO 
     }
 
     /**
