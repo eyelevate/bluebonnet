@@ -13,7 +13,27 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Send asset issues data globally to sidebar 
+        view()->composer('layouts.themes.backend.partials.sidebar', function($view) {
+            $customer_count = \App\User::countCustomers();
+            $design_count = \App\Design::countDesigns();
+            $employee_count = \App\User::countEmployees();
+            $companies_count = \App\Company::countCompanies();
+            $fee_count = \App\Fee::countFees();
+            $inventory_count = \App\Inventory::countInventories();
+            $inventory_item_count = \App\InventoryItem::countInventoryItems();
+            $line_count = \App\Line::countLines();
+            $vendor_count = \App\Vendor::countVendors();
+            $view->with('companies_count', $companies_count)
+                 ->with('customer_count',$customer_count)
+                 ->with('design_count',$design_count)
+                 ->with('employee_count',$employee_count)
+                 ->with('fee_count',$fee_count)
+                 ->with('inventory_count',$inventory_count)
+                 ->with('inventory_item_count',$inventory_item_count)
+                 ->with('line_count',$line_count)
+                 ->with('vendor_count',$vendor_count);
+        });
     }
 
     /**

@@ -167,6 +167,7 @@ return [
          * Package Service Providers...
          */
         Laravel\Tinker\TinkerServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -176,6 +177,11 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
+        Collective\Html\HtmlServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
+        HighIdeas\UsersOnline\UsersOnlineServiceProvider::class,
+        HighIdeas\UsersOnline\Providers\UsersOnlineEventServiceProvider::class,
 
     ],
 
@@ -225,7 +231,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class
     ],
 
 ];

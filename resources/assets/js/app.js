@@ -7,7 +7,23 @@
 
 require('./bootstrap');
 
+
 window.Vue = require('vue');
+
+// Wrappers
+window.Event = new class {
+	constructor() {
+		this.vue = new Vue();
+	}
+
+	fire(event, data = null) { // $emit
+		this.vue.$emit(event,data);
+	}
+
+	listen(event, callback) { // $on
+		this.vue.$on(event,callback);
+	}
+}
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -15,8 +31,28 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example', require('./components/Example.vue'));
+// Vue.component('example', require('./components/Example.vue'));
 
-const app = new Vue({
-    el: '#app'
-});
+// Bootsrap components
+Vue.component('bootstrap-card',require('./components/bootstrap/Card.vue'));
+Vue.component('bootstrap-control',require('./components/bootstrap/Control.vue'));
+Vue.component('bootstrap-input',require('./components/bootstrap/Input.vue'));
+Vue.component('bootstrap-modal',require('./components/bootstrap/Modal.vue'));
+Vue.component('bootstrap-progress',require('./components/bootstrap/Progress.vue'));
+Vue.component('bootstrap-radio',require('./components/bootstrap/Radio.vue'));
+Vue.component('bootstrap-readonly',require('./components/bootstrap/ReadOnly.vue'));
+Vue.component('bootstrap-select',require('./components/bootstrap/Select.vue'));
+Vue.component('bootstrap-table',require('./components/bootstrap/Table.vue'));
+Vue.component('bootstrap-textarea',require('./components/bootstrap/Textarea.vue'));
+
+// Now-ui-kit Components
+// Vue.component('now-input',require('./components/now-ui-kit/FormInput.vue'));
+
+// Theme1
+Vue.component('theme1-input',require('./components/theme1/FormInput.vue'));
+
+// Passport Components
+Vue.component('passport-clients', require('./components/passport/Clients.vue'));
+Vue.component('passport-authorized-clients', require('./components/passport/AuthorizedClients.vue'));
+Vue.component('passport-personal-access-tokens',require('./components/passport/PersonalAccessTokens.vue'));
+

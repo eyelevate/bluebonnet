@@ -11,6 +11,157 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Home Page
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('/logout', 'HomeController@logout')->name('home.logout');
+
+Auth::routes();
+
+// Admin Access
+Route::get('/admins/login','AdminController@login')->name('admin.login');
+Route::post('/admins/authenticate','AdminController@authenticate')->name('admin.auth');
+
+/** Customer Pages **/
+Route::group(['middleware' => ['frontend']], function () {
+	// dashboard
+	Route::get('/dashboard','HomeController@dashboard')->name('home.dashboard');
 });
+
+// Redirects if role_id > 3 (employee) or guests, check middleware/Authentice class if need to change
+Route::group(['middleware' => ['check:1']], function () {
+
+});
+Route::group(['middleware' => ['check:2']], function () {
+	// Employees
+	Route::get('/employees','EmployeeController@index')->name('employee.index');
+	Route::get('/employees/create','EmployeeController@create')->name('employee.create');
+	Route::delete('/employees/{employee}','EmployeeController@destroy')->name('employee.destroy');
+	Route::post('/employees/store','EmployeeController@store')->name('employee.store');
+	Route::get('/employees/{employee}/show','EmployeeController@show')->name('employee.show');
+	Route::get('/employees/{vendor}/edit','EmployeeController@edit')->name('employee.edit');
+	Route::patch('/employees/{vendor}','EmployeeController@update')->name('employee.update');
+	
+});
+Route::group(['middleware' => ['check:3']], function () {
+	// Admins
+    Route::get('/admins','AdminController@index')->name('admin.index');
+    Route::get('/admins/logout','AdminController@logout')->name('admin.logout');
+
+	// Customers
+	Route::get('/customers','CustomerController@index')->name('customer.index');
+	Route::get('/customers/create','CustomerController@create')->name('customer.create');
+	Route::delete('/customers/{customer}','CustomerController@destroy')->name('customer.destroy');
+	Route::post('/customers/store','CustomerController@store')->name('customer.store');
+	Route::get('/customers/{customer}/show','CustomerController@show')->name('customer.show');
+	Route::get('/customers/{customer}/edit','CustomerController@edit')->name('customer.edit');
+	Route::patch('/customers/{customer}','CustomerController@update')->name('customer.update');
+
+	// Companies
+	Route::get('/companies','CompanyController@index')->name('company.index');
+	Route::get('/companies/create','CompanyController@create')->name('company.create');
+	Route::delete('/companies/{company}','CompanyController@destroy')->name('company.destroy');
+	Route::post('/companies/store','CompanyController@store')->name('company.store');
+	Route::get('/companies/{company}/show','CompanyController@show')->name('company.show');
+	Route::get('/companies/{company}/edit','CompanyController@edit')->name('company.edit');
+	Route::patch('/companies/{company}','CompanyController@update')->name('company.update');
+
+
+	// Designs
+	Route::get('/designs','DesignController@index')->name('design.index');
+	Route::get('/designs/create','DesignController@create')->name('design.create');
+	Route::delete('/designs/{design}','DesignController@destroy')->name('design.destroy');
+	Route::post('/designs/store','DesignController@store')->name('design.store');
+	Route::get('/designs/{design}/show','DesignController@show')->name('design.show');
+	Route::get('/designs/{design}/edit','DesignController@edit')->name('design.edit');
+	Route::patch('/designs/{design}','DesignController@update')->name('design.update');
+
+	// Employees
+	Route::get('/employees','EmployeeController@index')->name('employee.index');
+	Route::get('/employees/create','EmployeeController@create')->name('employee.create');
+	Route::delete('/employees/{employee}','EmployeeController@destroy')->name('employee.destroy');
+	Route::post('/employees/store','EmployeeController@store')->name('employee.store');
+	Route::get('/employees/{employee}/show','EmployeeController@show')->name('employee.show');
+	Route::get('/employees/{employee}/edit','EmployeeController@edit')->name('employee.edit');
+	Route::patch('/employees/{employee}','EmployeeController@update')->name('employee.update');
+
+	// Fees
+	Route::get('/fees','FeeController@index')->name('fee.index');
+	Route::get('/fees/create','FeeController@create')->name('fee.create');
+	Route::delete('/fees/{fee}','FeeController@destroy')->name('fee.destroy');
+	Route::post('/fees/store','FeeController@store')->name('fee.store');
+	Route::get('/fees/{fee}/show','FeeController@show')->name('fee.show');
+	Route::get('/fees/{fee}/edit','FeeController@edit')->name('fee.edit');
+	Route::patch('/fees/{fee}','FeeController@update')->name('fee.update');
+	Route::post('/fees/retrieve','FeeController@retrieve')->name('fee.retrieve');
+	Route::post('/fees/totals','FeeController@totals')->name('fee.totals');
+
+
+	// Inventory
+	Route::get('/inventories','InventoryController@index')->name('inventory.index');
+	Route::get('/inventories/create','InventoryController@create')->name('inventory.create');
+	Route::delete('/inventories/{inventory}','InventoryController@destroy')->name('inventory.destroy');
+	Route::post('/inventories/store','InventoryController@store')->name('inventory.store');
+	Route::get('/inventories/{inventory}/show','InventoryController@show')->name('inventory.show');
+	Route::get('/inventories/{inventory}/edit','InventoryController@edit')->name('inventory.edit');
+	Route::patch('/inventories/{inventory}','InventoryController@update')->name('inventory.update');
+
+	// Inventory Item
+	Route::get('/inventory-items','InventoryItemController@index')->name('inventory_item.index');
+	Route::get('/inventory-items/create','InventoryItemController@create')->name('inventory_item.create');
+	Route::delete('/inventory-items/{inventory_item}','InventoryItemController@destroy')->name('inventory_item.destroy');
+	Route::post('/inventory-items/store','InventoryItemController@store')->name('inventory_item.store');
+	Route::get('/inventory-items/{inventory_item}/show','InventoryItemController@show')->name('inventory_item.show');
+	Route::get('/inventory-items/{inventory_item}/edit','InventoryItemController@edit')->name('inventory_item.edit');
+	Route::patch('/inventory-items/{inventory_item}','InventoryItemController@update')->name('inventory_item.update');
+
+	// Invoices
+	Route::get('/invoices','InvoiceController@index')->name('invoice.index');
+	Route::get('/invoices/create','InvoiceController@create')->name('invoice.create');
+	Route::delete('/invoices/{invoice}','InvoiceController@destroy')->name('invoice.destroy');
+	Route::post('/invoices/store','InvoiceController@store')->name('invoice.store');
+	Route::get('/invoices/{invoice}/show','InvoiceController@show')->name('invoice.show');
+	Route::get('/invoices/{invoice}/edit','InvoiceController@edit')->name('invoice.edit');
+	Route::patch('/invoices/{invoice}','InvoiceController@update')->name('invoice.update');
+
+	// Invoice Item
+	Route::get('/invoice-items','InvoiceItemController@index')->name('invoice_item.index');
+	Route::get('/invoice-items/create','InvoiceItemController@create')->name('invoice_item.create');
+	Route::delete('/invoice-items/{invoiceItem}','InvoiceItemController@destroy')->name('invoice_item.destroy');
+	Route::post('/invoice-items/store','InvoiceItemController@store')->name('invoice_item.store');
+	Route::get('/invoice-items/{invoiceItem}/show','InvoiceItemController@show')->name('invoice_item.show');
+	Route::get('/invoice-items/{invoiceItem}/edit','InvoiceItemController@edit')->name('invoice_item.edit');
+	Route::patch('/invoice-items/{invoiceItem}','InvoiceItemController@update')->name('invoice_item.update');
+
+	// Line
+	Route::get('/lines','LineController@index')->name('line.index');
+	Route::get('/lines/create','LineController@create')->name('line.create');
+	Route::delete('/lines/{line}','LineController@destroy')->name('line.destroy');
+	Route::post('/lines/store','LineController@store')->name('line.store');
+	Route::get('/lines/{line}/show','LineController@show')->name('line.show');
+	Route::get('/lines/{line}/edit','LineController@edit')->name('line.edit');
+	Route::patch('/lines/{line}','LineController@update')->name('line.update');
+
+	// Taxes
+	Route::get('/taxes','TaxController@index')->name('tax.index');
+	Route::get('/taxes/create','TaxController@create')->name('tax.create');
+	Route::post('/taxes/store','TaxController@store')->name('tax.store');
+	Route::get('/taxes/{tax}/show','TaxController@show')->name('tax.show');
+	Route::get('/taxes/{tax}/edit','TaxController@edit')->name('tax.edit');
+	Route::patch('/taxes/{tax}','TaxController@update')->name('tax.update');
+
+
+	// Vendors
+	Route::get('/vendors','VendorController@index')->name('vendor.index');
+	Route::get('/vendors/create','VendorController@create')->name('vendor.create');
+	Route::delete('/vendors/{vendor}','VendorController@destroy')->name('vendor.destroy');
+	Route::post('/vendors/store','VendorController@store')->name('vendor.store');
+	Route::get('/vendors/{vendor}/show','VendorController@show')->name('vendor.show');
+	Route::get('/vendors/{vendor}/edit','VendorController@edit')->name('vendor.edit');
+	Route::patch('/vendors/{vendor}','VendorController@update')->name('vendor.update');
+});
+
+
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
