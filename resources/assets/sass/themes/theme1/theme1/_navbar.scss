@@ -81,6 +81,7 @@
     }
 
     .navbar-brand{
+        color: $link-color !important;
         text-transform: uppercase;
         font-size: $font-size-large-navbar !important;
         padding-top: $padding-base-vertical;
@@ -119,6 +120,7 @@
             border: 1px solid $default-color;
         }
     }
+
 }
 
 .cart-number {

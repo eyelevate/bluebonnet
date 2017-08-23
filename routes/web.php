@@ -163,5 +163,3 @@ Route::group(['middleware' => ['check:3']], function () {
 
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

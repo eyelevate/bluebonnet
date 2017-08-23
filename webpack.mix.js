@@ -36,8 +36,8 @@ mix.js('resources/assets/js/themes/coreui/coreui.js', 'public/js/themes/coreui')
    .sass('resources/assets/sass/themes/coreui/style.scss','public/css/themes/coreui');
 
 // Theme 1
-mix.sass('resources/assets/sass/themes/theme1/theme1.scss','public/css/themes/theme1');
-
+mix.sass('resources/assets/sass/themes/theme1/theme1.scss','public/css/themes/theme1')
+   .copyDirectory('resources/assets/img/themes/theme1', 'public/img/themes/theme1');
 // Ionicons
 mix.sass('resources/assets/fonts/themes/ionicons/scss/ionicons.scss','public/css/themes/ionicons');
 
@@ -60,4 +60,7 @@ mix.js('resources/assets/js/views/auth/login.js','public/js/views/auth')
 
 // Companies
 mix.js('resources/assets/js/views/companies/create.js','public/js/views/companies');
+
+// Home
+mix.js('resources/assets/js/views/home/index.js','public/js/views/home');
 

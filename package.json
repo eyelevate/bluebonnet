@@ -23,9 +23,13 @@
   "dependencies": {
     "chart.js": "^2.6.0",
     "datatables.net": "^1.10.15",
+    "jquery-lazyload": "^1.9.7",
+    "masonry-layout": "^4.2.0",
     "node-sass": "^4.5.3",
     "npm": "^5.3.0",
     "optipng-bin": "^4.0.0",
+    "parallax-element": "^1.1.0",
+    "sliphover": "^2.0.6",
     "vue-good-table": "^1.9.0",
     "vue2-bootstrap-table2": "^1.1.8"
   }

@@ -58,3 +58,16 @@ require('chart.js');
 // Vue Good Table
 require('vue-good-table');
 
+// LazyLoad
+require('jquery-lazyload');
+
+// Masonry
+require('masonry-layout');
+
+// sliphover
+require('sliphover');
+
+// parallax element
+require('parallax-element');
+
+
