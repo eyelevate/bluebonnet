@@ -18,7 +18,7 @@ class Metal extends Model
         'name',
         'desc'
     ];
-
+    #public
     public function prepareTableColumns()
     {
         $columns =  [
@@ -35,27 +35,39 @@ class Metal extends Model
                 'label'=>'Description',
                 'field'=> 'desc',
                 'filterable'=> true
-            
-            ]
-        ];
+            ], [
+                'label'=>'Created',
+                'field'=> 'created_at',
+                'type'=>'date',
+                'inputFormat'=> 'YYYY-MM-DD HH:MM:SS',
+                'outputFormat'=> 'MM/DD/YY hh:mm:ssa'
+            ], [
+                'label'=>'Action',
+                'field'=> 'action',
+                'html'=>true
+            ]        ];
 
         return json_encode($columns);
     }
 
     public function prepareTableRows($rows)
     {
-        
-
         // check if exists
         if (isset($rows)) {
             foreach ($rows as $key => $value) {
                 // append last column to table here
-                $last_column = '<a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" href="#">View</a>';
+                $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
                 $last_column .= '</div>';
                 $rows[$key]['action'] = $last_column;
             }
         }
 
         return $rows;
+    }
+
+    #Static
+    public static function countMetals()
+    {
+        return Metal::count();
     }
 }
