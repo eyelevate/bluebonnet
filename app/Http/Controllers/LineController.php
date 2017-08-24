@@ -14,7 +14,7 @@ class LineController extends Controller
      */
     public function index()
     {
-        //
+        return view('lines.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class LineController extends Controller
      */
     public function create()
     {
-        //
+        return view('lines.create');
     }
 
     /**

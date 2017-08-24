@@ -12,9 +12,12 @@ class FeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Fee $fee)
     {
-        //
+        $columns = $fee->prepareTableColumns();
+        $rows = $fee->prepareTableRows($fee->all());
+        
+        return view('fees.index', compact(['columns','rows']));
     }
 
     /**

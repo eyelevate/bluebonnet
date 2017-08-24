@@ -18,6 +18,12 @@ class CreateUsersTable extends Migration
             $table->tinyInteger('role_id')->default(4);
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('street')->nullable();
+            $table->string('suite')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('country')->nullable();
+            $table->string('zipcode')->nullable();
             $table->string('phone');
             $table->string('email')->unique();
             $table->string('password');

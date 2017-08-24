@@ -64,3 +64,7 @@ mix.js('resources/assets/js/views/companies/create.js','public/js/views/companie
 // Home
 mix.js('resources/assets/js/views/home/index.js','public/js/views/home');
 
+
+// metal
+mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
+

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use Illuminate\Http\Request;
+use App\Job;
 
 class CompanyController extends Controller
 {
@@ -12,9 +13,12 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Company $company, Job $job)
     {
-        //
+        $columns = $company->prepareTableColumns();
+        $rows = $company->prepareTableRows($company->orderBy('name', 'asc')->get());
+        $days = $job->prepareDays();
+        return view('companies.index', compact(['columns','rows','days']));
     }
 
     /**

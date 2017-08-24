@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -11,9 +12,13 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        //
+        // $role = 3;
+        $columns = $user->prepareTableColumns();
+        // $rows = $user->prepareTableRows($user->where('role_id', $role)->get(), $role);
+         $rows = $user->prepareTableRows($user->all());
+        return view('employees.index', compact(['columns','rows']));
     }
 
     /**
@@ -23,7 +28,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('employees.create');
     }
 
     /**
@@ -34,7 +39,29 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(request(), [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        // Create and save the user.
+        User::create([
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role_id'=>3
+        ]);
+
+        // Redirect to the previous page.
+
+        flash('You successfully created a new employee.')->success();
+        
+        return redirect()->route('employee.index');
     }
 
     /**

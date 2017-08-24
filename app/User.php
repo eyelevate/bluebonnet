@@ -17,20 +17,25 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'store_id',
-        'first_name', 
+        'first_name',
         'last_name',
         'phone',
-        'email', 
+        'email',
         'role_id',
-        'password',
+        'street',
+        'suite',
+        'city',
+        'state',
+        'country',
+        'zipcode',
+        'password'
     ];
 
 
     // Relationships
-    public function businesses()
+    public function invoices()
     {
-        return $this->hasMany(Business::class,'business_user');
+        return $this->hasMany(Invoice::class);
     }
 
     /**
@@ -44,7 +49,6 @@ class User extends Authenticatable
 
     public function prepareTableColumns()
     {
-
         $columns =  [
             [
                 'label'=>'ID',
@@ -90,7 +94,6 @@ class User extends Authenticatable
 
     public function prepareTableSelectColumns()
     {
-
         $columns =  [
             [
                 'label'=>'First',
@@ -111,7 +114,7 @@ class User extends Authenticatable
             ], [
                 'label'=>'Action',
                 'field'=> 'action',
-                'html'=>true 
+                'html'=>true
             ]
         ];
 
@@ -187,14 +190,14 @@ class User extends Authenticatable
         return $rows;
     }
 
-    static public function countEmployees($role_id = 4)
+    public static function countEmployees($role_id = 4)
     {
-        return User::where('role_id','<',$role_id)->count();
+        return User::where('role_id', '<', $role_id)->count();
     }
 
-    static public function countCustomers($role_id = 4)
+    public static function countCustomers($role_id = 4)
     {
-        return User::where('role_id',$role_id)->count();
+        return User::where('role_id', $role_id)->count();
     }
 
     public function getOnlineByRole($data, $role_id)
