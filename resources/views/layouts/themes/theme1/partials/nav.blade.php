@@ -1,4 +1,4 @@
-<nav class="navbar navbar-light navbar-toggleable-md fixed-top bg-primary bg-faded hidden-md-down">
+<nav class="navbar navbar-light navbar-toggleable-md bg-primary sticky-top bg-faded hidden-md-down" >
     <div class="container">    
         <a class="navbar-brand" href="{{ route('home') }}">blue bonnet diamond</a>
         <div class="collapse navbar-collapse" style="">
@@ -45,7 +45,7 @@
         </div>
     </div>
 </nav>
-<nav class="navbar navbar-light navbar-toggleable-md fixed-top bg-primary bg-faded hidden-lg-up">
+<nav class="navbar navbar-light navbar-toggleable-md bg-primary bg-faded hidden-lg-up sticky-top">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>

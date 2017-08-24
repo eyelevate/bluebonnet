@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    private $layout;
+    private $view;
+
     /**
      * Create a new controller instance.
      *
@@ -14,6 +18,13 @@ class HomeController extends Controller
      */
     public function __construct()
     {
+        // theme 1
+        // $this->layout = 'layouts.themes.theme1.layout';
+        // $this->view = 'home.index';
+
+        // theme 2
+        $this->layout = 'layouts.themes.theme2.layout';
+        $this->view = 'home.index2';
     }
 
     /**
@@ -23,7 +34,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.index');
+        $layout = $this->layout;
+        return view($this->view,compact('layout'));
     }
 
     public function logout()

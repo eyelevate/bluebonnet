@@ -3,6 +3,7 @@
     "/css/app.css": "/css/app.css",
     "/css/themes/coreui/style.css": "/css/themes/coreui/style.css",
     "/css/themes/theme1/theme1.css": "/css/themes/theme1/theme1.css",
+    "/css/themes/theme2/theme2.css": "/css/themes/theme2/theme2.css",
     "/css/themes/ionicons/ionicons.css": "/css/themes/ionicons/ionicons.css",
     "/css/views/admins/general.css": "/css/views/admins/general.css",
     "/js/views/home/index.js": "/js/views/home/index.js",
@@ -13,6 +14,8 @@
     "/js/views/admins/index.js": "/js/views/admins/index.js",
     "/js/views/admins/general.js": "/js/views/admins/general.js",
     "/js/views/admins/charts.js": "/js/views/admins/charts.js",
+    "/js/themes/theme2/theme2.js": "/js/themes/theme2/theme2.js",
+    "/js/themes/theme1/theme1.js": "/js/themes/theme1/theme1.js",
     "/js/themes/coreui/main.js": "/js/themes/coreui/main.js",
     "/js/themes/coreui/coreui.js": "/js/themes/coreui/coreui.js",
     "/js/themes/coreui/dashboard-plugins.js": "/js/themes/coreui/dashboard-plugins.js"
