@@ -19,12 +19,12 @@ class HomeController extends Controller
     public function __construct()
     {
         // theme 1
-        // $this->layout = 'layouts.themes.theme1.layout';
-        // $this->view = 'home.index';
+        $this->layout = 'layouts.themes.theme1.layout';
+        $this->view = 'home.index';
 
         // theme 2
-        $this->layout = 'layouts.themes.theme2.layout';
-        $this->view = 'home.index2';
+        // $this->layout = 'layouts.themes.theme2.layout';
+        // $this->view = 'home.index2';
     }
 
     /**
