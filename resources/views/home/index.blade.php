@@ -1,9 +1,9 @@
-@extends('layouts.themes.theme1.layout')
+@extends($layout)
 @section('scripts')
 <script type="text/javascript" src="{{ mix('/js/views/home/index.js') }}"></script>
 @endsection
 @section('header')
-<header class="page-header" data-speed="0.2">
+<header class="page-header">
 	<div class="page-header-image">
 		<div class="container">
 			<div class="row">

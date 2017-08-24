@@ -61,13 +61,12 @@ require('vue-good-table');
 // LazyLoad
 require('jquery-lazyload');
 
-// Masonry
-require('masonry-layout');
-
 // sliphover
 require('sliphover');
 
-// parallax element
-require('parallax-element');
+// images loaded
+require('imagesloaded');
 
+// Masonry
+require('masonry-layout');
 

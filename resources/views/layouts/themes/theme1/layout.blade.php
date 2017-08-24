@@ -24,7 +24,7 @@
 </head>
 
 <body class="index-page">
-    <div id="root">
+    <div id="root" >
         <!-- Navbar -->
         @include('layouts.themes.theme1.partials.nav')   
 
@@ -51,6 +51,7 @@
 </body>
 <!--   Core JS Files   -->
 <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
+<script type="text/javascript" src="{{ mix('/js/themes/theme1/theme1.js') }}"></script>
 @yield('scripts')
 
 </html>
