@@ -35,16 +35,15 @@ class MetalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Metal $metal)
     {
         $this->validate(request(), [
-            'name' => 'required|string|max:255',
-            'desc' => 'required|string|max:255'
+            'name' => 'required|string|max:255'
         ]);
 
         flash('Successfully created a Metal!')->success();
-        $service->create(request()->all());
-        return redirect()->route('service.index');
+        $metal->create(request()->all());
+        return redirect()->route('metal.index');
     }
 
     /**
@@ -66,7 +65,7 @@ class MetalController extends Controller
      */
     public function edit(Metal $metal)
     {
-        //
+        return view('metals.edit',compact('metal'));
     }
 
     /**
@@ -78,7 +77,14 @@ class MetalController extends Controller
      */
     public function update(Request $request, Metal $metal)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|string|max:255'
+        ]);
+
+        if ($metal->update($request->all())){
+            flash('You have successfully edited '.$metal->name)->success();
+            return redirect()->route('metal.index');
+        }
     }
 
     /**
@@ -89,6 +95,10 @@ class MetalController extends Controller
      */
     public function destroy(Metal $metal)
     {
-        //
+        $metal_name = $metal->name;
+        if ($metal->delete()){
+            flash('You have successfully deleted '.$metal_name)->success();
+            return redirect()->back();
+        }
     }
 }

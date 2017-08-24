@@ -6,6 +6,7 @@
     "/css/themes/theme2/theme2.css": "/css/themes/theme2/theme2.css",
     "/css/themes/ionicons/ionicons.css": "/css/themes/ionicons/ionicons.css",
     "/css/views/admins/general.css": "/css/views/admins/general.css",
+    "/js/views/metals/create.js": "/js/views/metals/create.js",
     "/js/views/home/index.js": "/js/views/home/index.js",
     "/js/views/companies/create.js": "/js/views/companies/create.js",
     "/js/views/auth/register.js": "/js/views/auth/register.js",

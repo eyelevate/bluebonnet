@@ -18,4 +18,9 @@ class Finger extends Model
         'size',
         'name'
     ];
+
+    public static function countFingers()
+    {
+        return Finger::count();
+    }
 }
