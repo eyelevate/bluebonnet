@@ -9,20 +9,20 @@
 		<div class="carousel-inner" role="listbox">
 			<div class="carousel-item active">
 				<img class="d-block img-fluid lazy" src="img/themes/theme2/large-image-test.jpg" alt="Third slide">
-				<h2 class="text-uppercase text-center hidden-sm-down" style="margin-bottom:0px;">Zero Compromises</h2>
-				<h3 class="text-uppercase text-center hidden-md-up" style="margin-bottom:0px;">Zero Compromises</h3>
+				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Zero Compromises</h2>
+				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Zero Compromises</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
 			</div>
 			<div class="carousel-item">
 				<img class="d-block img-fluid lazy" src="img/themes/theme2/20170822_153839.jpg" alt="First slide">
-				<h2 class="text-uppercase text-center hidden-sm-down" style="margin-bottom:0px;">Socially Responsible</h2>
-				<h3 class="text-uppercase text-center hidden-md-up" style="margin-bottom:0px;">Socially Responsible</h3>
+				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Socially Responsible</h2>
+				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Socially Responsible</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop New Arrivals</a></p>
 			</div>
 			<div class="carousel-item">
 				<img class="d-block img-fluid lazy" src="img/themes/theme2/20170822_154422.jpg" alt="Second slide">
-				<h2 class="text-uppercase text-center hidden-sm-down" style="margin-bottom:0px;">Eco Friendly</h2>
-				<h3 class="text-uppercase text-center hidden-md-up" style="margin-bottom:0px;">Eco Friendly</h3>
+				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Eco Friendly</h2>
+				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Eco Friendly</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Engagement Rings</a></p>
 			</div>
 		</div>
@@ -33,8 +33,8 @@
 @section('content')
 <div class="container-fluid" style="margin-top:100px;">
 	<div class="row-fluid">
-		<h2 class="text-center hidden-sm-down">Instant. Magnetic. Enduring. It's Alchemy.</h2>
-		<h3 class="text-center hidden-md-up">Instant. Magnetic. Enduring. It's Alchemy.</h3>
+		<h2 class="text-center header-h2 hidden-sm-down">Instant. Magnetic. Enduring. It's Alchemy.</h2>
+		<h3 class="text-center header-h3 hidden-md-up">Instant. Magnetic. Enduring. It's Alchemy.</h3>
 	</div>	
 </div>
 <div class="container">

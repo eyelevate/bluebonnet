@@ -37,6 +37,20 @@
 
 }
 
+.header-h2 {
+    font-size:30px !important;
+    text-transform: capitalize !important;
+    margin-top:30px !important;
+    margin-bottom:15px !important;
+}
+
+.header-h3 {
+    font-size:25px !important;
+    text-transform: capitalize !important;
+    margin-top:30px !important;
+    margin-bottom:15px !important;
+}
+
 .clear-filter{
     &:after,
     &:before{
