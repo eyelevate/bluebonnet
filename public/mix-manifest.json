@@ -9,6 +9,7 @@
     "/js/views/stones/create.js": "/js/views/stones/create.js",
     "/js/views/stone_sizes/create.js": "/js/views/stone_sizes/create.js",
     "/js/views/metals/create.js": "/js/views/metals/create.js",
+    "/js/views/home/shop.js": "/js/views/home/shop.js",
     "/js/views/home/index.js": "/js/views/home/index.js",
     "/js/views/companies/create.js": "/js/views/companies/create.js",
     "/js/views/auth/register.js": "/js/views/auth/register.js",
