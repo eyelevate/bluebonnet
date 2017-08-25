@@ -12,9 +12,11 @@ class StoneSizeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(StoneSize $stoneSize)
     {
-        return view('stone_sizes.index');
+        $columns = $stoneSize->prepareTableColumns();
+        $rows = $stoneSize->prepareTableRows($stoneSize->all());
+        return view('stone_sizes.index', compact(['columns','rows']));
     }
 
     /**
@@ -24,7 +26,7 @@ class StoneSizeController extends Controller
      */
     public function create()
     {
-        //
+        return view('stone_sizes.create');
     }
 
     /**
@@ -33,9 +35,15 @@ class StoneSizeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, StoneSize $stoneSize)
     {
-        //
+        $this->validate(request(), [
+            // 'stoneSize' => 'required|between:0,99.99'
+             'stoneSize' => 'required|numeric'
+        ]);
+        flash('Successfully created a Stone Size!')->success();
+        $stoneSize->create(request()->all());
+        return redirect()->route('stone_size.index');
     }
 
     /**
@@ -57,7 +65,7 @@ class StoneSizeController extends Controller
      */
     public function edit(StoneSize $stoneSize)
     {
-        //
+        return view('stone_sizes.edit', compact('stoneSize'));
     }
 
     /**
@@ -69,7 +77,14 @@ class StoneSizeController extends Controller
      */
     public function update(Request $request, StoneSize $stoneSize)
     {
-        //
+        $this->validate(request(), [
+            'size' => 'required|numeric'
+        ]);
+
+        if ($stoneSize->update($request->all())) {
+            flash('You have successfully edited '.$stoneSize->size)->success();
+            return redirect()->route('stone_size.index');
+        }
     }
 
     /**
@@ -80,6 +95,10 @@ class StoneSizeController extends Controller
      */
     public function destroy(StoneSize $stoneSize)
     {
-        //
+        $stone_size_name = $stoneSize->size;
+        if ($stoneSize->delete()) {
+            flash('You have successfully deleted '.$stone_size_name)->success();
+            return redirect()->back();
+        }
     }
 }

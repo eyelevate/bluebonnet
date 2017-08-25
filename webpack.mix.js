@@ -74,3 +74,9 @@ mix.js('resources/assets/js/views/home/index.js','public/js/views/home');
 // metal
 mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
 
+// stone Size
+mix.js('resources/assets/js/views/stone_sizes/create.js','public/js/views/stone_sizes');
+
+// stone
+mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones');
+

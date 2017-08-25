@@ -12,9 +12,11 @@ class StoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Stone $stone)
     {
-        return view('stones.index');
+        $columns = $stone->prepareTableColumns();
+        $rows = $stone->prepareTableRows($stone->all());
+        return view('stones.index', compact(['columns','rows']));
     }
 
     /**
@@ -24,7 +26,7 @@ class StoneController extends Controller
      */
     public function create()
     {
-        //
+        return view('stones.create');
     }
 
     /**
@@ -33,9 +35,15 @@ class StoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Stone $stone)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|string|max:255'
+        ]);
+
+        flash('Successfully created a Metal!')->success();
+        $stone->create(request()->all());
+        return redirect()->route('stone.index');
     }
 
     /**
@@ -57,7 +65,7 @@ class StoneController extends Controller
      */
     public function edit(Stone $stone)
     {
-        //
+        return view('stones.edit', compact('stone'));
     }
 
     /**
@@ -69,7 +77,14 @@ class StoneController extends Controller
      */
     public function update(Request $request, Stone $stone)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|string|max:255'
+        ]);
+
+        if ($stone->update($request->all())) {
+            flash('You have successfully edited '.$stone->name)->success();
+            return redirect()->route('stone.index');
+        }
     }
 
     /**
@@ -80,6 +95,10 @@ class StoneController extends Controller
      */
     public function destroy(Stone $stone)
     {
-        //
+        $stone_name = $stone->name;
+        if ($stone->delete()) {
+            flash('You have successfully deleted '.$stone_name)->success();
+            return redirect()->back();
+        }
     }
 }
