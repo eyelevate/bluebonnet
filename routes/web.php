@@ -13,7 +13,13 @@
 
 // Home Page
 Route::get('/', 'HomeController@index')->name('home');
+Route::get('/cart', 'HomeController@cart')->name('home.cart');
+Route::get('/frequently-asked-questions', 'HomeController@faq')->name('home.faq');
 Route::get('/logout', 'HomeController@logout')->name('home.logout');
+Route::get('/privacy-policy', 'HomeController@privacy')->name('home.privacy');
+Route::get('/shipping', 'HomeController@shipping')->name('home.shipping');
+Route::get('/shop', 'HomeController@shop')->name('home.shop');
+Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
 
 Auth::routes();
 

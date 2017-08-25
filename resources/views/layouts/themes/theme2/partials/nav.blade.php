@@ -14,19 +14,13 @@
             </ul>
             <ul class="navbar-nav flex-row d-flex justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">SHOP</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">MOISSANITE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">FAQ</a>
+                    <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">TESTIMONIALS</a>
+                    <a class="nav-link" href="#">CUSTOM</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Sign-in</a>
@@ -43,19 +37,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent0">
                 <ul class="navbar-nav mr-auto ">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">SHOP</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">MOISSANITE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">FAQ</a>
+                        <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">CONTACT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">TESTIMONIALS</a>
+                        <a class="nav-link" href="#">CUSTOM</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -90,19 +78,13 @@
         <div class="collapse navbar-collapse" style="">
             <ul class="navbar-nav mr-auto ">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">SHOP</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">MOISSANITE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">FAQ</a>
+                    <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">TESTIMONIALS</a>
+                    <a class="nav-link" href="#">CUSTOM</a>
                 </li>
             </ul>
 
@@ -140,19 +122,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
         <ul class="navbar-nav mr-auto ">
             <li class="nav-item">
-                <a class="nav-link" href="#">SHOP</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">MOISSANITE</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">FAQ</a>
+                <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">CONTACT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">TESTIMONIALS</a>
+                <a class="nav-link" href="#">CUSTOM</a>
             </li>
         </ul>
         <ul class="navbar-nav">

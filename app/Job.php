@@ -451,5 +451,45 @@ class Job extends Model
     	return [0=>'Sunday',1=>'Monday',2=>'Tuesday',3=>'Wednesday',4=>'Thursday',5=>'Friday',6=>'Saturday'];
     }
 
+    public function switchLayout($theme)
+    {
+    	$layout = '';
+    	switch ($theme) {
+    		case 1:
+    			$layout = 'layouts.themes.theme1.layout';
+    			break;
+    		case 2:
+    			$layout = 'layouts.themes.theme2.layout';
+    			break;
+    		default:
+    			$layout = 'layouts.themes.theme1.layout';
+    			break;
+    	}
+
+    	return $layout;
+    }
+
+    public function switchHomeView($theme)
+    {
+    	$view = '';
+    	switch ($theme) {
+    		case 1:
+    			$view = 'home.index';
+    			break;
+    		case 2:
+    			$view = 'home.index2';
+    			break;
+    		default:
+    			$view = 'home.index';
+    			break;
+    	}
+
+    	return $view;
+    }
+
+    static public function formatPhoneString($data) {
+		return "(".substr($data, 0, 3).") ".substr($data, 3, 3)."-".substr($data,6);
+	}
+
 
 }

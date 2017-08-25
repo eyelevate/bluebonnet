@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,15 +17,11 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Job $job)
     {
-        // theme 1
-        $this->layout = 'layouts.themes.theme1.layout';
-        $this->view = 'home.index';
-
-        // theme 2
-        // $this->layout = 'layouts.themes.theme2.layout';
-        // $this->view = 'home.index2';
+        $theme = 2;
+        $this->layout = $job->switchLayout($theme);
+        $this->view = $job->switchHomeView($theme);
     }
 
     /**
@@ -38,6 +35,19 @@ class HomeController extends Controller
         return view($this->view,compact('layout'));
     }
 
+    public function cart()
+    {
+        $layout = $this->layout;
+        return view('home.cart',compact(['layout']));
+    }
+
+    public function faq()
+    {
+        $layout = $this->layout;
+        return view('home.faq',compact(['layout']));
+    }
+
+
     public function logout()
     {
         if (auth()->check()) {
@@ -48,5 +58,29 @@ class HomeController extends Controller
         }
 
         return redirect()->route('home');
+    }
+
+    public function privacy()
+    {
+        $layout = $this->layout;
+        return view('home.privacy',compact(['layout']));
+    }
+
+    public function shipping()
+    {
+        $layout = $this->layout;
+        return view('home.shipping',compact(['layout']));
+    }
+
+    public function shop()
+    {
+        $layout = $this->layout;
+        return view('home.shop',compact(['layout']));
+    }
+
+    public function tos()
+    {
+        $layout = $this->layout;
+        return view('home.tos',compact(['layout']));
     }
 }

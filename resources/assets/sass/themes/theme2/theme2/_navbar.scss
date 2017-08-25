@@ -3,8 +3,8 @@
     padding-top: $navbar-padding-base;
     padding-bottom: $navbar-padding-base;
     min-height: 53px;
-    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
-
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
     a{
         color: $link-color;
         vertical-align: middle;

@@ -20,16 +20,15 @@
 
 
 .page-header{
-    height: 100vh;
-    max-height: 600px;
     padding: 0;
     color: $white-color;
     position: relative;
+    height:500px;
     .page-header-image{
         position: absolute;
         background-size: cover;
         background-position: center center;
-        background-image:url('../../../img/themes/theme1/20170822_154409.jpg');
+        background-image:url('../../../img/themes/theme1/large-image-test.jpg');
         width: 100%;
         height: 100%;
         z-index: -1;

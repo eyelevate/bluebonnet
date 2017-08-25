@@ -1,4 +1,5 @@
 .footer{
+    color: $body-color;
     padding: 24px 0;
 
     &.footer-default{
@@ -19,7 +20,7 @@
             display: inline-block;
 
             a{
-                color: inherit;
+                color: $link-color !important;
                 padding: $padding-base-vertical;
                 font-size: $font-size-small;
                 text-transform: uppercase;

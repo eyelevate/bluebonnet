@@ -13,6 +13,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        // Footer
+        view()->composer('layouts.themes.theme1.partials.footer', function($view) {
+            $company = \App\Company::prepareCompany(\App\Company::find(1));
+            $view->with('company', $company);
+        });
+
+        view()->composer('layouts.themes.theme2.partials.footer', function($view) {
+            $company = \App\Company::prepareCompany(\App\Company::find(1));
+            $view->with('company', $company);
+        });
+
         // Send asset issues data globally to sidebar 
         view()->composer('layouts.themes.backend.partials.sidebar', function($view) {
             $customer_count = \App\User::countCustomers();
