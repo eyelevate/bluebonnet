@@ -60,20 +60,35 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 373);
+<<<<<<< HEAD
+/******/ 	return __webpack_require__(__webpack_require__.s = 368);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 376);
+>>>>>>> 29446fbbbb0a32d5821536961b28c523ca7923e4
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 373:
+<<<<<<< HEAD
+/***/ 368:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(374);
+module.exports = __webpack_require__(369);
+=======
+/***/ 376:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(377);
+>>>>>>> 29446fbbbb0a32d5821536961b28c523ca7923e4
 
 
 /***/ }),
 
-/***/ 374:
+<<<<<<< HEAD
+/***/ 369:
+=======
+/***/ 377:
+>>>>>>> 29446fbbbb0a32d5821536961b28c523ca7923e4
 /***/ (function(module, exports) {
 
 var app = new Vue({

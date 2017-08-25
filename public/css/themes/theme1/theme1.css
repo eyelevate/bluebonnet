@@ -1476,8 +1476,9 @@ fieldset[disabled] .btn.active {
 }
 
 .btn-primary {
-  background-color: #ffffff;
-  color: #ffffff;
+  background-color: #f3f5f7;
+  color: #FFFFFF;
+  color: #668099 !important;
 }
 
 .btn-primary:hover,
@@ -1519,8 +1520,8 @@ fieldset[disabled] .btn-primary:focus,
 fieldset[disabled] .btn-primary.focus,
 fieldset[disabled] .btn-primary:active,
 fieldset[disabled] .btn-primary.active {
-  background-color: #ffffff;
-  border-color: #ffffff;
+  background-color: #f3f5f7;
+  border-color: #f3f5f7;
 }
 
 .btn-primary.focus,
@@ -1529,77 +1530,9 @@ fieldset[disabled] .btn-primary.active {
           box-shadow: none;
 }
 
-.btn-primary.btn-danger {
-  color: #FF3636;
-}
-
-.btn-primary.btn-danger:hover,
-.btn-primary.btn-danger:focus,
-.btn-primary.btn-danger:active {
-  color: #ff1d1d;
-}
-
-.btn-primary.btn-info {
-  color: #2CA8FF;
-}
-
-.btn-primary.btn-info:hover,
-.btn-primary.btn-info:focus,
-.btn-primary.btn-info:active {
-  color: #109CFF;
-}
-
-.btn-primary.btn-warning {
-  color: #FFB236;
-}
-
-.btn-primary.btn-warning:hover,
-.btn-primary.btn-warning:focus,
-.btn-primary.btn-warning:active {
-  color: #ffa81d;
-}
-
-.btn-primary.btn-success {
-  color: #18ce0f;
-}
-
-.btn-primary.btn-success:hover,
-.btn-primary.btn-success:focus,
-.btn-primary.btn-success:active {
-  color: #15b60d;
-}
-
-.btn-primary.btn-default {
-  color: #B8B8B8;
-}
-
-.btn-primary.btn-default:hover,
-.btn-primary.btn-default:focus,
-.btn-primary.btn-default:active {
-  color: #ababab;
-}
-
-.btn-primary.active,
-.btn-primary:active:focus,
-.btn-primary:active:hover,
-.btn-primary.active:focus,
-.btn-primary.active:hover,
-.open > .btn-primary.dropdown-toggle,
-.open > .btn-primary.dropdown-toggle:focus,
-.open > .btn-primary.dropdown-toggle:hover {
-  background-color: #FFFFFF;
-  color: #ffffff;
-}
-
-.btn-primary:hover,
-.btn-primary:focus,
-.btn-primary:active {
-  color: #f2f2f2;
-}
-
 .btn-primary.btn-simple {
-  color: #ffffff;
-  border-color: #ffffff;
+  color: #f3f5f7;
+  border-color: #f3f5f7;
 }
 
 .btn-primary.btn-simple:hover,
@@ -1611,7 +1544,7 @@ fieldset[disabled] .btn-primary.active {
 }
 
 .btn-primary.btn-link {
-  color: #ffffff;
+  color: #f3f5f7;
 }
 
 .btn-primary.btn-link:hover,
@@ -2187,6 +2120,7 @@ fieldset[disabled]
 }
 
 .btn-link {
+  color: #668099;
   border: 0;
   padding: 0.5rem 0.7rem;
   background-color: transparent;
@@ -3210,6 +3144,10 @@ body {
   font-family: "Rubik", "Helvetica Neue", Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+}
+
+* {
+  border-radius: 0 !important;
 }
 
 .main {
@@ -4846,8 +4784,6 @@ Created using IcoMoon - icomoon.io
   overflow: hidden;
   width: 100%;
   margin-bottom: 20px;
-  -webkit-box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2);
-          box-shadow: 0px 5px 25px 0px rgba(0, 0, 0, 0.2);
 }
 
 .card .card-block {
@@ -4942,6 +4878,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .footer {
+  color: #67615f;
   padding: 24px 0;
 }
 
@@ -4965,7 +4902,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .footer ul li a {
-  color: inherit;
+  color: #668099 !important;
   padding: 0.5rem;
   font-size: 0.8571em;
   text-transform: uppercase;
@@ -4985,23 +4922,6 @@ Created using IcoMoon - icomoon.io
   display: table;
   clear: both;
   content: " ";
-}
-
-.index-page .page-header {
-  height: 125vh;
-}
-
-.index-page .page-header .container > .content-center {
-  top: 37%;
-}
-
-.index-page .page-header .category-absolute {
-  position: absolute;
-  top: 100vh;
-  margin-top: -60px;
-  padding: 0 15px;
-  width: 100%;
-  color: rgba(255, 255, 255, 0.5);
 }
 
 .landing-page .header {
@@ -5351,18 +5271,17 @@ Created using IcoMoon - icomoon.io
 }
 
 .page-header {
-  height: 100vh;
-  max-height: 600px;
   padding: 0;
   color: #FFFFFF;
   position: relative;
+  height: 500px;
 }
 
 .page-header .page-header-image {
   position: absolute;
   background-size: cover;
   background-position: center center;
-  background-image: url(/images/20170822_154409.jpg?92285ab21b3bb23b668ca88c417efd6f);
+  background-image: url(/images/large-image-test.jpg?14ac9117a5d07487bfc1b91ee3da8ec9);
   width: 100%;
   height: 100%;
   z-index: -1;

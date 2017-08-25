@@ -68,7 +68,8 @@ mix.js('resources/assets/js/views/auth/login.js','public/js/views/auth')
 mix.js('resources/assets/js/views/companies/create.js','public/js/views/companies');
 
 // Home
-mix.js('resources/assets/js/views/home/index.js','public/js/views/home');
+mix.js('resources/assets/js/views/home/index.js','public/js/views/home')
+   .js('resources/assets/js/views/home/shop.js','public/js/views/home');
 
 
 // metal

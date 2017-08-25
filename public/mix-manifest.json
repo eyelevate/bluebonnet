@@ -7,6 +7,7 @@
     "/css/themes/ionicons/ionicons.css": "/css/themes/ionicons/ionicons.css",
     "/css/views/admins/general.css": "/css/views/admins/general.css",
     "/js/views/stones/create.js": "/js/views/stones/create.js",
+    "/js/views/stone_sizes/create.js": "/js/views/stone_sizes/create.js",
     "/js/views/metals/create.js": "/js/views/metals/create.js",
     "/js/views/home/index.js": "/js/views/home/index.js",
     "/js/views/companies/create.js": "/js/views/companies/create.js",
@@ -20,6 +21,5 @@
     "/js/themes/theme1/theme1.js": "/js/themes/theme1/theme1.js",
     "/js/themes/coreui/main.js": "/js/themes/coreui/main.js",
     "/js/themes/coreui/coreui.js": "/js/themes/coreui/coreui.js",
-    "/js/views/stone_sizes/create.js": "/js/views/stone_sizes/create.js",
     "/js/themes/coreui/dashboard-plugins.js": "/js/themes/coreui/dashboard-plugins.js"
 }

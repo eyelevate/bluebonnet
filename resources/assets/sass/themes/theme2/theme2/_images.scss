@@ -19,3 +19,13 @@ img{
 	display: block;
 	max-width: 100%;
 }
+
+.shop-header {
+    background-size: cover;
+    background-position: center center;
+    background-image:url('../../../img/themes/theme1/shop-header.jpg');
+    height: 250px;
+    z-index: -1;  
+}
+
+

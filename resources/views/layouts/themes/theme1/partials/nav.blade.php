@@ -4,13 +4,7 @@
         <div class="collapse navbar-collapse" style="">
             <ul class="navbar-nav mr-auto ">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">SHOP</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">MOISSANITE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">FAQ</a>
+                    <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT</a>
@@ -54,13 +48,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
         <ul class="navbar-nav mr-auto ">
             <li class="nav-item">
-                <a class="nav-link" href="#">SHOP</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">MOISSANITE</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">FAQ</a>
+                <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">CONTACT</a>

@@ -38,9 +38,9 @@
 	                </bootstrap-input>
 
 					<!-- Description -->
-	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
+	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Unit (Default MM)"
+	 					label = "Name"
 	                    b-placeholder="mm"
 	                    b-name="name"
 	                    b-type="text"
@@ -48,7 +48,7 @@
 	                    b-err="{{ $errors->has('name') }}"
 	                    b-error="{{ $errors->first('name') }}"
 	                    >
-	                </bootstrap-textarea>
+	                </bootstrap-input>
 		        </div>
 			</template>
 

@@ -6,6 +6,10 @@ body{
     -webkit-font-smoothing: antialiased;
 }
 
+* {
+  border-radius: 0 !important;
+}
+
 .main{
     position: relative;
     background: $white-color;

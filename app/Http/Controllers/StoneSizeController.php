@@ -38,8 +38,8 @@ class StoneSizeController extends Controller
     public function store(Request $request, StoneSize $stoneSize)
     {
         $this->validate(request(), [
-            // 'stoneSize' => 'required|between:0,99.99'
-             'stoneSize' => 'required|numeric'
+             'size' => 'required|numeric',
+             'name' => 'required|string'
         ]);
         flash('Successfully created a Stone Size!')->success();
         $stoneSize->create(request()->all());
