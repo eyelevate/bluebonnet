@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+
+    private $layout;
+    private $view;
+
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(Job $job)
     {
+        $theme = 2;
+        $this->layout = $job->switchLayout($theme);
+        $this->view = $job->switchHomeView($theme);
     }
 
     /**
@@ -23,8 +31,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home.index');
+        $layout = $this->layout;
+        return view($this->view,compact('layout'));
     }
+
+    public function cart()
+    {
+        $layout = $this->layout;
+        return view('home.cart',compact(['layout']));
+    }
+
+    public function faq()
+    {
+        $layout = $this->layout;
+        return view('home.faq',compact(['layout']));
+    }
+
 
     public function logout()
     {
@@ -36,5 +58,29 @@ class HomeController extends Controller
         }
 
         return redirect()->route('home');
+    }
+
+    public function privacy()
+    {
+        $layout = $this->layout;
+        return view('home.privacy',compact(['layout']));
+    }
+
+    public function shipping()
+    {
+        $layout = $this->layout;
+        return view('home.shipping',compact(['layout']));
+    }
+
+    public function shop()
+    {
+        $layout = $this->layout;
+        return view('home.shop',compact(['layout']));
+    }
+
+    public function tos()
+    {
+        $layout = $this->layout;
+        return view('home.tos',compact(['layout']));
     }
 }

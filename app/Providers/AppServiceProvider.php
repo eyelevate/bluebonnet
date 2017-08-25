@@ -13,6 +13,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        // Footer
+        view()->composer('layouts.themes.theme1.partials.footer', function($view) {
+            $company = \App\Company::prepareCompany(\App\Company::find(1));
+            $view->with('company', $company);
+        });
+
+        view()->composer('layouts.themes.theme2.partials.footer', function($view) {
+            $company = \App\Company::prepareCompany(\App\Company::find(1));
+            $view->with('company', $company);
+        });
+
         // Send asset issues data globally to sidebar 
         view()->composer('layouts.themes.backend.partials.sidebar', function($view) {
             $customer_count = \App\User::countCustomers();
@@ -20,18 +32,22 @@ class AppServiceProvider extends ServiceProvider
             $employee_count = \App\User::countEmployees();
             $companies_count = \App\Company::countCompanies();
             $fee_count = \App\Fee::countFees();
+            $finger_count = \App\Finger::countFingers();
             $inventory_count = \App\Inventory::countInventories();
             $inventory_item_count = \App\InventoryItem::countInventoryItems();
             $line_count = \App\Line::countLines();
+            $metal_count = \App\Metal::countMetals();
             $vendor_count = \App\Vendor::countVendors();
             $view->with('companies_count', $companies_count)
                  ->with('customer_count',$customer_count)
                  ->with('design_count',$design_count)
                  ->with('employee_count',$employee_count)
                  ->with('fee_count',$fee_count)
+                 ->with('finger_count',$finger_count)
                  ->with('inventory_count',$inventory_count)
                  ->with('inventory_item_count',$inventory_item_count)
                  ->with('line_count',$line_count)
+                 ->with('metal_count',$metal_count)
                  ->with('vendor_count',$vendor_count);
         });
     }

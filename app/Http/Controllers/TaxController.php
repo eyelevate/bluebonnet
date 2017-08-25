@@ -14,7 +14,7 @@ class TaxController extends Controller
      */
     public function index()
     {
-        //
+        return view('taxes.index');
     }
 
     /**

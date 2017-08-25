@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Job;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -31,6 +32,14 @@ class Company extends Model
 
 
 
+    public static function prepareCompany($company)
+    {
+        if($company->phone){
+            $company->phone = Job::formatPhoneString($company->phone);
+        }
+
+        return $company;
+    }
 
     public function prepareCompanyForSelect($data)
     {

@@ -50,6 +50,7 @@ Vue.component('bootstrap-textarea',require('./components/bootstrap/Textarea.vue'
 
 // Theme1
 Vue.component('theme1-input',require('./components/theme1/FormInput.vue'));
+Vue.component('theme1-shop-card',require('./components/theme1/ShopCard.vue'));
 
 // Passport Components
 Vue.component('passport-clients', require('./components/passport/Clients.vue'));

@@ -15,19 +15,26 @@ const app = new Vue({
 });
 
 $(document).ready(function(){
+	home.pageLoad();
 	home.events();
 });
 home = {
+	pageLoad(){
+		// init Masonry
+		var $grid = $('.grid').masonry({
+			// set itemSelector so .grid-sizer is not used in layout
+			itemSelector: '.grid-item',
+			percentPosition: true
+		});
+		// layout Masonry after each image loads
+		$grid.imagesLoaded().progress( function() {
+			$grid.masonry('layout');
+		});
+	},
 	events: function(){
 		$('img.lazy').lazyload();
 		$(".slip").sliphover();
 
-		$('.page-header').parallaxElement({
-			defaultSpeed:  0.2,   // Integer - Default speed if `data-speed` is not present 
-			useOffset:     true,  // Boolean - Whether or not to start animations below bottom of viewport 
-			defaultOffset: 200,   // Distance before element appears to start animation 
-			disableMobile: false, // Boolean - allow function to run on mobile devices 
-			minWidth:      false  // Integer - minimum width the function should fire 
-		});
-	}
+	},
+
 };

@@ -1,0 +1,31 @@
+img{
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 1px;
+}
+.img-raised{
+    box-shadow: $box-shadow-raised;
+}
+
+.img-raised{
+    box-shadow: $box-shadow-raised;
+}
+
+.grid-item { width: 25% }
+.grid-item--width2 { width: 50% }
+.grid-item a, .grid-item a img {
+	outline: none;
+	border: none;
+	display: block;
+	max-width: 100%;
+}
+
+.shop-header {
+    background-size: cover;
+    background-position: center center;
+    background-image:url('../../../img/themes/theme1/shop-header.jpg');
+    height: 250px;
+    z-index: -1;  
+}
+
+

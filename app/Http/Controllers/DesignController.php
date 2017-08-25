@@ -14,7 +14,7 @@ class DesignController extends Controller
      */
     public function index()
     {
-        //
+        return view('designs.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class DesignController extends Controller
      */
     public function create()
     {
-        //
+        return view('designs.create');
     }
 
     /**

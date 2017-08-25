@@ -1,13 +1,10 @@
 @extends('layouts.themes.backend.layout')
-
-
 @section('styles')
-
 @endsection
+
 
 @section('scripts')
 <script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
-
 @endsection
 
 @section('content')
@@ -102,4 +99,11 @@
 		{!! Form::close() !!}
 	@endforeach
 @endif
+@endsection
+
+
+
+
+
+@section('variables')
 @endsection

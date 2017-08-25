@@ -1,16 +1,10 @@
-<nav class="navbar navbar-light navbar-toggleable-md fixed-top bg-primary bg-faded hidden-md-down">
+<nav class="navbar navbar-light navbar-toggleable-md bg-primary sticky-top bg-faded hidden-md-down" >
     <div class="container">    
         <a class="navbar-brand" href="{{ route('home') }}">blue bonnet diamond</a>
         <div class="collapse navbar-collapse" style="">
             <ul class="navbar-nav mr-auto ">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">SHOP</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">MOISSANITE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">FAQ</a>
+                    <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">CONTACT</a>
@@ -45,7 +39,7 @@
         </div>
     </div>
 </nav>
-<nav class="navbar navbar-light navbar-toggleable-md fixed-top bg-primary bg-faded hidden-lg-up">
+<nav class="navbar navbar-light navbar-toggleable-md bg-primary bg-faded hidden-lg-up sticky-top">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -54,13 +48,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
         <ul class="navbar-nav mr-auto ">
             <li class="nav-item">
-                <a class="nav-link" href="#">SHOP</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">MOISSANITE</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">FAQ</a>
+                <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">CONTACT</a>

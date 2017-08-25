@@ -12,9 +12,12 @@ class VendorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Vendor $vendor)
     {
-        //
+        $columns = $vendor->prepareTableColumns();
+        $rows = $vendor->prepareTableRows($vendor->all());
+
+        return view('vendors.index', compact(['columns','rows']));
     }
 
     /**

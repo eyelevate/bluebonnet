@@ -3,6 +3,10 @@
 	    <div class="card-header" :class="hClass" v-if="checkCardHeader">
 	       	<slot name="header"></slot>
 	    </div>
+        <div v-if="checkCardImageTop">
+            <img class="card-img-top" :src="iTopSrc" >    
+        </div>
+        
 	    <div class="card-block" :class="bClass" v-if="checkCardBody">
 	        <slot name="body"></slot>
 	    </div>
@@ -14,15 +18,26 @@
 
 <script>
     export default {
-    	props:['body-class','footer-class', 'header-class','use-header','use-body','use-footer'],
+    	props:[
+            'body-class',
+            'footer-class', 
+            'header-class',
+            'use-header',
+            'use-body',
+            'use-footer',
+            'use-img-top',
+            'img-top-src'
+        ],
     	data() {
     		return {
     			checkCardHeader: (this.useHeader == 'true'),
     			checkCardBody: (this.useBody == 'true'),
     			checkCardFooter: (this.useFooter == 'true'),
+                checkCardImageTop: (this.useImgTop == 'true'),
     			bClass: this.bodyClass,
     			fClass: this.footerClass,
-                hClass: this.headerClass
+                hClass: this.headerClass,
+                iTopSrc: this.imgTopSrc
     		}
     	},
     	methods: {
