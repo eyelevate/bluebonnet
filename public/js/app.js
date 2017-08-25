@@ -5296,7 +5296,88 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 6 */,
+/* 6 */
+/***/ (function(module, exports) {
+
+/*
+	MIT License http://www.opensource.org/licenses/mit-license.php
+	Author Tobias Koppers @sokra
+*/
+// css base code, injected by the css-loader
+module.exports = function(useSourceMap) {
+	var list = [];
+
+	// return the list of modules as css string
+	list.toString = function toString() {
+		return this.map(function (item) {
+			var content = cssWithMappingToString(item, useSourceMap);
+			if(item[2]) {
+				return "@media " + item[2] + "{" + content + "}";
+			} else {
+				return content;
+			}
+		}).join("");
+	};
+
+	// import a list of modules into the list
+	list.i = function(modules, mediaQuery) {
+		if(typeof modules === "string")
+			modules = [[null, modules, ""]];
+		var alreadyImportedModules = {};
+		for(var i = 0; i < this.length; i++) {
+			var id = this[i][0];
+			if(typeof id === "number")
+				alreadyImportedModules[id] = true;
+		}
+		for(i = 0; i < modules.length; i++) {
+			var item = modules[i];
+			// skip already imported module
+			// this implementation is not 100% perfect for weird media query combinations
+			//  when a module is imported multiple times with different media queries.
+			//  I hope this will never occur (Hey this way we have smaller bundles)
+			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
+				if(mediaQuery && !item[2]) {
+					item[2] = mediaQuery;
+				} else if(mediaQuery) {
+					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
+				}
+				list.push(item);
+			}
+		}
+	};
+	return list;
+};
+
+function cssWithMappingToString(item, useSourceMap) {
+	var content = item[1] || '';
+	var cssMapping = item[3];
+	if (!cssMapping) {
+		return content;
+	}
+
+	if (useSourceMap && typeof btoa === 'function') {
+		var sourceMapping = toComment(cssMapping);
+		var sourceURLs = cssMapping.sources.map(function (source) {
+			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
+		});
+
+		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
+	}
+
+	return [content].join('\n');
+}
+
+// Adapted from convert-source-map (MIT)
+function toComment(sourceMap) {
+	// eslint-disable-next-line no-undef
+	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
+	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
+
+	return '/*# ' + data + ' */';
+}
+
+
+/***/ }),
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18691,11 +18772,11 @@ return EvEmitter;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(164);
-__webpack_require__(348);
 __webpack_require__(349);
 __webpack_require__(350);
 __webpack_require__(351);
-module.exports = __webpack_require__(352);
+__webpack_require__(352);
+module.exports = __webpack_require__(353);
 
 
 /***/ }),
@@ -18714,7 +18795,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 __webpack_require__(165);
 
-window.Vue = __webpack_require__(297);
+window.Vue = __webpack_require__(298);
 
 // Wrappers
 window.Event = new (function () {
@@ -18751,27 +18832,27 @@ window.Event = new (function () {
 // Vue.component('example', require('./components/Example.vue'));
 
 // Bootsrap components
-Vue.component('bootstrap-card', __webpack_require__(298));
-Vue.component('bootstrap-control', __webpack_require__(301));
-Vue.component('bootstrap-input', __webpack_require__(304));
-Vue.component('bootstrap-modal', __webpack_require__(307));
-Vue.component('bootstrap-progress', __webpack_require__(310));
-Vue.component('bootstrap-radio', __webpack_require__(313));
-Vue.component('bootstrap-readonly', __webpack_require__(316));
-Vue.component('bootstrap-select', __webpack_require__(319));
-Vue.component('bootstrap-table', __webpack_require__(322));
-Vue.component('bootstrap-textarea', __webpack_require__(327));
+Vue.component('bootstrap-card', __webpack_require__(299));
+Vue.component('bootstrap-control', __webpack_require__(302));
+Vue.component('bootstrap-input', __webpack_require__(305));
+Vue.component('bootstrap-modal', __webpack_require__(308));
+Vue.component('bootstrap-progress', __webpack_require__(311));
+Vue.component('bootstrap-radio', __webpack_require__(314));
+Vue.component('bootstrap-readonly', __webpack_require__(317));
+Vue.component('bootstrap-select', __webpack_require__(320));
+Vue.component('bootstrap-table', __webpack_require__(323));
+Vue.component('bootstrap-textarea', __webpack_require__(328));
 
 // Now-ui-kit Components
 // Vue.component('now-input',require('./components/now-ui-kit/FormInput.vue'));
 
 // Theme1
-Vue.component('theme1-input', __webpack_require__(330));
+Vue.component('theme1-input', __webpack_require__(331));
 
 // Passport Components
-Vue.component('passport-clients', __webpack_require__(333));
-Vue.component('passport-authorized-clients', __webpack_require__(338));
-Vue.component('passport-personal-access-tokens', __webpack_require__(343));
+Vue.component('passport-clients', __webpack_require__(334));
+Vue.component('passport-authorized-clients', __webpack_require__(339));
+Vue.component('passport-personal-access-tokens', __webpack_require__(344));
 
 /***/ }),
 /* 165 */
@@ -18838,16 +18919,16 @@ __webpack_require__(189);
 __webpack_require__(237);
 
 // LazyLoad
-__webpack_require__(289);
-
-// Masonry
 __webpack_require__(290);
 
+// Masonry
+__webpack_require__(291);
+
 // sliphover
-__webpack_require__(295);
+__webpack_require__(296);
 
 // parallax element
-__webpack_require__(296);
+__webpack_require__(297);
 
 /***/ }),
 /* 166 */
@@ -63588,7 +63669,7 @@ var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(242),
   /* template */
-  __webpack_require__(287),
+  __webpack_require__(288),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -63596,7 +63677,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/node_modules/vue-good-table/src/components/Table.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\node_modules\\vue-good-table\\src\\components\\Table.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Table.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -63649,12 +63730,12 @@ if(false) {
 /* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Utility styles\n************************************************/\n.right-align[data-v-05aa8e20]{\n  text-align: right;\n}\n.left-align[data-v-05aa8e20]{\n  text-align: left;\n}\n.pull-left[data-v-05aa8e20]{\n  float:  left !important;\n}\n.pull-right[data-v-05aa8e20]{\n  float:  right !important;\n}\n.clearfix[data-v-05aa8e20]::after {\n  display: block;\n  content: \"\";\n  clear: both;\n}\n\n/* Table specific styles\n************************************************/\ntable[data-v-05aa8e20]{\n    border-collapse: collapse;\n    background-color: transparent;\n    margin-bottom:  0px;\n}\n.table[data-v-05aa8e20]{\n    width: 100%;\n    max-width: 100%;\n}\n.table.table-striped tbody tr[data-v-05aa8e20]:nth-of-type(odd) {\n      background-color: rgba(35,41,53,.05);\n}\n.table.table-bordered td[data-v-05aa8e20], .table-bordered th[data-v-05aa8e20] {\n      border: 1px solid #DDD;\n}\n.table td[data-v-05aa8e20], .table th[data-v-05aa8e20]:not(.line-numbers) {\n    padding: .75rem 1.5rem .75rem .75rem;\n    vertical-align: top;\n    border-top: 1px solid #ddd;\n}\n.table.condensed td[data-v-05aa8e20], .table.condensed th[data-v-05aa8e20] {\n    padding: .4rem .4rem .4rem .4rem;\n}\n.table thead th[data-v-05aa8e20], .table.condensed thead th[data-v-05aa8e20] {\n    vertical-align: bottom;\n    border-bottom:  2px solid #ddd;\n    padding-right: 1.5rem;\n    background-color: rgba(35,41,53,0.03);\n}\ntr.clickable[data-v-05aa8e20] {\n    cursor: pointer;\n}\n.table input[data-v-05aa8e20]{\n    display: block;\n    width: calc(100% - 24px);\n    height: 34px;\n    padding: 6px 12px;\n    font-size: 14px;\n    line-height: 1.42857143;\n    color: #555;\n    background-color: #fff;\n    background-image: none;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    -webkit-box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\n    box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\n    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n}\ntable th.sorting-asc[data-v-05aa8e20],\n  table th.sorting-desc[data-v-05aa8e20] {\n    color: rgba(0, 0, 0, 0.66);\n    position: relative;\n}\ntable th.sorting[data-v-05aa8e20]:after,\n  table th.sorting-asc[data-v-05aa8e20]:after  {\n    font-family: 'Material Icons';\n    position:  absolute;\n    height:  0px;\n    width:  0px;\n    content: '';\n    display: none;\n    border-left: 6px solid transparent;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid rgba(0, 0, 0, 0.66);\n    margin-top:  6px;\n    margin-left:  5px;\n}\ntable th.sorting[data-v-05aa8e20]:hover:after{\n    display: inline-block;\n    border-bottom-color: rgba(35,41,53,0.25);\n}\ntable th.sorting-asc[data-v-05aa8e20]:after,\n  table th.sorting-desc[data-v-05aa8e20]:after {\n    display: inline-block;\n}\ntable th.sorting-desc[data-v-05aa8e20]:after {\n    border-top:  6px solid rgba(0, 0, 0, 0.66);\n    border-left: 6px solid transparent;\n    border-right: 6px solid transparent;\n    border-bottom: none;\n    margin-top:  8px;\n}\n.responsive[data-v-05aa8e20] {\n  width: 100%;\n  overflow-x: scroll;\n}\n\n/* Table header specific styles\n************************************************/\n.table-header[data-v-05aa8e20]{\n  padding:  .75rem;\n}\n.table-header .table-title[data-v-05aa8e20]{\n  margin:  0px;\n  font-size: 18px;\n}\n\n\n/* Table footer specific styles\n************************************************/\n.table-footer[data-v-05aa8e20]{\n    /* background-color: rgba(35,41,53, 0.03); */\n    background-color: rgba(35,41,53,0.05);\n    border: 1px solid #DDD;\n    margin-bottom:  2rem;\n    margin-top:  0px;\n    padding:  1rem;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n    font-size: 14px;\n    color:  rgba(0, 0, 0, 0.44);\n}\n.table-footer>div[data-v-05aa8e20]{\n    display: inline-block;\n}\n.pagination-controls>*[data-v-05aa8e20]{\n    display: inline-block;\n}\n.pagination-controls a[data-v-05aa8e20]{\n    text-decoration: none;\n    color: rgba(0, 0, 0, 0.66);\n    font-size: 14px;\n    font-weight: 600;\n    opacity: 0.8;\n}\n.pagination-controls a[data-v-05aa8e20]:hover{\n    opacity: 1;\n}\n.pagination-controls a span[data-v-05aa8e20]{\n    display: inline-block;\n    vertical-align: middle;\n}\n.pagination-controls .info[data-v-05aa8e20]{\n    margin:  0px 15px;\n    font-size: 13px;\n    font-weight: bold;\n    color:  rgba(0, 0, 0, 0.40);\n}\n.pagination-controls a .chevron[data-v-05aa8e20]{\n    width:  24px;\n    height:  24px;\n    border-radius: 15%;\n    /* border:  1px solid rgba(35,41,53,0.2);\n    background-color: #fff; */\n    position:  relative;\n    margin:  0px 8px;\n}\n.pagination-controls .chevron[data-v-05aa8e20]::after{\n    content:  '';\n    position:  absolute;\n    display:  block;\n    left:  50%;\n    top:  50%;\n    margin-top:  -6px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n}\n.pagination-controls .chevron.left[data-v-05aa8e20]::after{\n    border-right:  6px solid rgba(0, 0, 0, 0.66);\n    margin-left:  -3px;\n}\n.pagination-controls .chevron.right[data-v-05aa8e20]::after{\n    border-left:  6px solid rgba(0, 0, 0, 0.66);\n    margin-left:  -3px;\n}\n.table-footer select[data-v-05aa8e20] {\n    display: inline-block;\n    background-color: transparent;\n    width: auto;\n    padding: 0;\n    border: 0;\n    border-radius: 0;\n    height: auto;\n    font-size: 14px;\n    margin-left: 8px;\n    color:  rgba(0, 0, 0, 0.55);\n    font-weight: bold;\n}\n.table-footer .perpage-count[data-v-05aa8e20]{\n    color:  rgba(0, 0, 0, 0.55);\n    font-weight: bold;\n}\n@media only screen and (max-width: 750px) {\n    /* on small screens hide the info */\n.pagination-controls .info[data-v-05aa8e20]{\n      display:  none;\n}\n}\n\n  /* Global Search\n  **********************************************/\n.global-search[data-v-05aa8e20]{\n    position:  relative;\n    padding-left: 40px;\n}\n.global-search-icon[data-v-05aa8e20]{\n    position:  absolute;\n    left:  0px;\n    max-width:  32px;\n}\n.global-search-icon > img[data-v-05aa8e20]{\n    max-width:  100%;\n    margin-top:  8px;\n    opacity: 0.5;\n}\ntable .global-search-input[data-v-05aa8e20]{\n   width:  calc(100% - 30px);\n}\n\n  /* Line numbers\n  **********************************************/\ntable th.line-numbers[data-v-05aa8e20], .table.condensed th.line-numbers[data-v-05aa8e20]{\n    background-color: rgba(35,41,53,0.05);\n    padding-left:  3px;\n    padding-right:  3px;\n    word-wrap: break-word;\n    width: 45px;\n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Utility styles\n************************************************/\n.right-align[data-v-05aa8e20]{\n  text-align: right;\n}\n.left-align[data-v-05aa8e20]{\n  text-align: left;\n}\n.pull-left[data-v-05aa8e20]{\n  float:  left !important;\n}\n.pull-right[data-v-05aa8e20]{\n  float:  right !important;\n}\n.clearfix[data-v-05aa8e20]::after {\n  display: block;\n  content: \"\";\n  clear: both;\n}\n\n/* Table specific styles\n************************************************/\ntable[data-v-05aa8e20]{\n    border-collapse: collapse;\n    background-color: transparent;\n    margin-bottom:  0px;\n}\n.table[data-v-05aa8e20]{\n    width: 100%;\n    max-width: 100%;\n}\n.table.table-striped tbody tr[data-v-05aa8e20]:nth-of-type(odd) {\n      background-color: rgba(35,41,53,.05);\n}\n.table.table-bordered td[data-v-05aa8e20], .table-bordered th[data-v-05aa8e20] {\n      border: 1px solid #DDD;\n}\n.table td[data-v-05aa8e20], .table th[data-v-05aa8e20]:not(.line-numbers) {\n    padding: .75rem 1.5rem .75rem .75rem;\n    vertical-align: top;\n    border-top: 1px solid #ddd;\n}\n.table.condensed td[data-v-05aa8e20], .table.condensed th[data-v-05aa8e20] {\n    padding: .4rem .4rem .4rem .4rem;\n}\n.table thead th[data-v-05aa8e20], .table.condensed thead th[data-v-05aa8e20] {\n    vertical-align: bottom;\n    border-bottom:  2px solid #ddd;\n    padding-right: 1.5rem;\n    background-color: rgba(35,41,53,0.03);\n}\ntr.clickable[data-v-05aa8e20] {\n    cursor: pointer;\n}\n.table input[data-v-05aa8e20]{\n    display: block;\n    width: calc(100% - 24px);\n    height: 34px;\n    padding: 6px 12px;\n    font-size: 14px;\n    line-height: 1.42857143;\n    color: #555;\n    background-color: #fff;\n    background-image: none;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    -webkit-box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\n    box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\n    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n}\ntable th.sorting-asc[data-v-05aa8e20],\n  table th.sorting-desc[data-v-05aa8e20] {\n    color: rgba(0, 0, 0, 0.66);\n    position: relative;\n}\ntable th.sorting[data-v-05aa8e20]:after,\n  table th.sorting-asc[data-v-05aa8e20]:after  {\n    font-family: 'Material Icons';\n    position:  absolute;\n    height:  0px;\n    width:  0px;\n    content: '';\n    display: none;\n    border-left: 6px solid transparent;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid rgba(0, 0, 0, 0.66);\n    margin-top:  6px;\n    margin-left:  5px;\n}\ntable th.sorting[data-v-05aa8e20]:hover:after{\n    display: inline-block;\n    border-bottom-color: rgba(35,41,53,0.25);\n}\ntable th.sorting-asc[data-v-05aa8e20]:after,\n  table th.sorting-desc[data-v-05aa8e20]:after {\n    display: inline-block;\n}\ntable th.sorting-desc[data-v-05aa8e20]:after {\n    border-top:  6px solid rgba(0, 0, 0, 0.66);\n    border-left: 6px solid transparent;\n    border-right: 6px solid transparent;\n    border-bottom: none;\n    margin-top:  8px;\n}\n.responsive[data-v-05aa8e20] {\n  width: 100%;\n  overflow-x: scroll;\n}\n\n/* Table header specific styles\n************************************************/\n.table-header[data-v-05aa8e20]{\n  padding:  .75rem;\n}\n.table-header .table-title[data-v-05aa8e20]{\n  margin:  0px;\n  font-size: 18px;\n}\n\n\n/* Table footer specific styles\n************************************************/\n.table-footer[data-v-05aa8e20]{\n    /* background-color: rgba(35,41,53, 0.03); */\n    background-color: rgba(35,41,53,0.05);\n    border: 1px solid #DDD;\n    margin-bottom:  2rem;\n    margin-top:  0px;\n    padding:  1rem;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n    font-size: 14px;\n    color:  rgba(0, 0, 0, 0.44);\n}\n.table-footer>div[data-v-05aa8e20]{\n    display: inline-block;\n}\n.pagination-controls>*[data-v-05aa8e20]{\n    display: inline-block;\n}\n.pagination-controls a[data-v-05aa8e20]{\n    text-decoration: none;\n    color: rgba(0, 0, 0, 0.66);\n    font-size: 14px;\n    font-weight: 600;\n    opacity: 0.8;\n}\n.pagination-controls a[data-v-05aa8e20]:hover{\n    opacity: 1;\n}\n.pagination-controls a span[data-v-05aa8e20]{\n    display: inline-block;\n    vertical-align: middle;\n}\n.pagination-controls .info[data-v-05aa8e20]{\n    margin:  0px 15px;\n    font-size: 13px;\n    font-weight: bold;\n    color:  rgba(0, 0, 0, 0.40);\n}\n.pagination-controls a .chevron[data-v-05aa8e20]{\n    width:  24px;\n    height:  24px;\n    border-radius: 15%;\n    /* border:  1px solid rgba(35,41,53,0.2);\n    background-color: #fff; */\n    position:  relative;\n    margin:  0px 8px;\n}\n.pagination-controls .chevron[data-v-05aa8e20]::after{\n    content:  '';\n    position:  absolute;\n    display:  block;\n    left:  50%;\n    top:  50%;\n    margin-top:  -6px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n}\n.pagination-controls .chevron.left[data-v-05aa8e20]::after{\n    border-right:  6px solid rgba(0, 0, 0, 0.66);\n    margin-left:  -3px;\n}\n.pagination-controls .chevron.right[data-v-05aa8e20]::after{\n    border-left:  6px solid rgba(0, 0, 0, 0.66);\n    margin-left:  -3px;\n}\n.table-footer select[data-v-05aa8e20] {\n    display: inline-block;\n    background-color: transparent;\n    width: auto;\n    padding: 0;\n    border: 0;\n    border-radius: 0;\n    height: auto;\n    font-size: 14px;\n    margin-left: 8px;\n    color:  rgba(0, 0, 0, 0.55);\n    font-weight: bold;\n}\n.table-footer .perpage-count[data-v-05aa8e20]{\n    color:  rgba(0, 0, 0, 0.55);\n    font-weight: bold;\n}\n@media only screen and (max-width: 750px) {\n    /* on small screens hide the info */\n.pagination-controls .info[data-v-05aa8e20]{\n      display:  none;\n}\n}\n\n  /* Global Search\n  **********************************************/\n.global-search[data-v-05aa8e20]{\n    position:  relative;\n    padding-left: 40px;\n}\n.global-search-icon[data-v-05aa8e20]{\n    position:  absolute;\n    left:  0px;\n    max-width:  32px;\n}\n.global-search-icon > img[data-v-05aa8e20]{\n    max-width:  100%;\n    margin-top:  8px;\n    opacity: 0.5;\n}\ntable .global-search-input[data-v-05aa8e20]{\n   width:  calc(100% - 30px);\n}\n\n  /* Line numbers\n  **********************************************/\ntable th.line-numbers[data-v-05aa8e20], .table.condensed th.line-numbers[data-v-05aa8e20]{\n    background-color: rgba(35,41,53,0.05);\n    padding-left:  3px;\n    padding-right:  3px;\n    word-wrap: break-word;\n    width: 45px;\n    text-align: center;\n}\n\n", ""]);
 
 // exports
 
@@ -63708,6 +63789,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_date_fns_parse___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_date_fns_parse__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_date_fns_format__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_date_fns_format___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_date_fns_format__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_date_fns_compare_asc__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_date_fns_compare_asc___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_date_fns_compare_asc__);
+
 
 
 
@@ -63728,6 +63812,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     paginate: { default: false },
     lineNumbers: { default: false },
     defaultSortBy: { default: null },
+    responsive: { default: true },
 
     globalSearch: { default: false },
     searchTrigger: { default: null },
@@ -63812,7 +63897,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
       var value = this.collect(obj, column.field);
 
-      if (!value) return '';
+      if (value === undefined) return '';
 
       switch (column.type) {
         case 'decimal':
@@ -64059,23 +64144,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         computedRows = computedRows.sort(function (x, y) {
           if (!_this3.columns[_this3.sortColumn]) return 0;
 
-          var cook = function cook(x) {
-            x = _this3.collect(x, _this3.columns[_this3.sortColumn].field);
-
-            if (typeof x === 'string') {
-              x = x.toLowerCase();
-              if (_this3.columns[_this3.sortColumn].type == 'number') x = x.indexOf('.') >= 0 ? parseFloat(x) : parseInt(x);
-            }
+          var cook = function cook(d) {
+            d = _this3.collect(d, _this3.columns[_this3.sortColumn].field);
 
             if (_this3.columns[_this3.sortColumn].type === 'date') {
-              x = __WEBPACK_IMPORTED_MODULE_3_date_fns_parse___default()(x + '', _this3.columns[_this3.sortColumn].inputFormat);
+              d = __WEBPACK_IMPORTED_MODULE_3_date_fns_parse___default()(d + '', _this3.columns[_this3.sortColumn].inputFormat);
+            } else if (typeof d === 'string') {
+              d = d.toLowerCase();
+              if (_this3.columns[_this3.sortColumn].type == 'number') d = d.indexOf('.') >= 0 ? parseFloat(d) : parseInt(d);
             }
-
-            return x;
+            return d;
           };
 
           x = cook(x);
           y = cook(y);
+
+          if (_this3.columns[_this3.sortColumn].type === 'date') {
+            return __WEBPACK_IMPORTED_MODULE_5_date_fns_compare_asc___default()(x, y) * (_this3.sortType === 'desc' ? -1 : 1);
+          }
 
           return (x < y ? -1 : x > y ? 1 : 0) * (_this3.sortType === 'desc' ? -1 : 1);
         });
@@ -65350,11 +65436,70 @@ module.exports = buildFormattingTokensRegExp
 /* 287 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var parse = __webpack_require__(3)
+
+/**
+ * @category Common Helpers
+ * @summary Compare the two dates and return -1, 0 or 1.
+ *
+ * @description
+ * Compare the two dates and return 1 if the first date is after the second,
+ * -1 if the first date is before the second or 0 if dates are equal.
+ *
+ * @param {Date|String|Number} dateLeft - the first date to compare
+ * @param {Date|String|Number} dateRight - the second date to compare
+ * @returns {Number} the result of the comparison
+ *
+ * @example
+ * // Compare 11 February 1987 and 10 July 1989:
+ * var result = compareAsc(
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * )
+ * //=> -1
+ *
+ * @example
+ * // Sort the array of dates:
+ * var result = [
+ *   new Date(1995, 6, 2),
+ *   new Date(1987, 1, 11),
+ *   new Date(1989, 6, 10)
+ * ].sort(compareAsc)
+ * //=> [
+ * //   Wed Feb 11 1987 00:00:00,
+ * //   Mon Jul 10 1989 00:00:00,
+ * //   Sun Jul 02 1995 00:00:00
+ * // ]
+ */
+function compareAsc (dirtyDateLeft, dirtyDateRight) {
+  var dateLeft = parse(dirtyDateLeft)
+  var timeLeft = dateLeft.getTime()
+  var dateRight = parse(dirtyDateRight)
+  var timeRight = dateRight.getTime()
+
+  if (timeLeft < timeRight) {
+    return -1
+  } else if (timeLeft > timeRight) {
+    return 1
+  } else {
+    return 0
+  }
+}
+
+module.exports = compareAsc
+
+
+/***/ }),
+/* 288 */
+/***/ (function(module, exports, __webpack_require__) {
+
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "good-table"
   }, [_c('div', {
-    staticClass: "responsive"
+    class: {
+      'responsive': _vm.responsive
+    }
   }, [(_vm.title) ? _c('div', {
     staticClass: "table-header clearfix"
   }, [_c('h2', {
@@ -65522,7 +65667,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "global-search-icon"
   }, [_c('img', {
     attrs: {
-      "src": __webpack_require__(288),
+      "src": __webpack_require__(289),
       "alt": "Search Icon"
     }
   })])
@@ -65536,13 +65681,13 @@ if (false) {
 }
 
 /***/ }),
-/* 288 */
+/* 289 */
 /***/ (function(module, exports) {
 
 module.exports = "/images/vendor/vue-good-table/src/search_icon.png?098f9a4b44b992c990a207bc31c0a0be";
 
 /***/ }),
-/* 289 */
+/* 290 */
 /***/ (function(module, exports) {
 
 /*!
@@ -65790,7 +65935,7 @@ module.exports = "/images/vendor/vue-good-table/src/search_icon.png?098f9a4b44b9
 
 
 /***/ }),
-/* 290 */
+/* 291 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -65807,7 +65952,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
   if ( true ) {
     // AMD
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-        __webpack_require__(291),
+        __webpack_require__(292),
         __webpack_require__(22)
       ], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
@@ -66037,7 +66182,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_
 
 
 /***/ }),
-/* 291 */
+/* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -66055,8 +66200,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
         __webpack_require__(162),
         __webpack_require__(22),
-        __webpack_require__(292),
-        __webpack_require__(294)
+        __webpack_require__(293),
+        __webpack_require__(295)
       ], __WEBPACK_AMD_DEFINE_RESULT__ = function( EvEmitter, getSize, utils, Item ) {
         return factory( window, EvEmitter, getSize, utils, Item);
       }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
@@ -66981,7 +67126,7 @@ return Outlayer;
 
 
 /***/ }),
-/* 292 */
+/* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -66998,7 +67143,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
   if ( true ) {
     // AMD
     !(__WEBPACK_AMD_DEFINE_ARRAY__ = [
-      __webpack_require__(293)
+      __webpack_require__(294)
     ], __WEBPACK_AMD_DEFINE_RESULT__ = function( matchesSelector ) {
       return factory( window, matchesSelector );
     }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__),
@@ -67226,7 +67371,7 @@ return utils;
 
 
 /***/ }),
-/* 293 */
+/* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -67289,7 +67434,7 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
 
 
 /***/ }),
-/* 294 */
+/* 295 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -67850,7 +67995,7 @@ return Item;
 
 
 /***/ }),
-/* 295 */
+/* 296 */
 /***/ (function(module, exports) {
 
 /**
@@ -67864,7 +68009,7 @@ return Item;
 
 
 /***/ }),
-/* 296 */
+/* 297 */
 /***/ (function(module, exports) {
 
 /*!
@@ -67982,7 +68127,7 @@ return Item;
 }; }( jQuery, window, document ));
 
 /***/ }),
-/* 297 */
+/* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -78077,15 +78222,15 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(23)))
 
 /***/ }),
-/* 298 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(299),
-  /* template */
   __webpack_require__(300),
+  /* template */
+  __webpack_require__(301),
   /* styles */
   null,
   /* scopeId */
@@ -78093,7 +78238,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Card.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Card.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Card.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78117,7 +78262,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 299 */
+/* 300 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78155,7 +78300,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 300 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78181,15 +78326,15 @@ if (false) {
 }
 
 /***/ }),
-/* 301 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(302),
-  /* template */
   __webpack_require__(303),
+  /* template */
+  __webpack_require__(304),
   /* styles */
   null,
   /* scopeId */
@@ -78197,7 +78342,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Control.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Control.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Control.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78221,7 +78366,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 302 */
+/* 303 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78255,7 +78400,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 303 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78276,15 +78421,15 @@ if (false) {
 }
 
 /***/ }),
-/* 304 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(305),
-  /* template */
   __webpack_require__(306),
+  /* template */
+  __webpack_require__(307),
   /* styles */
   null,
   /* scopeId */
@@ -78292,7 +78437,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Input.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Input.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Input.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78316,7 +78461,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 305 */
+/* 306 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78371,7 +78516,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 306 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78418,15 +78563,15 @@ if (false) {
 }
 
 /***/ }),
-/* 307 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(308),
-  /* template */
   __webpack_require__(309),
+  /* template */
+  __webpack_require__(310),
   /* styles */
   null,
   /* scopeId */
@@ -78434,7 +78579,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Modal.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Modal.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78458,7 +78603,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 308 */
+/* 309 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78505,7 +78650,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 309 */
+/* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78571,15 +78716,15 @@ if (false) {
 }
 
 /***/ }),
-/* 310 */
+/* 311 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(311),
-  /* template */
   __webpack_require__(312),
+  /* template */
+  __webpack_require__(313),
   /* styles */
   null,
   /* scopeId */
@@ -78587,7 +78732,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Progress.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Progress.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Progress.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78611,7 +78756,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 311 */
+/* 312 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78642,7 +78787,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 312 */
+/* 313 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78669,15 +78814,15 @@ if (false) {
 }
 
 /***/ }),
-/* 313 */
+/* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(314),
-  /* template */
   __webpack_require__(315),
+  /* template */
+  __webpack_require__(316),
   /* styles */
   null,
   /* scopeId */
@@ -78685,7 +78830,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Radio.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Radio.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Radio.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78709,7 +78854,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 314 */
+/* 315 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78740,7 +78885,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 315 */
+/* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78759,15 +78904,15 @@ if (false) {
 }
 
 /***/ }),
-/* 316 */
+/* 317 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(317),
-  /* template */
   __webpack_require__(318),
+  /* template */
+  __webpack_require__(319),
   /* styles */
   null,
   /* scopeId */
@@ -78775,7 +78920,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/ReadOnly.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\ReadOnly.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ReadOnly.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78799,7 +78944,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 317 */
+/* 318 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78830,7 +78975,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 318 */
+/* 319 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78869,15 +79014,15 @@ if (false) {
 }
 
 /***/ }),
-/* 319 */
+/* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(320),
-  /* template */
   __webpack_require__(321),
+  /* template */
+  __webpack_require__(322),
   /* styles */
   null,
   /* scopeId */
@@ -78885,7 +79030,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Select.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Select.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Select.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -78909,7 +79054,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 320 */
+/* 321 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -78943,7 +79088,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 321 */
+/* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -78964,19 +79109,19 @@ if (false) {
 }
 
 /***/ }),
-/* 322 */
+/* 323 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(323)
+  __webpack_require__(324)
 }
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(325),
-  /* template */
   __webpack_require__(326),
+  /* template */
+  __webpack_require__(327),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -78984,7 +79129,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Table.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Table.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Table.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -79008,13 +79153,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 323 */
+/* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(324);
+var content = __webpack_require__(325);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -79034,21 +79179,21 @@ if(false) {
 }
 
 /***/ }),
-/* 324 */
+/* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* Utility styles\n************************************************/\n.right-align[data-v-e7d2271a]{\n    text-align: right;\n}\n.left-align[data-v-e7d2271a]{\n    text-align: left;\n}\n.pull-left[data-v-e7d2271a]{\n    float:  left !important;\n}\n.pull-right[data-v-e7d2271a]{\n    float:  right !important;\n}\n.clearfix[data-v-e7d2271a]::after {\n    display: block;\n    content: \"\";\n    clear: both;\n}\n\n/* Table specific styles\n************************************************/\ntable[data-v-e7d2271a]{\n    border-collapse: collapse;\n    background-color: transparent;\n    margin-bottom:  20px;\n}\n.table[data-v-e7d2271a]{\n    width: 100%;\n    max-width: 100%;\n}\n.table.table-striped tbody tr[data-v-e7d2271a]:nth-of-type(odd) {\n    background-color: rgba(35,41,53,.05);\n}\n.table.table-bordered td[data-v-e7d2271a], .table-bordered th[data-v-e7d2271a] {\n    border: 1px solid #DDD;\n}\n.table td[data-v-e7d2271a], .table th[data-v-e7d2271a]:not(.line-numbers) {\n    padding: .75rem 1.5rem .75rem .75rem;\n    vertical-align: top;\n    border-top: 1px solid #ddd;\n}\n.table.condensed td[data-v-e7d2271a], .table.condensed th[data-v-e7d2271a] {\n    padding: .4rem .4rem .4rem .4rem;\n}\n.table thead th[data-v-e7d2271a], .table.condensed thead th[data-v-e7d2271a] {\n    vertical-align: bottom;\n    border-bottom:  2px solid #ddd;\n    padding-right: 1.5rem;\n    background-color: rgba(35,41,53,0.03);\n}\ntr.clickable[data-v-e7d2271a] {\n    cursor: pointer;\n}\n.table input[data-v-e7d2271a]{\n    display: block;\n    width: calc(100% - 24px);\n    height: 34px;\n    padding: 6px 12px;\n    font-size: 14px;\n    line-height: 1.42857143;\n    color: #555;\n    background-color: #fff;\n    background-image: none;\n    border: 1px solid #ccc;\n    border-radius: 4px;\n    -webkit-box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\n    box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\n    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\n    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n}\ntable th.sorting-asc[data-v-e7d2271a],\ntable th.sorting-desc[data-v-e7d2271a] {\n    color: rgba(0, 0, 0, 0.66);\n    position: relative;\n}\ntable th.sorting[data-v-e7d2271a]:after,\ntable th.sorting-asc[data-v-e7d2271a]:after  {\n    font-family: 'Material Icons';\n    position:  absolute;\n    height:  0px;\n    width:  0px;\n    content: '';\n    display: none;\n    border-left: 6px solid transparent;\n    border-right: 6px solid transparent;\n    border-bottom: 6px solid rgba(0, 0, 0, 0.66);\n    margin-top:  6px;\n    margin-left:  5px;\n}\ntable th.sorting[data-v-e7d2271a]:hover:after{\n    display: inline-block;\n    border-bottom-color: rgba(35,41,53,0.25);\n}\ntable th.sorting-asc[data-v-e7d2271a]:after,\ntable th.sorting-desc[data-v-e7d2271a]:after {\n    display: inline-block;\n}\ntable th.sorting-desc[data-v-e7d2271a]:after {\n    border-top:  6px solid rgba(0, 0, 0, 0.66);\n    border-left: 6px solid transparent;\n    border-right: 6px solid transparent;\n    border-bottom: none;\n    margin-top:  8px;\n}\n\n/* Table header specific styles\n************************************************/\n.table-header[data-v-e7d2271a]{\n    padding:  .75rem;\n}\n.table-header .table-title[data-v-e7d2271a]{\n    margin:  0px;\n    font-size: 18px;\n}\n\n\n/* Table footer specific styles\n************************************************/\n.table-footer[data-v-e7d2271a]{\n    /* background-color: rgba(35,41,53, 0.03); */\n    background-color: rgba(35,41,53,0.05);\n    border: 1px solid #DDD;\n    margin-bottom:  2rem;\n    margin-top:  -20px;\n    padding:  1rem;\n    border-bottom-right-radius: 5px;\n    border-bottom-left-radius: 5px;\n    font-size: 14px;\n    color:  rgba(0, 0, 0, 0.44);\n}\n.table-footer>div[data-v-e7d2271a]{\n    display: inline-block;\n}\n.pagination-controls>*[data-v-e7d2271a]{\n    display: inline-block;\n}\n.pagination-controls a[data-v-e7d2271a]{\n    text-decoration: none;\n    color: rgba(0, 0, 0, 0.66);\n    font-size: 14px;\n    font-weight: 600;\n    opacity: 0.8;\n}\n.pagination-controls a[data-v-e7d2271a]:hover{\n    opacity: 1;\n}\n.pagination-controls a span[data-v-e7d2271a]{\n    display: inline-block;\n    vertical-align: middle;\n}\n.pagination-controls .info[data-v-e7d2271a]{\n    margin:  0px 15px;\n    font-size: 13px;\n    font-weight: bold;\n    color:  rgba(0, 0, 0, 0.40);\n}\n.pagination-controls a .chevron[data-v-e7d2271a]{\n    width:  24px;\n    height:  24px;\n    border-radius: 15%;\n/* border:  1px solid rgba(35,41,53,0.2);\nbackground-color: #fff; */\nposition:  relative;\nmargin:  0px 8px;\n}\n.pagination-controls .chevron[data-v-e7d2271a]::after{\n    content:  '';\n    position:  absolute;\n    display:  block;\n    left:  50%;\n    top:  50%;\n    margin-top:  -6px;\n    border-top: 6px solid transparent;\n    border-bottom: 6px solid transparent;\n}\n.pagination-controls .chevron.left[data-v-e7d2271a]::after{\n    border-right:  6px solid rgba(0, 0, 0, 0.66);\n    margin-left:  -3px;\n}\n.pagination-controls .chevron.right[data-v-e7d2271a]::after{\n    border-left:  6px solid rgba(0, 0, 0, 0.66);\n    margin-left:  -3px;\n}\n.table-footer select[data-v-e7d2271a] {\n    display: inline-block;\n    background-color: transparent;\n    width: auto;\n    padding: 0;\n    border: 0;\n    border-radius: 0;\n    height: auto;\n    font-size: 14px;\n    margin-left: 8px;\n    color:  rgba(0, 0, 0, 0.55);\n    font-weight: bold;\n}\n.table-footer .perpage-count[data-v-e7d2271a]{\n    color:  rgba(0, 0, 0, 0.55);\n    font-weight: bold;\n}\n@media only screen and (max-width: 750px) {\n    /* on small screens hide the info */\n.pagination-controls .info[data-v-e7d2271a]{\n        display:  none;\n}\n}\n\n/* Global Search  \n**********************************************/\n.global-search[data-v-e7d2271a]{\n    position:  relative;\n    padding-left: 40px;\n}\n.global-search-icon[data-v-e7d2271a]{\n    position:  absolute;\n    left:  0px;\n    max-width:  32px;\n}\n.global-search-icon > img[data-v-e7d2271a]{\n    max-width:  100%;\n    margin-top:  8px;\n    opacity: 0.5;\n}\ntable .global-search-input[data-v-e7d2271a]{\n    width:  calc(100% - 30px);\n}\n\n/* Line numbers \n**********************************************/\ntable th.line-numbers[data-v-e7d2271a], .table.condensed th.line-numbers[data-v-e7d2271a]{\n    background-color: rgba(35,41,53,0.05);\n    padding-left:  3px;\n    padding-right:  3px;\n    word-wrap: break-word;\n    width: 45px;\n    text-align: center;\n}\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n\r\n/* Utility styles\r\n************************************************/\n.right-align[data-v-e7d2271a]{\r\n    text-align: right;\n}\n.left-align[data-v-e7d2271a]{\r\n    text-align: left;\n}\n.pull-left[data-v-e7d2271a]{\r\n    float:  left !important;\n}\n.pull-right[data-v-e7d2271a]{\r\n    float:  right !important;\n}\n.clearfix[data-v-e7d2271a]::after {\r\n    display: block;\r\n    content: \"\";\r\n    clear: both;\n}\r\n\r\n/* Table specific styles\r\n************************************************/\ntable[data-v-e7d2271a]{\r\n    border-collapse: collapse;\r\n    background-color: transparent;\r\n    margin-bottom:  20px;\n}\n.table[data-v-e7d2271a]{\r\n    width: 100%;\r\n    max-width: 100%;\n}\n.table.table-striped tbody tr[data-v-e7d2271a]:nth-of-type(odd) {\r\n    background-color: rgba(35,41,53,.05);\n}\n.table.table-bordered td[data-v-e7d2271a], .table-bordered th[data-v-e7d2271a] {\r\n    border: 1px solid #DDD;\n}\n.table td[data-v-e7d2271a], .table th[data-v-e7d2271a]:not(.line-numbers) {\r\n    padding: .75rem 1.5rem .75rem .75rem;\r\n    vertical-align: top;\r\n    border-top: 1px solid #ddd;\n}\n.table.condensed td[data-v-e7d2271a], .table.condensed th[data-v-e7d2271a] {\r\n    padding: .4rem .4rem .4rem .4rem;\n}\n.table thead th[data-v-e7d2271a], .table.condensed thead th[data-v-e7d2271a] {\r\n    vertical-align: bottom;\r\n    border-bottom:  2px solid #ddd;\r\n    padding-right: 1.5rem;\r\n    background-color: rgba(35,41,53,0.03);\n}\ntr.clickable[data-v-e7d2271a] {\r\n    cursor: pointer;\n}\n.table input[data-v-e7d2271a]{\r\n    display: block;\r\n    width: calc(100% - 24px);\r\n    height: 34px;\r\n    padding: 6px 12px;\r\n    font-size: 14px;\r\n    line-height: 1.42857143;\r\n    color: #555;\r\n    background-color: #fff;\r\n    background-image: none;\r\n    border: 1px solid #ccc;\r\n    border-radius: 4px;\r\n    -webkit-box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\r\n    box-shadow: inset 0 1px 1px rgba(35,41,53,.075);\r\n    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;\r\n    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\r\n    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;\n}\ntable th.sorting-asc[data-v-e7d2271a],\r\ntable th.sorting-desc[data-v-e7d2271a] {\r\n    color: rgba(0, 0, 0, 0.66);\r\n    position: relative;\n}\ntable th.sorting[data-v-e7d2271a]:after,\r\ntable th.sorting-asc[data-v-e7d2271a]:after  {\r\n    font-family: 'Material Icons';\r\n    position:  absolute;\r\n    height:  0px;\r\n    width:  0px;\r\n    content: '';\r\n    display: none;\r\n    border-left: 6px solid transparent;\r\n    border-right: 6px solid transparent;\r\n    border-bottom: 6px solid rgba(0, 0, 0, 0.66);\r\n    margin-top:  6px;\r\n    margin-left:  5px;\n}\ntable th.sorting[data-v-e7d2271a]:hover:after{\r\n    display: inline-block;\r\n    border-bottom-color: rgba(35,41,53,0.25);\n}\ntable th.sorting-asc[data-v-e7d2271a]:after,\r\ntable th.sorting-desc[data-v-e7d2271a]:after {\r\n    display: inline-block;\n}\ntable th.sorting-desc[data-v-e7d2271a]:after {\r\n    border-top:  6px solid rgba(0, 0, 0, 0.66);\r\n    border-left: 6px solid transparent;\r\n    border-right: 6px solid transparent;\r\n    border-bottom: none;\r\n    margin-top:  8px;\n}\r\n\r\n/* Table header specific styles\r\n************************************************/\n.table-header[data-v-e7d2271a]{\r\n    padding:  .75rem;\n}\n.table-header .table-title[data-v-e7d2271a]{\r\n    margin:  0px;\r\n    font-size: 18px;\n}\r\n\r\n\r\n/* Table footer specific styles\r\n************************************************/\n.table-footer[data-v-e7d2271a]{\r\n    /* background-color: rgba(35,41,53, 0.03); */\r\n    background-color: rgba(35,41,53,0.05);\r\n    border: 1px solid #DDD;\r\n    margin-bottom:  2rem;\r\n    margin-top:  -20px;\r\n    padding:  1rem;\r\n    border-bottom-right-radius: 5px;\r\n    border-bottom-left-radius: 5px;\r\n    font-size: 14px;\r\n    color:  rgba(0, 0, 0, 0.44);\n}\n.table-footer>div[data-v-e7d2271a]{\r\n    display: inline-block;\n}\n.pagination-controls>*[data-v-e7d2271a]{\r\n    display: inline-block;\n}\n.pagination-controls a[data-v-e7d2271a]{\r\n    text-decoration: none;\r\n    color: rgba(0, 0, 0, 0.66);\r\n    font-size: 14px;\r\n    font-weight: 600;\r\n    opacity: 0.8;\n}\n.pagination-controls a[data-v-e7d2271a]:hover{\r\n    opacity: 1;\n}\n.pagination-controls a span[data-v-e7d2271a]{\r\n    display: inline-block;\r\n    vertical-align: middle;\n}\n.pagination-controls .info[data-v-e7d2271a]{\r\n    margin:  0px 15px;\r\n    font-size: 13px;\r\n    font-weight: bold;\r\n    color:  rgba(0, 0, 0, 0.40);\n}\n.pagination-controls a .chevron[data-v-e7d2271a]{\r\n    width:  24px;\r\n    height:  24px;\r\n    border-radius: 15%;\r\n/* border:  1px solid rgba(35,41,53,0.2);\r\nbackground-color: #fff; */\r\nposition:  relative;\r\nmargin:  0px 8px;\n}\n.pagination-controls .chevron[data-v-e7d2271a]::after{\r\n    content:  '';\r\n    position:  absolute;\r\n    display:  block;\r\n    left:  50%;\r\n    top:  50%;\r\n    margin-top:  -6px;\r\n    border-top: 6px solid transparent;\r\n    border-bottom: 6px solid transparent;\n}\n.pagination-controls .chevron.left[data-v-e7d2271a]::after{\r\n    border-right:  6px solid rgba(0, 0, 0, 0.66);\r\n    margin-left:  -3px;\n}\n.pagination-controls .chevron.right[data-v-e7d2271a]::after{\r\n    border-left:  6px solid rgba(0, 0, 0, 0.66);\r\n    margin-left:  -3px;\n}\n.table-footer select[data-v-e7d2271a] {\r\n    display: inline-block;\r\n    background-color: transparent;\r\n    width: auto;\r\n    padding: 0;\r\n    border: 0;\r\n    border-radius: 0;\r\n    height: auto;\r\n    font-size: 14px;\r\n    margin-left: 8px;\r\n    color:  rgba(0, 0, 0, 0.55);\r\n    font-weight: bold;\n}\n.table-footer .perpage-count[data-v-e7d2271a]{\r\n    color:  rgba(0, 0, 0, 0.55);\r\n    font-weight: bold;\n}\n@media only screen and (max-width: 750px) {\r\n    /* on small screens hide the info */\n.pagination-controls .info[data-v-e7d2271a]{\r\n        display:  none;\n}\n}\r\n\r\n/* Global Search  \r\n**********************************************/\n.global-search[data-v-e7d2271a]{\r\n    position:  relative;\r\n    padding-left: 40px;\n}\n.global-search-icon[data-v-e7d2271a]{\r\n    position:  absolute;\r\n    left:  0px;\r\n    max-width:  32px;\n}\n.global-search-icon > img[data-v-e7d2271a]{\r\n    max-width:  100%;\r\n    margin-top:  8px;\r\n    opacity: 0.5;\n}\ntable .global-search-input[data-v-e7d2271a]{\r\n    width:  calc(100% - 30px);\n}\r\n\r\n/* Line numbers \r\n**********************************************/\ntable th.line-numbers[data-v-e7d2271a], .table.condensed th.line-numbers[data-v-e7d2271a]{\r\n    background-color: rgba(35,41,53,0.05);\r\n    padding-left:  3px;\r\n    padding-right:  3px;\r\n    word-wrap: break-word;\r\n    width: 45px;\r\n    text-align: center;\n}\r\n\r\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 325 */
+/* 326 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -79662,7 +79807,7 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 });
 
 /***/ }),
-/* 326 */
+/* 327 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -79851,15 +79996,15 @@ if (false) {
 }
 
 /***/ }),
-/* 327 */
+/* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(328),
-  /* template */
   __webpack_require__(329),
+  /* template */
+  __webpack_require__(330),
   /* styles */
   null,
   /* scopeId */
@@ -79867,7 +80012,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/bootstrap/Textarea.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\bootstrap\\Textarea.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Textarea.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -79891,7 +80036,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 328 */
+/* 329 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -79932,7 +80077,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 329 */
+/* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -79974,15 +80119,15 @@ if (false) {
 }
 
 /***/ }),
-/* 330 */
+/* 331 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(331),
-  /* template */
   __webpack_require__(332),
+  /* template */
+  __webpack_require__(333),
   /* styles */
   null,
   /* scopeId */
@@ -79990,7 +80135,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/theme1/FormInput.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\theme1\\FormInput.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] FormInput.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -80014,7 +80159,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 331 */
+/* 332 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80058,7 +80203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 332 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -80106,19 +80251,19 @@ if (false) {
 }
 
 /***/ }),
-/* 333 */
+/* 334 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(334)
+  __webpack_require__(335)
 }
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(336),
-  /* template */
   __webpack_require__(337),
+  /* template */
+  __webpack_require__(338),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -80126,7 +80271,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/passport/Clients.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\passport\\Clients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Clients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -80150,13 +80295,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 334 */
+/* 335 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(335);
+var content = __webpack_require__(336);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -80176,10 +80321,10 @@ if(false) {
 }
 
 /***/ }),
-/* 335 */
+/* 336 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -80190,7 +80335,7 @@ exports.push([module.i, "\n.action-link[data-v-6724d835] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 336 */
+/* 337 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -80531,7 +80676,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 337 */
+/* 338 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -80812,19 +80957,19 @@ if (false) {
 }
 
 /***/ }),
-/* 338 */
+/* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(339)
+  __webpack_require__(340)
 }
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(341),
-  /* template */
   __webpack_require__(342),
+  /* template */
+  __webpack_require__(343),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -80832,7 +80977,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/passport/AuthorizedClients.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\passport\\AuthorizedClients.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] AuthorizedClients.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -80856,13 +81001,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 339 */
+/* 340 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(340);
+var content = __webpack_require__(341);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -80882,10 +81027,10 @@ if(false) {
 }
 
 /***/ }),
-/* 340 */
+/* 341 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -80896,7 +81041,7 @@ exports.push([module.i, "\n.action-link[data-v-1ef1d55a] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 341 */
+/* 342 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81024,7 +81169,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 342 */
+/* 343 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -81036,7 +81181,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }
   }, [_c('template', {
     slot: "header"
-  }, [_vm._v("\n            Authorized Applications\n        ")]), _vm._v(" "), _c('template', {
+  }, [_vm._v("\r\n            Authorized Applications\r\n        ")]), _vm._v(" "), _c('template', {
     slot: "body"
   }, [(_vm.tokens.length > 0) ? _c('div', [_c('table', {
     staticClass: "table table-borderless m-b-none"
@@ -81045,11 +81190,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticStyle: {
         "vertical-align": "middle"
       }
-    }, [_vm._v("\n                                " + _vm._s(token.client.name) + "\n                            ")]), _vm._v(" "), _c('td', {
+    }, [_vm._v("\r\n                                " + _vm._s(token.client.name) + "\r\n                            ")]), _vm._v(" "), _c('td', {
       staticStyle: {
         "vertical-align": "middle"
       }
-    }, [(token.scopes.length > 0) ? _c('span', [_vm._v("\n                                    " + _vm._s(token.scopes.join(', ')) + "\n                                ")]) : _vm._e()]), _vm._v(" "), _c('td', {
+    }, [(token.scopes.length > 0) ? _c('span', [_vm._v("\r\n                                    " + _vm._s(token.scopes.join(', ')) + "\r\n                                ")]) : _vm._e()]), _vm._v(" "), _c('td', {
       staticStyle: {
         "vertical-align": "middle"
       }
@@ -81060,7 +81205,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.revoke(token)
         }
       }
-    }, [_vm._v("\n                                    Revoke\n                                ")])])])
+    }, [_vm._v("\r\n                                    Revoke\r\n                                ")])])])
   }))])]) : _vm._e()]), _vm._v(" "), _c('template', {
     slot: "footer"
   }, [_c('a', {
@@ -81079,19 +81224,19 @@ if (false) {
 }
 
 /***/ }),
-/* 343 */
+/* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(344)
+  __webpack_require__(345)
 }
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(346),
-  /* template */
   __webpack_require__(347),
+  /* template */
+  __webpack_require__(348),
   /* styles */
   injectStyle,
   /* scopeId */
@@ -81099,7 +81244,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/wondochoung/Documents/webapps/bluebonnet/resources/assets/js/components/passport/PersonalAccessTokens.vue"
+Component.options.__file = "C:\\Users\\Chameleon Main\\documents\\chameleon\\bluebonnet\\resources\\assets\\js\\components\\passport\\PersonalAccessTokens.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] PersonalAccessTokens.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -81123,13 +81268,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 344 */
+/* 345 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(345);
+var content = __webpack_require__(346);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -81149,10 +81294,10 @@ if(false) {
 }
 
 /***/ }),
-/* 345 */
+/* 346 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(1)(undefined);
+exports = module.exports = __webpack_require__(6)(undefined);
 // imports
 
 
@@ -81163,7 +81308,7 @@ exports.push([module.i, "\n.action-link[data-v-5b6c40a1] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 346 */
+/* 347 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -81462,7 +81607,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 347 */
+/* 348 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -81628,12 +81773,6 @@ if (false) {
 }
 
 /***/ }),
-/* 348 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
 /* 349 */
 /***/ (function(module, exports) {
 
@@ -81653,6 +81792,12 @@ if (false) {
 
 /***/ }),
 /* 352 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 353 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
