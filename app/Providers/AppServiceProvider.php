@@ -13,25 +13,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-<<<<<<< HEAD
+        
+        // Footer
+        view()->composer('layouts.themes.theme1.partials.footer', function ($view) {
+            $company = \App\Company::prepareCompany(\App\Company::find(1));
+            $view->with('company', $company);
+        });
+
+        view()->composer('layouts.themes.theme2.partials.footer', function ($view) {
+            $company = \App\Company::prepareCompany(\App\Company::find(1));
+            $view->with('company', $company);
+        });
+
         // Send asset issues data globally to sidebar
         view()->composer('layouts.themes.backend.partials.sidebar', function ($view) {
-=======
-
-        // Footer
-        view()->composer('layouts.themes.theme1.partials.footer', function($view) {
-            $company = \App\Company::prepareCompany(\App\Company::find(1));
-            $view->with('company', $company);
-        });
-
-        view()->composer('layouts.themes.theme2.partials.footer', function($view) {
-            $company = \App\Company::prepareCompany(\App\Company::find(1));
-            $view->with('company', $company);
-        });
-
-        // Send asset issues data globally to sidebar 
-        view()->composer('layouts.themes.backend.partials.sidebar', function($view) {
->>>>>>> 01444c0159bb1ed8a5a1b0f681a180e4d04ef5e4
             $customer_count = \App\User::countCustomers();
             $design_count = \App\Design::countDesigns();
             $employee_count = \App\User::countEmployees();
