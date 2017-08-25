@@ -15,7 +15,7 @@ class CreateStoneSizesTable extends Migration
     {
         Schema::create('stone_sizes', function (Blueprint $table) {
             $table->increments('id');
-            $table->float('size', 2, 1);
+            $table->float('size', 3, 1);
             $table->string('name');
             $table->softDeletes();
             $table->timestamps();

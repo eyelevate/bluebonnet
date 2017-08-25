@@ -12,9 +12,11 @@ class FingerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Finger $finger)
     {
-        return view('fingers.index');
+        $columns = $finger->prepareTableColumns();
+        $rows = $finger->prepareTableRows($finger->all());
+        return view('fingers.index', compact(['columns','rows']));
     }
 
     /**

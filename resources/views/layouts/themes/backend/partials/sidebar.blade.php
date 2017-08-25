@@ -86,12 +86,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('tax.index') }}"><i class="icon-arrow-right-circle"></i> Sales Tax </a>
                         </li>
+
+
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('stone_size.index') }}"><i class="icon-arrow-right-circle"></i> Stone Size </a>
+                            <a class="nav-link" href="{{ route('stone_size.index') }}"><i class="icon-arrow-right-circle"></i> Stone Size <span class="badge badge-info">{{ $stone_size_count }}</span></a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('stone.index') }}"><i class="icon-arrow-right-circle"></i> Stone Type </a>
+                            <a class="nav-link" href="{{ route('stone.index') }}"><i class="icon-arrow-right-circle"></i> Stone Type <span class="badge badge-info">{{ $stone_count }}</span></a>
                         </li>
 
 

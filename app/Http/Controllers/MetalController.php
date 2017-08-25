@@ -65,7 +65,7 @@ class MetalController extends Controller
      */
     public function edit(Metal $metal)
     {
-        return view('metals.edit',compact('metal'));
+        return view('metals.edit', compact('metal'));
     }
 
     /**
@@ -81,7 +81,7 @@ class MetalController extends Controller
             'name' => 'required|string|max:255'
         ]);
 
-        if ($metal->update($request->all())){
+        if ($metal->update($request->all())) {
             flash('You have successfully edited '.$metal->name)->success();
             return redirect()->route('metal.index');
         }
@@ -96,7 +96,7 @@ class MetalController extends Controller
     public function destroy(Metal $metal)
     {
         $metal_name = $metal->name;
-        if ($metal->delete()){
+        if ($metal->delete()) {
             flash('You have successfully deleted '.$metal_name)->success();
             return redirect()->back();
         }

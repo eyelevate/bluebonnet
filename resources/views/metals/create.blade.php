@@ -24,12 +24,12 @@
 			<template slot = "body">
 	            <div class="content">
 	            	
-	            	<!-- Name -->
+	            	<!-- Size -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Name"
-	                    b-placeholder="Name"
-	                    b-name="name"
+	 					label = "Size"
+	                    b-placeholder="Size"
+	                    b-name="size"
 	                    b-type="text"
 	                    b-value="{{ old('name') }}"
 	                    b-err="{{ $errors->has('name') }}"
@@ -37,12 +37,12 @@
 	                    >
 	                </bootstrap-input>
 
-					<!-- Description -->
+					<!-- Unit -->
 	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Description (optional)"
-	                    b-placeholder="Description of metal type"
-	                    b-name="desc"
+	 					label = "Unit (Default mm)"
+	                    b-placeholder="mm"
+	                    b-name="name"
 	                    b-type="text"
 	                    b-value="{{ old('desc') }}"
 	                    b-err="{{ $errors->has('desc') }}"
