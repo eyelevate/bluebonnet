@@ -14,13 +14,22 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         
-        // Footer
-        view()->composer('layouts.themes.theme1.partials.footer', function ($view) {
+        // Layouts
+        view()->composer([
+            'layouts.themes.backend.login',
+            'layouts.themes.backend.layout',
+            'layouts.themes.theme1.layout',
+            'layouts.themes.theme2.layout'], function($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
             $view->with('company', $company);
         });
 
-        view()->composer('layouts.themes.theme2.partials.footer', function ($view) {
+
+        // Footer
+        view()->composer([
+            'layouts.themes.theme1.partials.footer',
+            'layouts.themes.theme2.partials.footer'
+            ], function ($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
             $view->with('company', $company);
         });

@@ -7,14 +7,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="RfiDallas rfid inventory management">
+    <meta name="description" content="">
     <meta name="author" content="Wondo Choung">
     <meta name="keyword" content="">
     <link rel="shortcut icon" href="img/favicon.png">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>RfiDallas - Admin</title>
+    <title>{{ $company->name }} - Admin</title>
 
     <!-- Icons -->
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">

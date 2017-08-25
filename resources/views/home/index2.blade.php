@@ -83,51 +83,21 @@
 		</div>
 		<div class="container-fluid slip">
 			<div class="grid row">
+			@if(count($feed) > 0)
+				@foreach($feed as $key => $value)
 				<div class="grid-item">
-					<a href="#">
-						<img class="lazy" src="img/themes/theme2/20170822_122828.jpg" title="Image 1" >
-					</a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170823_142952.jpg" title="Image 13"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_140947.jpg" title="Image 2" ></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_141034.jpg" title="Image 14"></a>
-				</div>
 
-				<div class="grid-item ">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_141831.jpg" title="Image 3"></a>
+					@if($value['type'] == 1)
+					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" >
+					@else
+					<video controls height="200" width=200 style="width:100%">
+						<source src="{{ $value['src'] }}" type="video/mp4">
+						Your browser does not support HTML5 video.
+					</video>	
+					@endif
 				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_153839.jpg" title="Image 4"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_153948.jpg" title="Image 5"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154310.jpg" title="Image 6"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154327.jpg" title="Image 7"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154409.jpg" title="Image 8"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_155910.jpg" title="Image 9"></a>
-				</div>
-				<div class="grid-item ">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154742.jpg" title="Image 10"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_141931.jpg" title="Image 11"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170823_142912.jpg" title="Image 12"></a>
-				</div>
+				@endforeach
+			@endif
 			</div>
 		</div>
 	</section>
