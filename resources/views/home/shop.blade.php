@@ -32,7 +32,7 @@
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/_Looking Down_Grey Matte Light_Platinum_Diamond.jpg">
+			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<h5>The New Classics</h5>
@@ -45,7 +45,7 @@
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/_Looking Down_Grey Matte Light_Platinum_Diamond.jpg">
+			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<h5>The New Classics</h5>
@@ -58,7 +58,7 @@
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/_Looking Down_Grey Matte Light_Platinum_Diamond.jpg">
+			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<h5>The New Classics</h5>
@@ -71,7 +71,7 @@
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/_Looking Down_Grey Matte Light_Platinum_Diamond.jpg">
+			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<h5>The New Classics</h5>
@@ -84,7 +84,7 @@
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/_Looking Down_Grey Matte Light_Platinum_Diamond.jpg">
+			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<h5>The New Classics</h5>
@@ -97,7 +97,7 @@
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/_Looking Down_Grey Matte Light_Platinum_Diamond.jpg">
+			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<h5>The New Classics</h5>

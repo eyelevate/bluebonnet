@@ -146,7 +146,7 @@
 		<div class="grid row">
 		@if(count($feed) > 0)
 			@foreach($feed as $key => $value)
-			<div class="grid-item">
+			<div class="grid-item" style="padding: 1%;">
 
 				@if($value['type'] == 1)
 				<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" >
