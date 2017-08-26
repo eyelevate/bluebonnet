@@ -91144,7 +91144,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('img', {
     staticClass: "card-img-top lazy",
     attrs: {
-      "src": _vm.iTopSrc
+      "data-original": _vm.iTopSrc
     }
   })]) : _vm._e(), _vm._v(" "), (_vm.checkCardBody) ? _c('div', {
     staticClass: "card-block",

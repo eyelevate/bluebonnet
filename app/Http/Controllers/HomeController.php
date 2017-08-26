@@ -21,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct(Job $job)
     {
-        $theme = 2;
+        $theme = 1;
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
     }

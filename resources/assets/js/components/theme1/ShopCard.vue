@@ -4,7 +4,7 @@
 	       	<slot name="header"></slot>
 	    </div>
         <div v-if="checkCardImageTop" class="" :class="iTopSrcClass">
-            <img class="card-img-top lazy" :src="iTopSrc" >    
+            <img class="card-img-top lazy" :data-original="iTopSrc" >    
         </div>
         
 	    <div class="card-block" :class="bClass" v-if="checkCardBody">

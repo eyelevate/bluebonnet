@@ -57,10 +57,10 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<img class="img-fluid d-block lazy" src="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Rose Gold_Diamond.jpg"> 
+				<img class="img-fluid d-block lazy" data-original="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Rose Gold_Diamond.jpg"> 
 			</div>
 			<div class="col-md-6">
-				<img class="img-fluid d-block lazy" src="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Yellow Gold_Diamond.jpg"> 
+				<img class="img-fluid d-block lazy" data-original="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Yellow Gold_Diamond.jpg"> 
 			</div>
 		</div>
 	</div>
@@ -69,7 +69,7 @@
 	<div class="container">
 		<div class="row hidden-lg-up">
 			<div class="col-12">
-				<img class="img-fluid d-block lazy" src="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Platinum_Diamond.jpg"> 
+				<img class="img-fluid d-block lazy" data-original="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Platinum_Diamond.jpg"> 
 			</div>
 		</div>
 		<div class="row">
@@ -90,21 +90,21 @@
 			<div id="carousel" class="carousel slide" data-ride="carousel">
 				<div class="carousel-inner" role="listbox">
 					<div class="carousel-item active flex-column mx-auto">
-						<img src="https://pingendo.github.io/templates/app/reviews_logo_1.png" class="img-block mx-auto d-block" width="250">
+						<img data-original="https://pingendo.github.io/templates/app/reviews_logo_1.png" class="img-block mx-auto d-block" width="250">
 						<blockquote class="blockquote">
 							<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
 							<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
 						</blockquote>
 					</div>
 					<div class="carousel-item flex-column">
-						<img src="https://pingendo.github.io/templates/app/reviews_logo_2.png" class="img-fluid mx-auto d-block">
+						<img data-original="https://pingendo.github.io/templates/app/reviews_logo_2.png" class="img-fluid mx-auto d-block">
 						<blockquote class="blockquote">
 							<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
 							<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
 						</blockquote>
 					</div>
 					<div class="carousel-item flex-column">
-						<img src="https://pingendo.github.io/templates/app/reviews_logo_3.png" class="img-fluid mx-auto d-block">
+						<img data-original="https://pingendo.github.io/templates/app/reviews_logo_3.png" class="img-fluid mx-auto d-block">
 						<blockquote class="blockquote">
 							<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
 							<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
@@ -122,7 +122,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-md-7 my-3 ">
-				<img class="img-fluid d-block lazy" src="img/themes/theme1/20170822_154703.jpg" draggable="true"> </div>
+				<img class="img-fluid d-block lazy" data-original="img/themes/theme1/20170822_154703.jpg" draggable="true"> </div>
 				<div class="col-md-5 my-3"> 
 					<p>"Ultimately, we want our jewelry to represent true and lasting love. To us, this means making hard decisions so that we can truthfully stand for human rights, sustainability and quality at every level of production. We love the jewelry industry
 					and we strive to create a product without compromise, a business that honors life and land, and a community that satisfies our customers' insistence on truth and consistency. We are proud to be a part of this and hope that you will be too.”
@@ -133,7 +133,7 @@
 
 		<div class="row hidden-lg-up">
 			<div class="col-12">
-				<img class="img-fluid d-block lazy" src="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Yellow Gold_Diamond.jpg"> 
+				<img class="img-fluid d-block lazy" data-original="img/themes/theme1/CE1/_Looking_Down_Grey Matte Light_Yellow Gold_Diamond.jpg"> 
 			</div>
 		</div>
 	</div>
