@@ -9,12 +9,12 @@
 <!-- Breadcrumb -->
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
-    <li class="breadcrumb-item active">Stone Type</li>
+    <li class="breadcrumb-item active">Stones</li>
 </ol>
 <div class="container-fluid">
 	
 	<bootstrap-card use-header="true" use-body="true" use-footer="true">
-		<template slot="header">Stone Type</template>
+		<template slot="header">Stone</template>
 		<template slot="body">
 			<div class="table-responsive">
 				<bootstrap-table
@@ -55,8 +55,25 @@
 					use-textarea="true"
 					b-value="{{ $row->desc }}"
 					use-label="true"
-					b-label="Description">
-					
+					b-label="Description">		
+				</bootstrap-readonly>
+
+
+				<!-- Price -->
+				<bootstrap-readonly
+					use-input="true"
+					b-value="{{ $row->price }}"
+					use-label="true"
+					b-label="Price">		
+				</bootstrap-readonly>
+
+
+				<!-- Email -->
+				<bootstrap-readonly
+					use-input="true"
+					b-value="{{ ($row->email == TRUE) ? 'Special Order' : 'Defult' }}"
+					use-label="true"
+					b-label="Email">		
 				</bootstrap-readonly>
 			</template>
 			

@@ -15,11 +15,19 @@ class StoneSize extends Model
      * @var array
      */
     protected $fillable = [
-        'size',
-        'name'
-    ];
-    
-    #public
+        'price'
+     ];
+
+    public function sizes()
+    {
+        return $this->belongsTo(Size::class, 'size_id', 'id');
+    }
+
+    public function stones()
+    {
+        return $this->belongsTo(Stone::class, 'stone_id', 'id');
+    }
+
     public function prepareTableColumns()
     {
         $columns =  [
@@ -28,13 +36,16 @@ class StoneSize extends Model
                 'field'=> 'id',
                 'filterable'=> true
             ], [
-                'label'=>'Size',
-                'field'=> 'size',
+                'label'=>'Size Name',
+                'field'=> 'size_id',
                 'filterable'=> true
-            
             ], [
-                'label'=>'Unit',
-                'field'=> 'name',
+                'label'=>'Stone Name',
+                'field'=> 'stone_id',
+                'filterable'=> true
+            ], [
+                'label'=>'Price',
+                'field'=> 'price',
                 'filterable'=> true
             ], [
                 'label'=>'Created',
@@ -66,9 +77,9 @@ class StoneSize extends Model
         return $rows;
     }
 
-    #Static
+
     public static function countStoneSizes()
     {
-        return StoneSize::count();
+        return Stone::count();
     }
 }

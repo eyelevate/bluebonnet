@@ -51,6 +51,18 @@
 	                    b-error="{{ $errors->first('desc') }}"
 	                    >
 	                </bootstrap-textarea>
+
+	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
+	                    use-label = "true"
+	 					label = "Price"
+	                    b-placeholder="00.00"
+	                    b-name="price"
+	                    b-type="text"
+	                    b-value="{{ old('price') ? old('price') : $metal->price }}"
+	                    b-err="{{ $errors->has('price') }}"
+	                    b-error="{{ $errors->first('price') }}"
+	                    >
+	                </bootstrap-input>
 		        </div>
 			</template>
 

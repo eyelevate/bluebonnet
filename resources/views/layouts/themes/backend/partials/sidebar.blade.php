@@ -41,13 +41,13 @@
                 </li>
 
                 <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-event"></i> Line</a>
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-event"></i> Collections </a>
                     <ul class="nav-dropdown-items">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('line.create') }}"><i class="icon-arrow-right-circle"></i> Create</a>
+                            <a class="nav-link" href="{{ route('collection.create') }}"><i class="icon-arrow-right-circle"></i> Create</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('line.index') }}"><i class="icon-arrow-right-circle"></i> Manage <span class="badge badge-info">{{ $line_count }}</span></a>
+                            <a class="nav-link" href="{{ route('collection.index') }}"><i class="icon-arrow-right-circle"></i> Manage <span class="badge badge-info">{{ $line_count }}</span></a>
                         </li>
                     </ul>
                 </li>
@@ -87,6 +87,9 @@
                             <a class="nav-link" href="{{ route('tax.index') }}"><i class="icon-arrow-right-circle"></i> Sales Tax </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('size.index') }}"><i class="icon-arrow-right-circle"></i> Size <span class="badge badge-info">{{ $stone_size_count }}</span></a>
+                        </li>
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('stone_size.index') }}"><i class="icon-arrow-right-circle"></i> Stone Size <span class="badge badge-info">{{ $stone_size_count }}</span></a>

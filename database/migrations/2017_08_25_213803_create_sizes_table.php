@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStonesTable extends Migration
+class CreateSizesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,10 @@ class CreateStonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('stones', function (Blueprint $table) {
+        Schema::create('sizes', function (Blueprint $table) {
             $table->increments('id');
+            $table->float('size', 3, 1);
             $table->string('name');
-            $table->text('desc')->nullable();
-            $table->float('price', 11, 2);
-            $table->boolean('email')->default(0);
             $table->softDeletes();
             $table->timestamps();
         });
@@ -31,6 +29,6 @@ class CreateStonesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stones');
+        Schema::dropIfExists('sizes');
     }
 }

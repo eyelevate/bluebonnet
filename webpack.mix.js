@@ -64,6 +64,9 @@ mix.js('resources/assets/js/views/admins/login.js','public/js/views/admins')
 mix.js('resources/assets/js/views/auth/login.js','public/js/views/auth')
    .js('resources/assets/js/views/auth/register.js','public/js/views/auth');
 
+// Collection
+mix.js('resources/assets/js/views/collections/create.js','public/js/views/collections');
+
 // Companies
 mix.js('resources/assets/js/views/companies/create.js','public/js/views/companies');
 
@@ -81,3 +84,5 @@ mix.js('resources/assets/js/views/stone_sizes/create.js','public/js/views/stone_
 // stone
 mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones');
 
+// size
+mix.js('resources/assets/js/views/sizes/create.js','public/js/views/sizes');

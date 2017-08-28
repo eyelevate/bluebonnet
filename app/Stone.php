@@ -16,7 +16,9 @@ class Stone extends Model
      */
     protected $fillable = [
         'name',
-        'desc'
+        'desc',
+        'price',
+        'email'
     ];
 
     #public
@@ -31,10 +33,17 @@ class Stone extends Model
                 'label'=>'Name',
                 'field'=> 'name',
                 'filterable'=> true
-            
             ], [
                 'label'=>'Description',
                 'field'=> 'desc',
+                'filterable'=> true
+            ], [
+                'label'=>'Price',
+                'field'=> 'price',
+                'filterable'=> true
+            ], [
+                'label'=>'Email',
+                'field'=> 'email',
                 'filterable'=> true
             ], [
                 'label'=>'Created',

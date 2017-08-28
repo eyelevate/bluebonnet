@@ -56,8 +56,17 @@
 					b-value="{{ $row->desc }}"
 					use-label="true"
 					b-label="Description">
-					
 				</bootstrap-readonly>
+			
+				<!-- Price -->
+				<bootstrap-readonly
+					use-input="true"
+					b-value="{{ $row->price }}"
+					use-label="true"
+					b-label="Price">
+				</bootstrap-readonly>
+
+
 			</template>
 			
 			<template slot="footer">

@@ -17,6 +17,7 @@ class CreateMetalsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('desc')->nullable();
+            $table->float('price', 11, 2);
             $table->softDeletes();
             $table->timestamps();
         });

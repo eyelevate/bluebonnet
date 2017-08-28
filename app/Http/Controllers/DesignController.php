@@ -12,9 +12,11 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Design $design)
     {
-        return view('designs.index');
+        $columns = $design->prepareTableColumns();
+        $rows = $design->prepareTableRows($design->all());
+        return view('designs.index', compact(['columns','rows']));
     }
 
     /**
@@ -35,7 +37,13 @@ class DesignController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(request(), [
+        'name' => 'required|string|max:255'
+        ]);
+
+        flash('Successfully created a Design!')->success();
+        Design::create(request()->all());
+        return redirect()->route('design.index');
     }
 
     /**
@@ -57,7 +65,7 @@ class DesignController extends Controller
      */
     public function edit(Design $design)
     {
-        //
+        return view('designs.edit', compact('design'));
     }
 
     /**
@@ -69,7 +77,14 @@ class DesignController extends Controller
      */
     public function update(Request $request, Design $design)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|string|max:255'
+        ]);
+
+        if ($design->update($request->all())) {
+            flash('You have successfully edited '.$design->name)->success();
+            return redirect()->route('design.index');
+        }
     }
 
     /**
@@ -80,6 +95,10 @@ class DesignController extends Controller
      */
     public function destroy(Design $design)
     {
-        //
+        $design_name = $design->name;
+        if ($design->delete()) {
+            flash('You have successfully deleted '.$design_name)->success();
+            return redirect()->back();
+        }
     }
 }

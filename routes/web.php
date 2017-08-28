@@ -69,6 +69,14 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/companies/{company}/edit', 'CompanyController@edit')->name('company.edit');
     Route::patch('/companies/{company}', 'CompanyController@update')->name('company.update');
 
+    // Collections
+    Route::get('/collections', 'CollectionController@index')->name('collection.index');
+    Route::get('/collections/create', 'CollectionController@create')->name('collection.create');
+    Route::delete('/collections/{collection}', 'CollectionController@destroy')->name('collection.destroy');
+    Route::post('/collections/store', 'CollectionController@store')->name('collection.store');
+    Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
+    Route::get('/collections/{collection}/edit', 'CollectionController@edit')->name('collection.edit');
+    Route::patch('/collections/{collection}', 'CollectionController@update')->name('collection.update');
 
     // Designs
     Route::get('/designs', 'DesignController@index')->name('design.index');
@@ -174,6 +182,14 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/manges/{mange}/edit', 'MangeController@edit')->name('mange.edit');
     Route::patch('/manges/{mange}', 'MangeController@update')->name('mange.update');
 
+    // Size
+    Route::get('/sizes', 'SizeController@index')->name('size.index');
+    Route::get('/sizes/create', 'SizeController@create')->name('size.create');
+    Route::delete('/sizes/{size}', 'SizeController@destroy')->name('size.destroy');
+    Route::post('/sizes/store', 'SizeController@store')->name('size.store');
+    Route::get('/sizes/{size}/show', 'SizeController@show')->name('size.show');
+    Route::get('/sizes/{size}/edit', 'SizeController@edit')->name('size.edit');
+    Route::patch('/sizes/{size}', 'SizeController@update')->name('size.update');
 
     // Stone
     Route::get('/stones', 'StoneController@index')->name('stone.index');

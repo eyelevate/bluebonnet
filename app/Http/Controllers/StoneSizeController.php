@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\StoneSize;
 use Illuminate\Http\Request;
+use App\Stone;
+use App\Size;
 
 class StoneSizeController extends Controller
 {
@@ -14,9 +16,9 @@ class StoneSizeController extends Controller
      */
     public function index(StoneSize $stoneSize)
     {
-        $columns = $stoneSize->prepareTableColumns();
-        $rows = $stoneSize->prepareTableRows($stoneSize->all());
-        return view('stone_sizes.index', compact(['columns','rows']));
+         $columns = $stoneSize->prepareTableColumns();
+         $rows = $stoneSize->prepareTableRows($stoneSize->all());
+         return view('stone_sizes.index', compact(['columns','rows']));
     }
 
     /**
@@ -24,9 +26,11 @@ class StoneSizeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(StoneSize $stoneSize, Size $size)
     {
-        return view('stone_sizes.create');
+        $columns = $size->prepareTableColumns();
+        $rows = $size->prepareTableRows($size->where('size'));
+        return view('stone_sizes.create', compact(['colums', 'rows']));
     }
 
     /**
@@ -37,13 +41,13 @@ class StoneSizeController extends Controller
      */
     public function store(Request $request, StoneSize $stoneSize)
     {
-        $this->validate(request(), [
-             'size' => 'required|numeric',
-             'name' => 'required|string'
-        ]);
-        flash('Successfully created a Stone Size!')->success();
-        $stoneSize->create(request()->all());
-        return redirect()->route('stone_size.index');
+        // $this->validate(request(), [
+        //      'size' => 'required|numeric',
+        //      'name' => 'required|string'
+        // ]);
+        // flash('Successfully created a Stone Size!')->success();
+        // $stoneSize->create(request()->all());
+        // return redirect()->route('stone_size.index');
     }
 
     /**
@@ -65,7 +69,7 @@ class StoneSizeController extends Controller
      */
     public function edit(StoneSize $stoneSize)
     {
-        return view('stone_sizes.edit', compact('stoneSize'));
+        // return view('stone_sizes.edit', compact('stoneSize'));
     }
 
     /**
@@ -77,14 +81,14 @@ class StoneSizeController extends Controller
      */
     public function update(Request $request, StoneSize $stoneSize)
     {
-        $this->validate(request(), [
-            'size' => 'required|numeric'
-        ]);
+        // $this->validate(request(), [
+        //     'size' => 'required|numeric'
+        // ]);
 
-        if ($stoneSize->update($request->all())) {
-            flash('You have successfully edited '.$stoneSize->size)->success();
-            return redirect()->route('stone_size.index');
-        }
+        // if ($stoneSize->update($request->all())) {
+        //     flash('You have successfully edited '.$stoneSize->size)->success();
+        //     return redirect()->route('stone_size.index');
+        
     }
 
     /**
@@ -95,10 +99,10 @@ class StoneSizeController extends Controller
      */
     public function destroy(StoneSize $stoneSize)
     {
-        $stone_size_name = $stoneSize->size;
-        if ($stoneSize->delete()) {
-            flash('You have successfully deleted '.$stone_size_name)->success();
-            return redirect()->back();
-        }
+        // $stone_size_name = $stoneSize->size;
+        // if ($stoneSize->delete()) {
+        //     flash('You have successfully deleted '.$stone_size_name)->success();
+        //     return redirect()->back();
+        // }
     }
 }

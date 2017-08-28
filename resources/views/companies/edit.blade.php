@@ -158,8 +158,21 @@
 	                    >
 	                </bootstrap-input>
 
+        		   <!-- Status -->
+	                <bootstrap-select class="form-group-no-border {{ $errors->has('status') ? ' has-danger' : '' }}"
+	                	use-label="true"
+	                	label="Status"
+	                	b-err="{{ $errors->has('status') }}"
+	                	b-error="{{ $errors->first('status') }}">
+	                	
+	                	<template slot="select">
+	                		{{ Form::select('status',[1=>'Active', 2 =>'Inactive', 3=> 'Pending', 4=> 'Closed'],old('status'),['class'=>'custom-select col-12']) }}
+	                	</template>
+					</bootstrap-select>
+
 	                <!-- Store Hours -->
 	                <hr/>
+
 	                <label>Store Hours</label>
 	                <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#storehoursModal">Set Store Hours</button>
 	                <bootstrap-modal id="storehoursModal" b-size="modal-lg">
@@ -191,11 +204,12 @@
 													@endforeach
 												</select>
 											</td>
+
 											<td>
 												<select class="form-control open-hours" name="hours[{{$shkey}}][open_hours]" {{ ($shvalue->status == 'closed') ? 'readonly' : '' }}>
-													@foreach($hours as $key => $value)
-													<option value="{{ $key }}" {{ ($key == $shvalue->open_hours) ? 'selected' : '' }}>{{ $value }}</option>
-													@endforeach
+												@foreach($hours as $key => $value)
+												<option value="{{ $key }}" {{ ($key == $shvalue->open_hours) ? 'selected' : '' }}>{{ $value }}</option>
+												@endforeach
 												</select>
 											</td>
 											<td>
@@ -235,19 +249,72 @@
 											</td>
 										</tr>
 										@endforeach
+									@else
+									<tr v-for="day,key in days">
+										<td>@{{ day }}</td>
+										<td>
+											<select class="form-control status" :name="select_name(key,'status')" @change="setClosed($event)">
+												@foreach($open as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<select class="form-control open-hours" :name="select_name(key,'open_hours')">
+												@foreach($hours as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<select class="form-control open-minutes" :name="select_name(key,'open_minutes')">
+												@foreach($minutes as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<select class="form-control open-ampm" :name="select_name(key,'open_ampm')">
+												@foreach($ampm as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<select class="form-control closed-hours" :name="select_name(key,'closed_hours')">
+												@foreach($hours as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<select class="form-control closed-minutes" :name="select_name(key,'closed_minutes')">
+												@foreach($minutes as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+											<select class="form-control closed-ampm" :name="select_name(key,'closed_ampm')">
+												@foreach($ampm as $key => $value)
+												<option value="{{ $key }}">{{ $value }}</option>
+												@endforeach
+											</select>
+										</td>
+									</tr>
 									@endif
 								</tbody>
 							</table>
 					    </div>
 					</template>
+
 					<template slot="footer">
 						<button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 						<button id="closeModal" type="button" class="btn btn-primary" data-dismiss="modal">Finished</button>
 					</template>
 				</bootstrap-modal>
 	                <hr/>
-	          
-		        </div>
+	          		</div>
 			</template>
 
 			<template slot = "footer">

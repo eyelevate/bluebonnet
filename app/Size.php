@@ -5,11 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Finger extends Model
+class Size extends Model
 {
-    use SoftDeletes;
+     use SoftDeletes;
 
-    /**
+	/**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -19,6 +19,7 @@ class Finger extends Model
         'name'
     ];
 
+     #public
     public function prepareTableColumns()
     {
         $columns =  [
@@ -65,8 +66,9 @@ class Finger extends Model
         return $rows;
     }
 
-    public static function countFingers()
+    #Static
+    public static function countSizes()
     {
-        return Finger::count();
+        return Size::count();
     }
 }

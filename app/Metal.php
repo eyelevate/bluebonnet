@@ -16,7 +16,8 @@ class Metal extends Model
      */
     protected $fillable = [
         'name',
-        'desc'
+        'desc',
+        'price'
     ];
     #public
     public function prepareTableColumns()
@@ -34,6 +35,10 @@ class Metal extends Model
             ], [
                 'label'=>'Description',
                 'field'=> 'desc',
+                'filterable'=> true
+            ], [
+                'label'=>'Price',
+                'field'=> 'price',
                 'filterable'=> true
             ], [
                 'label'=>'Created',

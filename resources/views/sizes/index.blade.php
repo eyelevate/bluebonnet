@@ -9,13 +9,13 @@
 <!-- Breadcrumb -->
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
-    <li class="breadcrumb-item active">Finger Size</li>
+    <li class="breadcrumb-item active">Stone Size</li>
 </ol>
 <div class="container-fluid">
 	
 	<bootstrap-card use-header="true" use-body="true" use-footer="true">
 		
-		<template slot="header">Finger Size List</template>
+		<template slot="header">Stone Size </template>
 		
 		<template slot="body">
 			<div class="table-responsive">
@@ -30,7 +30,7 @@
 		</template>
 
 		<template slot="footer">
-			<a href="{{ route('finger.create') }}" class="btn btn-primary">Add Finger Size</a>
+			<a href="{{ route('size.create') }}" class="btn btn-primary">Add Stone Size</a>
 		</template>
 
 	</bootstrap-card>
@@ -43,7 +43,7 @@
 @if (count($rows) > 0)
 	@foreach($rows as $row)
 		<bootstrap-modal id="viewModal-{{ $row->id }}" b-size="modal-lg">
-			<template slot="header">View Finger Size - {{ $row->size }}</template>
+			<template slot="header">View Stone Size - {{ $row->size }}</template>
 			<template slot="body">
 				<!-- Size -->
 				<bootstrap-readonly
@@ -65,11 +65,11 @@
 			<template slot="footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal-{{ $row->id }}">Delete</button>	
-				<a href="{{ route('finger.edit',$row->id) }}" class="btn btn-primary">Edit</a>
+				<a href="{{ route('size.edit',$row->id) }}" class="btn btn-primary">Edit</a>
 			</template>
 		</bootstrap-modal>
 
-		{!! Form::open(['method'=>'delete','route'=>['finger.destroy',$row->id]]) !!}
+		{!! Form::open(['method'=>'delete','route'=>['size.destroy',$row->id]]) !!}
 		<bootstrap-modal id="deleteModal-{{ $row->id }}">
 			<template slot="header">Delete Confirmation</template>
 			<template slot="body">

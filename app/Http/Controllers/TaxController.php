@@ -12,8 +12,10 @@ class TaxController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Tax $tax)
     {
+        $columns = $tax->prepareTableColumns();
+        $rows = $tax->prepareTableRows($tax->all());
         return view('taxes.index');
     }
 

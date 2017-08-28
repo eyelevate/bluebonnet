@@ -14,10 +14,10 @@ class EmployeeController extends Controller
      */
     public function index(User $user)
     {
-        // $role = 3;
+        $role = 3;
         $columns = $user->prepareTableColumns();
-        // $rows = $user->prepareTableRows($user->where('role_id', $role)->get(), $role);
-         $rows = $user->prepareTableRows($user->all());
+        $rows = $user->prepareTableRows($user->where('role_id', $role)->get(), $role);
+        // $rows = $user->prepareTableRows($user->all());
         return view('employees.index', compact(['columns','rows']));
     }
 
@@ -81,9 +81,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $employee)
     {
-        //
+         return view('employees.edit', compact('employee'));
     }
 
     /**
@@ -93,9 +93,48 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, User $employee)
     {
-        //
+           //Check if the user enters the password.
+        if (trim($request->password) == '') {
+            //Validate the form
+            $this->validate(request(), [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'email' => 'required|string|email|max:255'
+            ]);
+            $client->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'email' => $request->email
+            ]);
+        } else {
+            //Validate the form
+            $this->validate(request(), [
+                'first_name' => 'required|string|max:255',
+                'last_name' => 'required|string|max:255',
+                'phone' => 'required|string|max:20',
+                'email' => 'required|string|email|max:255',
+                'password' => 'required|string|min:6|confirmed',
+            ]);
+            $client->update([
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+        }
+
+        // Create and save the user.
+
+
+        // Redirect to the previous page.
+        flash('You successfully updated the employee.')->success()->important();
+        
+        return redirect()->route('employee.index');
     }
 
     /**
@@ -104,8 +143,11 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $employee)
     {
-        //
+        if ($client->delete()) {
+            flash('You have successfully deleted a customer.')->success()->important();
+            return redirect()->route('employee.index');
+        }
     }
 }

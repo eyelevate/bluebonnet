@@ -32,19 +32,19 @@ class HomeController extends Controller
     public function index()
     {
         $layout = $this->layout;
-        return view($this->view,compact('layout'));
+        return view($this->view, compact('layout'));
     }
 
     public function cart()
     {
         $layout = $this->layout;
-        return view('home.cart',compact(['layout']));
+        return view('home.cart', compact(['layout']));
     }
 
     public function faq()
     {
         $layout = $this->layout;
-        return view('home.faq',compact(['layout']));
+        return view('home.faq', compact(['layout']));
     }
 
 
@@ -63,24 +63,24 @@ class HomeController extends Controller
     public function privacy()
     {
         $layout = $this->layout;
-        return view('home.privacy',compact(['layout']));
+        return view('home.privacy', compact(['layout']));
     }
 
     public function shipping()
     {
         $layout = $this->layout;
-        return view('home.shipping',compact(['layout']));
+        return view('home.shipping', compact(['layout']));
     }
 
     public function shop()
     {
         $layout = $this->layout;
-        return view('home.shop',compact(['layout']));
+        return view('home.shop', compact(['layout']));
     }
 
     public function tos()
     {
         $layout = $this->layout;
-        return view('home.tos',compact(['layout']));
+        return view('home.tos', compact(['layout']));
     }
 }

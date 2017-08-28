@@ -7,16 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class InventoryItem extends Model
 {
+    use SoftDeletes;
 
-	use SoftDeletes;
-
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 
+        'name',
         'desc',
         'design_id',
         'inventory_id',
@@ -27,7 +26,7 @@ class InventoryItem extends Model
     ];
 
 
-    static public function countInventoryItems()
+    public static function countInventoryItems()
     {
         return InventoryItem::count();
     }

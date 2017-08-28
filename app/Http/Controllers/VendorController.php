@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Job;
 use App\Vendor;
 use Illuminate\Http\Request;
 
@@ -25,9 +26,11 @@ class VendorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Job $job)
     {
-        //
+        $states = $job->prepareStates();
+        $countries = $job->prepareCountries();
+        return view('vendors.create', compact('states', 'countries'));
     }
 
     /**
@@ -38,7 +41,14 @@ class VendorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate(request(), [
+            'name' => 'required|string|max:255'
+        ]);
+
+        Vendor::create($request->all());
+        // Redirect to the previous page.
+        flash('You successfully created a new vendor.')->success();
+        return redirect()->route('vendor.index');
     }
 
     /**
@@ -58,9 +68,11 @@ class VendorController extends Controller
      * @param  \App\Vendor  $vendor
      * @return \Illuminate\Http\Response
      */
-    public function edit(Vendor $vendor)
+    public function edit(Vendor $vendor, Job $job)
     {
-        //
+        $states = $job->prepareStates();
+        $countries = $job->prepareCountries();
+        return view('vendors.edit', compact(['vendor','states','countries']));
     }
 
     /**
@@ -72,7 +84,13 @@ class VendorController extends Controller
      */
     public function update(Request $request, Vendor $vendor)
     {
-        //
+        //Validate the form
+        $this->validate(request(), [
+            'name' => 'required|string|max:255'
+        ]);
+        flash('Successfully updated vendor!')->success();
+        $vendor->update(request()->all());
+        return redirect()->route('vendor.index');
     }
 
     /**
@@ -83,6 +101,9 @@ class VendorController extends Controller
      */
     public function destroy(Vendor $vendor)
     {
-        //
+        if ($vendor->delete()) {
+            flash('You have successfully deleted a vendor.')->success();
+            return redirect()->route('vendor.index');
+        }
     }
 }

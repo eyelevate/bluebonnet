@@ -18,10 +18,10 @@ class Line extends Model
         'name',
         'desc',
         'active',
-        'status', 
+        'status'
     ];
 
-    static public function countLines()
+    public static function countLines()
     {
         return Line::count();
     }

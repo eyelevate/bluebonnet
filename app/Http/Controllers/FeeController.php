@@ -27,7 +27,7 @@ class FeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('fees.create');
     }
 
     /**
@@ -38,7 +38,21 @@ class FeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validate the form
+        $this->validate(request(), [
+            'name' => 'required|string|max:255',
+            'desc' => 'required|string|max:255',
+            'subtotal' => 'required|numeric'
+        ]);
+
+        // Create and save the user.
+        Fee::create(request()->all());
+
+        // Redirect to the previous page.
+
+        flash('You successfully created a new fee.')->success();
+        
+        return redirect()->route('fee.index');
     }
 
     /**
@@ -60,7 +74,7 @@ class FeeController extends Controller
      */
     public function edit(Fee $fee)
     {
-        //
+        return view('fees.edit', compact('fee'));
     }
 
     /**
@@ -72,7 +86,15 @@ class FeeController extends Controller
      */
     public function update(Request $request, Fee $fee)
     {
-        //
+        //Validate the form
+        $this->validate(request(), [
+            'name' => 'required|string|max:255',
+            'desc' => 'required|string|max:255',
+            'subtotal' => 'required|numeric'
+        ]);
+        flash('Successfully updated fee!')->success();
+        $fee->update(request()->all());
+        return redirect()->route('fee.index');
     }
 
     /**
@@ -83,6 +105,32 @@ class FeeController extends Controller
      */
     public function destroy(Fee $fee)
     {
-        //
+        if($fee->delete())
+        {
+            flash('You have successfully deleted a fee.')->success();
+            return redirect()->route('fee.index');
+        }
+    }
+
+    public function retrieve(Request $request, Fee $fee)
+    {
+        $fees = $fee->find($request->fee_id);
+
+        return response()->json($fees);
+    }
+
+    public function totals(Request $request, Fee $fee)
+    {
+        $fee_ids = [];
+        $fees = $request->fees;
+        if (count($fees) > 0) {
+            foreach ($fees as $fee) {
+                array_push($fee_ids, $fee->id);
+            }
+        }
+
+        $sum = $fee->whereIn('id', $fee_ids)->sum('pretax');
+
+        return response()->json($sum);
     }
 }

@@ -17,10 +17,59 @@ class Design extends Model
     protected $fillable = [
         'name',
         'desc',
-        'prototype', 
+        'prototype'
     ];
+    public function prepareTableColumns()
+    {
+        $columns =  [
+            [
+                'label'=>'ID',
+                'field'=> 'id',
+                'filterable'=> true
+            ], [
+                'label'=>'Name',
+                'field'=> 'name',
+                'filterable'=> true
+            
+            ], [
+                'label'=>'Description',
+                'field'=> 'desc',
+                'filterable'=> true
+            ], [
+                'label'=>'Prototype',
+                'field'=> 'prototype',
+                'filterable'=> true
+            ], [
+                'label'=>'Created',
+                'field'=> 'created_at',
+                'type'=>'date',
+                'inputFormat'=> 'YYYY-MM-DD HH:MM:SS',
+                'outputFormat'=> 'MM/DD/YY hh:mm:ssa'
+            ], [
+                'label'=>'Action',
+                'field'=> 'action',
+                'html'=>true
+            ]        ];
 
-    static public function countDesigns()
+        return json_encode($columns);
+    }
+
+    public function prepareTableRows($rows)
+    {
+        // check if exists
+        if (isset($rows)) {
+            foreach ($rows as $key => $value) {
+                // append last column to table here
+                $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
+                $last_column .= '</div>';
+                $rows[$key]['action'] = $last_column;
+            }
+        }
+
+        return $rows;
+    }
+
+    public static function countDesigns()
     {
         return Design::count();
     }

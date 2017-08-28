@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Company;
-use Illuminate\Http\Request;
 use App\Job;
+
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
@@ -28,7 +29,7 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        //
+        return view('companies.create');
     }
 
     /**
@@ -37,9 +38,14 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Company $company)
     {
-        //
+        $this->validate(request(), [
+             'name' => 'required|string|max:255'
+        ]);
+        flash('Successfully created a Company!')->success();
+        $company->create(request()->all());
+        return redirect()->route('company.index');
     }
 
     /**
@@ -59,9 +65,18 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Company $company)
+    public function edit(Company $company, Job $job)
     {
-        //
+        $company->hours = json_decode($company->hours);
+        $states = $job->prepareStates();
+        $countries = $job->prepareCountries();
+        $hours = $job->prepareHours();
+        $minutes = $job->prepareMinutes();
+        $ampm = $job->prepareAmpm();
+        $open = $job->prepareOpen();
+        $days = $job->prepareDays();
+
+        return view('companies.edit', compact(['company','states','countries','hours','minutes','ampm','open','store','days']));
     }
 
     /**
@@ -73,7 +88,20 @@ class CompanyController extends Controller
      */
     public function update(Request $request, Company $company)
     {
-        //
+        //Validate the form
+        //Validate the form
+        $this->validate(request(), [
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'street' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:255',
+        ]);
+        $request->merge(['hours'=>json_encode($request->hours)]);
+        $company->update($request->all());
+        flash('Successfully updated company!')->success();
+        return redirect()->route('company.index');
     }
 
     /**
@@ -84,6 +112,10 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        //
+        if ($collection->delete())
+        {
+            flash('You have successfully deleted a collection.')->success();
+            return redirect()->route('collection.index');
+        }
     }
 }

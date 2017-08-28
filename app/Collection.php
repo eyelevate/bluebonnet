@@ -5,20 +5,23 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Finger extends Model
+class Collection extends Model
 {
-    use SoftDeletes;
+     use SoftDeletes;
 
-    /**
+         /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'size',
-        'name'
+        'name',
+        'desc',
+        'active',
+        'status'
     ];
 
+  #public
     public function prepareTableColumns()
     {
         $columns =  [
@@ -27,14 +30,22 @@ class Finger extends Model
                 'field'=> 'id',
                 'filterable'=> true
             ], [
-                'label'=>'Size',
-                'field'=> 'size',
+                'label'=>'Name',
+                'field'=> 'name',
                 'filterable'=> true
             
             ], [
-                'label'=>'Unit',
-                'field'=> 'name',
+                'label'=>'Description',
+                'field'=> 'desc',
                 'filterable'=> true
+            ], [
+                'label'=>'Active',
+                'field'=> 'active',
+                'filterable'=>true
+            ], [
+                'label'=>'Status',
+                'field'=> 'status',
+                'filterable'=>true
             ], [
                 'label'=>'Created',
                 'field'=> 'created_at',
@@ -64,9 +75,8 @@ class Finger extends Model
 
         return $rows;
     }
-
-    public static function countFingers()
+    public static function countCollections()
     {
-        return Finger::count();
+        return Collection::count();
     }
 }

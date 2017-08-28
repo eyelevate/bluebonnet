@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Finger;
+use App\Size;
 use Illuminate\Http\Request;
 
-class FingerController extends Controller
+class SizeController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Finger $finger)
+    public function index(Size $size)
     {
-        $columns = $finger->prepareTableColumns();
-        $rows = $finger->prepareTableRows($finger->all());
-        return view('fingers.index', compact(['columns','rows']));
+        $columns = $size->prepareTableColumns();
+        $rows = $size->prepareTableRows($size->all());
+        return view('sizes.index', compact(['columns','rows']));
     }
 
     /**
@@ -26,7 +26,7 @@ class FingerController extends Controller
      */
     public function create()
     {
-        return view('fingers.create');
+        return view('sizes.create');
     }
 
     /**
@@ -35,24 +35,24 @@ class FingerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Size $size)
     {
         $this->validate(request(), [
              'size' => 'required|numeric',
              'name' => 'required|string'
         ]);
-        flash('Successfully created a Finger Size!')->success();
-        Finger::create(request()->all());
-        return redirect()->route('finger.index');
+        flash('Successfully created a Stone Size!')->success();
+        $size->create(request()->all());
+        return redirect()->route('size.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Finger  $finger
+     * @param  \App\Size  $size
      * @return \Illuminate\Http\Response
      */
-    public function show(Finger $finger)
+    public function show(Size $size)
     {
         //
     }
@@ -60,47 +60,45 @@ class FingerController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Finger  $finger
+     * @param  \App\Size  $size
      * @return \Illuminate\Http\Response
      */
-    public function edit(Finger $finger)
+    public function edit(Size $size)
     {
-         return view('fingers.edit', compact('finger'));
+        return view('sizes.edit', compact('size'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Finger  $finger
+     * @param  \App\Size  $size
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Finger $finger)
+    public function update(Request $request, Size $size)
     {
         $this->validate(request(), [
-            'size' => 'required|numeric',
-             'name' => 'required|string'
+            'size' => 'required|numeric'
         ]);
 
-        if ($finger->update($request->all())) {
-            flash('You have successfully edited '.$finger->size)->success();
-            return redirect()->route('finger.index');
+        if ($size->update($request->all())) {
+            flash('You have successfully edited '.$size->size)->success();
+            return redirect()->route('size.index');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Finger  $finger
+     * @param  \App\Size  $size
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Finger $finger)
+    public function destroy(Size $size)
     {
-         $fingerSize = $finger->size;
-        if ($finger->delete()) {
-            flash('You have successfully deleted '.$fingerSize)->success();
+        $size_name = $size->size;
+        if ($size->delete()) {
+            flash('You have successfully deleted '.$size_name)->success();
             return redirect()->back();
         }
     }
-    
 }

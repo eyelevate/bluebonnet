@@ -24,12 +24,12 @@
 			<template slot = "body">
 	            <div class="content">
 	            	
-	            	<!-- Size -->
+	            	<!-- Name -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Size"
-	                    b-placeholder="Size"
-	                    b-name="size"
+	 					label = "Name"
+	                    b-placeholder="Name"
+	                    b-name="name"
 	                    b-type="text"
 	                    b-value="{{ old('name') }}"
 	                    b-err="{{ $errors->has('name') }}"
@@ -37,18 +37,32 @@
 	                    >
 	                </bootstrap-input>
 
-					<!-- Unit -->
+					<!-- Description -->
 	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Unit (Default mm)"
-	                    b-placeholder="mm"
-	                    b-name="name"
+	 					label = "Description"
+	                    b-placeholder="Description"
+	                    b-name="desc"
 	                    b-type="text"
 	                    b-value="{{ old('desc') }}"
 	                    b-err="{{ $errors->has('desc') }}"
 	                    b-error="{{ $errors->first('desc') }}"
 	                    >
 	                </bootstrap-textarea>
+
+					<!-- Price -->
+	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
+	                    use-label = "true"
+	 					label = "Price"
+	                    b-placeholder="00.00"
+	                    b-name="price"
+	                    b-type="text"
+	                    b-value="{{ old('price') }}"
+	                    b-err="{{ $errors->has('price') }}"
+	                    b-error="{{ $errors->first('price') }}"
+	                    >
+	                </bootstrap-input>
+
 		        </div>
 			</template>
 

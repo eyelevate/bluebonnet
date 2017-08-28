@@ -49,6 +49,35 @@
 	                    b-error="{{ $errors->first('desc') }}"
 	                    >
 	                </bootstrap-textarea>
+
+					<!-- Price -->
+	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
+	                    use-label = "true"
+	 					label = "Price"
+	                    b-placeholder="00.00"
+	                    b-name="price"
+	                    b-type="text"
+	                    b-value="{{ old('price') }}"
+	                    b-err="{{ $errors->has('price') }}"
+	                    b-error="{{ $errors->first('price') }}"
+	                    >
+	                </bootstrap-input>
+
+	                <bootstrap-select class="form-group-no-border {{ $errors->has('email') ? ' has-danger' : '' }}" 
+	                    use-label = "true"
+	 					label = "Email"
+	                    b-placeholder="Email"
+	                    b-name="email"
+	                    b-err="{{ $errors->has('email') }}"
+	                    b-error="{{ $errors->first('email') }}"
+	                    >
+	                	<template slot="select">
+	                		{{ Form::select('email',[0=>'No',1=>'Yes'],old('email'),['class'=>'custom-select col-12']) }}
+	                	</template>
+
+	                </bootstrap-select>
+
+	                
 		        </div>
 			</template>
 
