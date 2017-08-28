@@ -85,7 +85,7 @@
 			<div class="grid row hidden-sm-down">
 			@if(count($feed) > 0)
 				@foreach($feed as $key => $value)
-				<div class="grid-item" style="padding: 1%;">
+				<div class="grid-item">
 
 					@if($value['type'] == 1)
 					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" >
@@ -99,25 +99,22 @@
 				@endforeach
 			@endif
 			</div>
-			<div class="row hidden-md-up">
-				<div class="col-6" style="padding: 1%;">
-					<img class="lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg">
-				</div>
-				<div class="col-6" style="padding: 1%;">
-					<img class="lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg">
-				</div>
-				<div class="col-6" style="padding: 1%;">
-					<img class="lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg">
-				</div>
-				<div class="col-6" style="padding: 1%;">
-					<img class="lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg">
-				</div>
-				<div class="col-6" style="padding: 1%;">
-					<img class="lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg">
-				</div>
-				<div class="col-6" style="padding: 1%;">
-					<img class="lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg">
-				</div>
+			<div class="row hidden-md-up instagram-bootstrap-row">
+			@if(count($feed) > 0)
+				@foreach($feed as $key => $value)
+					@if($value['type'] == 1)
+					<div class="col-6" >
+						<img class="lazy" data-original="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}">
+					</div>
+					@else
+					<video class="col-6" controls >
+						<source src="{{ $value['src'] }}" type="video/mp4">
+						Your browser does not support HTML5 video.
+					</video>
+					@endif
+				@endforeach
+			@endif
+
 			</div>
 		</div>
 	</section>

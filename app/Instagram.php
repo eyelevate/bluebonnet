@@ -80,7 +80,11 @@ class Instagram extends Model
     	}
         
     }
-
+    /**
+    * @param $count = number of images i want to display
+    * @param $image_type 0 = original size, 1 = squared size
+    * @param $video_type 1 = original type, 2 = mp4
+    **/
     public function getUserFeed($count, $image_type = 1, $video_type = 2)
     {
     	$instagram = $this->authenticate();
@@ -91,10 +95,11 @@ class Instagram extends Model
 	            // The getPopularFeed() has an "items" property, which we need.
 	            $items = $feed->fullResponse->items;
 	            // dd($items);
-	            if (count($items) > 0) {
+	            if ($feed->num_results > 0) {
 	            	foreach ($items as $value) {
 	            		$type = $value->media_type;
-	            		$caption = $value->caption->text;
+	            		$caption = (isset($caption)) ? $value->caption->text : 'Empty Caption';
+
 	            		$truncated_caption = (strlen($caption) > 50) ? substr($caption, 0, 50) . '...' : $caption;
 	            		if ($count > 0){
 	            			switch ($type) {
@@ -108,7 +113,7 @@ class Instagram extends Model
 		            				$src = $value->video_versions[$video_type]->url;
 		            				array_push($grab, ['type'=>2,'src'=>$src,'caption'=>$truncated_caption]);
 		            				break;
-		            			case 8:
+		            			case 8: // Group of images
 		            				$cm = $value->carousel_media;
 		            				if (count($cm) > 0) {
 		            					foreach ($cm as $media) {

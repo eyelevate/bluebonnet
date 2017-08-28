@@ -35,7 +35,7 @@ class HomeController extends Controller
     {
         $layout = $this->layout;
         // Instagram Images
-        $ig = $instagram->getUserFeed(12,1,2);
+        $ig = $instagram->getUserFeed(12,0,2);
         $feed = [];
         if ($ig['status']) {
             $feed = $ig['data'];
