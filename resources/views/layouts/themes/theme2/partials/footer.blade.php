@@ -27,7 +27,7 @@
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <ul>
                     <li class="col-12 text-center"><h5 class="text-center"><strong>Follow Us</strong></h5></li>
-                    <li class="col-12 text-center">
+                    <li class="col-12 text-center social-icons-footer">
                         <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-pinterest"></i></a>
                         <a href="#" target="_blank"><i class="fa fa-instagram"></i></a>

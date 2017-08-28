@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Instagram;
 use App\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +12,7 @@ class HomeController extends Controller
 
     private $layout;
     private $view;
+    private $instagram;
 
     /**
      * Create a new controller instance.
@@ -19,7 +21,7 @@ class HomeController extends Controller
      */
     public function __construct(Job $job)
     {
-        $theme = 1;
+        $theme = 2;
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
     }
@@ -29,10 +31,20 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Instagram $instagram)
     {
         $layout = $this->layout;
-        return view($this->view, compact('layout'));
+
+        // Instagram Images
+        $ig = $instagram->getUserFeed(12, 0, 2);
+        $feed = [];
+        if ($ig['status']) {
+            $feed = $ig['data'];
+
+        } else {
+            flash($ig['data'])->warning();
+        }  
+        return view($this->view,compact(['layout','feed']));
     }
 
     public function cart()

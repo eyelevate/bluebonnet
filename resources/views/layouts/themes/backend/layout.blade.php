@@ -13,14 +13,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
+    <meta name="description" content="">
     <meta name="author" content="Wondo Choung">
     <meta name="keyword" content="">
     <link rel="shortcut icon" href="img/favicon.png">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>dolodol - Admin Page</title>
+    <title>{{ $company->name }} - Admin Page</title>
 
     <!-- Icons -->
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">

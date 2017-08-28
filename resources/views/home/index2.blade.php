@@ -8,19 +8,19 @@
 	<div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
 		<div class="carousel-inner" role="listbox">
 			<div class="carousel-item active">
-				<img class="d-block img-fluid lazy" src="img/themes/theme2/large-image-test.jpg" alt="Third slide">
+				<img class="d-block img-fluid lazy" src="img/themes/theme2/edited/slider-3.jpg" alt="Third slide">
 				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Zero Compromises</h2>
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Zero Compromises</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
 			</div>
 			<div class="carousel-item">
-				<img class="d-block img-fluid lazy" src="img/themes/theme2/20170822_153839.jpg" alt="First slide">
+				<img class="d-block img-fluid lazy" src="img/themes/theme2/edited/slider-1.jpg" alt="First slide">
 				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Socially Responsible</h2>
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Socially Responsible</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop New Arrivals</a></p>
 			</div>
 			<div class="carousel-item">
-				<img class="d-block img-fluid lazy" src="img/themes/theme2/20170822_154422.jpg" alt="Second slide">
+				<img class="d-block img-fluid lazy" src="img/themes/theme2/edited/slider-2.jpg" alt="Second slide">
 				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Eco Friendly</h2>
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Eco Friendly</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Engagement Rings</a></p>
@@ -41,7 +41,7 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-6">
 			<div class="card">
-				<img class="card-img-top lazy" src="img/themes/theme2/CE1/_Through_Finger_Grey_Matte Light_Platinum_Diamond.jpg" alt="Card image cap">
+				<img class="card-img-top lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey_Matte Light_Platinum_Diamond.jpg" alt="Card image cap">
 				<div class="card-block text-center">
 					<p class="card-text">
 						<h3 style="margin-bottom:0px;">Hazeline</h3>
@@ -52,7 +52,7 @@
 		</div>
 		<div class="col-xs-12 col-sm-6">
 			<div class="card">
-				<img class="card-img-top lazy" src="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg" alt="Card image cap">
+				<img class="card-img-top lazy" data-original="img/themes/theme2/CE1/_Through_Finger_Grey Matte Light_Yellow Gold_Diamond.jpg" alt="Card image cap">
 				<div class="card-block text-center">
 					<p class="card-text text-center">
 						<h3 style="margin-bottom:0px;">Purple Rain</h3>
@@ -65,7 +65,7 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
-				<img class="card-img-top lazy" src="img/themes/theme2/CE1/_Looking_Down_Grey Matte Light_Platinum_Diamond.jpg" alt="Card image cap">
+				<img class="card-img-top lazy" data-original="img/themes/theme2/CE1/_Looking_Down_Grey Matte Light_Platinum_Diamond.jpg" alt="Card image cap">
 				<div class="card-block text-center">
 					<p class="card-text text-center">
 						<h3 style="margin-bottom:0px;">Forever Moments</h3>
@@ -82,52 +82,39 @@
 			<p class="col-12">Everything shiny and new on instagram</p>
 		</div>
 		<div class="container-fluid slip">
-			<div class="grid row">
+			<div class="grid row hidden-sm-down">
+			@if(count($feed) > 0)
+				@foreach($feed as $key => $value)
 				<div class="grid-item">
-					<a href="#">
-						<img class="lazy" src="img/themes/theme2/20170822_122828.jpg" title="Image 1" >
-					</a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170823_142952.jpg" title="Image 13"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_140947.jpg" title="Image 2" ></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_141034.jpg" title="Image 14"></a>
-				</div>
 
-				<div class="grid-item ">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_141831.jpg" title="Image 3"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_153839.jpg" title="Image 4"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_153948.jpg" title="Image 5"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154310.jpg" title="Image 6"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154327.jpg" title="Image 7"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154409.jpg" title="Image 8"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_155910.jpg" title="Image 9"></a>
-				</div>
-				<div class="grid-item ">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_154742.jpg" title="Image 10"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170822_141931.jpg" title="Image 11"></a>
-				</div>
-				<div class="grid-item">
-					<a href="#"><img class="lazy" src="img/themes/theme2/20170823_142912.jpg" title="Image 12"></a>
-				</div>
+					@if($value['type'] == 1)
+					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" >
+					@else
+					<video controls height="200" width=200 style="width:100%">
+						<source src="{{ $value['src'] }}" type="video/mp4">
+						Your browser does not support HTML5 video.
+					</video>	
+					@endif
+					</div>
+				@endforeach
+			@endif
+			</div>
+			<div class="row hidden-md-up instagram-bootstrap-row">
+			@if(count($feed) > 0)
+				@foreach($feed as $key => $value)
+					@if($value['type'] == 1)
+					<div class="col-6" >
+						<img class="lazy" data-original="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}">
+					</div>
+					@else
+					<video class="col-6" controls >
+						<source src="{{ $value['src'] }}" type="video/mp4">
+						Your browser does not support HTML5 video.
+					</video>
+					@endif
+				@endforeach
+			@endif
+
 			</div>
 		</div>
 	</section>
