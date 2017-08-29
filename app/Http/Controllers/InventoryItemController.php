@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Inventory;
 use App\InventoryItem;
 use Illuminate\Http\Request;
 
@@ -22,9 +23,9 @@ class InventoryItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Inventory $inventory)
     {
-        //
+        return view('inventory_items.create',compact('inventory'));
     }
 
     /**

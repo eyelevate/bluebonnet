@@ -18,6 +18,7 @@ class Collection extends Model
         'name',
         'desc',
         'active',
+        'img_src',
         'status'
     ];
 
@@ -26,26 +27,21 @@ class Collection extends Model
     {
         $columns =  [
             [
-                'label'=>'ID',
-                'field'=> 'id',
-                'filterable'=> true
-            ], [
                 'label'=>'Name',
                 'field'=> 'name',
-                'filterable'=> true
-            
+                'filterable'=> true    
             ], [
                 'label'=>'Description',
                 'field'=> 'desc',
                 'filterable'=> true
             ], [
-                'label'=>'Active',
-                'field'=> 'active',
-                'filterable'=>true
+                'label'=>'Image',
+                'field'=> 'img_src',
+                'filterable'=> true
             ], [
-                'label'=>'Status',
-                'field'=> 'status',
-                'filterable'=>true
+                'label'=>'Active',
+                'field'=> 'active_status',
+                'html'=>true
             ], [
                 'label'=>'Created',
                 'field'=> 'created_at',
@@ -70,6 +66,15 @@ class Collection extends Model
                 $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
                 $last_column .= '</div>';
                 $rows[$key]['action'] = $last_column;
+
+                if (isset($rows[$key]['active'])) {
+                    $rows[$key]['active_status'] = ($rows[$key]['active']) ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">In-active</span>';
+                }
+
+                // rename image path
+                if (isset($rows[$key]['img_src'])) {
+                    $rows[$key]['img_src'] = str_replace('public/', 'storage/', $value->img_src);
+                }
             }
         }
 

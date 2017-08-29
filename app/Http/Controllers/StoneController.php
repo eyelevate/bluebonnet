@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Size;
 use App\Stone;
+use App\StoneSize;
 use Illuminate\Http\Request;
 
 class StoneController extends Controller
@@ -12,11 +14,14 @@ class StoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Stone $stone)
+    public function index(Stone $stone, Size $size, StoneSize $stone_size)
     {
         $columns = $stone->prepareTableColumns();
         $rows = $stone->prepareTableRows($stone->all());
-        return view('stones.index', compact(['columns','rows']));
+        $sizes = $size->all();
+        $size_columns = $size->prepareTableIndexColumns();
+        $size_rows = $size->prepareTableRows($sizes);
+        return view('stones.index', compact(['columns','rows','size_columns','size_rows']));
     }
 
     /**
@@ -24,9 +29,10 @@ class StoneController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Size $size)
     {
-        return view('stones.create');
+        $sizes = $size->prepareData($size->orderBy('size','asc')->get());
+        return view('stones.create',compact(['sizes']));
     }
 
     /**
@@ -41,9 +47,26 @@ class StoneController extends Controller
             'name' => 'required|string|max:255'
         ]);
 
-        flash('Successfully created a Metal!')->success();
-        $stone->create(request()->all());
+        $request->merge(['email'=>($request->email == 'on') ? true : false]);
+
+        // Save the first request data to stones
+        $save = $stone->create($request->all());
+        if ($save) {
+            if ($save->email == false) {
+                $stone_sizes = $request->stone_size;
+                foreach ($stone_sizes as $key => $value) {
+                    $sz = new StoneSize;
+                    $sz->size_id = $key;
+                    $sz->stone_id = $save->id;
+                    $sz->price = $value;
+                    $sz->save(); 
+                }
+            }
+
+            flash('Successfully created a stone!')->success();
+        } 
         return redirect()->route('stone.index');
+        
     }
 
     /**
@@ -63,9 +86,10 @@ class StoneController extends Controller
      * @param  \App\Stone  $stone
      * @return \Illuminate\Http\Response
      */
-    public function edit(Stone $stone)
+    public function edit(Stone $stone, Size $size, StoneSize $stone_size)
     {
-        return view('stones.edit', compact('stone'));
+        $sizes = (count($stone->stoneSizes) > 0) ? $stone_size->prepareTableRows($stone->stoneSizes) : $size->prepareData($size->orderBy('size','asc')->get());
+        return view('stones.edit', compact(['stone','sizes']));
     }
 
     /**
@@ -81,10 +105,24 @@ class StoneController extends Controller
             'name' => 'required|string|max:255'
         ]);
 
-        if ($stone->update($request->all())) {
-            flash('You have successfully edited '.$stone->name)->success();
-            return redirect()->route('stone.index');
-        }
+        $request->merge(['email'=>($request->email == 'on') ? true : false]);
+
+        // Save the first request data to stones
+        $save = $stone->update($request->all());
+        if ($save) {
+            if ($request->email == false) {
+                $stone_sizes = $request->stone_size;
+                foreach ($stone_sizes as $key => $value) {
+                    $sz = StoneSize::find($key);
+                    $sz->price = $value;
+                    $sz->save(); 
+                }
+
+            }
+            
+            flash('Successfully updated a stone!')->success();
+        } 
+        return redirect()->route('stone.index');
     }
 
     /**

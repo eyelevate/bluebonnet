@@ -42,8 +42,11 @@ Vue.component('bootstrap-progress',require('./components/bootstrap/Progress.vue'
 Vue.component('bootstrap-radio',require('./components/bootstrap/Radio.vue'));
 Vue.component('bootstrap-readonly',require('./components/bootstrap/ReadOnly.vue'));
 Vue.component('bootstrap-select',require('./components/bootstrap/Select.vue'));
+Vue.component('bootstrap-switch',require('./components/bootstrap/Switch.vue'));
 Vue.component('bootstrap-table',require('./components/bootstrap/Table.vue'));
 Vue.component('bootstrap-textarea',require('./components/bootstrap/Textarea.vue'));
+
+Vue.component('fine-uploader',require('./components/fineuploader/Upload.vue'));
 
 // Now-ui-kit Components
 // Vue.component('now-input',require('./components/now-ui-kit/FormInput.vue'));

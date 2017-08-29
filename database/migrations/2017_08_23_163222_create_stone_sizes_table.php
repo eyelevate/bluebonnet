@@ -17,7 +17,7 @@ class CreateStoneSizesTable extends Migration
             $table->increments('id');
             $table->integer('size_id');
             $table->integer('stone_id');
-            $table->float('price', 11, 2);
+            $table->decimal('price', 11, 2);
             $table->softDeletes();
             $table->timestamps();
         });

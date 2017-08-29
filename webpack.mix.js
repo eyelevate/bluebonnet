@@ -74,6 +74,10 @@ mix.js('resources/assets/js/views/companies/create.js','public/js/views/companie
 mix.js('resources/assets/js/views/home/index.js','public/js/views/home')
    .js('resources/assets/js/views/home/shop.js','public/js/views/home');
 
+// inventory items
+mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/inventory_items')
+   .js('resources/assets/js/views/inventory_items/edit.js','public/js/views/inventory_items');
+
 
 // metal
 mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
@@ -82,7 +86,8 @@ mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
 mix.js('resources/assets/js/views/stone_sizes/create.js','public/js/views/stone_sizes');
 
 // stone
-mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones');
+mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones')
+   .js('resources/assets/js/views/stones/edit.js','public/js/views/stones');
 
 // size
 mix.js('resources/assets/js/views/sizes/create.js','public/js/views/sizes');

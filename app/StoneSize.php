@@ -37,11 +37,11 @@ class StoneSize extends Model
                 'filterable'=> true
             ], [
                 'label'=>'Size Name',
-                'field'=> 'size_id',
+                'field'=> 'size_name',
                 'filterable'=> true
             ], [
                 'label'=>'Stone Name',
-                'field'=> 'stone_id',
+                'field'=> 'stone_name',
                 'filterable'=> true
             ], [
                 'label'=>'Price',
@@ -62,11 +62,42 @@ class StoneSize extends Model
         return json_encode($columns);
     }
 
+    public function prepareTableIndexColumns()
+    {
+        $columns =  [
+            [
+                'label'=>'Size',
+                'field'=> 'size',
+                'filterable'=> true
+            
+            ], [
+                'label'=>'Name',
+                'field'=> 'name',
+                'filterable'=> true
+            ], [
+                'label'=>'+ Price',
+                'field'=> 'price',
+                'filterable'=> true
+            ]];
+
+        return json_encode($columns);
+    }
+
     public function prepareTableRows($rows)
     {
         // check if exists
         if (isset($rows)) {
             foreach ($rows as $key => $value) {
+                
+                // stone name
+                $rows[$key]['size'] = $value->sizes->size;
+
+                // size_name
+                $rows[$key]['name'] = $value->sizes->name;
+
+                // input_name
+                $rows[$key]['input_name'] = "stone_size[{$value->id}]";
+
                 // append last column to table here
                 $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
                 $last_column .= '</div>';
@@ -80,6 +111,6 @@ class StoneSize extends Model
 
     public static function countStoneSizes()
     {
-        return Stone::count();
+        return StoneSize::count();
     }
 }

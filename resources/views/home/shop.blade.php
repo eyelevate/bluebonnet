@@ -28,84 +28,23 @@
 <div class="container" style="">
 	<h3 class="text-center">OUR COLLECTIONS</h3>
 	<div class="row">
-		<theme1-shop-card 
+		@if (count($collections) > 0)
+			@foreach($collections as $collection)
+			<theme1-shop-card 
 			class="col-xs-12 col-sm-6 col-md-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
-			<template slot="body">
-				<div class="text-center">
-					<h5>The New Classics</h5>
-					<a class="btn btn-primary" href="#">View Collection</a>	
-				</div>
-				
-			</template>
-		</theme1-shop-card>
-		<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-4"
-			use-body="true" 
-			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
-			<template slot="body">
-				<div class="text-center">
-					<h5>The New Classics</h5>
-					<a class="btn btn-primary" href="#">View Collection</a>	
-				</div>
-				
-			</template>
-		</theme1-shop-card>
-		<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-4"
-			use-body="true" 
-			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
-			<template slot="body">
-				<div class="text-center">
-					<h5>The New Classics</h5>
-					<a class="btn btn-primary" href="#">View Collection</a>	
-				</div>
-				
-			</template>
-		</theme1-shop-card>
-		<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-4"
-			use-body="true" 
-			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
-			<template slot="body">
-				<div class="text-center">
-					<h5>The New Classics</h5>
-					<a class="btn btn-primary" href="#">View Collection</a>	
-				</div>
-				
-			</template>
-		</theme1-shop-card>
-		<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-4"
-			use-body="true" 
-			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
-			<template slot="body">
-				<div class="text-center">
-					<h5>The New Classics</h5>
-					<a class="btn btn-primary" href="#">View Collection</a>	
-				</div>
-				
-			</template>
-		</theme1-shop-card>
-		<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-4"
-			use-body="true" 
-			use-img-top="true" 
-			img-top-src="img/themes/theme1/CE2/ring-edit.jpg">
-			<template slot="body">
-				<div class="text-center">
-					<h5>The New Classics</h5>
-					<a class="btn btn-primary" href="#">View Collection</a>	
-				</div>
-				
-			</template>
-		</theme1-shop-card>
+			img-top-src="{{ asset(str_replace('public/','storage/',$collection->img_src)) }}">
+				<template slot="body">
+					<div class="text-center">
+						<h5>{{ $collection->name }}</h5>
+						<a class="btn btn-primary" href="#">View Collection</a>	
+					</div>
+					
+				</template>
+			</theme1-shop-card>
+			@endforeach
+		@endif
 	</div>
 </div>
 @endsection

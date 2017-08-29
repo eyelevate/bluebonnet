@@ -41,7 +41,7 @@
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Name"
-	                    b-placeholder="mm"
+	                    b-placeholder="e.g. 9mm"
 	                    b-name="name"
 	                    b-type="text"
 	                    b-value="{{ old('name') }}"

@@ -5,7 +5,8 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
+
+<script type="text/javascript" src="{{ mix('/js/views/collections/create.js') }}"></script>
 @endsection
 
 @section('content')
@@ -13,14 +14,14 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('collection.index') }}">Collection List</a></li>
-    <li class="breadcrumb-item active">Create</li>
+    <li class="breadcrumb-item active">Edit</li>
 </ol>
 
 <div class="container-fluid">
-	{!! Form::open(['method'=>'patch','route'=>['collection.update', $collection->id]]) !!}
+	{!! Form::open(['method'=>'patch','route'=>['collection.update',$collection->id],'enctype'=>'multipart/form-data']) !!}
 
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true">
-			<template slot = "header"> Edit A Collectiona </template>
+			<template slot = "header"> Edit Collections </template>
 			<template slot = "body">
 	            <div class="content">
 	            	
@@ -38,7 +39,7 @@
 	                </bootstrap-input>
 
 					<!-- Description -->
-	                <bootstrap-input class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
+	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Description"
 	                    b-placeholder="Description"
@@ -48,39 +49,45 @@
 	                    b-err="{{ $errors->has('desc') }}"
 	                    b-error="{{ $errors->first('desc') }}"
 	                    >
-	                </bootstrap-input>
+	                </bootstrap-textarea>
 
 
 	                <!-- Active -->
-	                <bootstrap-select class="form-group-no-border {{ $errors->has('active') ? ' has-danger' : '' }}"
-	                	use-label="true"
-	                	label="Active?"
-	                	b-err="{{ $errors->has('active') }}"
-	                	b-error="{{ $errors->first('active') }}">
-	                	
-	                	<template slot="select">
-	                		{{ Form::select('active',[1=>'Yes',0=>'No'],old('active'),['class'=>'custom-select col-12']) }}
-	                	</template>
-					</bootstrap-select>
 
-	                 <!-- Status -->
-	                <bootstrap-select class="form-group-no-border {{ $errors->has('status') ? ' has-danger' : '' }}"
+					<bootstrap-switch 
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Activate?" 
+	                	input-name="active"
+	                	input-checked="{{ old('active') ? old('active') : ($collection->active) ? "true" : "false" }}">
+	                </bootstrap-switch>
+
+	                <!-- Image -->
+	                <bootstrap-control
 	                	use-label="true"
-	                	label="Status?"
-	                	b-err="{{ $errors->has('status') }}"
-	                	b-error="{{ $errors->first('status') }}">
-	                	
-	                	<template slot="select">
-	                		{{ Form::select('status',[1=>'Active', 2 =>'Inactive', 3=> 'Pending', 4=> 'Refunded', 5 => 'Cancelled'],old('status'),['class'=>'custom-select col-12']) }}
+	                	label="Image"
+	                    b-err="{{ $errors->has('img_src') }}"
+	                    b-error="{{ $errors->first('img_src') }}">
+	                	<template slot="control">
+	                		<div class="card imagePreviewCard col-12" >
+	                			<img id="preview" src="{{ asset(str_replace('public/','storage/',$collection->img_src)) }}" class="card-img-top">
+	                			<div class="card-block">
+	                				<input id="uploader" name="img" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+	                				<input type="hidden"  value="{{ $collection->img_src }}" name="img_src"/>
+	                			</div>
+	                		</div>
+	                		
 	                	</template>
-					</bootstrap-select>
+	               	</bootstrap-control>
+
 
 		        </div>
 			</template>
 
 			<template slot = "footer">
 				<a href="{{ route('collection.index') }}" class="btn btn-secondary">Back</a>
-				<button type="submit" class = "btn btn-primary">Save</button>
+				<button type="submit" class = "btn btn-primary">Update</button>
 			</template>
 		</bootstrap-card>
 		{!! Form::close() !!}

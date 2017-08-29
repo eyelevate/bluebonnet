@@ -35,12 +35,12 @@
 	                    >
 	                    <template slot="select">
 	                    	<div class="input-group">
-	                    		{{ Form::text('size_display',old('size_display') ? old('size_display') : $size->size_id.' ('$size->size.' '.$size->name')',['id'=>'size_display','class'=>'form-control','readonly'=>'true','style'=>'background-color:#ffffff;']) }}
+	                    		{{ Form::text('size_display',old('size_display'),['id'=>'size_display','class'=>'form-control','readonly'=>'true','style'=>'background-color:#ffffff;','v-model'=>'sizeName']) }}
 	                    		<span class="input-group-btn">
 									<button id="searchSizes" class="btn btn-secondary" type="button" data-toggle="modal" data-target="#sizeModal">Select Size</button>
 								</span>
 	                    	</div>
-	                    	{{ Form::hidden('size_id',old('size_id') ? old('size_id') : $size->size_id,['id'=>'size-id-hidden-input']) }}
+	                    	{{ Form::hidden('size_id',old('size_id'),['id'=>'size-id-hidden-input']) }}
 	                    </template>
 	                    >
 	                </bootstrap-select>
@@ -51,7 +51,7 @@
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Price"
-	                    b-placeholder="00.00"
+	                    b-placeholder="0.00"
 	                    b-name="price"
 	                    b-type="text"
 	                    b-value="{{ old('price') }}"

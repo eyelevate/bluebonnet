@@ -23,10 +23,7 @@ class Finger extends Model
     {
         $columns =  [
             [
-                'label'=>'ID',
-                'field'=> 'id',
-                'filterable'=> true
-            ], [
+
                 'label'=>'Size',
                 'field'=> 'size',
                 'filterable'=> true

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Collection;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
@@ -39,10 +40,14 @@ class CollectionController extends Controller
     public function store(Request $request, Collection $collection)
     {
         $this->validate(request(), [
-             'name' => 'required|string|max:255'
+             'name' => 'required|string|max:255',
+             'img'=>'required | mimes:jpeg,jpg,png | max:10000'
         ]);
-        flash('Successfully created a Stone Size!')->success();
-        $collection->create(request()->all());
+        $path = $request->img->store('public/collections');
+        $request->merge(['active'=>($request->active == 'on') ? true : false]);
+        $request->merge(['img_src'=>$path]);
+        flash('Successfully created a Collection!')->success();
+        $collection->create($request->all());
         return redirect()->route('collection.index');
     }
 
@@ -65,6 +70,7 @@ class CollectionController extends Controller
      */
     public function edit(Collection $collection)
     {
+
         return view('collections.edit', compact('collection'));
     }
 
@@ -77,11 +83,22 @@ class CollectionController extends Controller
      */
     public function update(Request $request, Collection $collection)
     {
-                //Validate the form
+        //Validate the form
         $this->validate(request(), [
-            'name' => 'required|string|max:255'
+             'name' => 'required|string|max:255',
+             'img'=>'mimes:jpeg,jpg,png | max:10000'
         ]);
-        flash('Successfully updated Collection!')->success();
+        $request->merge(['active'=>($request->active == 'on') ? true : false]);
+
+        if ($request->hasFile('img')) {
+            // remove old image
+            Storage::delete($collection->img_src);
+            // add new image
+            $path = $request->img->store('public/collections');
+            $request->merge(['img_src'=>$path]);
+        }
+        
+        flash('Successfully updated a Collection!')->success();
         $collection->update($request->all());
         return redirect()->route('collection.index');
     }
@@ -94,6 +111,15 @@ class CollectionController extends Controller
      */
     public function destroy(Collection $collection)
     {
+        // delete collection images
+
+        if ($collection->img_src) {
+            Storage::delete($collection->img_src);
+        }
+
+        // remove links to inventory items
+
+        // delete collection
         if($collection->delete())
         {
             flash('You have successfully deleted a collection.')->success();

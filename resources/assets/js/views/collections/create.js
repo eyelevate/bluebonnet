@@ -23,8 +23,17 @@ const app = new Vue({
 $(document).ready(function() {
 	collections.events();
 });
-collectins = {
+collections = {
 	events: function() {
-
+		var upload = require('simple-upload-preview');
+		 
+		const file = document.querySelector('input[type="file"]'); // <input type="file" /> 
+		var image = document.querySelector('#preview'); // <img src="#" id="blah" /> 
+		 
+		file.addEventListener('change', upload.preview({
+		    element: image
+		    }, function(err, image) {
+		    // image variable is the image element with the file from input sorced. 
+		}));
 	}
 }

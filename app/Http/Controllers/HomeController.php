@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Collection;
 use App\Instagram;
 use App\Job;
 use Illuminate\Http\Request;
@@ -84,10 +85,11 @@ class HomeController extends Controller
         return view('home.shipping', compact(['layout']));
     }
 
-    public function shop()
+    public function shop(Collection $collection)
     {
+        $collections = $collection->where('active',true)->get();
         $layout = $this->layout;
-        return view('home.shop', compact(['layout']));
+        return view('home.shop', compact(['layout','collections']));
     }
 
     public function tos()

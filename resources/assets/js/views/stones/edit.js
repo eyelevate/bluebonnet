@@ -9,7 +9,7 @@ const app = new Vue({
 	},
 	methods: {
 		onEmailChecked(checked) {
-			this.checkEmail = (checked == "on") ? false : true;
+			this.checkEmail = (checked == "on") ? true : false;
 		}
 	},
 	computed: {
@@ -29,8 +29,10 @@ $(document).ready(function() {
 });
 stones = {
 	pageLoad() {
-		console.log($("#sizes").val());
+		
 		app.sizes = JSON.parse($("#sizes").val());
+		console.log($("#check-email").val());
+		app.checkEmail = ($("#check-email").val() == 1) ? true : false;
 	},
 	events: function() {
 

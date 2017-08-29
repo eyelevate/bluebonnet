@@ -130,9 +130,9 @@ Route::group(['middleware' => ['check:3']], function () {
     
     // Inventory Item
     Route::get('/inventory-items', 'InventoryItemController@index')->name('inventory_item.index');
-    Route::get('/inventory-items/create', 'InventoryItemController@create')->name('inventory_item.create');
+    Route::get('/inventory-items/{inventory}/create', 'InventoryItemController@create')->name('inventory_item.create');
     Route::delete('/inventory-items/{inventory_item}', 'InventoryItemController@destroy')->name('inventory_item.destroy');
-    Route::post('/inventory-items/store', 'InventoryItemController@store')->name('inventory_item.store');
+    Route::post('/inventory-items/{inventory}/store', 'InventoryItemController@store')->name('inventory_item.store');
     Route::get('/inventory-items/{inventory_item}/show', 'InventoryItemController@show')->name('inventory_item.show');
     Route::get('/inventory-items/{inventory_item}/edit', 'InventoryItemController@edit')->name('inventory_item.edit');
     Route::patch('/inventory-items/{inventory_item}', 'InventoryItemController@update')->name('inventory_item.update');
@@ -199,17 +199,6 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/stones/{stone}/show', 'StoneController@show')->name('stone.show');
     Route::get('/stones/{stone}/edit', 'StoneController@edit')->name('stone.edit');
     Route::patch('/stones/{stone}', 'StoneController@update')->name('stone.update');
-
-
-    // Stone Size
-    Route::get('/stone-sizes', 'StoneSizeController@index')->name('stone_size.index');
-    Route::get('/stone-sizes/create', 'StoneSizeController@create')->name('stone_size.create');
-    Route::delete('/stone-sizes/{stoneSize}', 'StoneSizeController@destroy')->name('stone_size.destroy');
-    Route::post('/stone-sizes/store', 'StoneSizeController@store')->name('stone_size.store');
-    Route::get('/stone-sizes/{stoneSize}/show', 'StoneSizeController@show')->name('stone_size.show');
-    Route::get('/stone-sizes/{stoneSize}/edit', 'StoneSizeController@edit')->name('stone_size.edit');
-    Route::patch('/stone-sizes/{stoneSize}', 'StoneSizeController@update')->name('stone_size.update');
-
 
     // Taxes
     Route::get('/taxes', 'TaxController@index')->name('tax.index');

@@ -2,29 +2,21 @@ const app = new Vue({
 	el: '#root',
 	data() {
 		return {
-
+			sizeName: 'test teste ttestsest',
+			sizeId: ''
 		}
 		
 	},
 	methods: {
 
-	},
-	computed: {
-
-	},
-	created() {
-
-	},
-	mounted() {
-
 	}
 });
 
 $(document).ready(function() {
-	metals.events();
+	stone_size.events();
 });
-metals = {
+stone_size = {
 	events: function() {
-
+		console.log('test');
 	}
-}
+};

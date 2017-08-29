@@ -40,37 +40,14 @@
 		<bootstrap-modal id="viewModal-{{ $row->id }}" b-size="modal-lg">
 			<template slot="header">View Collection - {{ $row->name }}</template>
 			<template slot="body">
-				<!-- Name -->
-				<bootstrap-readonly
-					use-input="true"
-					b-value="{{ $row->name }}"
-					use-label="true"
-					b-label="Name">	
-				</bootstrap-readonly>
-			
-				<!-- Description -->
-				<bootstrap-readonly
-					use-input="true"
-					b-value="{{ $row->desc }}"
-					use-label="true"
-					b-label="Description">	
-				</bootstrap-readonly>
-
-				<!-- Active -->
-				<bootstrap-readonly
-					use-input="true"
-					b-value="{{ ($row->active == TRUE) ? 'True' : 'False' }}"
-					use-label="true"
-					b-label="active">	
-				</bootstrap-readonly>
-
-				<!-- Status -->
-				<bootstrap-readonly
-					use-input="true"
-					b-value="{{ $row->status }}"
-					use-label="true"
-					b-label="status">	
-				</bootstrap-readonly>				
+				<div class="card imagePreviewCard col-12" >
+        			<img src="/{{ $row->img_src }}" class="card-img-top"/>
+        			<div class="card-block">
+        				<h4 class="card-title">{{ $row->name }}</h4>
+					    <p class="card-text">{{ $row->desc }}</p>
+					    <a href="#" class="btn btn-primary">Go somewhere</a>
+        			</div>
+        		</div>		
 
 				
 			</template>

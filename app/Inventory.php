@@ -19,6 +19,13 @@ class Inventory extends Model
         'desc'
     ];
 
+
+    public function inventoryItems()
+    {
+        return $this->hasMany(InventoryItem::class,'inventory_id','id');
+    }
+
+
     static public function countInventories()
     {
         return Inventory::count();

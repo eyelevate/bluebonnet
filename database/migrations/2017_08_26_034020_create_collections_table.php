@@ -18,6 +18,7 @@ class CreateCollectionsTable extends Migration
             $table->string('name');
             $table->text('desc')->nullable();
             $table->boolean('active')->default(0);
+            $table->string('img_src')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();
