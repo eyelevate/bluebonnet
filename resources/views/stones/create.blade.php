@@ -40,8 +40,8 @@
 					<!-- Description -->
 	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Description (optional)"
-	                    b-placeholder="Description of stone type"
+	 					label = "Description"
+	                    b-placeholder="Description"
 	                    b-name="desc"
 	                    b-type="text"
 	                    b-value="{{ old('desc') }}"
