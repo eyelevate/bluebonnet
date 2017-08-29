@@ -104,13 +104,11 @@ class AdminController extends Controller
                 flash()->message('Successfully logged in as '.Auth::user()->email.'!')->success();
                 return (session()->has('intended_url')) ? redirect()->to(session()->get('intended_url')) : redirect()->intended('/admins');
             }
-           
         } else {
-           flash()->message('Could not log you in please try again..')->error();
-           Auth::logout();
-           return redirect()->route('admin.login'); 
+            flash()->message('Could not log you in please try again..')->error();
+            Auth::logout();
+            return redirect()->route('admin.login');
         }
-
     }
 
     public function logout()

@@ -87,7 +87,7 @@ class HomeController extends Controller
 
     public function shop(Collection $collection)
     {
-        $collections = $collection->where('active',true)->get();
+        $collections = $collection->where('active', true)->get();
         $layout = $this->layout;
         return view('home.shop', compact(['layout','collections']));
     }
