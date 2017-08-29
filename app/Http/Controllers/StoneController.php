@@ -19,6 +19,7 @@ class StoneController extends Controller
         $columns = $stone->prepareTableColumns();
         $rows = $stone->prepareTableRows($stone->all());
         $sizes = $size->all();
+        
         $size_columns = $size->prepareTableIndexColumns();
         $size_rows = $size->prepareTableRows($sizes);
         return view('stones.index', compact(['columns','rows','size_columns','size_rows']));
@@ -31,8 +32,8 @@ class StoneController extends Controller
      */
     public function create(Size $size)
     {
-        $sizes = $size->prepareData($size->orderBy('size','asc')->get());
-        return view('stones.create',compact(['sizes']));
+        $sizes = $size->prepareData($size->orderBy('size', 'asc')->get());
+        return view('stones.create', compact(['sizes']));
     }
 
     /**
