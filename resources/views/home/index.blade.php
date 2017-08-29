@@ -65,6 +65,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="section py-5 text-md-left">
 	<div class="container">
 		<div class="row hidden-lg-up">
@@ -84,6 +85,7 @@
 		</div>
 	</div>
 </div>
+
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
@@ -96,6 +98,7 @@
 							<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
 						</blockquote>
 					</div>
+
 					<div class="carousel-item flex-column">
 						<img data-original="https://pingendo.github.io/templates/app/reviews_logo_2.png" class="img-fluid mx-auto d-block">
 						<blockquote class="blockquote">
@@ -103,6 +106,7 @@
 							<footer class="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
 						</blockquote>
 					</div>
+					
 					<div class="carousel-item flex-column">
 						<img data-original="https://pingendo.github.io/templates/app/reviews_logo_3.png" class="img-fluid mx-auto d-block">
 						<blockquote class="blockquote">

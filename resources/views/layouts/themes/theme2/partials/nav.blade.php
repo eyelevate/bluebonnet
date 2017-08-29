@@ -29,7 +29,7 @@
                     <a class="nav-link" href="#">Register</a>
                 </li>
                 <li class="nav-item clearfix" style="">
-                    <a class="nav-link" href="#" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
                 </li>
             </ul>
         </div>
@@ -63,7 +63,7 @@
                     </li>
                     @endif
                     <li class="nav-item clearfix" style="">
-                        <a class="nav-link" href="#" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                        <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
                     </li>
                     <li>&nbsp;</li>
                 </ul>
@@ -72,6 +72,8 @@
         </div>
     </div>
 </nav>
+
+
 <nav class="navbar navbar-light navbar-toggleable-md bg-primary fixed-top bg-faded hidden-md-down" on-scroll="70" style="z-index: 999;">
     <div class="container">    
         <a class="navbar-brand" href="{{ route('home') }}">blue bonnet diamond</a>
@@ -105,7 +107,7 @@
                 </li>
                 @endif
                 <li class="nav-item clearfix" style="">
-                    <a class="nav-link" href="#" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
                 </li>
                 <li>&nbsp;</li>
             </ul>
@@ -113,6 +115,8 @@
         </div>
     </div>
 </nav>
+
+
 <nav class="navbar navbar-light navbar-toggleable-md bg-primary bg-faded hidden-lg-up fixed-top" on-scroll="70" style="z-index: 999;">
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -148,7 +152,7 @@
             </li>
             @endif
             <li class="nav-item clearfix" style="">
-                <a class="nav-link" href="#" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
             </li>
             <li>&nbsp;</li>
         </ul>
