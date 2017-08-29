@@ -21,9 +21,9 @@ const app = new Vue({
 });
 
 $(document).ready(function() {
-	metals.events();
+	sizes.events();
 });
-metals = {
+sizes = {
 	events: function() {
 
 	}
