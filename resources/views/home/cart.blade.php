@@ -51,7 +51,7 @@
                     <span class="line-item__sku">SKU: ASB28 rg/cd/rh</span>
                   </div>
                 </td>
-                <td class="qty">
+                <td class="qty" style="width:25%">
                   <div class="td-wrapper">
                     <input type="number" 
                            name="updates[]" 
