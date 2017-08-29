@@ -25,7 +25,7 @@
 	            <div class="content">
 
 
-	            	
+	            
 	            	<!-- Size ID -->
 	                <bootstrap-select class="form-group-no-border {{ $errors->has('size_id') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
@@ -35,12 +35,22 @@
 	                    >
 	                    <template slot="select">
 	                    	<div class="input-group">
+<<<<<<< HEAD
 	                    		{{ Form::text('size_display',old('size_display') ? old('size_display') : $size->size_id.' ('$size->size.' '.$size->name')',['id'=>'size_display','class'=>'form-control','readonly'=>'true','style'=>'background-color:#ffffff;']) }}
+	                    		
+=======
+	                    		{{ Form::text('size_display',old('size_display'),['id'=>'size_display','class'=>'form-control','readonly'=>'true','style'=>'background-color:#ffffff;','v-model'=>'sizeName']) }}
+>>>>>>> a340ff5dc46b815cb6d6d35e412daa6979054732
 	                    		<span class="input-group-btn">
 									<button id="searchSizes" class="btn btn-secondary" type="button" data-toggle="modal" data-target="#sizeModal">Select Size</button>
 								</span>
 	                    	</div>
+<<<<<<< HEAD
+
 	                    	{{ Form::hidden('size_id',old('size_id') ? old('size_id') : $size->size_id,['id'=>'size-id-hidden-input']) }}
+=======
+	                    	{{ Form::hidden('size_id',old('size_id'),['id'=>'size-id-hidden-input']) }}
+>>>>>>> a340ff5dc46b815cb6d6d35e412daa6979054732
 	                    </template>
 	                    >
 	                </bootstrap-select>

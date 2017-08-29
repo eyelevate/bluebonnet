@@ -21,10 +21,13 @@ const app = new Vue({
 });
 
 $(document).ready(function() {
-	collections.events();
-});
-collections = {
-	events: function() {
+	inventory_items.events();
 
+});
+inventory_items = {
+	events(){
+		var uploader = new qq.FineUploader({
+            element: document.getElementById("uploader")
+        })
 	}
 }
