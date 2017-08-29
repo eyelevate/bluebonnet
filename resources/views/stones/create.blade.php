@@ -40,8 +40,8 @@
 					<!-- Description -->
 	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Description (optional)"
-	                    b-placeholder="Description of stone type"
+	 					label = "Description"
+	                    b-placeholder="Description"
 	                    b-name="desc"
 	                    b-type="text"
 	                    b-value="{{ old('desc') }}"
@@ -54,7 +54,7 @@
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Price"
-	                    b-placeholder="00.00"
+	                    b-placeholder="0.00"
 	                    b-name="price"
 	                    b-type="text"
 	                    b-value="{{ old('price') }}"
@@ -63,6 +63,7 @@
 	                    >
 	                </bootstrap-input>
 
+	                <!-- Email -->
 	                <bootstrap-select class="form-group-no-border {{ $errors->has('email') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Email"
