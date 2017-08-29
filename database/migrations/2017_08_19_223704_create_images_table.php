@@ -15,7 +15,6 @@ class CreateImagesTable extends Migration
     {
         Schema::create('images', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('line_id')->nullable();
             $table->integer('design_id')->nullable();
             $table->integer('inventory_id')->nullable();
             $table->integer('inventory_item_id')->nullable();
@@ -23,6 +22,7 @@ class CreateImagesTable extends Migration
             $table->text('desc')->nullable();
             $table->boolean('primary')->default(0);
             $table->string('img_src')->nullable();
+            $table->integer('ordered')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

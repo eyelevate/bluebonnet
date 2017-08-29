@@ -71,10 +71,23 @@
 				<!-- Email -->
 				<bootstrap-readonly
 					use-input="true"
-					b-value="{{ ($row->email == TRUE) ? 'Special Order' : 'Defult' }}"
+					b-value="{{ $row->email_status }}"
 					use-label="true"
 					b-label="Email">		
 				</bootstrap-readonly>
+
+				<!-- Stone Sizes -->
+				@if (!$row->email)
+				<hr/>
+				<label>Stone Sizes</label>
+				<bootstrap-table
+					:columns="{{ $size_columns }}"
+					:rows="{{ (count($row->stoneSizes) > 0) ? $row->stoneSizes : $size_rows }}"
+					:paginate="true"
+					:global-search="true"
+					:line-numbers="true"/>
+				</bootstrap-table>
+				@endif
 			</template>
 			
 			<template slot="footer">

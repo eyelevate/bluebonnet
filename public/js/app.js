@@ -5296,88 +5296,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-/*
-	MIT License http://www.opensource.org/licenses/mit-license.php
-	Author Tobias Koppers @sokra
-*/
-// css base code, injected by the css-loader
-module.exports = function(useSourceMap) {
-	var list = [];
-
-	// return the list of modules as css string
-	list.toString = function toString() {
-		return this.map(function (item) {
-			var content = cssWithMappingToString(item, useSourceMap);
-			if(item[2]) {
-				return "@media " + item[2] + "{" + content + "}";
-			} else {
-				return content;
-			}
-		}).join("");
-	};
-
-	// import a list of modules into the list
-	list.i = function(modules, mediaQuery) {
-		if(typeof modules === "string")
-			modules = [[null, modules, ""]];
-		var alreadyImportedModules = {};
-		for(var i = 0; i < this.length; i++) {
-			var id = this[i][0];
-			if(typeof id === "number")
-				alreadyImportedModules[id] = true;
-		}
-		for(i = 0; i < modules.length; i++) {
-			var item = modules[i];
-			// skip already imported module
-			// this implementation is not 100% perfect for weird media query combinations
-			//  when a module is imported multiple times with different media queries.
-			//  I hope this will never occur (Hey this way we have smaller bundles)
-			if(typeof item[0] !== "number" || !alreadyImportedModules[item[0]]) {
-				if(mediaQuery && !item[2]) {
-					item[2] = mediaQuery;
-				} else if(mediaQuery) {
-					item[2] = "(" + item[2] + ") and (" + mediaQuery + ")";
-				}
-				list.push(item);
-			}
-		}
-	};
-	return list;
-};
-
-function cssWithMappingToString(item, useSourceMap) {
-	var content = item[1] || '';
-	var cssMapping = item[3];
-	if (!cssMapping) {
-		return content;
-	}
-
-	if (useSourceMap && typeof btoa === 'function') {
-		var sourceMapping = toComment(cssMapping);
-		var sourceURLs = cssMapping.sources.map(function (source) {
-			return '/*# sourceURL=' + cssMapping.sourceRoot + source + ' */'
-		});
-
-		return [content].concat(sourceURLs).concat([sourceMapping]).join('\n');
-	}
-
-	return [content].join('\n');
-}
-
-// Adapted from convert-source-map (MIT)
-function toComment(sourceMap) {
-	// eslint-disable-next-line no-undef
-	var base64 = btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap))));
-	var data = 'sourceMappingURL=data:application/json;charset=utf-8;base64,' + base64;
-
-	return '/*# ' + data + ' */';
-}
-
-
-/***/ }),
+/* 6 */,
 /* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -18841,8 +18760,11 @@ Vue.component('bootstrap-progress', __webpack_require__(311));
 Vue.component('bootstrap-radio', __webpack_require__(314));
 Vue.component('bootstrap-readonly', __webpack_require__(317));
 Vue.component('bootstrap-select', __webpack_require__(320));
+Vue.component('bootstrap-switch', __webpack_require__(409));
 Vue.component('bootstrap-table', __webpack_require__(323));
 Vue.component('bootstrap-textarea', __webpack_require__(328));
+
+Vue.component('fine-uploader', __webpack_require__(412));
 
 // Now-ui-kit Components
 // Vue.component('now-input',require('./components/now-ui-kit/FormInput.vue'));
@@ -18931,6 +18853,12 @@ __webpack_require__(292);
 
 // Masonry
 __webpack_require__(293);
+
+// upload preview
+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"simple-upload-preview\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+
+// Fine uploader
+__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"fine-uploader\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 /***/ }),
 /* 166 */
@@ -63732,7 +63660,7 @@ if(false) {
 /* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(1)(undefined);
 // imports
 
 
@@ -89976,7 +89904,7 @@ if(false) {
 /* 325 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(1)(undefined);
 // imports
 
 
@@ -91236,7 +91164,7 @@ if(false) {
 /* 339 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(1)(undefined);
 // imports
 
 
@@ -91942,7 +91870,7 @@ if(false) {
 /* 344 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(1)(undefined);
 // imports
 
 
@@ -92209,7 +92137,7 @@ if(false) {
 /* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(6)(undefined);
+exports = module.exports = __webpack_require__(1)(undefined);
 // imports
 
 
@@ -92719,6 +92647,515 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 358 */,
+/* 359 */,
+/* 360 */,
+/* 361 */,
+/* 362 */,
+/* 363 */,
+/* 364 */,
+/* 365 */,
+/* 366 */,
+/* 367 */,
+/* 368 */,
+/* 369 */,
+/* 370 */,
+/* 371 */,
+/* 372 */,
+/* 373 */,
+/* 374 */,
+/* 375 */,
+/* 376 */,
+/* 377 */,
+/* 378 */,
+/* 379 */,
+/* 380 */,
+/* 381 */,
+/* 382 */,
+/* 383 */,
+/* 384 */,
+/* 385 */,
+/* 386 */,
+/* 387 */,
+/* 388 */,
+/* 389 */,
+/* 390 */,
+/* 391 */,
+/* 392 */,
+/* 393 */,
+/* 394 */,
+/* 395 */,
+/* 396 */,
+/* 397 */,
+/* 398 */,
+/* 399 */,
+/* 400 */,
+/* 401 */,
+/* 402 */,
+/* 403 */,
+/* 404 */,
+/* 405 */,
+/* 406 */,
+/* 407 */,
+/* 408 */,
+/* 409 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(410),
+  /* template */
+  __webpack_require__(411),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/daddy/Documents/Chameleon/bluebonnet/resources/assets/js/components/bootstrap/Switch.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Switch.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3e5fbc5f", Component.options)
+  } else {
+    hotAPI.reload("data-v-3e5fbc5f", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 410 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['use-label', 'label', 'input-name', 'input-checked', 'switch-type', 'switch-color'],
+
+    data: function data() {
+        return {
+            onChecked: this.inputChecked == "true" ? "on" : "off",
+            iChecked: this.inputChecked == "true",
+            iName: this.inputName,
+            uLabel: this.useLabel == "true",
+            sClass: [this.switchType, this.switchColor]
+        };
+    },
+
+    methods: {
+        applied: function applied(checked) {
+            this.onChecked = checked == "on" ? "off" : "on";
+            console.log(this.onChecked);
+            this.$emit('applied', this.onChecked);
+        }
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 411 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [(_vm.uLabel) ? _c('label', [_vm._v(_vm._s(_vm.label))]) : _vm._e(), _vm._v(" "), _c('div', {
+    staticClass: "row-fluid"
+  }, [_c('label', {
+    staticClass: "switch switch-text",
+    class: _vm.sClass
+  }, [(_vm.iChecked) ? _c('input', {
+    staticClass: "switch-input",
+    attrs: {
+      "id": "switch-input-on",
+      "name": _vm.iName,
+      "type": "checkbox",
+      "checked": ""
+    }
+  }) : _c('input', {
+    staticClass: "switch-input",
+    attrs: {
+      "id": "switch-input-off",
+      "name": _vm.iName,
+      "type": "checkbox"
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "switch-label",
+    attrs: {
+      "data-on": "Yes",
+      "data-off": "No"
+    },
+    on: {
+      "click": function($event) {
+        _vm.applied(_vm.onChecked)
+      }
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "switch-handle"
+  })])])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3e5fbc5f", module.exports)
+  }
+}
+
+/***/ }),
+/* 412 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(413),
+  /* template */
+  __webpack_require__(414),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "/Users/daddy/Documents/Chameleon/bluebonnet/resources/assets/js/components/fineuploader/Upload.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Upload.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-222cff0e", Component.options)
+  } else {
+    hotAPI.reload("data-v-222cff0e", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 413 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: [],
+	data: function data() {
+		return {};
+	},
+
+	methods: {},
+	mounted: function mounted() {}
+});
+
+/***/ }),
+/* 414 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "qq-uploader-selector qq-uploader qq-gallery",
+    attrs: {
+      "qq-drop-area-text": "Drop files here"
+    }
+  }, [_c('div', {
+    staticClass: "qq-total-progress-bar-container-selector qq-total-progress-bar-container"
+  }, [_c('div', {
+    staticClass: "qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar",
+    attrs: {
+      "role": "progressbar",
+      "aria-valuenow": "0",
+      "aria-valuemin": "0",
+      "aria-valuemax": "100"
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "qq-upload-drop-area-selector qq-upload-drop-area",
+    attrs: {
+      "qq-hide-dropzone": ""
+    }
+  }, [_c('span', {
+    staticClass: "qq-upload-drop-area-text-selector"
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "qq-upload-button-selector qq-upload-button"
+  }, [_c('div', [_vm._v("Upload a file")])]), _vm._v(" "), _c('span', {
+    staticClass: "qq-drop-processing-selector qq-drop-processing"
+  }, [_c('span', [_vm._v("Processing dropped files...")]), _vm._v(" "), _c('span', {
+    staticClass: "qq-drop-processing-spinner-selector qq-drop-processing-spinner"
+  })]), _vm._v(" "), _c('ul', {
+    staticClass: "qq-upload-list-selector qq-upload-list",
+    attrs: {
+      "role": "region",
+      "aria-live": "polite",
+      "aria-relevant": "additions removals"
+    }
+  }, [_c('li', [_c('span', {
+    staticClass: "qq-upload-status-text-selector qq-upload-status-text",
+    attrs: {
+      "role": "status"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "qq-progress-bar-container-selector qq-progress-bar-container"
+  }, [_c('div', {
+    staticClass: "qq-progress-bar-selector qq-progress-bar",
+    attrs: {
+      "role": "progressbar",
+      "aria-valuenow": "0",
+      "aria-valuemin": "0",
+      "aria-valuemax": "100"
+    }
+  })]), _vm._v(" "), _c('span', {
+    staticClass: "qq-upload-spinner-selector qq-upload-spinner"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "qq-thumbnail-wrapper"
+  }, [_c('img', {
+    staticClass: "qq-thumbnail-selector",
+    attrs: {
+      "qq-max-size": "120",
+      "qq-server-scale": ""
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "qq-upload-cancel-selector qq-upload-cancel",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("X")]), _vm._v(" "), _c('button', {
+    staticClass: "qq-upload-retry-selector qq-upload-retry",
+    attrs: {
+      "type": "button"
+    }
+  }, [_c('span', {
+    staticClass: "qq-btn qq-retry-icon",
+    attrs: {
+      "aria-label": "Retry"
+    }
+  }), _vm._v("\n                Retry\n            ")]), _vm._v(" "), _c('div', {
+    staticClass: "qq-file-info"
+  }, [_c('div', {
+    staticClass: "qq-file-name"
+  }, [_c('span', {
+    staticClass: "qq-upload-file-selector qq-upload-file"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "qq-edit-filename-icon-selector qq-btn qq-edit-filename-icon",
+    attrs: {
+      "aria-label": "Edit filename"
+    }
+  })]), _vm._v(" "), _c('input', {
+    staticClass: "qq-edit-filename-selector qq-edit-filename",
+    attrs: {
+      "tabindex": "0",
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('span', {
+    staticClass: "qq-upload-size-selector qq-upload-size"
+  }), _vm._v(" "), _c('button', {
+    staticClass: "qq-btn qq-upload-delete-selector qq-upload-delete",
+    attrs: {
+      "type": "button"
+    }
+  }, [_c('span', {
+    staticClass: "qq-btn qq-delete-icon",
+    attrs: {
+      "aria-label": "Delete"
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "qq-btn qq-upload-pause-selector qq-upload-pause",
+    attrs: {
+      "type": "button"
+    }
+  }, [_c('span', {
+    staticClass: "qq-btn qq-pause-icon",
+    attrs: {
+      "aria-label": "Pause"
+    }
+  })]), _vm._v(" "), _c('button', {
+    staticClass: "qq-btn qq-upload-continue-selector qq-upload-continue",
+    attrs: {
+      "type": "button"
+    }
+  }, [_c('span', {
+    staticClass: "qq-btn qq-continue-icon",
+    attrs: {
+      "aria-label": "Continue"
+    }
+  })])])])]), _vm._v(" "), _c('dialog', {
+    staticClass: "qq-alert-dialog-selector"
+  }, [_c('div', {
+    staticClass: "qq-dialog-message-selector"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "qq-dialog-buttons"
+  }, [_c('button', {
+    staticClass: "qq-cancel-button-selector",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("Close")])])]), _vm._v(" "), _c('dialog', {
+    staticClass: "qq-confirm-dialog-selector"
+  }, [_c('div', {
+    staticClass: "qq-dialog-message-selector"
+  }), _vm._v(" "), _c('div', {
+    staticClass: "qq-dialog-buttons"
+  }, [_c('button', {
+    staticClass: "qq-cancel-button-selector",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("No")]), _vm._v(" "), _c('button', {
+    staticClass: "qq-ok-button-selector",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("Yes")])])]), _vm._v(" "), _c('dialog', {
+    staticClass: "qq-prompt-dialog-selector"
+  }, [_c('div', {
+    staticClass: "qq-dialog-message-selector"
+  }), _vm._v(" "), _c('input', {
+    attrs: {
+      "type": "text"
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "qq-dialog-buttons"
+  }, [_c('button', {
+    staticClass: "qq-cancel-button-selector",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("Cancel")]), _vm._v(" "), _c('button', {
+    staticClass: "qq-ok-button-selector",
+    attrs: {
+      "type": "button"
+    }
+  }, [_vm._v("Ok")])])])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-222cff0e", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -5,7 +5,8 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
+
+<script type="text/javascript" src="{{ mix('/js/views/collections/create.js') }}"></script>
 @endsection
 
 @section('content')
@@ -17,7 +18,7 @@
 </ol>
 
 <div class="container-fluid">
-	{!! Form::open(['method'=>'post','route'=>['collection.store']]) !!}
+	{!! Form::open(['method'=>'post','route'=>['collection.store'],'enctype'=>'multipart/form-data']) !!}
 
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true">
 			<template slot = "header"> Create A Collections </template>
@@ -38,42 +39,48 @@
 	                </bootstrap-input>
 
 					<!-- Description -->
-	                <bootstrap-input class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
+	                <bootstrap-textarea class="form-group-no-border {{ $errors->has('desc') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Description"
 	                    b-placeholder="Description"
 	                    b-name="desc"
 	                    b-type="text"
-	                    b-value="{{ old('name') }}"
-	                    b-err="{{ $errors->has('name') }}"
-	                    b-error="{{ $errors->first('name') }}"
+	                    b-value="{{ old('desc') }}"
+	                    b-err="{{ $errors->has('desc') }}"
+	                    b-error="{{ $errors->first('desc') }}"
 	                    >
-	                </bootstrap-input>
+	                </bootstrap-textarea>
 
 
 	                <!-- Active -->
-	                <bootstrap-select class="form-group-no-border {{ $errors->has('active') ? ' has-danger' : '' }}"
-	                	use-label="true"
-	                	label="Active?"
-	                	b-err="{{ $errors->has('active') }}"
-	                	b-error="{{ $errors->first('active') }}">
-	                	
-	                	<template slot="select">
-	                		{{ Form::select('active',[1=>'Yes',0=>'No', ],old('active'),['class'=>'custom-select col-12']) }}
-	                	</template>
-					</bootstrap-select>
 
-	                 <!-- Status -->
-	                <bootstrap-select class="form-group-no-border {{ $errors->has('status') ? ' has-danger' : '' }}"
+					<bootstrap-switch 
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Activate?" 
+	                	input-name="active"
+	                	input-checked="false">
+	                </bootstrap-switch>
+
+	                <!-- Image -->
+	                <bootstrap-control
 	                	use-label="true"
-	                	label="Status?"
-	                	b-err="{{ $errors->has('status') }}"
-	                	b-error="{{ $errors->first('status') }}">
-	                	
-	                	<template slot="select">
-	                		{{ Form::select('status',[1=>'Active', 2 =>'Inactive', 3=> 'Pending', 4=> 'Refunded', 5 => 'Cancelled'],old('status'),['class'=>'custom-select col-12']) }}
+	                	label="Image"
+	                    b-err="{{ $errors->has('img_src') }}"
+	                    b-error="{{ $errors->first('img_src') }}">
+	                	<template slot="control">
+	                		<div class="card imagePreviewCard col-12" >
+	                			<img id="preview" class="card-img-top"/>
+	                			<div class="card-block">
+	                				<input id="uploader" name="img" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+	                				<input type="hidden"  value="" name="img_src"/>
+	                			</div>
+	                		</div>
+	                		
 	                	</template>
-					</bootstrap-select>
+	               	</bootstrap-control>
+
 
 		        </div>
 			</template>

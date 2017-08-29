@@ -5,7 +5,7 @@
 @endsection
 
 @section('scripts')
-<script type="text/javascript" src="{{ mix('js/views/stone_sizes/create.js') }}"></script>
+<script type="text/javascript" src="{{ mix('js/views/stones/create.js') }}"></script>
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
 <ol class="breadcrumb">
     <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
     <li class="breadcrumb-item"><a href="{{ route('stone.index') }}">Stone Type</a></li>
-    <li class="breadcrumb-item active">Stone</li>
+    <li class="breadcrumb-item active">Create</li>
 </ol>
 
 <div class="container-fluid">
@@ -63,23 +63,44 @@
 	                    >
 	                </bootstrap-input>
 
-	                <!-- Email -->
-	                <bootstrap-select class="form-group-no-border {{ $errors->has('email') ? ' has-danger' : '' }}" 
-	                    use-label = "true"
-	 					label = "Email"
-	                    b-placeholder="Email"
-	                    b-name="email"
-	                    b-err="{{ $errors->has('email') }}"
-	                    b-error="{{ $errors->first('email') }}"
-	                    >
-	                	<template slot="select">
-	                		{{ Form::select('email',[0=>'No',1=>'Yes'],old('email'),['class'=>'custom-select col-12']) }}
-	                	</template>
+	                <!-- Email Switch -->
+	                <bootstrap-switch 
+	                	@applied="onEmailChecked"
+	                	id="emailSwitch"
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Price By Email Request" 
+	                	input-name="email"
+	                	input-checked="false">
+	                </bootstrap-switch>
 
-	                </bootstrap-select>
+	                <!-- Stone Sizes -->
+	                <hr/>
+	                <div v-if="checkEmail">
+		                <label>Stone Sizes</label>
+		                <div class="table-responsive">
+		                	<table class="table table-condensed table-hover">
+		                		<thead>
+		                			<tr>
+		                				<th>Size</th>
+		                				<th>Name</th>
+		                				<th>+ Price</th>
+		                			</tr>
+		                		</thead>
+		                		<tbody>
+		                		<tr v-for="s in sizes">
+		                			<td>@{{ s.size }}</td>
+		                			<td>@{{ s.name }}</td>
+		                			<td width="200"><input :name="s.input_name" value="" class="form-control"/></td>
+		                		</tr>
 
+		                		</tbody>
+		                	</table>
+		                </div>	
+	                </div>
 	                
-		        </div>
+	            </div>
 			</template>
 
 			<template slot = "footer">
@@ -90,4 +111,6 @@
 	{!! Form::close() !!}
 </div>
 @endsection
-
+@section('variables')
+<input id="sizes" type="hidden" value="{{ (count($sizes) > 0) ? json_encode($sizes) : json_encode([]) }}">
+@endsection

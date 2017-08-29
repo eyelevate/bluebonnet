@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Inventory;
+use App\InventoryItem;
 use Illuminate\Http\Request;
 
 class InventoryController extends Controller
@@ -12,9 +13,12 @@ class InventoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Inventory $inventory, InventoryItem $inventory_item)
     {
-        return view('inventories.index');
+        $inventories = $inventory->all();
+        $columns = $inventory_item->prepareTableColumns();
+        $rows = $inventory_item->prepareTableRows($inventories);
+        return view('inventories.index',compact(['inventories','columns','rows']));
     }
 
     /**
@@ -33,9 +37,14 @@ class InventoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Inventory $inventory)
     {
-        //
+        $this->validate(request(), [
+             'name' => 'required|string|max:255'
+        ]);
+        flash('Successfully created an Inventory!')->success();
+        $inventory->create($request->all());
+        return redirect()->route('inventory.index');
     }
 
     /**

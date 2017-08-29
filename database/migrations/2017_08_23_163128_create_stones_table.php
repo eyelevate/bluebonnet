@@ -17,7 +17,7 @@ class CreateStonesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('desc')->nullable();
-            $table->float('price', 11, 2);
+            $table->decimal('price', 11, 2)->nullable();
             $table->boolean('email')->default(0);
             $table->softDeletes();
             $table->timestamps();

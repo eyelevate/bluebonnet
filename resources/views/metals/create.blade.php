@@ -53,8 +53,8 @@
 					<!-- Price -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Price"
-	                    b-placeholder="00.00"
+	 					label = "+ Price"
+	                    b-placeholder="0.00"
 	                    b-name="price"
 	                    b-type="text"
 	                    b-value="{{ old('price') }}"

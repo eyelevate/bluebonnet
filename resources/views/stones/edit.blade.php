@@ -1,13 +1,11 @@
 
 @extends('layouts.themes.backend.layout')
 
-
 @section('styles')
-
 @endsection
 
 @section('scripts')
-<script type="text/javascript" src="{{ mix('js/views/stones/create.js') }}"></script>
+<script type="text/javascript" src="{{ mix('js/views/stones/edit.js') }}"></script>
 @endsection
 
 @section('content')
@@ -22,7 +20,7 @@
 	{!! Form::open(['method'=>'patch','route'=>['stone.update',$stone->id]]) !!}
 
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true">
-			<template slot = "header"> Edit Stone Type </template>
+			<template slot = "header"> Edit A Stone Type </template>
 			<template slot = "body">
 	            <div class="content">
 	            	
@@ -50,36 +48,59 @@
 	                    b-err="{{ $errors->has('desc') }}"
 	                    b-error="{{ $errors->first('desc') }}"
 	                    >
+	                </bootstrap-textarea>
 
-    					<!-- Price -->
+					<!-- Price -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('price') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Price"
-	                    b-placeholder="00.00"
+	                    b-placeholder="0.00"
 	                    b-name="price"
 	                    b-type="text"
-	                    b-value="{{ old('price') ? old('price'): $stone->price }}"
+	                    b-value="{{ old('price') ? old('price') : $stone->price }}"
 	                    b-err="{{ $errors->has('price') }}"
 	                    b-error="{{ $errors->first('price') }}"
 	                    >
 	                </bootstrap-input>
 
-	                <bootstrap-select class="form-group-no-border {{ $errors->has('email') ? ' has-danger' : '' }}" 
-	                    use-label = "true"
-	 					label = "Email"
-	                    b-placeholder="Email"
-	                    b-name="email"
-	                    b-err="{{ $errors->has('email') }}"
-	                    b-error="{{ $errors->first('email') }}"
-	                    >
-	                	<template slot="select">
-	                		{{ Form::select('email',[0=>'No', 1=>'Yes'],old('email'),['class'=>'custom-select col-12']) }}
-	                	</template>
+	                <!-- Email Switch -->
+	                <bootstrap-switch 
+	                	@applied="onEmailChecked"
+	                	id="emailSwitch"
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Price By Email Request" 
+	                	input-name="email"
+	                	input-checked="{{ old('email') ? old('email') : ($stone->email) ? 'true' : 'false' }}">
+	                </bootstrap-switch>
 
-	                </bootstrap-select>
+	                <!-- Stone Sizes -->
+	                <hr/>
+	                <div v-if="!checkEmail">
+		                <label>Stone Sizes</label>
+		                <div class="table-responsive">
+		                	<table class="table table-condensed table-hover">
+		                		<thead>
+		                			<tr>
+		                				<th>Size</th>
+		                				<th>Name</th>
+		                				<th>+ Price</th>
+		                			</tr>
+		                		</thead>
+		                		<tbody>
+		                		<tr v-for="s in sizes">
+		                			<td>@{{ s.size }}</td>
+		                			<td>@{{ s.name }}</td>
+		                			<td width="200"><input :name="s.input_name" :value="s.price" class="form-control"/></td>
+		                		</tr>
 
-	                </bootstrap-textarea>
-		        </div>
+		                		</tbody>
+		                	</table>
+		                </div>	
+	                </div>
+	                
+	            </div>
 			</template>
 
 			<template slot = "footer">
@@ -90,4 +111,7 @@
 	{!! Form::close() !!}
 </div>
 @endsection
-
+@section('variables')
+<input id="sizes" type="hidden" value="{{ (count($sizes) > 0) ? json_encode($sizes) : json_encode([]) }}">
+<input id="check-email" type="hidden" value="{{ $stone->email }}">
+@endsection
