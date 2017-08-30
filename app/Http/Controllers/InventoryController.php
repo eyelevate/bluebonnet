@@ -18,6 +18,7 @@ class InventoryController extends Controller
         $inventories = $inventory->all();
         $columns = $inventory_item->prepareTableColumns();
         $rows = $inventory_item->prepareTableRows($inventories);
+
         return view('inventories.index',compact(['inventories','columns','rows']));
     }
 

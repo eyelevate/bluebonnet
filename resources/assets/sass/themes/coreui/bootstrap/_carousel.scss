@@ -171,3 +171,27 @@
   color: $carousel-caption-color;
   text-align: center;
 }
+
+.inventory-carousel {
+  .list-inline {
+    white-space:nowrap !important;
+    overflow-x:auto !important;
+  }
+  .carousel-indicators {
+    position: static !important;
+    left: initial !important;
+    width: initial !important;
+    margin-left: initial !important;
+  }
+
+  .carousel-indicators > li {
+    width: 300px !important;
+    height: initial !important;
+    text-indent: initial !important;
+
+  }
+
+  .carousel-indicators > li.active img {
+    opacity: 0.7 !important;
+  }
+}

@@ -219,6 +219,3 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::patch('/vendors/{vendor}', 'VendorController@update')->name('vendor.update');
 });
 
-
-
-Auth::routes();

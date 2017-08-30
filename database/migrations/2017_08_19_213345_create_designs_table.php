@@ -11,17 +11,17 @@ class CreateDesignsTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('designs', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->text('desc')->nullable();
-            $table->boolean('prototype')->default(0);
-            $table->softDeletes();
-            $table->timestamps();
-        });
-    }
+    // public function up()
+    // {
+    //     Schema::create('designs', function (Blueprint $table) {
+    //         $table->increments('id');
+    //         $table->string('name');
+    //         $table->text('desc')->nullable();
+    //         $table->boolean('prototype')->default(0);
+    //         $table->softDeletes();
+    //         $table->timestamps();
+    //     });
+    // }
 
     /**
      * Reverse the migrations.

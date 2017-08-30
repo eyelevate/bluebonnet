@@ -35,10 +35,6 @@ class Collection extends Model
                 'field'=> 'desc',
                 'filterable'=> true
             ], [
-                'label'=>'Image',
-                'field'=> 'img_src',
-                'filterable'=> true
-            ], [
                 'label'=>'Active',
                 'field'=> 'active_status',
                 'html'=>true
