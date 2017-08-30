@@ -41,16 +41,16 @@ class HomeController extends Controller
         $feed = [];
         if ($ig['status']) {
             $feed = $ig['data'];
-
         } else {
             flash($ig['data'])->warning();
-        }  
-        return view($this->view,compact(['layout','feed']));
+        }
+        return view($this->view, compact(['layout','feed']));
     }
 
     public function cart()
     {
         $layout = $this->layout;
+
         return view('home.cart', compact(['layout']));
     }
 
@@ -89,6 +89,7 @@ class HomeController extends Controller
     {
         $collections = $collection->where('active', true)->get();
         $layout = $this->layout;
+        dd($collections);
         return view('home.shop', compact(['layout','collections']));
     }
 

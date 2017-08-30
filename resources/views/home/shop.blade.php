@@ -24,6 +24,7 @@
 	</div>
 </div>
 @endsection
+
 @section('content')
 <div class="container" style="">
 	<h3 class="text-center">OUR COLLECTIONS</h3>
@@ -40,10 +41,10 @@
 						<h5>{{ $collection->name }}</h5>
 						<a class="btn btn-primary" href="#">View Collection</a>	
 					</div>
-					
 				</template>
 			</theme1-shop-card>
 			@endforeach
+			dd($collections);
 		@endif
 	</div>
 </div>
