@@ -18,8 +18,11 @@ class AppServiceProvider extends ServiceProvider
         view()->composer([
             'layouts.themes.backend.login',
             'layouts.themes.backend.layout',
+            'layours.themes.backend.partials.nav',
             'layouts.themes.theme1.layout',
-            'layouts.themes.theme2.layout'], function($view) {
+            'layouts.themes.theme2.layout',
+            'layouts.themes.theme2.partials.nav'
+            ], function($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
             $view->with('company', $company);
         });

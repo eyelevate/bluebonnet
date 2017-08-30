@@ -1,123 +1,3 @@
-{{-- 
-<!DOCTYPE html>
-<html lang="en" dir="ltr" class="no-js multi-step windows chrome desktop page--no-banner page--logo-main page--show  card-fields">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
-    <meta name="referrer" content="origin">
-
-    <title>Anna Sheffield Jewelry - Checkout</title>
-
-    
-
-    
-<!--[if lt IE 9]>
-<link rel="stylesheet" media="all" href="//cdn.shopify.com/app/services/398002/assets/170407440/checkout_stylesheet/v2-ltr-edge-1b921632d90aa55e15abe1cd04196a62-12345709250930579744/oldie" />
-<![endif]-->
-
-<!--[if gte IE 9]><!-->
-  <link rel="stylesheet" media="all" href="//cdn.shopify.com/app/services/398002/assets/170407440/checkout_stylesheet/v2-ltr-edge-1b921632d90aa55e15abe1cd04196a62-12345709250930579744" />
-
-<!--<![endif]-->
-
-
-
-
-
-
-    <meta data-browser="chrome" data-browser-major="60">
-<meta data-body-font-family="Helvetica Neue" data-body-font-type="system">
-<meta id="shopify-digital-wallet" name="shopify-digital-wallet" content="/398002/digital_wallets/dialog" />
-
-  <script type="text/javascript">
-    (function() {
-      window.ShopifyExperiments = {};
-      window.ShopifyExperiments.rememberMe = true;
-      window.ShopifyExperiments.checkoutWithPhone = false;
-      window.ShopifyExperiments.customerNotificationSubscriptions = false;
-      window.ShopifyExperiments.googleAutocomplete = false;
-    })();
-  </script>
-
-  <script src="//cdn.shopify.com/s/assets/checkout-4c5161237690cf82653635c03f3471c3fe2105b32147c44e4e5546ff3122bfbe.js"></script>
-
-
-  <meta name="shopify-checkout-api-token" content="81b8211ebea0482e266ac60e6ae57632">
-
-    <meta name="shopify-checkout-authorization-token" content="967254919364c51570fc533bb041288a" />
-
-  <script>
-//<![CDATA[
-window.ShopifyPaypalV4VisibilityTracking = true;
-//]]>
-</script>
-
-  
-
-  
-
-    <script src="//cdn.shopify.com/app/services/398002/javascripts/countries/170407440/en/countries-99378dd14ecabcaa58ff90b3eb75cf79190c0733-0.js"></script>
-
-    <script src="//www.paypalobjects.com/api/checkout.js" async="async"></script><meta id="in-context-paypal-metadata" data-merchant-id="B77FX6AFW4XR4" data-environment="production" data-locale="en_US" data-redirect-url="/398002/checkouts/7d65685aaef99438fa1fc7a935fe6b7a/express/redirect" />
-
-  <script type="text/javascript">
-    if (window.opener) {
-      window.opener.postMessage(JSON.stringify({"current_checkout_page": "\/checkout\/contact_information"}), "*");
-    }
-
-    if (typeof Shopify == 'undefined') { Shopify = {}; }
-    Shopify.Checkout = {};
-    Shopify.Checkout.geolocatedAddress = {"lat":33.1499,"lng":-96.8555};
-    Shopify.Checkout.locale = "en";
-    Shopify.Checkout.token = "7d65685aaef99438fa1fc7a935fe6b7a";
-    Shopify.Checkout.page = "show";
-    Shopify.Checkout.step = "contact_information";
-    Shopify.Checkout.apiHost = "annasheffield.myshopify.com";
-    Shopify.Checkout.rememberMeHost = "pay.shopify.com";
-    Shopify.Checkout.rememberMeAccessToken = "S3dRK2ZyeEJqNEF5SXZ2cVBncWplbTRxS3k4R09maU03R0RyVUJ1NTNOd0JpLzhxN1VINW9Rdzk4Vk83QkZQRi0tbjNKV2ljVkp0U2x4TFBSQWhMaURCQT09--2461e63ce6dca73dc30e6863b15a898d0dcc2153";
-    Shopify.Checkout.AddressFormat = {"N_p_c_sc_a":[["company"],["last_name","first_name"],["zip"],["country"],["province","city"],["address1","address2"],["phone"]],"N_p_c_c_a":[["company"],["last_name","first_name"],["zip"],["country"],["city"],["address1","address2"],["phone"]],"n_a_c_csp":[["first_name","last_name"],["company"],["address1","address2"],["city"],["country","province","zip"],["phone"]],"n_a_c_cs":[["first_name","last_name"],["company"],["address1","address2"],["city"],["country","province"],["phone"]],"n_a_c_cp":[["first_name","last_name"],["company"],["address1","address2"],["city"],["country","zip"],["phone"]],"n_a_c_c":[["first_name","last_name"],["company"],["address1","address2"],["city"],["country"],["phone"]]};
-
-    var thankYouStep = false;
-    var rememberMeCookie = false;
-    var rememberMeEnabled = true;
-
-    if(thankYouStep) {
-      Shopify.Checkout.OrderStatus = OrderStatusPageApi.prototype;
-    }
-
-    if(rememberMeCookie && rememberMeEnabled) {
-      Shopify.Checkout.rememberMeCookieIsHere = true;
-    }
-  </script>
-
-    
-
-  
-
-  <script type="text/javascript">
-  Shopify.clientAttributesCollectionEventName =
-    "client_attributes_checkout";
-  var DF_CHECKOUT_TOKEN = "7d65685aaef99438fa1fc7a935fe6b7a";
-</script>
-
-
-
-
-
-  <script id="__st">
-//<![CDATA[
-var __st={"a":398002,"offset":-14400,"reqid":"9bd1c906-d0fe-4f2b-847a-fc8338958e98","pageurl":"www.annasheffield.com\/398002\/checkouts\/7d65685aaef99438fa1fc7a935fe6b7a?_ga=2.247359874.704693059.1504021134-126469668.1503596018","u":"df86818decbc","t":"checkout","offsite":1};
-//]]>
-</script><script src="https://cdn.shopify.com/s/javascripts/shopify_stats.js?v=6" type="text/javascript" async="async"></script>
-
-
-
-
-
-  </head> --}}
-
-
 @extends($layout)
 
 @section('scripts')
@@ -129,7 +9,7 @@ var __st={"a":398002,"offset":-14400,"reqid":"9bd1c906-d0fe-4f2b-847a-fc8338958e
 .order-summary{
     padding-right: 50px;
     border-left: 1px solid #ccc;
-    padding-left: 10px;
+    padding-left: 50px;
 
 }
 
@@ -151,10 +31,10 @@ var __st={"a":398002,"offset":-14400,"reqid":"9bd1c906-d0fe-4f2b-847a-fc8338958e
 @section('content')
 
 <div class="row justify-content-center">
-  <div class="col-8 hidden-md-down">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
   <div class="customer-form">
       <div class="row justify-content-center">
-      <h1>Blue Bonnet Diamond</h1>
+      <h1>Freya's Fine Jewelry</h1>
       </div>
     <div class="row justify-content-center">
       <nav class="breadcrumb">
@@ -187,84 +67,148 @@ var __st={"a":398002,"offset":-14400,"reqid":"9bd1c906-d0fe-4f2b-847a-fc8338958e
           </div>
 
       </div>
-
+{{-- Form Row 1 --}}
       <div class="form-group row">
       <div class="col-12">
       <form>
                
                 <input type="email" class="form-control" id="Email" placeholder="Email">
+                <small id="emailHelp" class="form-text text-muted">Please enter a valid email address.</small>
+              
+      </form>
+      </div>
+      </div>
+{{-- Form Row 2 --}}
+      <div class="form-group row">
+        <div class="col-6">
+        <form>
+                 
+                  <input type="text" class="form-control" id="FirstName" placeholder="First Name">
+                  <small id="firstNameHelp" class="form-text text-muted">Please enter your first name.</small>
+        </form>
+        </div>
+              <div class="col-6">
+              <form>
+                     
+                      <input type="text" class="form-control" id="LastName" placeholder="Last Name">
+                      <small id="lastNameHelp" class="form-text text-muted">Please enter your last name.</small>
+                    
+              </form>
+              </div>
+      </div>
+
+{{-- Form Row 3 --}}
+      <div class="form-group row">
+      <div class="col-12">
+      <form>
+               
+                <input type="text" class="form-control" id="Company" placeholder="Company Name (optional)">
+                <small id="companyHelp" class="form-text text-muted">Please enter your company name. (optional)</small>
               
       </form>
       </div>
       </div>
 
-</div>
-</div>
-
-  <div class="col-4 hidden-md-down d-flex justify-content-center">
-
-    <div class="order-summary">
-      <table class="product-table">
-        <caption class="visually-hidden">Shopping cart</caption>
-        <thead>
-          <tr>
-            <th scope="col"><span class="visually-hidden">Product image</span></th>
-            <th scope="col"><span class="visually-hidden">Description</span></th>
-            <th scope="col"><span class="visually-hidden">Quantity</span></th>
-            <th scope="col"><span class="visually-hidden">Price</span></th>
-          </tr>
-        </thead>
-        <tbody data-order-summary-section="line-items">
-          <tr class="product" data-product-id="5904256965" data-variant-id="18916996229" data-product-type="Bracelets">
-            <td class="product__image">
-              <div class="product-thumbnail">
-                <div class="product-thumbnail__wrapper">
-                  <img alt="Attelage Pavé Cuff - Rose Gold & Champagne Diamond" class="product-thumbnail__image" src="//cdn.shopify.com/s/files/1/0039/8002/products/attelage-pave-cuff-rg-cd-front_small.jpg?12345709250930579744" />
-                </div>
-                <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
+{{-- Shipping Address --}}
+         <div class="row">
+          
+              <div class="col-6 d-flex justify-content-start">
+              <h5>Shipping Address</h5>
               </div>
 
-            </td>
-            <td class="product__description">
-              <span class="product__description__name order-summary__emphasis">Attelage Pavé Cuff - Rose Gold & Champagne Diamond</span>
-              <span class="product__description__variant order-summary__small-text"></span>
-
-            </td>
-            <td class="product__quantity visually-hidden">
-              1
-            </td>
-            <td class="product__price">
-              <span class="order-summary__emphasis">$6,500.00</span>
-            </td>
-          </tr>
-          <tr class="product" data-product-id="395077424" data-variant-id="1063458156" data-product-type="Bracelets">
-            <td class="product__image">
-              <div class="product-thumbnail">
-                <div class="product-thumbnail__wrapper">
-                  <img alt="Bea Hand Harness - Sterling Silver & Black Diamonds" class="product-thumbnail__image" src="//cdn.shopify.com/s/files/1/0039/8002/products/bea_b-18_ss-bd_small.jpg?12345709250930579744" />
-                </div>
-                <span class="product-thumbnail__quantity" aria-hidden="true">1</span>
+          </div>
+{{-- Form Row 4 --}}
+      <div class="form-group row">
+        <div class="col-8">
+        <form>
+                 
+                  <input type="text" class="form-control" id="Address" placeholder="Address">
+                  <small id="addressHelp" class="form-text text-muted">Please enter your address.</small>
+        </form>
+        </div>
+              <div class="col-4">
+              <form>
+                     
+                      <input type="text" class="form-control" id="Address2" placeholder="Apt/Ste/Etc (optional)">
+                    
+              </form>
               </div>
-
-            </td>
-            <td class="product__description">
-              <span class="product__description__name order-summary__emphasis">Bea Hand Harness - Sterling Silver & Black Diamonds</span>
-              <span class="product__description__variant order-summary__small-text"></span>
-
-            </td>
-            <td class="product__quantity visually-hidden">
-              1
-            </td>
-            <td class="product__price">
-              <span class="order-summary__emphasis">$550.00</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-
-      <div class="order-summary__scroll-indicator">
-        Scroll for more items
       </div>
+{{-- Form Row 5 --}}
+      <div class="form-group row">
+      <div class="col-12">
+      <form>
+               
+                <input type="text" class="form-control" id="City" placeholder="City">
+                <small id="cityHelp" class="form-text text-muted">Please enter your city.</small>
+              
+      </form>
+      </div>
+      </div>
+{{-- Form Row 6 --}}
+      <div class="form-group row">
+        <div class="col-6">
+        <form>
+                 
+                <select class="form-control" id="countrySelect" placeholder="Country">
+                <option>United States</option>
+                <option>Canada</option>
+                <option>Mexico</option>
+                <option>UK</option>
+                <option>China</option>
+                </select>
+                <small id="countryHelp" class="form-text text-muted">Country</small>
+        </form>
+        </div>
+              <div class="col-3">
+              <form>
+                     
+                <select class="form-control" id="stateSelect" placeholder="State">
+                <option>Texas</option>
+                <option>California</option>
+                <option>Oklahoma</option>
+                <option>Washington</option>
+                <option>Nevada</option>
+                </select>
+                <small id="stateHelp" class="form-text text-muted">State</small>
+                    
+              </form>
+              </div>
+              <div class="col-3">
+              <form>
+                     
+                      <input type="number" class="form-control" id="zipCode" placeholder="Zip Code">
+                      <small id="zipHelp" class="form-text text-muted">Zip Code</small>
+                    
+              </form>
+              </div>
+      </div>
+{{-- Form Row 7 --}}
+      <div class="form-group row">
+      <div class="col-12">
+      <form>
+               
+                <input type="text" class="form-control" id="PhoneNumber" placeholder="Phone Number">
+                <small id="phoneHelp" class="form-text text-muted">Please enter a valid phone number.</small>
+              
+      </form>
+      </div>
+      </div>
+
+
+</div>
+</div>
+
+{{-- Customer Order Summary Sidebar --}}
+
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 d-flex justify-content-center">
+
+    <div class="order-summary hidden-md-down">
+      @include('layouts.themes.theme2.partials.checkout-side')
+    </div>
+    <div class="hidden-lg-up">
+      <hr>
+      @include('layouts.themes.theme2.partials.checkout-side')
     </div>
 </div>
 </div>
