@@ -13,7 +13,7 @@ class CompaniesTableSeeder extends Seeder
     public function run()
     {
         DB::table('companies')->insert([
-            'name' => 'Blue Bonnet Diamond',
+            'name' => "Freya's Fine Jewelry",
             'nick_name' => '',
             'street' => '5550 LBJ Freeway',
             'suite' => '420',

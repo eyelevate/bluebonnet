@@ -3,12 +3,12 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent0" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a href="{{ route('home') }}" class="navbar-brand hidden-lg-up">Blue Bonnet Diamond</a>
+        <a href="{{ route('home') }}" class="navbar-brand hidden-lg-up">{{ $company->name }}</a>
         <div class="collapse navbar-collapse flex-column ml-lg-0 ml-3 hidden-md-down">
             <ul class="navbar-nav">
                 <li class="text-center col-12">                  
                     <a href="{{ route('home') }}" class="nav-link">
-                        <strong style="font-size:25px; font-weight:100;">Blue Bonnet Diamond</strong>
+                        <strong style="font-size:25px; font-weight:100;">{{ $company->name }}</strong>
                     </a>
                 </li>
             </ul>
@@ -76,7 +76,7 @@
 
 <nav class="navbar navbar-light navbar-toggleable-md bg-primary fixed-top bg-faded hidden-md-down" on-scroll="70" style="z-index: 999;">
     <div class="container">    
-        <a class="navbar-brand" href="{{ route('home') }}">blue bonnet diamond</a>
+        <a class="navbar-brand" href="{{ route('home') }}">{{ $company->name }}</a>
         <div class="collapse navbar-collapse" style="">
             <ul class="navbar-nav mr-auto ">
                 <li class="nav-item">
@@ -121,7 +121,7 @@
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="{{ route('home') }}">blue bonnet diamond</a>
+    <a class="navbar-brand" href="{{ route('home') }}">{{ $company->name }}</a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent" style="">
         <ul class="navbar-nav mr-auto ">
