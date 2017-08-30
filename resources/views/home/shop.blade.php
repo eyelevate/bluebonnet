@@ -10,7 +10,8 @@
 		<theme1-shop-card 
 			use-body="true" 
 			use-img-top="true" 
-			img-top-class="shop-header">
+			img-top-class="shop-header"
+			img-top-src="img/theme2/BBshopHeader.jpg">
 			<template slot="body">
 				<div class="text-center">
 					<blockquote class="blockquote">
