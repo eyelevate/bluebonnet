@@ -65,7 +65,8 @@ mix.js('resources/assets/js/views/auth/login.js','public/js/views/auth')
    .js('resources/assets/js/views/auth/register.js','public/js/views/auth');
 
 // Collection
-mix.js('resources/assets/js/views/collections/create.js','public/js/views/collections');
+mix.js('resources/assets/js/views/collections/create.js','public/js/views/collections')
+   .js('resources/assets/js/views/collections/set.js','public/js/views/collections');
 
 // Companies
 mix.js('resources/assets/js/views/companies/create.js','public/js/views/companies');

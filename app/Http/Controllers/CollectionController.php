@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 
 use App\Collection;
+use App\Inventory;
+use App\InventoryItem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -125,5 +127,17 @@ class CollectionController extends Controller
             flash('You have successfully deleted a collection.')->success();
             return redirect()->route('collection.index');
         }
+    }
+
+    public function set(Collection $collection, Inventory $inventory)
+    {
+        $inventory_select = $inventory->prepareSelect();
+        $inventories = $inventory->prepareForSet();
+        return view('collections.set',compact(['collection','inventory_select','inventories']));
+    }
+
+    public function updateSet(Request $request, Colletion $collection)
+    {
+
     }
 }

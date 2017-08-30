@@ -77,6 +77,8 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
     Route::get('/collections/{collection}/edit', 'CollectionController@edit')->name('collection.edit');
     Route::patch('/collections/{collection}', 'CollectionController@update')->name('collection.update');
+    Route::get('/collections/{collection}/set', 'CollectionController@set')->name('collection.set');
+    Route::get('/collections/{collection}', 'CollectionController@updateSet')->name('collection.update_set');
 
     // Designs
     Route::get('/designs', 'DesignController@index')->name('design.index');
