@@ -20,6 +20,7 @@ Route::get('/privacy-policy', 'HomeController@privacy')->name('home.privacy');
 Route::get('/shipping', 'HomeController@shipping')->name('home.shipping');
 Route::get('/shop', 'HomeController@shop')->name('home.shop');
 Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
+Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
 
 Auth::routes();
 

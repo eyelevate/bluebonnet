@@ -97,4 +97,12 @@ class HomeController extends Controller
         $layout = $this->layout;
         return view('home.tos', compact(['layout']));
     }
+
+
+    public function checkout()
+    {
+        $layout = $this->layout;
+        return view('home.checkout', compact(['layout']));
+    }
+
 }
