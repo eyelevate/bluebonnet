@@ -11,18 +11,18 @@ class CreateLinesTable extends Migration
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('lines', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->text('desc')->nullable();
-            $table->boolean('active')->default(0);
-            $table->tinyInteger('status')->default(1);
-            $table->softDeletes();
-            $table->timestamps();
-        });
-    }
+    // public function up()
+    // {
+    //     Schema::create('lines', function (Blueprint $table) {
+    //         $table->increments('id');
+    //         $table->string('name');
+    //         $table->text('desc')->nullable();
+    //         $table->boolean('active')->default(0);
+    //         $table->tinyInteger('status')->default(1);
+    //         $table->softDeletes();
+    //         $table->timestamps();
+    //     });
+    // }
 
     /**
      * Reverse the migrations.

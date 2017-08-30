@@ -22,13 +22,21 @@ class InventoryItem extends Model
         'collection_id',
         'subtotal',
         'taxable',
-        'active'
+        'active',
+        'metals',
+        'stones'
     ];
 
     public function inventories()
     {
         return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
     }
+
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'inventory_item_id', 'id');
+    }
+
 
     public function collections()
     {
@@ -88,7 +96,7 @@ class InventoryItem extends Model
                 if(count($value->inventoryItems) > 0){
                     foreach ($value->inventoryItems as $iikey => $iivalue) {
                         // append last column to table here
-                        $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
+                        $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$iivalue->id.'" type="button">view</button>';
                         $last_column .= '</div>';
                         $inventories[$key]['inventoryItems'][$iikey]['action'] = $last_column;
 
@@ -105,7 +113,27 @@ class InventoryItem extends Model
 
                         // taxable
                         if (isset($inventories[$key]['inventoryItems'][$iikey]['taxable'])) {
-                            $inventories[$key]['inventoryItems'][$iikey]['taxable_status'] = ($iivalue->active) ? 'Yes' :  'No';
+                            $inventories[$key]['inventoryItems'][$iikey]['taxable_status'] = ($iivalue->taxable) ? 'Yes' :  'No';
+                        } 
+
+                        // metals
+                        if (isset($inventories[$key]['inventoryItems'][$iikey]['metals'])) {
+                            $inventories[$key]['inventoryItems'][$iikey]['metals_status'] = ($iivalue->metals) ? 'Yes' :  'No';
+                        } 
+
+                        // Stone 
+                        if (isset($inventories[$key]['inventoryItems'][$iikey]['stones'])) {
+                            $inventories[$key]['inventoryItems'][$iikey]['stones_status'] = ($iivalue->stones) ? 'Yes' :  'No';
+                        } 
+
+                        // images
+                        if (isset($inventories[$key]['inventoryItems'][$iikey]['images'])) {
+                            $first = $iivalue->images()->where('primary',true)->first();
+                            $last = $iivalue->images()->where('primary',false)->orderBy('ordered','asc')->get();
+                            $ordered = $iivalue->images()->orderBy('ordered','asc')->get();
+                            $inventories[$key]['inventoryItems'][$iikey]['primary_image'] = $first;
+                            $inventories[$key]['inventoryItems'][$iikey]['non_primary_images'] = $last;
+                            
                         } 
                     }
                 }

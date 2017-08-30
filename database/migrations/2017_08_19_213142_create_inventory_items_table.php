@@ -15,14 +15,15 @@ class CreateInventoryItemsTable extends Migration
     {
         Schema::create('inventory_items', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('design_id');
             $table->integer('inventory_id');
-            $table->integer('line_id')->nullable();
+            $table->integer('collection_id')->nullable();
             $table->string('name');
             $table->text('desc')->nullable();
             $table->decimal('subtotal',11,2)->nullable();
             $table->boolean('taxable')->default(1);
             $table->boolean('active')->default(0);
+            $table->boolean('metals')->default(1);
+            $table->boolean('stones')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

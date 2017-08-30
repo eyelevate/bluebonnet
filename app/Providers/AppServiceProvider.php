@@ -38,7 +38,6 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('layouts.themes.backend.partials.sidebar', function ($view) {
             $collections_count = \App\Collection::countCollections();
             $customer_count = \App\User::countCustomers();
-            $design_count = \App\Design::countDesigns();
             $employee_count = \App\User::countEmployees();
             $companies_count = \App\Company::countCompanies();
             $fee_count = \App\Fee::countFees();
@@ -52,7 +51,6 @@ class AppServiceProvider extends ServiceProvider
             $view->with('companies_count', $companies_count)
             ->with('collections_count',$collections_count)
             ->with('customer_count', $customer_count)
-            ->with('design_count', $design_count)
             ->with('employee_count', $employee_count)
             ->with('fee_count', $fee_count)
             ->with('finger_count', $finger_count)

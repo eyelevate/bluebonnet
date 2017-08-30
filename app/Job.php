@@ -451,6 +451,11 @@ class Job extends Model
     	return [0=>'Sunday',1=>'Monday',2=>'Tuesday',3=>'Wednesday',4=>'Thursday',5=>'Friday',6=>'Saturday'];
     }
 
+    public function stringToDotDotDot($string, $chars = 20)
+    {
+    	return (strlen($string) > $chars) ? substr($string, 0, $chars) . '...' : $string;
+    }
+
     public function switchLayout($theme)
     {
     	$layout = '';
