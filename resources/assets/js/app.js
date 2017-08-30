@@ -37,6 +37,7 @@ window.Event = new class {
 Vue.component('bootstrap-card',require('./components/bootstrap/Card.vue'));
 Vue.component('bootstrap-control',require('./components/bootstrap/Control.vue'));
 Vue.component('bootstrap-input',require('./components/bootstrap/Input.vue'));
+Vue.component('bootstrap-jumbotron',require('./components/bootstrap/Jumbotron.vue'));
 Vue.component('bootstrap-modal',require('./components/bootstrap/Modal.vue'));
 Vue.component('bootstrap-progress',require('./components/bootstrap/Progress.vue'));
 Vue.component('bootstrap-radio',require('./components/bootstrap/Radio.vue'));
