@@ -182,6 +182,7 @@ return [
         Laravel\Passport\PassportServiceProvider::class,
         HighIdeas\UsersOnline\UsersOnlineServiceProvider::class,
         HighIdeas\UsersOnline\Providers\UsersOnlineEventServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
     ],
 
@@ -232,7 +233,8 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
-        'Html' => Collective\Html\HtmlFacade::class
+        'Html' => Collective\Html\HtmlFacade::class,
+        'Intervention' => Intervention\Image\Facades\Image::class
     ],
 
 ];

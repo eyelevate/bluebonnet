@@ -20,6 +20,7 @@ class CreateCollectionsTable extends Migration
             $table->boolean('active')->default(0);
             $table->string('img_src')->nullable();
             $table->tinyInteger('featured')->default(0);
+            $table->string('featured_src')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();
             $table->timestamps();

@@ -3,7 +3,9 @@
 namespace App;
 
 use App\Job;
+use Illuminate\Http\File;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
@@ -20,6 +22,8 @@ class Image extends Model
         'inventory_id',
         'inventory_item_id',
         'primary',
+        'featured',
+        'featured_src',
         'img_src',
         'ordered'
     ];
@@ -44,5 +48,30 @@ class Image extends Model
     	}
 
     	return $variable;
+    }
+    /**
+     * Resizes image and sends it to tmp file
+     *
+     * @return path to tmp image (public/tmp)
+     */
+    public function resize($file, $width, $height)
+    {
+        // resize regular images to 480x480 and then save it to db
+        $resize = \Intervention::make($file);
+        $resize->resize($width,$height);
+        $resize_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).'.'.$file->getClientOriginalExtension();
+
+        // Check to see if tmp file exists
+        if(!is_dir(public_path('tmp'))) {
+            
+            // path does not exist so create it
+
+            Storage::makeDirectory('public/tmp');
+        }
+        $resize->save(public_path("storage/tmp/{$resize_name}"));
+        $saved_image_uri = "{$resize->dirname}/{$resize->basename}";
+        $resize->destroy();
+        return $saved_image_uri;
+
     }
 }

@@ -135,6 +135,7 @@
 			                					use-header="true"
 			                					use-footer="true"
 			                					:img-top-src="i.src"
+			                					img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ i.name }}
@@ -153,6 +154,7 @@
 			                					use-header="true"
 			                					use-footer="true"
 			                					:img-top-src="i.src"
+			                					img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ i.name }}
@@ -177,6 +179,7 @@
 			                					use-footer="true"
 			                					:img-top-src="i.src"
 			                					use-header="true"
+			                					img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ i.name }}
@@ -195,6 +198,7 @@
 			                					use-footer="true"
 			                					:img-top-src="i.src"
 			                					use-header="true"
+			                					img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ i.name }}
@@ -202,7 +206,7 @@
 			                					<template slot="footer">
 			                						<button type="button" class="make-primary btn btn-primary" @click="primaryImage(k, $event)">Set Primary</button>
 				                					<button type="button" class="btn btn-danger" @click="removeImage(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-				                					<input type="hidden" :name="i.primary_name" v-model="images[k]['primary']">	
+				                					<input class="primary-input" type="hidden" :name="i.primary_name" v-model="images[k]['primary']">	
 			                					</template>
 			                				</bootstrap-card>
 		                				</div>
