@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Collection;
 use App\Instagram;
+use App\InventoryItem;
 use App\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,7 +33,7 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Instagram $instagram)
+    public function index(Instagram $instagram, Collection $collection, InventoryItem $inventoryItem)
     {
         $layout = $this->layout;
 
@@ -45,7 +46,13 @@ class HomeController extends Controller
         } else {
             flash($ig['data'])->warning();
         }  
-        return view($this->view,compact(['layout','feed']));
+
+        // featured collection
+        $featured_collection = $collection->where('featured',true)->where('active',true)->first();
+        // featured items
+        $items = $inventoryItem->where('featured',true)->where('active',true)->inRandomOrder()->take(2)->get();
+        $featured_items = $inventoryItem->prepareForFrontend($items);
+        return view($this->view,compact(['layout','feed','featured_collection','featured_items']));
     }
 
     public function cart()
@@ -87,7 +94,9 @@ class HomeController extends Controller
 
     public function shop(Collection $collection)
     {
-        $collections = $collection->where('active', true)->get();
+        
+        $nonfeatured = $collection->where('active', true)->where('featured',false)->orderBy('id','desc');
+        $collections = $collection->where('featured',true)->where('active',true)->union($nonfeatured)->get();
         $layout = $this->layout;
         return view('home.shop', compact(['layout','collections']));
     }

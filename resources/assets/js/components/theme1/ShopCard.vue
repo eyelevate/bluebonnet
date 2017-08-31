@@ -3,8 +3,8 @@
 	    <div class="card-header" :class="hClass" v-if="checkCardHeader">
 	       	<slot name="header"></slot>
 	    </div>
-        <div v-if="checkCardImageTop" class="" :class="iTopSrcClass">
-            <img class="card-img-top lazy" :data-original="iTopSrc" >    
+        <div v-if="checkCardImageTop" :class="iTopDivClass">
+            <img class="card-img-top lazy" :data-original="iTopSrc" :class="iTopClass">    
         </div>
         
 	    <div class="card-block" :class="bClass" v-if="checkCardBody">
@@ -27,6 +27,7 @@
             'use-footer',
             'use-img-top',
             'img-top-src',
+            'img-top-div-class',
             'img-top-class',
         ],
     	data() {
@@ -39,6 +40,8 @@
     			fClass: this.footerClass,
                 hClass: this.headerClass,
                 iTopSrc: this.imgTopSrc,
+                iTopDivClass: this.imgTopDivClass,
+                iTopClass: this.imgTopClass,
                 iTopSrcClass: this.imgTopClass
     		}
     	},

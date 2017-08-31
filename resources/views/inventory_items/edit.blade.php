@@ -106,6 +106,17 @@
 	                	input-name="active"
 	                	input-checked="{{ old('active') ? old('active') : ($inventoryItem->active) ? 'true' : 'false'}}">
 	                </bootstrap-switch>
+	                <hr/>
+	                <!-- Featured -->
+
+					<bootstrap-switch 
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Featured?" 
+	                	input-name="featured"
+	                	input-checked="{{ old('featured') ? old('featured') : ($inventoryItem->featured) ? 'true' : 'false' }}">
+	                </bootstrap-switch>
 
 	                <hr/>
 	                <bootstrap-control

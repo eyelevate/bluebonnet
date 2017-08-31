@@ -17,13 +17,13 @@
 				<img class="d-block img-fluid lazy" src="img/themes/theme2/Edited/slider-5.jpg" alt="First slide">
 				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Socially Responsible</h2>
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Socially Responsible</h3>
-				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop New Arrivals</a></p>
+				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
 			</div>
 			<div class="carousel-item">
 				<img class="d-block img-fluid lazy" src="img/themes/theme2/Edited/slider-6.jpg" alt="Second slide">
 				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Eco Friendly</h2>
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Eco Friendly</h3>
-				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Engagement Rings</a></p>
+				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
 			</div>
 		</div>
 	</div>
@@ -38,44 +38,38 @@
 	</div>	
 </div>
 <div class="container">
+	@if (isset($featured_items))
 	<div class="row">
+		@foreach($featured_items as $item)
 		<div class="col-xs-12 col-sm-6">
 			<div class="card">
-				<img class="card-img-top lazy" data-original="img/themes/theme2/editedRings/platinumRing01.jpg" alt="Card image cap">
+				<img class="card-img-top card-img-top-featured lazy mx-auto d-block" data-original="{{ $item->primary_img_src }}" alt="Card image cap">
 				<div class="card-block text-center">
 					<p class="card-text">
-						<h3 style="margin-bottom:0px;">Hazeline</h3>
-						<p><a href="#" class="text-center">Shop the Icon</a></p>
+						<h3 style="margin-bottom:0px;">{{ $item->name }}</h3>
+						<p><a href="#" class="btn btn-primary">Shop {{ $item->name }}</a></p>
 					</p>
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-12 col-sm-6">
-			<div class="card">
-				<img class="card-img-top lazy" data-original="img/themes/theme2/editedRings/goldRing01.jpg" alt="Card image cap">
-				<div class="card-block text-center">
-					<p class="card-text text-center">
-						<h3 style="margin-bottom:0px;">Purple Rain</h3>
-						<p><a href="#" class="">Shop Lavender Moon Quartz</a></p>
-					</p>
-				</div>
-			</div>
-		</div>
+		@endforeach
 	</div>
+	@endif
+	@if (isset($featured_collection))
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
-				<img class="card-img-top lazy" data-original="img/themes/theme2/BBshopHeader.jpg" alt="Card image cap">
+				<img class="card-img-top lazy mx-auto d-block" data-original="{{ asset(str_replace('public/', 'storage/', $featured_collection->img_src)) }}" alt="Card image cap">
 				<div class="card-block text-center">
 					<p class="card-text text-center">
-						<h3 style="margin-bottom:0px;">Forever Moments</h3>
-						<p><a href="#" class="">Shop Eternity Bands</a></p>
+						<h3 style="margin-bottom:0px;">{{ $featured_collection->name }}</h3>
+						<p><a href="{{ route('collection.show',$featured_collection->id) }}" class="btn btn-primary">Featured Collection</a></p>
 					</p>
 				</div>
 			</div>	
 		</div>
-		
 	</div>
+	@endif
 	<section id="instagram">
 		<div class="row text-center">
 			<h4 class="col-12" style="margin-bottom:0px;">@BlueBonnet</h4>

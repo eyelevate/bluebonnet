@@ -24,7 +24,8 @@ class InventoryItem extends Model
         'taxable',
         'active',
         'metals',
-        'stones'
+        'stones',
+        'featured'
     ];
 
     public function inventories()
@@ -37,13 +38,89 @@ class InventoryItem extends Model
         return $this->hasMany(Image::class, 'inventory_item_id', 'id');
     }
 
-
-    public function collections()
+    public function collectionItem()
     {
-        return $this->belongsTo(Collection::class, 'collection_id', 'id');
+        return $this->belongsToMany(InventoryItem::class,'collection_item','inventory_item_id','collection_id');
     }
 
     #public
+
+    public function prepareForFrontend($data)
+    {
+        // check if exists
+        if (isset($data)) {
+            foreach ($data as $key => $value) {
+                if ($value->images) {
+                    $first = $value->images()->where('primary',true)->first();
+                    $last = $value->images()->where('primary',false)->orderBy('ordered','asc')->get();
+                    $data[$key]['primary_img_src'] = asset(str_replace('public/', 'storage/', $first->img_src));
+
+                }
+                
+            }
+        }
+
+        return $data;
+    }
+
+    public function prepareForShowInventory($data)
+    {
+        if (isset($data)) {
+            foreach ($data as $ikey => $ivalue) {
+                // collection item
+                $data[$ikey]['collection_set'] = false;
+                if (count($ivalue->collectionItem) > 0) {
+                    foreach ($ivalue->collectionItem as $collection) {
+                        $pivot_collection_id = $collection->pivot->collection_id;
+                        if ($pivot_collection_id == $collection_id) {
+                            $data[$ikey]['collection_set'] = true;
+                            break;
+                        }
+                    }
+                    
+                }
+                $data[$ikey]['collectionItem'] = (count($ivalue->collectionItem) > 0) ? $ivalue->collectionItem : [];
+                if (count($ivalue->images) > 0) {
+                    foreach ($ivalue->images as $iikey => $iivalue) {
+
+                        $primary_img = $ivalue->images()->where('primary',true)->first();
+                        $primary_src = ($primary_img) ? $primary_img->img_src : null;
+                        
+                        $non_primary_imgs = $ivalue->images()->where('primary',false)->orderBy('ordered','asc')->get();
+                        $data[$ikey]['primary_src'] = asset(str_replace('public/','storage/',$primary_src));
+                        $data[$ikey]['non_primary_imgs'] = $non_primary_imgs;
+
+                    }
+                }
+                
+            }
+        }
+        return $data;
+    }
+
+    public function prepareForShowCollection($data)
+    {
+        if (isset($data)) {
+            foreach ($data as $ikey => $ivalue) {
+                if (count($ivalue->images) > 0) {
+                    foreach ($ivalue->images as $iikey => $iivalue) {
+
+                        $primary_img = $ivalue->images()->where('primary',true)->first();
+                        $primary_src = ($primary_img) ? $primary_img->img_src : null;
+                        
+                        $non_primary_imgs = $ivalue->images()->where('primary',false)->orderBy('ordered','asc')->get();
+                        $data[$ikey]['primary_src'] = asset(str_replace('public/','storage/',$primary_src));
+                        $data[$ikey]['non_primary_imgs'] = $non_primary_imgs;
+
+                    }
+                }
+                
+            }
+        }
+        return $data;
+    }
+
+
     public function prepareTableColumns()
     {
         $columns =  [
@@ -55,10 +132,6 @@ class InventoryItem extends Model
             ], [
                 'label'=>'Description',
                 'field'=> 'desc',
-                'filterable'=> true
-            ], [
-                'label'=>'Collection',
-                'field'=> 'collection_name',
                 'filterable'=> true
             ], [
                 'label'=>'Subtotal',
@@ -73,6 +146,10 @@ class InventoryItem extends Model
                 'label'=>'Active',
                 'field'=> 'active_status',
                 'html'=> true
+            ], [
+                'label'=>'Featured',
+                'field'=> 'featured_status',
+                'filterable'=> true
             ], [
                 'label'=>'Created',
                 'field'=> 'created_at',
@@ -124,6 +201,11 @@ class InventoryItem extends Model
                         // Stone 
                         if (isset($inventories[$key]['inventoryItems'][$iikey]['stones'])) {
                             $inventories[$key]['inventoryItems'][$iikey]['stones_status'] = ($iivalue->stones) ? 'Yes' :  'No';
+                        } 
+
+                        // Featured
+                        if (isset($inventories[$key]['inventoryItems'][$iikey]['featured'])) {
+                            $inventories[$key]['inventoryItems'][$iikey]['featured_status'] = ($iivalue->featured) ? 'Yes' :  'No';
                         } 
 
                         // images

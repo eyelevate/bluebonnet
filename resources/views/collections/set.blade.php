@@ -12,6 +12,7 @@
     <li class="breadcrumb-item active">Set Items </li>
 </ol>
 <div class="container-fluid">
+
 	<bootstrap-jumbotron use-header="true" header-content="{{ $collection->name }}" header-class="display-3">
 		<template slot="body">
 			{{-- <h1 class="display-3">{{ $collection->name }}</h1> --}}
@@ -25,39 +26,53 @@
 			</bootstrap-select>
 		</template>
 	</bootstrap-jumbotron>
+	<div class="row" v-for="inventory in inventories">
+		<div v-if="inventory.id == inventoryId"  class="col-12">
+			<div v-for="inventory_item in inventory.inventory_items">
 
-	@if (count($inventories)>0)
-		@foreach($inventories as $inventory)
-		<div class="row" v-if="inventory_id === '{{ $inventory->id }}'">
-			@if(count($inventory) > 0)
-				@foreach($inventory->inventoryItems as $inventory_item)
-				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">			
-					<bootstrap-card
+				<div v-if="inventory_item.collection_set" class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-left">
+					<bootstrap-card				
+						class="card-inverse bg-success "
 						use-header="true"
 						use-img-top="true"
-						img-top-src="{{ asset($inventory_item->primary_src) }}"
+						:img-top-src="inventory_item.primary_src"
 						use-body="true"
 						use-footer="true"
 					>
-						<template slot="header">{{ $inventory_item->name }}</template>
+						<template slot="header">@{{ inventory_item.name }}</template>
 						<template slot="body">
-							<p>{{ $inventory_item->desc }}</p>
+							<p>@{{ inventory_item.desc }}</p>
 						</template>
 						<template slot="footer">
-							<button class="btn btn-sm btn-danger hide" type="button">Remove</button>
-							<button class="btn btn-sm btn-success btn-block" type="button">Set</button>
+							<div class="form-button-group">
+								<button class="remove-set btn btn-sm btn-block btn-danger" type="button" @click="remove(inventory_item.id,collectionId,$event)">Remove</button>
+							</div>
 						</template>
-						
 					</bootstrap-card>
 				</div>
-				@endforeach
-			@endif
+				<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-left" v-else>
+					<bootstrap-card				
+						use-header="true"
+						use-img-top="true"
+						:img-top-src="inventory_item.primary_src"
+						use-body="true"
+						use-footer="true"
+					>
+						<template slot="header">@{{ inventory_item.name }}</template>
+						<template slot="body">
+							<p>@{{ inventory_item.desc }}</p>
+						</template>
+						<template slot="footer">
+							<div class="form-button-group">
+								<button class="add-set btn btn-sm btn-block btn-success" type="button" @click="add(inventory_item.id,collectionId,$event)">Add</button>
+							</div>
+						</template>
+					</bootstrap-card>
+				</div>
+
+			</div>
 		</div>
-
-		@endforeach
-
-	@endif
-
+	</div>
 	
 </div>
 @endsection
@@ -66,4 +81,6 @@
 
 @endsection
 @section('variables')
+<input type="hidden" id="inventories" value="{{ json_encode($inventories) }}">
+<input type="hidden" id="collection-id" value="{{ $collection->id }}">
 @endsection

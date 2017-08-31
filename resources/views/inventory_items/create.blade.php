@@ -108,18 +108,30 @@
 	                </bootstrap-switch>
 
 	                <hr/>
+
+	                <!-- Featured -->
+
+					<bootstrap-switch 
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Featured?" 
+	                	input-name="featured"
+	                	input-checked="false">
+	                </bootstrap-switch>
+	                <hr/>
 	                <bootstrap-control
 	                	use-label="true"
 	                	label="Image(s)"
 	                    b-err="{{ $errors->has('img_src') }}"
 	                    b-error="{{ $errors->first('img_src') }}">
 	                	<template slot="control">
-	                		<div class="card imagePreviewCard col-12" >
-	                			<div class="row-fluid hidden-sm-down">
+	                		<div class="card imagePreviewCard col-12"  style="padding-top:20px;">
+	                			<div class="row-fluid">
 	                				<div v-for="i,k in images">      				
-		                				<div class="col-4 pull-left">
+		                				<div class="col-xs-12 col-sm-6 col-md-4 pull-left">
 			                				<bootstrap-card
-			                					class="image-divs bg-light"
+			                					class="image-divs"
 			                					use-img-top="true"
 			                					use-header="true"
 			                					use-footer="true"
@@ -128,24 +140,6 @@
 			                					<template slot="header">
 			                						@{{ i.name }}
 			                					</template>
-			                					<template slot="footer">
-			                						<button type="button" class="make-primary btn btn-primary" @click="primaryImage(k, $event)">Set Primary</button>
-				                					<button type="button" class="btn btn-danger" @click="removeImage(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-				                					<input type="hidden" :name="i.primary_name" v-model="images[k]['primary']">	
-			                					</template>
-			                				</bootstrap-card>
-		                				</div>
-	                				</div>
-	                			</div>
-	                			<div class="row-fluid hidden-md-up">
-	                				<div v-for="i,k in images">      				
-		                				<div class="col-12">
-			                				<bootstrap-card
-			                					class="image-divs bg-light"
-			                					use-img-top="true"
-			                					use-footer="true"
-			                					:img-top-src="i.src"
-			                				>
 			                					<template slot="footer">
 			                						<button type="button" class="make-primary btn btn-primary" @click="primaryImage(k, $event)">Set Primary</button>
 				                					<button type="button" class="btn btn-danger" @click="removeImage(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>

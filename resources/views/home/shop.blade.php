@@ -10,7 +10,7 @@
 		<theme1-shop-card 
 			use-body="true" 
 			use-img-top="true" 
-			img-top-class="shop-header"
+			img-top-div-class="shop-header"
 			img-top-src="img/theme2/BBshopHeader.jpg">
 			<template slot="body">
 				<div class="text-center">
@@ -32,14 +32,16 @@
 		@if (count($collections) > 0)
 			@foreach($collections as $collection)
 			<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-4"
+			class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
 			use-body="true" 
 			use-img-top="true" 
+			img-top-class="card-img-top-items"
 			img-top-src="{{ asset(str_replace('public/','storage/',$collection->img_src)) }}">
 				<template slot="body">
 					<div class="text-center">
+						<h6>{!! ($collection->featured) ? "<span class='badge badge-danger'>featured</span>" : '' !!}</h6>
 						<h5>{{ $collection->name }}</h5>
-						<a class="btn btn-primary" href="#">View Collection</a>	
+						<a class="btn btn-primary" href="{{ route('collection.show',$collection->id) }}">View Collection</a>	
 					</div>
 					
 				</template>
