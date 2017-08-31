@@ -130,7 +130,7 @@
 							<!-- Subtotal -->
 							<bootstrap-readonly
 								use-input="true"
-								b-value="{{ money_format('$%i',$ii->subtotal) }}"
+								b-value="{{ $ii->subtotal }}"
 								use-label="true"
 								b-label="Subtotal">		
 							</bootstrap-readonly>
