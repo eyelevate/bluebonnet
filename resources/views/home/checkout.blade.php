@@ -241,6 +241,15 @@
 
       </div>
 
+{{-- Mail Test --}}
+      <div class="row align-items-center">
+          
+          <div class="col-12 justify-content-start">
+          <a role="button" class="btn btn-warning btn-block" href="{{ route('sendEmail') }}">Send Email</a>
+          </div>
+
+      </div>
+
 
 </div>
 </div>

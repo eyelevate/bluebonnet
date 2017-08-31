@@ -225,5 +225,10 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/vendors/{vendor}/show', 'VendorController@show')->name('vendor.show');
     Route::get('/vendors/{vendor}/edit', 'VendorController@edit')->name('vendor.edit');
     Route::patch('/vendors/{vendor}', 'VendorController@update')->name('vendor.update');
+
+    // Mail Test
+    Route::get('/email', 'HomeController@email')->name('sendEmail');
+
+
 });
 

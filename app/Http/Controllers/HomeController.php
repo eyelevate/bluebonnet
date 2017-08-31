@@ -8,6 +8,9 @@ use App\InventoryItem;
 use App\Job;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+// Mail Test
+use Mail;
+use App\Mail\InvoiceUserOrder;
 
 class HomeController extends Controller
 {
@@ -114,4 +117,11 @@ class HomeController extends Controller
         return view('home.checkout', compact(['layout']));
     }
 
+    // Mail Test
+    public function email()
+    {
+        Mail::to(Auth::user()->email)->send(new InvoiceUserOrder());
+        $layout = $this->layout;
+        return view('home.checkout', compact(['layout']));
+    }
 }
