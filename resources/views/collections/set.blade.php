@@ -21,7 +21,7 @@
 			<p>Select from the following inventory groups below to display corresponding inventory item content.</p>
 			<bootstrap-select>
 				<template slot="select">
-					{{ Form::select('inventory',$inventory_select,'',['class'=>'form-control','style'=>'font-size:21px;','v-on:change'=>'setInventory($event)']) }}
+					{{ Form::select('inventory',$inventory_select,'',['class'=>'form-control','v-on:change'=>'setInventory($event)']) }}
 				</template>
 			</bootstrap-select>
 		</template>
