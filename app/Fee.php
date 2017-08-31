@@ -108,9 +108,14 @@ class Fee extends Model
                 $last_column = '<a class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" href="#">View</a>';
                 $last_column .= '</div>';
                 $rows[$key]['action'] = $last_column;
+            
+        
+
+                if (isset($rows[$key]['taxable'])) {
+                    $rows[$key]['taxable'] = ($value->taxable) ? 'Taxable' :  'No Tax';
+                }
             }
         }
-
         return $rows;
     }
 

@@ -190,9 +190,9 @@ class User extends Authenticatable
         return $rows;
     }
 
-    public static function countEmployees($role_id = 4)
+    public static function countEmployees($role_id = 3)
     {
-        return User::where('role_id', '<', $role_id)->count();
+        return User::where('role_id', $role_id)->count();
     }
 
     public static function countCustomers($role_id = 4)
