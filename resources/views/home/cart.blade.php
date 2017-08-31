@@ -143,7 +143,7 @@
 				<button name="update" class="btn btn-primary">Update Cart</button>	
 			</div>
 			<div class="col">
-				<button name="checkout" type="submit" class="btn btn-primary">Check Out</button>
+				<a name="checkout" type="submit" class="btn btn-primary" href="/checkout">Check Out</button>
 			</div>
 		</div> 
 	</div>    

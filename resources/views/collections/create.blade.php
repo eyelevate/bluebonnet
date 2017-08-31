@@ -50,7 +50,7 @@
 	                    b-error="{{ $errors->first('desc') }}"
 	                    >
 	                </bootstrap-textarea>
-
+	                <hr/>
 
 	                <!-- Active -->
 
@@ -62,7 +62,18 @@
 	                	input-name="active"
 	                	input-checked="false">
 	                </bootstrap-switch>
+	                <hr/>
+	                <!-- Featured -->
 
+					<bootstrap-switch 
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Featured?" 
+	                	input-name="featured"
+	                	input-checked="false">
+	                </bootstrap-switch>
+	                <hr/>
 	                <!-- Image -->
 	                <bootstrap-control
 	                	use-label="true"

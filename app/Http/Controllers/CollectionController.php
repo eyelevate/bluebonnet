@@ -4,11 +4,27 @@ namespace App\Http\Controllers;
 
 
 use App\Collection;
+use App\Job;
+use App\Inventory;
+use App\InventoryItem;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class CollectionController extends Controller
 {
+    private $layout;
+    private $view;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Job $job)
+    {
+        $theme = 2;
+        $this->layout = $job->switchLayout($theme);
+        $this->view = $job->switchHomeView($theme);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -45,6 +61,7 @@ class CollectionController extends Controller
         ]);
         $path = $request->img->store('public/collections');
         $request->merge(['active'=>($request->active == 'on') ? true : false]);
+        $request->merge(['featured'=>($request->featured == 'on') ? true : false]);
         $request->merge(['img_src'=>$path]);
         flash('Successfully created a Collection!')->success();
         $collection->create($request->all());
@@ -59,7 +76,9 @@ class CollectionController extends Controller
      */
     public function show(Collection $collection)
     {
-        //
+        $layout = $this->layout;
+        $collections = $collection->prepareForShow($collection);
+        return view('collections.show',compact('layout','collections'));
     }
 
     /**
@@ -89,6 +108,7 @@ class CollectionController extends Controller
              'img'=>'mimes:jpeg,jpg,png | max:10000'
         ]);
         $request->merge(['active'=>($request->active == 'on') ? true : false]);
+        $request->merge(['featured'=>($request->featured == 'on') ? true : false]);
 
         if ($request->hasFile('img')) {
             // remove old image
@@ -125,5 +145,46 @@ class CollectionController extends Controller
             flash('You have successfully deleted a collection.')->success();
             return redirect()->route('collection.index');
         }
+    }
+
+    public function set(Collection $collection, Inventory $inventory)
+    {
+        $inventory_select = $inventory->prepareSelect();
+        $inventories = $inventory->prepareForSet($collection->id);
+        return view('collections.set',compact(['collection','inventory_select','inventories']));
+    }
+
+    public function add(Request $request, Collection $collection, Inventory $inventory)
+    {
+        $status = 'fail';
+        if (!$collection->collectionItem()->where('inventory_item_id',$request->inventory_item_id)->exists()) {
+            $status = 'success';
+            $collection->collectionItem()->attach($request->inventory_item_id);
+        }
+
+        $inventories = $inventory->prepareForSet($collection->id);
+        
+
+        return response()->json([
+            'status' => $status,
+            'inventories' => $inventories
+        ]);
+    }
+
+    public function remove(Request $request, Collection $collection, Inventory $inventory)
+    {
+        $status = 'fail';
+        if ($collection->collectionItem()->where('inventory_item_id',$request->inventory_item_id)->exists()) {
+            $status = 'success';
+            $collection->collectionItem()->detach($request->inventory_item_id);
+        }
+
+        $inventories = $inventory->prepareForSet($collection->id);
+        
+
+        return response()->json([
+            'status' => $status,
+            'inventories' => $inventories
+        ]);
     }
 }

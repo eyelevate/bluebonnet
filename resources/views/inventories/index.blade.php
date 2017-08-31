@@ -19,7 +19,7 @@
 			@if(count($inventories))
 				@foreach($inventories as $key => $inventory)
 				<li class="nav-item">
-					<a class="nav-link {{ ($key == 0) ? 'active' :  '' }}" href="#item-{{ $inventory->id }}" data-toggle="tab" role="tab">{{ $inventory->name }}</a>
+					<a class="nav-link {{ ($key == 0) ? 'active' :  '' }}" href="#item-{{ $inventory->id }}" data-toggle="tab" role="tab">{{ $inventory->name }} <span class="badge badge-primary">{{ count($inventory->inventoryItems) }}</span></a>
 				</li>
 				@endforeach
 			@endif
@@ -164,6 +164,15 @@
 								<label>Active?</label>
 								<div class="row-fluid">
 									{!! $ii->active_status !!}	
+								</div>
+									
+							</div>
+							<hr/>
+							<!-- Active -->
+							<div>
+								<label>Featured?</label>
+								<div class="row-fluid">
+									{!! $ii->featured_status !!}	
 								</div>
 									
 							</div>

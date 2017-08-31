@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Inventory;
+use App\InventoryItem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,10 +21,30 @@ class Collection extends Model
         'desc',
         'active',
         'img_src',
-        'status'
+        'status',
+        'featured'
     ];
 
-  #public
+    public function collectionItem()
+    {
+        return $this->belongsToMany(InventoryItem::class,'collection_item', 'collection_id','inventory_item_id');
+    }
+
+    #public
+    public function prepareForShow($data)
+    {
+        $itms = new InventoryItem;
+        if (isset($data)) {
+
+            if(isset($data->collectionItem)) {
+                
+                $data->collectionItem = $itms->prepareForShowCollection($data->collectionItem);
+            }
+        }
+        return $data;
+    }
+
+
     public function prepareTableColumns()
     {
         $columns =  [
@@ -37,6 +59,10 @@ class Collection extends Model
             ], [
                 'label'=>'Active',
                 'field'=> 'active_status',
+                'html'=>true
+            ], [
+                'label'=>'Featured',
+                'field'=> 'featured_status',
                 'html'=>true
             ], [
                 'label'=>'Created',
@@ -66,6 +92,11 @@ class Collection extends Model
                 if (isset($rows[$key]['active'])) {
                     $rows[$key]['active_status'] = ($rows[$key]['active']) ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-danger">In-active</span>';
                 }
+
+                // Featured
+                if (isset($rows[$key]['featured'])) {
+                    $rows[$key]['featured_status'] = ($value->featured) ? 'Yes' :  'No';
+                } 
 
                 // rename image path
                 if (isset($rows[$key]['img_src'])) {

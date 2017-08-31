@@ -51,6 +51,7 @@ class InventoryItemController extends Controller
         $inventory_item->active = ($request->active == 'on') ? true : false;
         $inventory_item->metals = ($request->metals == 'on') ? true : false;
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
+        $inventory_item->featured = ($request->featured == 'on') ? true : false;
         if ($inventory_item->save()) {
             // loop primary images array check for true set primary if true also compare to imgs and remove deleted images
             if (count($request->imgs) > 0) {
@@ -124,6 +125,7 @@ class InventoryItemController extends Controller
         $inventory_item->active = ($request->active == 'on') ? true : false;
         $inventory_item->metals = ($request->metals == 'on') ? true : false;
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
+        $inventory_item->featured = ($request->featured == 'on') ? true : false;
         if ($inventory_item->save()) {
             // loop primary images array check for true set primary if true also compare to imgs and remove deleted images
             if (count($request->old_image) > 0) {

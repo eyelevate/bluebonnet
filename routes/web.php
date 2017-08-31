@@ -20,6 +20,11 @@ Route::get('/privacy-policy', 'HomeController@privacy')->name('home.privacy');
 Route::get('/shipping', 'HomeController@shipping')->name('home.shipping');
 Route::get('/shop', 'HomeController@shop')->name('home.shop');
 Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
+Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
+
+
+// Collections Front page
+Route::get('/collections/{collection}/show', 'CollectionsController@show')->name('collection.show');
 
 Auth::routes();
 
@@ -77,6 +82,9 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
     Route::get('/collections/{collection}/edit', 'CollectionController@edit')->name('collection.edit');
     Route::patch('/collections/{collection}', 'CollectionController@update')->name('collection.update');
+    Route::get('/collections/{collection}/set', 'CollectionController@set')->name('collection.set');
+    Route::post('/collections/{collection}/add', 'CollectionController@add')->name('collection.add');
+    Route::post('/collections/{collection}/remove', 'CollectionController@remove')->name('collection.remove');
 
     // Designs
     Route::get('/designs', 'DesignController@index')->name('design.index');

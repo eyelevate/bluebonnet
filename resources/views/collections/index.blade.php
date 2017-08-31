@@ -45,7 +45,7 @@
         			<div class="card-block">
         				<h4 class="card-title">{{ $row->name }}</h4>
 					    <p class="card-text">{{ $row->desc }}</p>
-					    <a href="#" class="btn btn-primary">Go somewhere</a>
+					    <a href="{{ route('collection.set',$row->id) }}" class="btn btn-primary btn-block">Manage Collection Items</a>
         			</div>
         		</div>		
 
