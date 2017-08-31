@@ -41,24 +41,34 @@
     margin-bottom: 5px;
 
 	}
+
+	.col-4 {
+		padding-right: 1px;
+		padding-left: 1px;
+		}
+		
     }
 @media all and (max-width: 500px) { /* screen size until 500px */
     body {
         font-size: 0.8em; /* 0.8x default size */
         }
-     .padded-container {
+    .padded-container {
 
 	padding-left:5%;
 	padding-right:5%;
+		}
 
-	}
 	h4 {
 
 	font-size: 0.8rem;
 	 margin-top: 0;
     margin-bottom: 5px;
+		}
 
-	}
+	.col-4 {
+		padding-right: 1px;
+		padding-left: 1px;
+		}
     }
 
 
