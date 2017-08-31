@@ -4,6 +4,67 @@
 @endsection
 
 @section('styles')
+
+<style type="text/css">
+	
+@media all and (max-width: 6000px) { /* screen size until 6000px */
+    body {
+        font-size: 1.5em; /* 1.5x default size */
+    }
+    .padded-container {
+
+	padding-left:15%;
+	padding-right:15%;
+
+	}
+	h4 {
+
+	font-size: 1.5rem;
+	 margin-top: 0;
+    margin-bottom: 5px;
+	}
+}
+@media all and (max-width: 1000px) { /* screen size until 1000px */
+    body {
+        font-size: 1.2em; /* 1.2x default size */
+        }
+    .padded-container {
+
+	padding-left:10%;
+	padding-right:10%;
+
+	}
+	h4 {
+
+	font-size: 1.2rem;
+	 margin-top: 0;
+    margin-bottom: 5px;
+
+	}
+    }
+@media all and (max-width: 500px) { /* screen size until 500px */
+    body {
+        font-size: 0.8em; /* 0.8x default size */
+        }
+     .padded-container {
+
+	padding-left:5%;
+	padding-right:5%;
+
+	}
+	h4 {
+
+	font-size: 0.8rem;
+	 margin-top: 0;
+    margin-bottom: 5px;
+
+	}
+    }
+
+
+
+</style>
+
 @endsection
 
 @section('header')
@@ -11,17 +72,130 @@
 
 @section('content')
 
-<div class="container hidden-sm-down">
-	<div class="row justify-content-center">
+<div class="row justify-content-center">
+  	<h3>Shopping Cart</h3>
+</div>
 
-		<div class="col-md-9">  
-			<form action="/cart" method="post" class="form form--cart">
-				<h5 class="text-center">
-					All rings are made to order and take approximately 4 to 6 weeks to be completed. For rush service of less than 4 weeks, please <a href="/pages/contact">contact us</a> for availability.
-				</h5>
-			</div>
+<div class="padded-container">
 
-			<div class="table-responsive">
+	<div class="row">
+	     <div class="col-4">
+	     <img src="img/themes/theme2/editedRings/goldRing01.jpg">
+	    </div>
+	    <div class="col-4">
+	      <h4>Gold Ring 01</h4>
+	      <small>Quantity: <div><input class="form-control" type="number" value="1" id="example-number-input"></div></small>
+	      <p>Donec id elit non mi porta gravida at eget metus.</p>
+	    <small>SKU: GR01-200</small>
+	    </div>
+	    <div class="col-4">
+	     $2,000.00
+	    </div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+	     <div class="col-4">
+	     <img src="img/themes/theme2/editedRings/goldRing01.jpg">
+	    </div>
+	    <div class="col-4">
+	      <h4>Gold Ring 01</h4>
+	      {{--  Quantity  --}}
+	      <small>Quantity: <div><input class="form-control" type="number" value="1" id="example-number-input"></div></small>
+	      <p>Donec id elit non mi porta gravida at eget metus.</p>
+	    <small>SKU: GR01-200</small>
+	    </div>
+	    <div class="col-4">
+	     $2,000.00
+	    </div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+	     <div class="col-4">
+	     <img src="img/themes/theme2/editedRings/goldRing01.jpg">
+	    </div>
+	    <div class="col-4">
+	      <h4>Gold Ring 01</h4>
+	      {{--  Quantity  --}}
+	      <small>Quantity: <div><input class="form-control" type="number" value="1" id="example-number-input"></div></small>
+	      <p>Donec id elit non mi porta gravida at eget metus.</p>
+	    <small>SKU: GR01-200</small>
+	    </div>
+	    <div class="col-4">
+	     $2,000.00
+	    </div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+	     <div class="col-4">
+	    </div>
+	    <div class="col-4">
+	    Subtotal
+	    </div>
+	    <div class="col-4">
+	      $6,000.00
+	    </div>
+	</div>
+
+	<div class="row">
+	     <div class="col-4">
+	     
+	    </div>
+	    <div class="col-4">
+	    Shipping
+	    </div>
+	    <div class="col-4">
+	      -
+	    </div>
+	</div>
+
+	<hr>
+
+	<div class="row">
+	     <div class="col-4">
+	      
+	    </div>
+	    <div class="col-4">
+	    Total
+	    </div>
+	    <div class="col-4">
+	     $6,000.00
+	    </div>
+	</div>
+
+
+ <div class="row align-items-center">
+          
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 d-flex justify-content-start">
+          <a role="button" class="btn btn-primary btn-block" href="/cart">Update Cart</a>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 d-flex justify-content-start">
+ 			<hr>
+          </div>
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 d-flex justify-content-end">
+          <a role="button" class="btn btn-info btn-block" href="/checkout">Checkout</a>
+          </div>
+
+      </div>
+
+</div>
+
+
+
+
+
+
+{{-- <div class="container hidden-sm-down">
+	<div class="row justify-content-center"> --}}
+
+
+
+{{-- 			<div class="table-responsive">
 				<table class="table-responsive">
 					<thead>
 						<tr>
@@ -32,7 +206,7 @@
 						</tr>
 					</thead>
 					<hr>
-					{{-- In Cart Product display --}}
+					
 
 					<tbody>
 
@@ -152,7 +326,7 @@
 
 
 
-{{-- Mobile Sizes --}}
+
 
 <div class="container hidden-md-up">
 	<div class="row justify-content-center">
@@ -167,7 +341,7 @@
 			<div class="table-responsive">
 				<table class="table-responsive">
 
-					{{-- In Cart Product display --}}
+				
 
 					<tbody>
 
@@ -291,7 +465,7 @@
 </div> 
 </div>    
 </div>
-</div>
+</div> --}}
 
 @endsection
 @section('modals')

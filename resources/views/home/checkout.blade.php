@@ -13,11 +13,6 @@
 
 }
 
-.large-order-summary{
-    padding-right: 10%;
-    padding-left: 10%;
-
-}
 
 .customer-form{
     padding-right: 10%;
@@ -33,7 +28,9 @@
 }
 
 .paypalButton{
+    padding-top: 10px;
     padding-bottom: 20px;
+
 
 }
 
@@ -57,21 +54,24 @@
 <div class="row justify-content-center">
   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
   <div class="customer-form">
-      <div class="row justify-content-center">
+      <div class="row justify-content-center hidden-md-up">
+      <a role="button" class="btn btn-block" href="/checkout#orderSummary">Order Summary</a>
+      </div>
+      <div class="row justify-content-center hidden-sm-down">
       <h1 class="lowmargin">Freya's Fine Jewelry</h1>
       </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center hidden-sm-down">
       <nav class="breadcrumb">
       <a class="breadcrumb-item" href="/cart">Shopping Cart</a>
       <span class="breadcrumb-item active">Customer Information</span>
       <a class="breadcrumb-item" href="#">Shipping Method</a>
       <a class="breadcrumb-item" href="#">Payment Method</a>
-      
-      
       </nav>
     </div>
-    <div class="row paypalButton justify-content-center">
-      <button type="button" class="btn btn-warning btn-sm"><img src="img/themes/theme2/paypal.png" alt="PayPal"></button>
+    <div class="row justify-content-center paypalButton">
+      <div class="span" style="width:100px;">
+      <button type="button" class="btn btn-warning btn-block"><img src="img/themes/theme2/paypal.png" alt="PayPal"></button>
+      </div>
     </div>
 
     <div class="row">
@@ -227,7 +227,7 @@
           <a href="/cart">< Return to Cart</a>
           </div>
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-end">
-          <button type="button" class="btn btn-info btn-lg">Continue to Shipping Method</button>
+          <button type="button" class="btn btn-info btn-block">Continue to Shipping Method</button>
           </div>
 
       </div>
@@ -252,7 +252,7 @@
     <div class="order-summary hidden-md-down">
       @include('layouts.themes.theme2.partials.checkout-side')
     </div>
-    <div class="lg-order-summary hidden-lg-up">
+    <div class="hidden-lg-up" id="orderSummary">
       <hr>
       @include('layouts.themes.theme2.partials.checkout-side')
     </div>
