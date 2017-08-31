@@ -104,7 +104,7 @@ class InventoryItemController extends Controller
      */
     public function show(InventoryItem $inventoryItem)
     {
-        $images = $inventoryItem
+        
         return view('inventory_items.show',compact(['inventoryItem']));
     }
 
