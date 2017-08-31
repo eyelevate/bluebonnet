@@ -1,6 +1,9 @@
 <template>
     <div class="flexbox">
-        <div class="d-flex p-2">I'm a flexbox container!</div>     
+        <h1 class="flexboxClass ">{{headerContent}} </h1>
+      
+        <slot name="body"></slot>  
+      
     </div>
 
 
@@ -10,11 +13,11 @@
 <script>
     export default {
     	props:[
-           
+           'flex-class'
         ],
     	data() {
     		return {
-                
+                'flexboxClass': this.flexClass 
     		}
     	},
     	methods: {
