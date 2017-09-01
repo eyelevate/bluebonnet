@@ -78,14 +78,15 @@
 	                <bootstrap-control
 	                	use-label="true"
 	                	label="Image"
-	                    b-err="{{ $errors->has('img_src') }}"
-	                    b-error="{{ $errors->first('img_src') }}">
+	                    b-err="{{ $errors->has('img') }}"
+	                    b-error="{{ $errors->first('img') }}">
 	                	<template slot="control">
 	                		<div class="card imagePreviewCard col-12" >
 	                			<img id="preview" class="card-img-top"/>
 	                			<div class="card-block">
 	                				<input id="uploader" name="img" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
 	                				<input type="hidden"  value="" name="img_src"/>
+	                				<input type="hidden"  value="" name="featured_src"/>
 	                			</div>
 	                		</div>
 	                		

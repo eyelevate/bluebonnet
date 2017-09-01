@@ -68,14 +68,14 @@
 						<div class="container">
 							<!-- main slider carousel -->
 							<div class="row">
-							    <div class="" id="slider">
+							    <div class="col-12" id="slider">
 							            <div id="myCarousel-{{ $ii->id }}" class="carousel inventory-carousel slide">
 							                <!-- main slider carousel items -->
 							                <div class="carousel-inner">
 						                	@if (count($ii->images) > 0)
 						                    	@foreach($ii->images as $ikey => $image)
 						                    	<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $ikey }}">
-							                        <img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="img-fluid">
+							                        <img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="img-fluid mx-auto d-block">
 							                    </div>
 						                    	@endforeach
 						                    @endif
@@ -130,7 +130,7 @@
 							<!-- Subtotal -->
 							<bootstrap-readonly
 								use-input="true"
-								b-value="{{ money_format('$%i',$ii->subtotal) }}"
+								b-value="{{ $ii->subtotal }}"
 								use-label="true"
 								b-label="Subtotal">		
 							</bootstrap-readonly>

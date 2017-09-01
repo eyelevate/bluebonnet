@@ -50,9 +50,9 @@ class HomeController extends Controller
             flash($ig['data'])->warning();
         }  
 
-        // featured collection
-        $featured_collection = $collection->where('featured',true)->where('active',true)->first();
-        // featured items
+        // featured collection (Randomly Selected)
+        $featured_collection = $collection->where('featured',true)->where('active',true)->inRandomOrder()->first();
+        // featured items (Randomly Selected)
         $items = $inventoryItem->where('featured',true)->where('active',true)->inRandomOrder()->take(2)->get();
         $featured_items = $inventoryItem->prepareForFrontend($items);
         return view($this->view,compact(['layout','feed','featured_collection','featured_items']));

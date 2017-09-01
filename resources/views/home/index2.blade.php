@@ -44,8 +44,8 @@
 		<div class="col-xs-12 col-sm-6">
 			<div class="card">
 				<img class="card-img-top card-img-top-featured lazy mx-auto d-block" data-original="{{ $item->primary_img_src }}" alt="Card image cap">
-				<div class="card-block text-center">
-					<p class="card-text">
+				<div class="card-block text-center" style="">
+					<p class="card-text" style="margin:0px;padding:0px;">
 						<h3 style="margin-bottom:0px;">{{ $item->name }}</h3>
 						<p><a href="#" class="btn btn-primary">Shop {{ $item->name }}</a></p>
 					</p>
@@ -59,7 +59,7 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
-				<img class="card-img-top lazy mx-auto d-block" data-original="{{ asset(str_replace('public/', 'storage/', $featured_collection->img_src)) }}" alt="Card image cap">
+				<img class="card-img-top card-img-top-collection-featured lazy mx-auto d-block" data-original="{{ asset(str_replace('public/', 'storage/', $featured_collection->featured_src)) }}" alt="Card image cap">
 				<div class="card-block text-center">
 					<p class="card-text text-center">
 						<h3 style="margin-bottom:0px;">{{ $featured_collection->name }}</h3>

@@ -1,5 +1,5 @@
 <button class="navbar-toggler mobile-sidebar-toggler d-lg-none" type="button">☰</button>
-<a href="{{ route('admin.index') }}"><h5>&nbsp;{{ $company->name }}</h5></a>
+<a class="navbar-brand" href="{{ route('admin.index') }}">{{ $company->name }}</a>
 <ul class="nav navbar-nav d-md-down-none">
     <li class="nav-item">
         <a class="nav-link navbar-toggler sidebar-toggler" href="#">☰</a>

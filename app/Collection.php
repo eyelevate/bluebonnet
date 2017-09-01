@@ -22,7 +22,8 @@ class Collection extends Model
         'active',
         'img_src',
         'status',
-        'featured'
+        'featured',
+        'featured_src'
     ];
 
     public function collectionItem()

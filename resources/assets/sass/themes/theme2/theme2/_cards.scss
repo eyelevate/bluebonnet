@@ -7,7 +7,7 @@
     margin-bottom: 20px;
 
     .card-block{
-        min-height: 190px;
+        // min-height: 190px;
     }
 
     &[data-background-color="orange"]{
@@ -38,6 +38,14 @@
     .card-img-top-items {
         height:300px !important; 
         width:100% !important;
+    }
+
+    .card-img-top-featured {
+        max-height:475px;
+    }
+
+    .card-img-top-collection-featured {
+        max-height:600px;
     }
 
 }

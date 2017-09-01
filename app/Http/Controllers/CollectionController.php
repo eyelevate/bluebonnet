@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 
 use App\Collection;
 use App\Job;
+use App\Image;
 use App\Inventory;
 use App\InventoryItem;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -53,17 +55,47 @@ class CollectionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Collection $collection)
+    public function store(Request $request, Collection $collection, Image $image)
     {
         $this->validate(request(), [
-             'name' => 'required|string|max:255',
-             'img'=>'required | mimes:jpeg,jpg,png | max:10000'
+            'name' => 'required|string|max:255',
+            'img' => [
+                'required',
+                'mimes:jpeg,jpg,png',
+                'max:10000',
+                // Rule::dimesions()->ratio(1) 
+            ]
         ]);
-        $path = $request->img->store('public/collections');
+        
+
+        // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
+        $resized_image_uri = $image->resize($request->img,480,480);
+        $path = Storage::putFile('public/collections', new File($resized_image_uri));
+
+        //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
+        unlink($resized_image_uri);
+
+        // check if featured is set to true if true then create a resize of the image to 1902x1070
+        if ($request->featured == 'on') {
+            $resized_featured_uri = $image->resize($request->img,2500,1250);
+            $featured_path = Storage::putFile('public/collections',new File($resized_image_uri));
+            unlink($resized_featured_uri);
+            $request->merge(['featured_src'=>$featured_path]);
+
+        }
+
+
+        // save the path of the image 
+        $request->merge(['img_src'=>$path]);
+        
+        // merge the switch on/off to true or false
         $request->merge(['active'=>($request->active == 'on') ? true : false]);
         $request->merge(['featured'=>($request->featured == 'on') ? true : false]);
-        $request->merge(['img_src'=>$path]);
+        
+        // update flash with success
         flash('Successfully created a Collection!')->success();
+        
+        // creat the db row and return user back to index page
         $collection->create($request->all());
         return redirect()->route('collection.index');
     }
@@ -100,7 +132,7 @@ class CollectionController extends Controller
      * @param  \App\CollectionController  $collectionController
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Collection $collection)
+    public function update(Request $request, Collection $collection, Image $image)
     {
         //Validate the form
         $this->validate(request(), [
@@ -114,8 +146,25 @@ class CollectionController extends Controller
             // remove old image
             Storage::delete($collection->img_src);
             // add new image
-            $path = $request->img->store('public/collections');
+            $resized_image_uri = $image->resize($request->img,480,480);
+            $path = Storage::putFile('public/collections', new File($resized_image_uri));
+
+            //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
+            unlink($resized_image_uri);
             $request->merge(['img_src'=>$path]);
+
+            // Check for old featured images and delete accordingly
+            if ($collection->featured) {
+                Storage::delete($collection->featured_src);
+            }
+
+            // Check for any new images and add accordingly
+            if ($request->featured == 'on') {
+                $resized_featured_uri = $image->resize($request->img,2220,1210);
+                $featured_path = Storage::putFile('public/collections',new File($resized_image_uri));
+                unlink($resized_featured_uri);
+                $request->merge(['featured_src'=>$featured_path]);
+            }
         }
         
         flash('Successfully updated a Collection!')->success();

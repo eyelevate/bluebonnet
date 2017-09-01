@@ -6,6 +6,7 @@ use App\Image;
 use App\Inventory;
 use App\InventoryItem;
 use Illuminate\Http\Request;
+use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
 class InventoryItemController extends Controller
@@ -36,7 +37,7 @@ class InventoryItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Inventory $inventory, InventoryItem $inventory_item)
+    public function store(Request $request, Inventory $inventory, InventoryItem $inventory_item, Image $image)
     {
         $this->validate(request(), [
             'name' => 'required|string|max:255',
@@ -57,16 +58,31 @@ class InventoryItemController extends Controller
             if (count($request->imgs) > 0) {
                 foreach ($request->imgs as $key => $value) {
                     if (isset($request->primary_image[$key])) {
-                        // send to the storage file
-                        $path = $request->imgs[$key]->store('public/inventory_items');
+                        // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
+                        $resized_image_uri = $image->resize($request->imgs[$key],480,480);
+                        $path = Storage::putFile('public/inventory_items', new File($resized_image_uri));
+
+                        //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
+                        unlink($resized_image_uri);
+
+                        // Featured images
+                        $featured_src = NULL;
                         $primary_image = $request->primary_image[$key] == 'true' ? true : false;
-                        $image = new Image();
-                        $image->inventory_id = $inventory->id;
-                        $image->inventory_item_id = $inventory_item->id;
-                        $image->primary = $primary_image;
-                        $image->img_src = $path;
-                        $image->ordered = $key;
-                        $image->save();
+
+                        $resized_featured_uri = $image->resize($request->imgs[$key],900,900);
+                        $featured_path = Storage::putFile('public/inventory_items',new File($resized_image_uri));
+                        unlink($resized_featured_uri);
+                        $featured_src = $featured_path;
+
+                        $img = new Image();
+                        $img->inventory_id = $inventory->id;
+                        $img->inventory_item_id = $inventory_item->id;
+                        $img->primary = $primary_image;
+                        $img->featured = $inventory_item->featured;
+                        $img->img_src = $path;
+                        $img->featured_src = $featured_src;
+                        $img->ordered = $key;
+                        $img->save();
                         //
                     } 
                 }
@@ -88,7 +104,8 @@ class InventoryItemController extends Controller
      */
     public function show(InventoryItem $inventoryItem)
     {
-        //
+        
+        return view('inventory_items.show',compact(['inventoryItem']));
     }
 
     /**
@@ -110,7 +127,7 @@ class InventoryItemController extends Controller
      * @param  \App\InventoryItem  $inventoryItem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InventoryItem $inventory_item)
+    public function update(Request $request, InventoryItem $inventory_item, Image $image)
     {
 
         $this->validate(request(), [
@@ -127,8 +144,15 @@ class InventoryItemController extends Controller
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
         $inventory_item->featured = ($request->featured == 'on') ? true : false;
         if ($inventory_item->save()) {
-            // loop primary images array check for true set primary if true also compare to imgs and remove deleted images
-            if (count($request->old_image) > 0) {
+            // set all primary images to false 
+            $inventory_item->images()->update(['primary'=>false]);
+
+            // loop primary images array check for true set primary if true also compare to imgs and remove deleted image
+            $old_count = count($request->old_image);
+
+            if ($old_count > 0) {
+
+
                 // loop through the old images first
                 foreach ($original_images as $old) {
                     $old_id = $old->id;
@@ -139,9 +163,10 @@ class InventoryItemController extends Controller
                             if($oldvalue['old'] === "true") {
                                 $check_old_id = $oldvalue['id'];
                                 if($check_old_id == $old_id) {
-                                    $image = Image::find($old_id);
-                                    $image->primary = ($request->primary_image[$oldkey] == "true" || $request->primary_image[$oldkey] == "1") ? true : false;
-                                    if ($image->save()) {
+                                    $img = Image::find($old_id);
+                                    $img->primary = ($request->primary_image[$oldkey] == "true" || $request->primary_image[$oldkey] == "1") ? true : false;
+
+                                    if ($img->save()) {
                                         $pass = true;
                                     }
                                     break;
@@ -150,8 +175,9 @@ class InventoryItemController extends Controller
                         }
                         if (!$pass) { // remove old image from storage and from db
                             Storage::delete($old->img_src);
-                            $image = Image::find($old->id);
-                            $image->delete();
+                            Storage::delete($old->featured_src);
+                            $img = Image::find($old->id);
+                            $img->delete();
                         }
                     }
                 }
@@ -159,6 +185,7 @@ class InventoryItemController extends Controller
                 if(count($inventory_item->images) > 0) {
                     foreach ($inventory_item->images as $imgs) {
                         Storage::delete($imgs->img_src);
+                        Storage::delete($imgs->featured_src);
                     }
                 }
                 $inventory_item->images()->delete();
@@ -169,20 +196,34 @@ class InventoryItemController extends Controller
             if (count($request->imgs) > 0) {
                 // Save any new images
                 foreach ($request->imgs as $key => $value) {
-  
-                    if (isset($request->primary_image[$key])) {
-                        // send to the storage file
-                        $path = $request->imgs[$key]->store('public/inventory_items');
-                        $primary_image = ($request->primary_image[$key] == "true" || $request->primary_image[$key] == "1") ? true : false;
-                        $image = new Image();
-                        $image->inventory_id = $inventory_item->inventory_id;
-                        $image->inventory_item_id = $inventory_item->id;
-                        $image->primary = $primary_image;
-                        $image->img_src = $path;
-                        $image->ordered = $key;
-                        $image->save();
-                        //
-                    } 
+                    $check_count = $key + $old_count;
+
+                    // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
+                    $resized_image_uri = $image->resize($request->imgs[$key],480,480);
+                    $path = Storage::putFile('public/inventory_items', new File($resized_image_uri));
+
+                    //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
+                    unlink($resized_image_uri);
+
+                    // Featured images
+                    $featured_src = NULL;
+                    $primary_image = ($request->primary_image[$check_count] == "true" || $request->primary_image[$check_count] == "1") ? true : false;
+                    $resized_featured_uri = $image->resize($request->imgs[$key],900,900);
+                    $featured_path = Storage::putFile('public/inventory_items',new File($resized_image_uri));
+                    unlink($resized_featured_uri);
+                    $featured_src = $featured_path;
+                    
+                    $img = new Image();
+                    $img->inventory_id = $inventory_item->inventory_id;
+                    $img->inventory_item_id = $inventory_item->id;
+                    $img->primary = $primary_image;
+                    $img->featured = $inventory_item->featured;
+                    $img->img_src = $path;
+                    $img->featured_src = $featured_src;
+                    $img->ordered = $key;
+                    $img->save();
+                    //
+
                 }
             }
             flash('Successfully updated an inventory item.')->success();

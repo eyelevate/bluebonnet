@@ -86,6 +86,7 @@
 	                			<div class="card-block">
 	                				<input id="uploader" name="img" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
 	                				<input type="hidden"  value="{{ $collection->img_src }}" name="img_src"/>
+	                				<input type="hidden"  value="{{ $collection->featured_src }}" name="featured_src"/>
 	                			</div>
 	                		</div>
 	                		

@@ -18,7 +18,9 @@ class CreateImagesTable extends Migration
             $table->integer('inventory_id')->nullable();
             $table->integer('inventory_item_id')->nullable();
             $table->boolean('primary')->default(0);
+            $table->boolean('featured')->default(0);
             $table->string('img_src')->nullable();
+            $table->string('featured_src')->nullable();
             $table->integer('ordered')->nullable();
             $table->softDeletes();
             $table->timestamps();

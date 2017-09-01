@@ -8,6 +8,7 @@ const app = new Vue({
 	},
 	methods: {
 		primaryImage(key, $event){
+			console.log(key);
 			images = this.images;
 			$.each(images, function(index, val) {
 				if (key == index) {
@@ -64,7 +65,6 @@ inventory_items = {
 
 		// watch for change in 
 		$("#image-parent").on('change', file, function(event) {
-			// remove previous variables
 
 			// iterate through files and update
 			file.each(function() {
@@ -74,12 +74,15 @@ inventory_items = {
 		        $.each(inputFiles,function(index, el) {
 		        	var reader = new FileReader();
 			        reader.onload = function(event) {
+			        	// reindex
+						var reindex = app.images.length;
 			        	app.images.push({
 			        		"name": el.name,
 			        		"primary":false,
-			        		"primary_name":'primary_image['+index+']',
+			        		"primary_name":'primary_image['+reindex+']',
 			        		"src":event.target.result
 			        	});
+			        	
 			            $input.next().attr("src", event.target.result);
 			        };
 			        reader.onerror = function(event) {
