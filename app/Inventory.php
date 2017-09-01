@@ -3,6 +3,7 @@
 namespace App;
 
 use App\InventoryItem;
+use App\Job;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -40,10 +41,16 @@ class Inventory extends Model
 
     public function prepareForSet($collection_id)
     {
+        $job = new Job();
         $itms = new InventoryItem();
         $inventories =  $this->orderBy('name','asc')->get();
         if (count($inventories) > 0) {
             foreach ($inventories as $key =>$value) {
+                if(isset($inventories[$key]->desc)) {
+                    $inventories[$key]['desc'] = $job->stringToDotDotDot($value->desc,40);
+                }
+
+
                 if(isset($inventories[$key]->inventoryItems)) {
                     foreach ($inventories[$key]->inventoryItems as $ikey => $ivalue) {
                         // collection item
@@ -57,6 +64,10 @@ class Inventory extends Model
                                 }
                             }
                             
+                        }
+
+                        if (isset($inventories[$key]['inventoryItems'][$ikey]['desc'])) {
+                            $inventories[$key]['inventoryItems'][$ikey]['desc'] = $job->stringToDotDotDot($ivalue->desc,40);
                         }
                         $inventories[$key]['inventoryItems'][$ikey]['collectionItem'] = (count($ivalue->collectionItem) > 0) ? $ivalue->collectionItem : [];
                         if (count($ivalue->images) > 0) {

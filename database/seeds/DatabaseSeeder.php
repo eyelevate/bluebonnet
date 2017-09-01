@@ -13,5 +13,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UsersTableSeeder::class);
         $this->call(CompaniesTableSeeder::class);
+        $this->call(FingersTableSeeder::class);
+        $this->call(MetalsTableSeeder::class);
+        $this->call(SizesTableSeeder::class);
+        $this->call(StonesTableSeeder::class);
+        $this->call(StoneSizesTableSeeder::class);
     }
 }

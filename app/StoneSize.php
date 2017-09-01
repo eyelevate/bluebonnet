@@ -28,6 +28,27 @@ class StoneSize extends Model
         return $this->belongsTo(Stone::class, 'stone_id', 'id');
     }
 
+    public function prepareSelect($data)
+    {
+        $select = [];
+    
+        if (count($data)> 0) {
+
+            foreach ($data as $key => $value) {
+                $select[$value->id] = [''=>'Select Stone Size'];
+                $sizes = $value->stoneSizes;
+                if (count($sizes) > 0) {
+                    foreach ($sizes as $size) {
+                        // $select[$value->id][$size->id] = $size->sizes->name.' (+'.money_format('$%!.2n',$size->price).')';
+                        $select[$value->id][$size->id] = $size->sizes->name;
+
+                    }
+                }
+            }
+        }
+        return $select;
+    }
+
     public function prepareTableColumns()
     {
         $columns =  [

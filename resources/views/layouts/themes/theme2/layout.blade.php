@@ -48,6 +48,7 @@
             <!-- End Footer -->
         </div>
     </div>
+    @yield('variables')
 </body>
 <!--   Core JS Files   -->
 <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>

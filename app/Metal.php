@@ -19,6 +19,19 @@ class Metal extends Model
         'desc',
         'price'
     ];
+
+    public function prepareSelect($data)
+    {
+        $select = [''=>'Select Metal Type'];
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                $select[$value->id] = ($value->desc) ? "{$value->name} ({$value->desc})" : $value->name;
+            }
+        }
+
+        return $select;
+    }
+
     #public
     public function prepareTableColumns()
     {

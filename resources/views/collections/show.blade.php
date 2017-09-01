@@ -24,7 +24,7 @@
 				<template slot="body">
 					<div class="text-center">
 						<h5>{{ $item->name }}</h5>
-						<a class="btn btn-primary" href="{{ route('inventory_item.show',$item->id) }}">Shop {{ $item->name }}</a>	
+						<a class="btn btn-primary" href="{{ route('inventory_item.shop',$item->id) }}">Shop {{ $item->name }}</a>	
 					</div>
 				</template>
 			</theme1-shop-card>

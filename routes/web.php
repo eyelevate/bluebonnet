@@ -21,6 +21,9 @@ Route::get('/shipping', 'HomeController@shipping')->name('home.shipping');
 Route::get('/shop', 'HomeController@shop')->name('home.shop');
 Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
 Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
+Route::post('/set-checkout', 'HomeController@setCheckout')->name('home.set-checkout');
+Route::get('/item/{inventory_item}/shop', 'InventoryItemController@shop')->name('inventory_item.shop');
+Route::post('/inventory-items/{inventory_item}/get-subtotal', 'InventoryItemController@subtotal')->name('inventory_item.subtotal');
 
 
 // Collections Front page
@@ -141,7 +144,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/inventory-items/{inventory}/create', 'InventoryItemController@create')->name('inventory_item.create');
     Route::delete('/inventory-items/{inventory_item}', 'InventoryItemController@destroy')->name('inventory_item.destroy');
     Route::post('/inventory-items/{inventory}/store', 'InventoryItemController@store')->name('inventory_item.store');
-    Route::get('/item/{inventory_item}/shop', 'InventoryItemController@show')->name('inventory_item.show');
+    
     Route::get('/inventory-items/{inventory_item}/edit', 'InventoryItemController@edit')->name('inventory_item.edit');
     Route::patch('/inventory-items/{inventory_item}', 'InventoryItemController@update')->name('inventory_item.update');
 

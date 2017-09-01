@@ -117,6 +117,11 @@ class HomeController extends Controller
         return view('home.checkout', compact(['layout']));
     }
 
+    public function setCheckout()
+    {
+        
+    }
+
     // Mail Test
     public function email()
     {

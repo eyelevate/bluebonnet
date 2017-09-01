@@ -80,7 +80,8 @@ mix.js('resources/assets/js/views/home/index.js','public/js/views/home')
 
 // inventory items
 mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/inventory_items')
-   .js('resources/assets/js/views/inventory_items/edit.js','public/js/views/inventory_items');
+   .js('resources/assets/js/views/inventory_items/edit.js','public/js/views/inventory_items')
+   .js('resources/assets/js/views/inventory_items/shop.js','public/js/views/inventory_items');
 
 
 // metal

@@ -18,7 +18,7 @@
 
 <div class="container-fluid">
 	{!! Form::open(['method'=>'post','route'=>['finger.store']]) !!}
-		<bootstrap-flexbox><div class="flexboxClass" ><h1>test</h1> </div>
+
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true">
 			<template slot = "header"> Create A Finger Size </template>
 			<template slot = "body">

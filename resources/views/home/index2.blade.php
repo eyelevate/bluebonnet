@@ -47,7 +47,7 @@
 				<div class="card-block text-center" style="">
 					<p class="card-text" style="margin:0px;padding:0px;">
 						<h3 style="margin-bottom:0px;">{{ $item->name }}</h3>
-						<p><a href="#" class="btn btn-primary">Shop {{ $item->name }}</a></p>
+						<p><a href="{{ route('inventory_item.shop',$item->id) }}" class="btn btn-primary">Shop {{ $item->name }}</a></p>
 					</p>
 				</div>
 			</div>

@@ -2,15 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Finger;
 use App\Image;
 use App\Inventory;
 use App\InventoryItem;
+use App\Job;
+use App\Metal;
+use App\Stone;
+use App\StoneSize;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
 class InventoryItemController extends Controller
 {
+
+    private $layout;
+    private $view;
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct(Job $job)
+    {
+        $theme = 2;
+        $this->layout = $job->switchLayout($theme);
+        $this->view = $job->switchHomeView($theme);
+        setlocale(LC_MONETARY, 'en_US.UTF-8');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -102,10 +122,15 @@ class InventoryItemController extends Controller
      * @param  \App\InventoryItem  $inventoryItem
      * @return \Illuminate\Http\Response
      */
-    public function show(InventoryItem $inventoryItem)
+    public function shop(InventoryItem $inventoryItem, Finger $finger, Metal $metal, Stone $stone, StoneSize $stoneSize)
     {
-        
-        return view('inventory_items.show',compact(['inventoryItem']));
+        $layout = $this->layout;
+        $fingers = $finger->prepareSelect($finger->all());
+        $metals = $metal->prepareSelect($metal->all());
+        $stones = $stone->all();
+        $stone_select = $stone->prepareSelect($stone->all());
+        $stone_sizes = $stoneSize->prepareSelect($stone->all());
+        return view('inventory_items.shop',compact(['layout','inventoryItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
 
     /**
@@ -258,5 +283,27 @@ class InventoryItemController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function subtotal(Request $request, InventoryItem $inventoryItem)
+    {
+        $quantity = $request->quantity;
+        $metal_id = $request->metal_id;
+        $stone_id = $request->stone_id;
+        $stone_size_id = $request->size_id;
+
+        $subtotal = $inventoryItem->getSubtotal($inventoryItem,$quantity,$metal_id,$stone_id, $stone_size_id);
+        if ($subtotal) {
+            return response()->json([
+                'subtotal' => $subtotal,
+                'subtotal_formatted'=>money_format('$%!.2n',$subtotal)
+            ]);
+        } else {
+            return response()->json([
+                'subtotal' => 0,
+                'subtotal_formatted' => 'Contact for estimate'
+            ]);
+        }
+        
     }
 }

@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\StoneSize;
+use App\Stone;
+use App\Metal;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -44,6 +47,46 @@ class InventoryItem extends Model
     }
 
     #public
+
+    public function getSubtotal($data,$quantity = 1,$metal_id = null,$stone_id= null, $stone_size_id = null)
+    {
+        $email = false;
+        $subtotal = 0;
+        if (isset($data)) {
+            $subtotal = $data->subtotal;
+            if(isset($stone_id)) {
+                $stone = Stone::find($stone_id);
+                if($stone->email) {
+                    $email = true;
+                }
+                $subtotal += $stone->price;
+            }
+            if(isset($stone_size_id)) {
+                $stoneSize = StoneSize::find($stone_size_id);
+                if($stoneSize->stones->email) {
+                    $email = true;
+
+                }
+                $subtotal += $stoneSize->price;
+            }
+            if(isset($metal_id)) {
+                $metal = Metal::find($metal_id);
+                $subtotal += $metal->price;
+            }
+
+        }
+
+        if (!$email) {
+            $subtotal *= $quantity;
+        } else {
+            $subtotal = false;
+        }
+        
+
+
+
+        return $subtotal;
+    }
 
     public function prepareForFrontend($data)
     {

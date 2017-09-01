@@ -19,6 +19,18 @@ class Finger extends Model
         'name'
     ];
 
+    public function prepareSelect($data)
+    {
+        $select = [''=>'Select Finger Size'];
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                $select[$value->id] = $value->name;
+            }
+        }
+
+        return $select;
+    }
+
     public function prepareTableColumns()
     {
         $columns =  [

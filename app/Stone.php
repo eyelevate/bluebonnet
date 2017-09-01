@@ -29,7 +29,17 @@ class Stone extends Model
     }
 
     #public
+    public function prepareSelect($data)
+    {
+        $select = [''=>'Select Stone Type'];
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                $select[$value->id] = ($value->desc) ? "{$value->name} ({$value->desc})" : $value->name;
+            }
+        }
 
+        return $select;
+    }
 
     public function prepareData($data)
     {
