@@ -285,6 +285,12 @@ class InventoryItemController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Ajax request coming from /js/views/inventory_items/shop.js.
+     *
+     * @param  \App\InventoryItem  $inventoryItem
+     * @return \Illuminate\Http\Response
+     */
     public function subtotal(Request $request, InventoryItem $inventoryItem)
     {
         $quantity = $request->quantity;
@@ -305,5 +311,18 @@ class InventoryItemController extends Controller
             ]);
         }
         
+    }
+
+    public function checkout(Request $request, InventoryItem $inventoryItem)
+    {
+        // if($inventoryItem->
+        $this->validate(request(), [
+            'quantity' => 'required',
+            'finger_id' => 'required',
+            'metal_id' => 'required',
+            'stone_id' => 'required',
+            'stone_size_id'=>'required'
+        ]);
+        dd($request->all());
     }
 }
