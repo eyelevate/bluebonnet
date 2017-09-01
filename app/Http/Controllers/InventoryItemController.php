@@ -315,14 +315,34 @@ class InventoryItemController extends Controller
 
     public function checkout(Request $request, InventoryItem $inventoryItem)
     {
-        // if($inventoryItem->
-        $this->validate(request(), [
-            'quantity' => 'required',
-            'finger_id' => 'required',
-            'metal_id' => 'required',
-            'stone_id' => 'required',
-            'stone_size_id'=>'required'
-        ]);
+        if($inventoryItem->metals && $inventoryItems->stones) {
+            $this->validate(request(), [
+                'quantity' => 'required',
+                'finger_id' => 'required',
+                'metal_id' => 'required',
+                'stone_id' => 'required',
+                'stone_size_id'=>'required'
+            ]);
+        } elseif ($inventoryItem->metals && !$inventoryItems->stones) {
+            $this->validate(request(), [
+                'quantity' => 'required',
+                'finger_id' => 'required',
+                'metal_id' => 'required'
+            ]);
+        } elseif (!$inventoryItem->metals && $inventoryItems->stones) {
+            $this->validate(request(), [
+                'quantity' => 'required',
+                'finger_id' => 'required',
+                'stone_id' => 'required',
+                'stone_size_id'=>'required'
+            ]);
+        } else {
+            $this->validate(request(), [
+                'quantity' => 'required',
+                'finger_id' => 'required'
+            ]);
+        }
+        
         dd($request->all());
     }
 }
