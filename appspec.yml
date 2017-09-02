@@ -1,14 +1,14 @@
 version: 0.0
 os: linux
 files:
-  - source: public/index.php
+  - source: public/
     destination: /var/www/html/bluebonnet/public
 hooks:
   BeforeInstall:
     - location: deploy/before_install
       timeout: 300
-      runas: ubuntu
+      runas: linux
   AfterInstall:
     - location: deploy/restart_server
       timeout: 300
-      runas: ubuntu
+      runas: linux
