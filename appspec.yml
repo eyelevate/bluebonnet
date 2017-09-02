@@ -1,8 +1,8 @@
 version: 0.0
 os: linux
 files:
-  - source: public/
-    destination: /var/www/html/bluebonnet/public
+  - source: .
+    destination: /var/www/html/bluebonnet/
 hooks:
   BeforeInstall:
     - location: deploy/before_install
