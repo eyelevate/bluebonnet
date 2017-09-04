@@ -52,7 +52,6 @@ $(document).ready(function() {
 	inventory_items.events();
 
 });
-
 inventory_items = {
 	events(){
 		// set variables and file input
