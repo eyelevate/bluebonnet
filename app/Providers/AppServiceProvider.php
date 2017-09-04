@@ -31,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
         // Footer
         view()->composer([
             'layouts.themes.theme1.partials.footer',
-            'layouts.themes.theme2.partials.footer'
+            'layouts.themes.theme2.partials.footer',
+            'emails.user.invoiceuserorder'
             ], function ($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
             $view->with('company', $company);
