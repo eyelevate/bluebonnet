@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Collection;
 use App\Job;
 use App\Image;
@@ -46,7 +45,7 @@ class CollectionController extends Controller
      */
     public function create()
     {
-         return view('collections.create');
+        return view('collections.create');
     }
 
     /**
@@ -63,13 +62,13 @@ class CollectionController extends Controller
                 'required',
                 'mimes:jpeg,jpg,png',
                 'max:10000',
-                // Rule::dimesions()->ratio(1) 
+                // Rule::dimesions()->ratio(1)
             ]
         ]);
         
 
         // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
-        $resized_image_uri = $image->resize($request->img,480,480);
+        $resized_image_uri = $image->resize($request->img, 480, 480);
         $path = Storage::putFile('public/collections', new File($resized_image_uri));
 
         //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
@@ -77,15 +76,14 @@ class CollectionController extends Controller
 
         // check if featured is set to true if true then create a resize of the image to 1902x1070
         if ($request->featured == 'on') {
-            $resized_featured_uri = $image->resize($request->img,2500,1250);
-            $featured_path = Storage::putFile('public/collections',new File($resized_image_uri));
+            $resized_featured_uri = $image->resize($request->img, 2500, 1250);
+            $featured_path = Storage::putFile('public/collections', new File($resized_image_uri));
             unlink($resized_featured_uri);
             $request->merge(['featured_src'=>$featured_path]);
-
         }
 
 
-        // save the path of the image 
+        // save the path of the image
         $request->merge(['img_src'=>$path]);
         
         // merge the switch on/off to true or false
@@ -110,7 +108,7 @@ class CollectionController extends Controller
     {
         $layout = $this->layout;
         $collections = $collection->prepareForShow($collection);
-        return view('collections.show',compact('layout','collections'));
+        return view('collections.show', compact('layout', 'collections'));
     }
 
     /**
@@ -121,7 +119,6 @@ class CollectionController extends Controller
      */
     public function edit(Collection $collection)
     {
-
         return view('collections.edit', compact('collection'));
     }
 
@@ -146,7 +143,7 @@ class CollectionController extends Controller
             // remove old image
             Storage::delete($collection->img_src);
             // add new image
-            $resized_image_uri = $image->resize($request->img,480,480);
+            $resized_image_uri = $image->resize($request->img, 480, 480);
             $path = Storage::putFile('public/collections', new File($resized_image_uri));
 
             //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
@@ -160,8 +157,8 @@ class CollectionController extends Controller
 
             // Check for any new images and add accordingly
             if ($request->featured == 'on') {
-                $resized_featured_uri = $image->resize($request->img,2220,1210);
-                $featured_path = Storage::putFile('public/collections',new File($resized_image_uri));
+                $resized_featured_uri = $image->resize($request->img, 2220, 1210);
+                $featured_path = Storage::putFile('public/collections', new File($resized_image_uri));
                 unlink($resized_featured_uri);
                 $request->merge(['featured_src'=>$featured_path]);
             }
@@ -189,8 +186,7 @@ class CollectionController extends Controller
         // remove links to inventory items
 
         // delete collection
-        if($collection->delete())
-        {
+        if ($collection->delete()) {
             flash('You have successfully deleted a collection.')->success();
             return redirect()->route('collection.index');
         }
@@ -200,13 +196,13 @@ class CollectionController extends Controller
     {
         $inventory_select = $inventory->prepareSelect();
         $inventories = $inventory->prepareForSet($collection->id);
-        return view('collections.set',compact(['collection','inventory_select','inventories']));
+        return view('collections.set', compact(['collection','inventory_select','inventories']));
     }
 
     public function add(Request $request, Collection $collection, Inventory $inventory)
     {
         $status = 'fail';
-        if (!$collection->collectionItem()->where('inventory_item_id',$request->inventory_item_id)->exists()) {
+        if (!$collection->collectionItem()->where('inventory_item_id', $request->inventory_item_id)->exists()) {
             $status = 'success';
             $collection->collectionItem()->attach($request->inventory_item_id);
         }
@@ -223,7 +219,7 @@ class CollectionController extends Controller
     public function remove(Request $request, Collection $collection, Inventory $inventory)
     {
         $status = 'fail';
-        if ($collection->collectionItem()->where('inventory_item_id',$request->inventory_item_id)->exists()) {
+        if ($collection->collectionItem()->where('inventory_item_id', $request->inventory_item_id)->exists()) {
             $status = 'success';
             $collection->collectionItem()->detach($request->inventory_item_id);
         }
