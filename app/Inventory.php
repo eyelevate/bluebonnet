@@ -24,13 +24,13 @@ class Inventory extends Model
 
     public function inventoryItems()
     {
-        return $this->hasMany(InventoryItem::class,'inventory_id','id');
+        return $this->hasMany(InventoryItem::class, 'inventory_id', 'id');
     }
 
     public function prepareSelect()
     {
         $select = [''=>'select inventory group'];
-        $inventories =  $this->orderBy('name','asc')->get();
+        $inventories =  $this->orderBy('name', 'asc')->get();
         if (count($inventories) > 0) {
             foreach ($inventories as $inventory) {
                 $select[$inventory->id] = $inventory->name;
@@ -43,15 +43,15 @@ class Inventory extends Model
     {
         $job = new Job();
         $itms = new InventoryItem();
-        $inventories =  $this->orderBy('name','asc')->get();
+        $inventories =  $this->orderBy('name', 'asc')->get();
         if (count($inventories) > 0) {
             foreach ($inventories as $key =>$value) {
-                if(isset($inventories[$key]->desc)) {
-                    $inventories[$key]['desc'] = $job->stringToDotDotDot($value->desc,40);
+                if (isset($inventories[$key]->desc)) {
+                    $inventories[$key]['desc'] = $job->stringToDotDotDot($value->desc, 40);
                 }
 
 
-                if(isset($inventories[$key]->inventoryItems)) {
+                if (isset($inventories[$key]->inventoryItems)) {
                     foreach ($inventories[$key]->inventoryItems as $ikey => $ivalue) {
                         // collection item
                         $inventories[$key]['inventoryItems'][$ikey]['collection_set'] = false;
@@ -63,26 +63,22 @@ class Inventory extends Model
                                     break;
                                 }
                             }
-                            
                         }
 
                         if (isset($inventories[$key]['inventoryItems'][$ikey]['desc'])) {
-                            $inventories[$key]['inventoryItems'][$ikey]['desc'] = $job->stringToDotDotDot($ivalue->desc,40);
+                            $inventories[$key]['inventoryItems'][$ikey]['desc'] = $job->stringToDotDotDot($ivalue->desc, 40);
                         }
                         $inventories[$key]['inventoryItems'][$ikey]['collectionItem'] = (count($ivalue->collectionItem) > 0) ? $ivalue->collectionItem : [];
                         if (count($ivalue->images) > 0) {
                             foreach ($ivalue->images as $iikey => $iivalue) {
-
-                                $primary_img = $ivalue->images()->where('primary',true)->first();
+                                $primary_img = $ivalue->images()->where('primary', true)->first();
                                 $primary_src = ($primary_img) ? $primary_img->img_src : null;
                                 
-                                $non_primary_imgs = $ivalue->images()->where('primary',false)->orderBy('ordered','asc')->get();
-                                $inventories[$key]['inventoryItems'][$ikey]['primary_src'] = asset(str_replace('public/','storage/',$primary_src));
+                                $non_primary_imgs = $ivalue->images()->where('primary', false)->orderBy('ordered', 'asc')->get();
+                                $inventories[$key]['inventoryItems'][$ikey]['primary_src'] = asset(str_replace('public/', 'storage/', $primary_src));
                                 $inventories[$key]['inventoryItems'][$ikey]['non_primary_imgs'] = $non_primary_imgs;
-
                             }
                         }
-                        
                     }
                 }
             }
@@ -91,7 +87,7 @@ class Inventory extends Model
     }
 
 
-    static public function countInventories()
+    public static function countInventories()
     {
         return Inventory::count();
     }
