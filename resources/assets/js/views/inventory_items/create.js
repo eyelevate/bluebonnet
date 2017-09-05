@@ -2,6 +2,11 @@ const app = new Vue({
 	el: '#root',
 	data() {
 		return {
+			stones: true,
+			metals: true,
+			sizes: true,
+			stones_data: [],
+			metals_data: [],
 			images:[]
 		}
 		
@@ -35,6 +40,40 @@ const app = new Vue({
 
 			// set data
 			this.images = imgs;
+		},
+		setMetals() {
+			metals = (this.metals) ? false : true;
+			this.metals = metals;
+		},
+		setStones() {
+			stones = this.stones;
+
+			if (stones) {
+				this.stones = false;
+				this.sizes = false;
+			} else {
+				this.stones = true;
+				this.sizes = true;
+			}
+		},
+		setSizes() {
+
+			sizes = (this.sizes) ? false : true;
+			this.sizes = sizes;
+		},
+		activateRow($event) {
+			console.log($($event.target).is(':checked'));
+			tr = $($event.target).parents('tr:first');
+			if ($($event.target).is(':checked')) {
+				tr.removeClass('table-active');
+				tr.find('.active-input').removeClass('hide');
+				tr.find('.active-button').removeClass('hide');
+			} else {
+				tr.addClass('table-active');
+				tr.find('.active-input').addClass('hide');
+				tr.find('.active-button').addClass('hide');
+			}
+			
 		}
 	},
 	computed: {
@@ -47,6 +86,15 @@ const app = new Vue({
 
 	}
 });
+
+const vars = new Vue({
+	el: '#variable-root',
+	mounted() {
+		app.stones_data = JSON.parse(this.$el.attributes.stones.value);
+		app.metals_data = JSON.parse(this.$el.attributes.metals.value);
+    }
+});
+
 
 $(document).ready(function() {
 	inventory_items.events();
@@ -75,7 +123,7 @@ inventory_items = {
 		        	var reader = new FileReader();
 			        reader.onload = function(event) {
 			        	app.images.push({
-			        		"name": el.name,
+			        		"name": (el.name.length > 15) ? el.name.substring(0,15) + '...' :  el.name,
 			        		"primary":false,
 			        		"primary_name":'primary_image['+index+']',
 			        		"src":event.target.result

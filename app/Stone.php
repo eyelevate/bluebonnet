@@ -28,6 +28,7 @@ class Stone extends Model
         return $this->hasMany(StoneSize::class,'stone_id','id');
     }
 
+
     #public
     public function prepareSelect($data)
     {
@@ -47,9 +48,17 @@ class Stone extends Model
             foreach ($data as $key => $value) {
                 if (isset($data[$key]['email'])) {
                     if ($data[$key]['email'] == false) {
-                        $data[$key]['email'] = 'False';
+                        $data[$key]['email_status'] = 'False';
                     } else {
-                        $data[$key]['email'] = 'True';
+                        $data[$key]['email_status'] = 'True';
+                    }
+                    if (isset($data[$key]->stoneSizes)) {
+                        $data[$key]['sizes'] = $value->stoneSizes;
+                        if (isset($data[$key]['sizes'])) {
+                            foreach ($data[$key]['sizes'] as $sskey => $ssvalue) {
+                                $data[$key]['sizes'][$sskey]['name'] = $ssvalue->sizes->name;
+                            }
+                        }
                     }
                 }
             }

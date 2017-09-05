@@ -17,7 +17,7 @@
                 <i class="ion" :class="iconPost" style=""></i>
             </div>
         </div>
-        <span class="help-block text-danger" v-if="err">
+        <span class="help-block text-danger form-control-feedback" v-if="err">
             <small>{{ bError }}</small>
         </span> 
 	</div>

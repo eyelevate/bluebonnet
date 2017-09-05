@@ -62,27 +62,138 @@
 	                <hr/>
 	                <!-- Stones -->
 
-					<bootstrap-switch 
-	                	switch-type=""
-	                	switch-color="switch-success"
-	                	use-label="true" 
-	                	label="Stones Selectable?" 
-	                	input-name="stones"
-	                	input-checked="true">
-	                </bootstrap-switch>
+	                <bootstrap-control
+	                	use-label="true"
+	                	label="Stones Selectable?">
+	                	<template slot="control">
+	                		<div class="row-fluid">
+					            <label class="switch switch-text switch-success" >
+					                <input id="switch-input-on" name="stones" type="checkbox" class="switch-input" checked @click="setStones">
+					                <span class="switch-label" data-on="Yes" data-off="No"></span>
+					                <span class="switch-handle" ></span>
+					            </label>    
+					        </div>
+	                	</template>
+	                </bootstrap-control>
+
+	                <!-- Sizes -->
+	                <hr/>
+					<bootstrap-control
+	                	use-label="true"
+	                	label="Stones Size Selectable?">
+	                	<template slot="control">
+	                		<div class="row-fluid">
+					            <label class="switch switch-text switch-success" >
+					                <input id="switch-input-on" name="sizes" type="checkbox" class="switch-input" checked @click="setSizes" v-if="stones">
+					                <input id="switch-input-on" name="sizes" type="checkbox" class="switch-input" disabled @click="setSizes" else>
+					                <span class="switch-label" data-on="Yes" data-off="No" ></span>
+					                <span class="switch-handle"></span>
+					            </label>    
+					        </div>
+	                	</template>
+	                </bootstrap-control>
+	                
+	                <div class="container" v-if="stones">
+	                	<div class="table-responsive">
+	                		<table class="table table-condensed">
+	                			<thead>
+	                				<tr>
+	                					<th>Active?</th>
+	                					<th>Email?</th>
+	                					<th>Stone</th>
+	                					<th>Price</th>
+	                					<th v-if="sizes">Sizes</th>
+	                				</tr>
+	                			</thead>
+	                			<tbody>
+	                				<tr v-for="stone in stones_data">
+	                					<td>
+	                						<bootstrap-control>
+							                	<template slot="control">
+
+										            <label class="switch switch-text switch-success" >
+										                <input id="switch-input-on" :name="'itemStone[' + stone.id+'][active]'" type="checkbox" class="switch-input" checked @click="activateRow($event)">
+										                <span class="switch-label" data-on="Yes" data-off="No"></span>
+										                <span class="switch-handle" ></span>
+										            </label>    
+
+							                	</template>
+							                </bootstrap-control>
+	                					</td>
+	                					<td>@{{ stone.email_status }}</td>
+	                					<td>@{{ stone.name }}</td>
+	                					<td>
+	                						<div v-if="stone.email">
+	                							By Email Only
+	                							<input type="hidden" :name="'itemStone['+stone.id+'][price]'" value="0" style="width:200px">
+	                						</div>
+	                						<div else>
+	                							<input type="text" class="form-control active-input" :name="'itemStone[' + stone.id+'][price]'" :value="stone.price" v-if="!stone.email" style="width:200px">
+	                						</div>
+	                					</td>
+	                					<td v-if="sizes">
+	                						<div v-if="stone.email">
+	                							<button type="button" class="btn btn-default" disabled>Sizes</button>	
+	                						</div>
+	                						<div else>
+	                							<button type="button" data-toggle="modal" :data-target="'#sizesModal-'+stone.id" class="active-button btn btn-info" v-if="!stone.email">Sizes</button>
+	                						</div>
+	                					</td>
+	                				</tr>
+	                			</tbody>
+	                		</table>
+	                	</div>
+	                </div>
 	                
 
 	                <hr/>
 	                <!-- Metals -->
 
-					<bootstrap-switch 
-	                	switch-type=""
-	                	switch-color="switch-success"
-	                	use-label="true" 
-	                	label="Metals Selectable?" 
-	                	input-name="metals"
-	                	input-checked="true">
-	                </bootstrap-switch>
+					<bootstrap-control
+	                	use-label="true"
+	                	label="Metals Selectable?">
+	                	<template slot="control">
+	                		<div class="row-fluid">
+					            <label class="switch switch-text switch-success" >
+					                <input id="switch-input-on" name="metals" type="checkbox" class="switch-input" checked @click="setMetals">
+					                <span class="switch-label" data-on="Yes" data-off="No" ></span>
+					                <span class="switch-handle"></span>
+					            </label>    
+					        </div>
+	                	</template>
+	                </bootstrap-control>
+
+	                <div class="container" v-if="metals">
+	                	<div class="table-responsive">
+	                		<table class="table table-condensed">
+	                			<thead>
+	                				<tr>
+	                					<th>Active?</th>
+	                					<th>Metal</th>
+	                					<th>Price</th>
+	                				</tr>
+	                			</thead>
+	                			<tbody>
+	                				<tr v-for="metal in metals_data">
+	                					<td>
+	                						<bootstrap-control>
+							                	<template slot="control">
+										            <label class="switch switch-text switch-success" >
+										                <input id="switch-input-on" :name="'itemMetal[' + metal.id+'][active]'" type="checkbox" class="switch-input" checked @click="activateRow($event)">
+										                <span class="switch-label" data-on="Yes" data-off="No"></span>
+										                <span class="switch-handle" ></span>
+										            </label>    
+
+							                	</template>
+							                </bootstrap-control>
+	                					</td>
+	                					<td>@{{ metal.name }}</td>
+	                					<td><input type="text" :value="metal.price" :name="'itemMetal[' + metal.id+'][price]'" class="form-control active-input" /></td>
+	                				</tr>
+	                			</tbody>
+	                		</table>
+	                	</div>
+	                </div>
 	                <hr/>
 	                <!-- Taxable -->
 
@@ -136,6 +247,7 @@
 			                					use-header="true"
 			                					use-footer="true"
 			                					:img-top-src="i.src"
+			                					:img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ i.name }}
@@ -167,13 +279,66 @@
 				<button type="submit" class = "btn btn-primary">Save</button>
 			</template>
 		</bootstrap-card>
+		@if(count($stones) > 0)
+			@foreach($stones as $stone)
+			<bootstrap-modal id="sizesModal-{{ $stone->id }}" b-size="modal-lg">
+				<template slot="header">Stone Sizes - {{ $stone->name }}</template>
+				<template slot="body">
+					<div class="table-responsive">
+						<table class="table table-condensed">
+							<thead>
+								<tr>
+									<th>Active?</th>
+									<th>Size</th>
+									<th>Price</th>
+								</tr>
+							</thead>
+							<tbody>
+							@if (count($stone->stoneSizes) > 0)
+								@foreach($stone->stoneSizes as $size)
+								<tr>
+									<td>
+										<bootstrap-control>
+						                	<template slot="control">
+
+									            <label class="switch switch-text switch-success" >
+									                <input id="switch-input-on" name="itemSize[{{$size->id}}][active]" type="checkbox" class="switch-input" checked @click="activateRow($event)">
+									                <span class="switch-label" data-on="Yes" data-off="No"></span>
+									                <span class="switch-handle" ></span>
+									            </label>    
+
+						                	</template>
+						                </bootstrap-control>
+
+									</td>
+									<td>{{ $size->sizes->name }}</td>
+									<td><input value="{{ $size->price }}" class="form-control active-input" name="itemSize[{{ $size->id }}][price]" style="width:200px;"/></td>
+								</tr>
+								@endforeach
+							@endif
+							</tbody>
+						</table>
+					</div>
+				</template>
+				<template slot="footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+				</template>
+			</bootstrap-modal>
+			@endforeach
+		@endif
+
 		{!! Form::close() !!}
 </div>
 @endsection
 
 @section('modals')
 
+
 @endsection
 
 @section('variables')
+<div id="variable-root"
+	stones="{{ (count($stones)) ? json_encode($stones) : json_encode([])  }}"
+	metals="{{ (count($metals)) ? json_encode($metals) : json_encode([])  }}"
+></div>
 @endsection

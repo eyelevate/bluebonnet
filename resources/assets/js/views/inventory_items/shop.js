@@ -65,6 +65,8 @@ const vars = new Vue({
 	mounted() {
 		app.inventoryItemId = this.$el.attributes.itemId.value;
 		app.subtotalFormatted = this.$el.attributes.subtotal.value;
+		app.stoneId = this.$el.attributes.stoneId.value;
+		console.log(this.$el.attributes.stoneId.value);
     }
 });
 $(document).ready(function() {

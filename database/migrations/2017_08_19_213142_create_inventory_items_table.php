@@ -23,6 +23,7 @@ class CreateInventoryItemsTable extends Migration
             $table->boolean('active')->default(0);
             $table->boolean('metals')->default(1);
             $table->boolean('stones')->default(1);
+            $table->boolean('sizes')->default(1);
             $table->boolean('featured')->default(0);
             $table->softDeletes();
             $table->timestamps();
