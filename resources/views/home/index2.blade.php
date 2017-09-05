@@ -72,7 +72,7 @@
 	@endif
 	<section id="instagram">
 		<div class="row text-center">
-			<h4 class="col-12" style="margin-bottom:0px;">@BlueBonnet</h4>
+			<h4 class="col-12" style="margin-bottom:0px;">@Freyas_Fine_Jewelry</h4>
 			<p class="col-12">Everything shiny and new on instagram</p>
 		</div>
 		<div class="container-fluid slip">
