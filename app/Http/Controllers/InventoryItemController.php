@@ -473,11 +473,23 @@ class InventoryItemController extends Controller
             
         }
 
-        // if ($request->session()->has('cart')) {
-        //     session()->push(['inventoryItem'=>$inventoryItem,'finger_id'=>$request->finger_id,'metal_id'=>$request->metal_id,'stone_id'=>$request->stone_id,'stone_size_id'=>$request->stone_size_id]],'cart');
-        // } else {
-        //     session(['cart'=>['inventoryItem'=>$inventoryItem,'finger_id'=>$request->finger_id,'metal_id'=>$request->metal_id,'stone_id'=>$request->stone_id,'stone_size_id'=>$request->stone_size_id]]);
-        // }
+        if ($request->session()->has('cart')) {
+            session()->push([
+                'inventoryItem'=>$inventoryItem,
+                'finger_id'=>$request->finger_id,
+                'metal_id'=>$request->metal_id,
+                'stone_id'=>$request->stone_id,
+                'stone_size_id'=>$request->stone_size_id
+                ],'cart');
+        } else {
+            session(['cart'=>[
+                'inventoryItem'=>$inventoryItem,
+                'finger_id'=>$request->finger_id,
+                'metal_id'=>$request->metal_id,
+                'stone_id'=>$request->stone_id,
+                'stone_size_id'=>$request->stone_size_id]
+            ]);
+        }
 
         return redirect()->route('home.cart');
         
