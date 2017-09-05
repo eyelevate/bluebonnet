@@ -68,7 +68,7 @@
 	                	<template slot="control">
 	                		<div class="row-fluid">
 					            <label class="switch switch-text switch-success" >
-					                <input id="switch-input-on" name="stones" type="checkbox" class="switch-input" checked @click="setStones">
+					                <input id="switch-input-on" name="stones" type="checkbox" class="switch-input"  @click="setStones">
 					                <span class="switch-label" data-on="Yes" data-off="No"></span>
 					                <span class="switch-handle" ></span>
 					            </label>    
@@ -155,7 +155,7 @@
 	                	<template slot="control">
 	                		<div class="row-fluid">
 					            <label class="switch switch-text switch-success" >
-					                <input id="switch-input-on" name="metals" type="checkbox" class="switch-input" checked @click="setMetals">
+					                <input id="switch-input-on" name="metals" type="checkbox" class="switch-input"  @click="setMetals">
 					                <span class="switch-label" data-on="Yes" data-off="No" ></span>
 					                <span class="switch-handle"></span>
 					            </label>    

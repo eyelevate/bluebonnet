@@ -2,9 +2,9 @@ const app = new Vue({
 	el: '#root',
 	data() {
 		return {
-			stones: true,
-			metals: true,
-			sizes: true,
+			stones: false,
+			metals: false,
+			sizes: false,
 			stones_data: [],
 			metals_data: [],
 			images:[]
