@@ -1,14 +1,11 @@
 @component('mail::message')
 Hello {!! $company->name !!},
 
-# Your Order# is: $Invoice->invoice_number
+Thank you for your order. You can view it online.
 
 @component('mail::button', ['url' => ''])
 View Your Order
 @endcomponent
-
-
-Thank you for your order.
 
 It will be shipped to {!! $company->street !!}, #{!! $company->suite !!}, {!! $company->city !!} {!! $company->state !!} {!! $company->zipcode !!}, {!! $company->country !!}
 
@@ -21,7 +18,7 @@ Track Your Shipment
 @component('mail::table')
 | Quantity |Description        |Price      |
 |:--------:|:--------------------- |-------:|
-| $Invoice->item($id)->Qty | $Invoice->item($id)->Description          | $Invoice->item($id)->Price       |
+| 1 | $Invoice->item($id)->Description          | $500.00 |
 | 1 | Gold Ring 01 - Moissanite Super Special         | $10,000.00       |
 
 @endcomponent
@@ -30,7 +27,7 @@ Track Your Shipment
 
 |                     |          |          |
 | ------------------- |---------:| --------:|
-|           |<small>Subtotal</small>           |<small> $10,000.00 </small>|
+| &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;          |<small>Subtotal</small>           |<small> $10,000.00 </small>|
 |           |<small>Sales Tax   </small>       | <small>$825.00 </small>      |
 |           |<small>Shipping  </small>         | <small>$75.00 </small>| 
 |          |<small>Total       </small>       |<small>$10,900.00  </small>  |
@@ -38,7 +35,8 @@ Track Your Shipment
 @endcomponent
 
 
-
 Thanks,<br>
 {{ config('app.name') }}
+
+
 @endcomponent

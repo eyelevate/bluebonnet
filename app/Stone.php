@@ -123,7 +123,7 @@ class Stone extends Model
 
                 // stone price update
                 if (isset($rows[$key]['price'])) {
-                    $rows[$key]['price'] = money_format('$%i', $value->price);
+                    $rows[$key]['price'] = number_format($value->price, 2,".",",");
                 }
 
                 // stone sizes update

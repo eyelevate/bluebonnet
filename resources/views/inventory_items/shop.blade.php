@@ -44,7 +44,7 @@
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-5">
 			<h1>{{ $inventoryItem->name }}</h1>
-			<p>{{ money_format('$%!.2n',$inventoryItem->subtotal) }} (base price before tax and options)</p>
+			<p>${{ number_format($inventoryItem->subtotal, 2,".",",") }} (base price before tax and options)</p>
 			<p>{{ $inventoryItem->desc }}</p>
 			<p><strong>
 				While this one-of-a-kind ring has sold, we are able to create a unique version just for you. Gemstones are natural materials; production could take up to 8 weeks as a stone would have to be specially sourced. Requested modifications are subject to revised production timelines and pricing. Please contact us for more information.
@@ -139,6 +139,7 @@
 @section('modals')
 @endsection
 @section('variables')
+<<<<<<< HEAD
 <div id="variable-root" 
 	 itemId="{{ $inventoryItem->id }}" 
 	 subtotal="{{ money_format('$%!.2n',$inventoryItem->subtotal) }}"
@@ -146,4 +147,7 @@
 	 	
 </div>
 {!! Form::close() !!}
+=======
+<div id="variable-root" itemId="{{ $inventoryItem->id }}" subtotal="${{ number_format($inventoryItem->subtotal, 2,".",",") }}"></div>
+>>>>>>> origin/master
 @endsection
