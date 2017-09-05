@@ -302,7 +302,7 @@ class InventoryItemController extends Controller
         if ($subtotal) {
             return response()->json([
                 'subtotal' => $subtotal,
-                'subtotal_formatted'=>money_format('$%!.2n',$subtotal)
+                'subtotal_formatted'=>"$".number_format($subtotal, 2,'.',',')
             ]);
         } else {
             return response()->json([
