@@ -5,7 +5,7 @@
 @section('styles')
 @endsection
 @section('header')
-{!! Form::open(['method'=>'post','route'=>['home.set-checkout']]) !!}
+{!! Form::open(['method'=>'post','route'=>['inventory_item.checkout',$inventoryItem->id]]) !!}
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
