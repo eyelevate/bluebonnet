@@ -18,5 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call(SizesTableSeeder::class);
         $this->call(StonesTableSeeder::class);
         $this->call(StoneSizesTableSeeder::class);
+        $this->call(TaxesTableSeeder::class);
     }
 }

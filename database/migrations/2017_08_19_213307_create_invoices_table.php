@@ -29,6 +29,10 @@ class CreateInvoicesTable extends Migration
             $table->tinyInteger('payment_type')->default(1);
             $table->string('last_four')->nullable();
             $table->string('transaction_id')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->string('street')->nullable();
             $table->string('suite')->nullable();
             $table->string('city')->nullable();

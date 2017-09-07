@@ -159,6 +159,14 @@
 								b-label="Stones Selection?">		
 							</bootstrap-readonly>
 							<hr/>
+							<!-- Fingers -->
+							<bootstrap-readonly
+								use-input="true"
+								b-value="{{ $ii->fingers_status }}"
+								use-label="true"
+								b-label="Ring Size Selection?">		
+							</bootstrap-readonly>
+							<hr/>
 							<!-- Active -->
 							<div>
 								<label>Active?</label>

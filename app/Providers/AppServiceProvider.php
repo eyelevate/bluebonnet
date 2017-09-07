@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
             'layouts.themes.theme2.partials.nav'
             ], function($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
+
             $view->with('company', $company);
         });
 

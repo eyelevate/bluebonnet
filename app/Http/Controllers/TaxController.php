@@ -16,7 +16,8 @@ class TaxController extends Controller
     {
         $columns = $tax->prepareTableColumns();
         $rows = $tax->prepareTableRows($tax->all());
-        return view('taxes.index');
+
+        return view('taxes.index',compact(['columns','rows']));
     }
 
     /**
@@ -26,7 +27,7 @@ class TaxController extends Controller
      */
     public function create()
     {
-        //
+        return view('taxes.create');
     }
 
     /**
@@ -35,53 +36,15 @@ class TaxController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Tax $tax)
     {
-        //
+        $this->validate(request(), [
+            'rate' => 'required'
+        ]);
+
+        $tax->create($request->all());
+        flash('Successfully created a new tax rate')->success();
+        return redirect()->route('tax.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Tax  $tax
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Tax $tax)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Tax  $tax
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Tax $tax)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Tax  $tax
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Tax $tax)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Tax  $tax
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Tax $tax)
-    {
-        //
-    }
 }

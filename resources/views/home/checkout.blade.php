@@ -1,45 +1,11 @@
 @extends($layout)
 
 @section('scripts')
+<script type="text/javascript" src="{{ mix('js/views/home/checkout.js') }}"></script>
 @endsection
 
 @section('styles')
 <style>
-
-.order-summary{
-    padding-right: 10%;
-    border-left: 1px solid #ccc;
-    padding-left: 10%;
-
-}
-
-
-.customer-form{
-    padding-right: 10%;
-    padding-left: 10%;
-
-}
-
-.breadcrumb{
-  font-size: 12px;
-  background: #fff;
-  padding-top: 0px !important;
-
-}
-
-.paypalButton{
-    padding-top: 10px;
-    padding-bottom: 20px;
-
-
-}
-
-.lowmargin{
-
-  margin-bottom: 10px;
-
-}
-
 
 </style>
 
@@ -50,227 +16,506 @@
 @endsection
 
 @section('content')
+{!! Form::open(['method'=>'post','route'=>'home.finish']) !!}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
+            <div class="customer-form">
+                <div class="row justify-content-center hidden-sm-down">
+                    <h1 class="lowmargin">Freya's Fine Jewelry</h1>
+                </div>
+                <div class="row justify-content-center hidden-sm-down">
+                    <nav class="breadcrumb">
+                        <a class="breadcrumb-item" href="{{ route('home') }}">Home</a>
+                        <a class="breadcrumb-item" href="{{ route('home.shop') }}">Collections</a>
+                        <a class="breadcrumb-item" href="{{ route('home.cart') }}">Shopping Cart</a>
+                        <span class="breadcrumb-item active">Checkout</span>
 
-<div class="row justify-content-center">
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
-  <div class="customer-form">
-      <div class="row justify-content-center hidden-md-up">
-      <a role="button" class="btn btn-block" href="/checkout#orderSummary">Order Summary</a>
-      </div>
-      <div class="row justify-content-center hidden-sm-down">
-      <h1 class="lowmargin">Freya's Fine Jewelry</h1>
-      </div>
-    <div class="row justify-content-center hidden-sm-down">
-      <nav class="breadcrumb">
-      <a class="breadcrumb-item" href="/cart">Shopping Cart</a>
-      <span class="breadcrumb-item active">Customer Information</span>
-      <a class="breadcrumb-item" href="#">Shipping Method</a>
-      <a class="breadcrumb-item" href="#">Payment Method</a>
-      </nav>
-    </div>
-    <div class="row justify-content-center paypalButton">
-      <div class="span" style="width:100px;">
-      <button type="button" class="btn btn-warning btn-block"><img src="img/themes/theme2/paypal.png" alt="PayPal"></button>
-      </div>
-    </div>
+                    </nav>
+                </div>
 
-    <div class="row">
 
-      <div class="col-5"><hr></div>
-      <div class="col-2 d-flex justify-content-center">OR</div>
-      <div class="col-5"><hr></div>
-        
-    </div>
-  
-  {{-- Customer Form --}}
-      <div class="row">
-          
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start">
-          <h5>Customer Information</h5>
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-end">
-          Already have an Account? &nbsp; <a href="/login">Log in</a>
-          </div>
+                {{-- Customer Form --}}
+                <div class="row">
 
-      </div>
-{{-- Form Row 1 --}}
-      <div class="form-group row">
-      <div class="col-12">
-      <form>
-               
-                <input type="email" class="form-control" id="Email" placeholder="Email">
-                <small id="emailHelp" class="form-text text-muted">Please enter a valid email address.</small>
-              
-      </form>
-      </div>
-      </div>
-{{-- Form Row 2 --}}
-      <div class="form-group row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <form>
-                 
-                  <input type="text" class="form-control" id="FirstName" placeholder="First Name">
-                  <small id="firstNameHelp" class="form-text text-muted">Please enter your first name.</small>
-        </form>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start">
+                        <h5>Customer Information</h5>
+                    </div>
+                    @if (!auth()->check())
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-end">
+                        Already have an Account? &nbsp; <a href="{{ route('login') }}">Log in</a>
+                    </div>
+                    @endif
+
+                </div>
+                
+                {{-- Form Row 2 --}}
+                <div class="form-group row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="form-group {{ $errors->has('first_name') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">First Name</label>
+                            {{ Form::text('first_name', old('first_name') ? old('first_name') : (auth()->check()) ? auth()->user()->first_name : '',['class'=>'form-control']) }}
+                            <div class="hidden-md-up {{ ($errors->has('first_name')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('first_name') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="form-group {{ $errors->has('last_name') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Last Name</label>
+                            {{ Form::text('last_name', old('last_name') ? old('last_name') : (auth()->check()) ? auth()->user()->last_name :'',['class'=>'form-control']) }}
+                        </div>
+                        <div class="hidden-md-up {{ ($errors->has('last_name')) ? '' : 'hide' }}">
+                            <small class="form-control-feedback">{{ $errors->first('last_name') }}</small>
+                        </div>
+                    </div>
+                    <div class="hidden-sm-down {{ ($errors->has('first_name')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('first_name') }}</small>
+                    </div>
+                    <div class="hidden-sm-down {{ ($errors->has('last_name')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('last_name') }}</small>
+                    </div>
+                </div>
+                {{-- Email --}}
+                <div class="form-group {{ $errors->has('email') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">Email</label>
+                    {{ Form::text('email', old('email') ? old('email') : (auth()->check()) ? auth()->user()->email : '',['class'=>'form-control','type'=>'email']) }}
+                    <div class="{{ ($errors->has('email')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('email') }}</small>
+                    </div>
+                </div>
+
+                {{-- Phone --}}
+                <div class="form-group {{ $errors->has('phone') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">Phone</label>
+                    {{ Form::text('phone', old('phone') ? old('phone') : (auth()->check()) ? auth()->user()->phone : '',['class'=>'form-control']) }}
+                    <div class="{{ ($errors->has('phone')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('phone') }}</small>
+                    </div>
+                </div>
+
+                {{-- Shipping Address --}}
+                <hr/>
+                <div class="row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-start">
+                        <h5>Shipping Address</h5>
+                    </div>
+
+                </div>
+                {{-- Form Row 4 --}}
+                <div class="form-group row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        {{-- street --}}
+                        <div class="form-group {{ $errors->has('street') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Street</label>
+                            {{ Form::text('street', old('street') ? old('street') : (auth()->check()) ? auth()->user()->street : '',['class'=>'form-control']) }}
+                            <div class="{{ ($errors->has('street')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('street') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        {{-- suite --}}
+                        <div class="form-group {{ $errors->has('suite') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Suite</label>
+                            {{ Form::text('suite', old('suite') ? old('suite') : (auth()->check()) ? auth()->user()->suite : '',['class'=>'form-control']) }}
+                            <div class="{{ ($errors->has('suite')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('suite') }}</small>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                {{-- city--}}
+                <div class="form-group {{ $errors->has('city') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">City</label>
+                    {{ Form::text('city', old('city') ? old('city') : (auth()->check()) ? auth()->user()->city : '',['class'=>'form-control']) }}
+                    <div class="{{ ($errors->has('city')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('city') }}</small>
+                    </div>
+                </div>
+                {{-- Form Row 6 --}}
+                <div class="row form-group">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        {{-- state --}}
+                        <div class="form-group {{ $errors->has('state') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">State</label>
+                            {{ Form::select('state', $states ,old('state') ? old('state') :  (auth()->check()) ? auth()->user()->state :'',['class'=>'form-control']) }}
+                            <div class="hidden-sm-down {{ ($errors->has('state')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('state') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        {{-- country --}}
+                        <div class="form-group {{ $errors->has('country') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Country</label>
+                            {{ Form::select('country', $countries ,'US',['class'=>'form-control']) }}
+                            <div class="hidden-sm-down {{ ($errors->has('country')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('country') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden-md-up {{ ($errors->has('state')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('state') }}</small>
+                    </div>
+                    <div class="hidden-md-up {{ ($errors->has('country')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('country') }}</small>
+                    </div>
+                </div>
+                {{-- zipcode --}}
+                <div class="form-group {{ $errors->has('zipcode') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">Zipcode</label>
+                    {{ Form::text('zipcode', old('zipcode') ? old('zipcode') : (auth()->check()) ? auth()->user()->zipcode : '',['class'=>'form-control']) }}
+                    <div class="{{ ($errors->has('zipcode')) ? '' : 'hide' }} hidden-sm-down">
+                        <small class="form-control-feedback">{{ $errors->first('zipcode') }}</small>
+                    </div>
+                </div>
+                
+                <hr/>
+                <div class="row">
+
+                    <div class="col-12">
+                        <h5>Shipping Options</h5>
+                        <small>
+                            <blockquote class="blockquote">
+                                <p class="mb-0">All shipping will dates will be calculated from the moment your item is ready to be shipped. Custom designs and certified / lab created diamonds can require up 8 weeks from point of sale. Please keep in mind we will ship out as soon as the item is in perfect order and keep in communication all along the way!</p>
+                            </blockquote>
+                        </small>
+                    </div>
+
+                </div>
+                <div class="row-fluid">
+                    <div class="col-12">
+                        
+                        <label class="form-control-label">
+                            <input type="radio" name="shipping" value="1" {{ old('shipping') ? (old('shipping') == 1) ? 'checked' : '' : 'checked' }} @click="updateShipping(1)">
+                            &nbsp;Ground <small>(5-7 Business Days)</small>
+                        </label>
+                    </div>
+
+                    <div class="col-12">
+                        
+                        <label class="form-control-label">
+                            <input type="radio" name="shipping" value="2" {{ (old('shipping') == 2) ? 'checked' : '' }} @click="updateShipping(2)">
+                            &nbsp;2 Day Air
+                        </label>
+                    </div>
+                    <div class="col-12">
+                        
+                        <label class="form-control-label">
+                            <input type="radio" name="shipping" value="3" {{ (old('shipping') == 3) ? 'checked' : '' }} @click="updateShipping(3)">
+                            &nbsp;Next Day
+                        </label>
+                    </div>
+
+                    <div class="col-12">
+                        
+                        <label class="form-control-label">
+                            <input type="radio" name="shipping" value="4" {{ (old('shipping') == 4) ? 'checked' : '' }} @click="updateShipping(4)">
+                            &nbsp;In-store Pickup
+                        </label>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row">
+
+                    <div class="col-12">
+                        <h5>Payment Information</h5>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    
+                    <label class="form-control-label">
+                        <input type="checkbox" @click="sameAsShipping($event)" />    
+                        &nbsp;Click if same as shipping address.
+                    </label>
+                </div>
+                <div class="form-group row">
+
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        {{-- street --}}
+                        <div class="form-group {{ $errors->has('billing_street') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Billing Street</label>
+
+                            {{ Form::text('billing_street', old('billing_street') ? old('billing_street') : (auth()->check()) ? auth()->user()->street : '',['class'=>'form-control']) }}   
+                            
+                            <div class="{{ ($errors->has('billing_street')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('billing_street') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        {{-- suite --}}
+                        <div class="form-group {{ $errors->has('billing_suite') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Billing Suite</label>
+                            {{ Form::text('billing_suite', old('billing_suite') ? old('billing_suite') : (auth()->check()) ? auth()->user()->suite : '',['class'=>'form-control']) }}
+                            <div class="{{ ($errors->has('billing_suite')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('s') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- city--}}
+                <div class="form-group {{ $errors->has('billing_city') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">Billing City</label>
+                    {{ Form::text('billing_city', old('billing_city') ? old('billing_city') : (auth()->check()) ? auth()->user()->city : '',['class'=>'form-control']) }}
+                    <div class="{{ ($errors->has('billing_city')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('billing_city') }}</small>
+                    </div>
+                </div>
+                {{-- Form Row 6 --}}
+                <div class="form-group row">
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        {{-- state --}}
+                        <div class="form-group {{ $errors->has('billing_state') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Billing State</label>
+                            {{ Form::select('billing_state', $states ,old('billing_state') ? old('billing_state') :  (auth()->check()) ? auth()->user()->state :'',['class'=>'form-control']) }}
+                            <div class="hidden-sm-down {{ ($errors->has('billing_state')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('billing_state') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        {{-- country --}}
+                        <div class="form-group {{ $errors->has('billing_country') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Billing Country</label>
+                            {{ Form::select('billing_country', $countries ,'US',['class'=>'form-control']) }}
+                            <div class="hidden-sm-down {{ ($errors->has('billing_country')) ? '' : 'hide' }}">
+                                <small class="form-control-feedback">{{ $errors->first('billing_country') }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden-md-up {{ ($errors->has('billing_state')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('billing_state') }}</small>
+                    </div>
+                    <div class="hidden-md-up {{ ($errors->has('billing_country')) ? '' : 'hide' }}">
+                        <small class="form-control-feedback">{{ $errors->first('billing_country') }}</small>
+                    </div>
+                </div>
+                {{-- zipcode --}}
+                <div class="form-group {{ $errors->has('billing_zipcode') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">Billing Zipcode</label>
+                    {{ Form::text('billing_zipcode', old('billing_zipcode') ? old('billing_zipcode') : (auth()->check()) ? auth()->user()->zipcode : '',['class'=>'form-control']) }}
+                    <div class="{{ ($errors->has('billing_zipcode')) ? '' : 'hide' }} hidden-sm-down">
+                        <small class="form-control-feedback">{{ $errors->first('billing_zipcode') }}</small>
+                    </div>
+                </div>
+
+                {{-- card --}}
+                <div class="form-group {{ $errors->has('card_number') ? ' has-danger' : '' }}">
+                    <label class="form-control-label">Credit Card Number</label>
+                    {{ Form::text('card_number', old('card_number') ? old('card_number') : '',['class'=>'form-control']) }}
+                    <div class="{{ ($errors->has('card_number')) ? '' : 'hide' }} hidden-sm-down">
+                        <small class="form-control-feedback">{{ $errors->first('card_number') }}</small>
+                    </div>
+                </div>
+                {{-- Expiration --}}
+                <div class="form-group row">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="form-group {{ $errors->has('exp_month') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Expiration Month</label>
+                            {{ Form::text('exp_month', old('exp_month') ? old('exp_month') : '',['class'=>'form-control','maxlength'=>2,'placeholder'=>'MM']) }}
+
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="form-group {{ $errors->has('exp_year') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">Expiration Year</label>
+                            {{ Form::text('exp_year', old('exp_year') ? old('exp_year') :'',['class'=>'form-control','maxlength'=>4,'placeholder'=>'YYYY']) }}
+                        </div>
+     
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <div class="form-group {{ $errors->has('cvv') ? ' has-danger' : '' }}">
+                            <label class="form-control-label">CVV (back of card)</label>
+                            {{ Form::text('cvv', old('cvv') ? old('cvv') :'',['class'=>'form-control','maxlength'=>4,'placeholder'=>'cvv']) }}
+                        </div>
+
+                    </div>
+                    
+                </div>
+                <div class="row-fluid text-danger">
+                    <ul class="col-12">
+                        <li class="{{ ($errors->has('exp_month')) ? '' : 'hide' }}">
+                            <small class="form-control-feedback">{{ $errors->first('exp_month') }}</small>
+                        </li>
+                        <li class="{{ ($errors->has('exp_year')) ? '' : 'hide' }}">
+                            <small class="form-control-feedback">{{ $errors->first('exp_year') }}</small>
+                        </li>
+                        <li class="{{ ($errors->has('cvv')) ? '' : 'hide' }}">
+                            <small class="form-control-feedback">{{ $errors->first('cvv') }}</small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr/>
         </div>
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-              <form>
-                     
-                      <input type="text" class="form-control" id="LastName" placeholder="Last Name">
-                      <small id="lastNameHelp" class="form-text text-muted">Please enter your last name.</small>
+
+        {{-- Customer Order Summary Sidebar --}}
+
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 order-summary">
+            @if(isset($cart))
+                @foreach($cart as $key => $item)
+                <div class="row-fluid">
                     
-              </form>
-              </div>
-      </div>
+                    <div class="media  hidden-sm-down item" item-id="{{ $key }}">
+                        <img class="d-flex align-self-start mr-3 lazy" data-original="{{ asset($item['img_src']) }}" alt="Generic placeholder image" style="max-height:75px;">
+                        
+                        <div class="media-body">
+                            <h5 class="mt-0">{{ $item['inventoryItem']['name'] }}</h5>
+                            <p>{{ $item['inventoryItem']['desc'] }}</p>
+                            <div class="table-responsive">
+                                <small>         
+                                    <table class="table table-condensed">
+                                        <tfoot class="text-muted">
+                                            <tr>
+                                                <td class="text-right" style="border:none; width:100px;">Quantity:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['quantity'] }}</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Ring Size:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['ring_size'] }}</th>
+                                            </tr>
+                                            @if($item['inventoryItem']['metals'])
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Metal Type:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['metal_name'] }}</th>
+                                            </tr>
+                                            @endif
+                                            @if($item['inventoryItem']['stones'])
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Stone Type:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['stone_type'] }}</th>
+                                            </tr>
+                                            @endif
+                                            @if($item['inventoryItem']['sizes'])
+                                            <tr >
+                                                <td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
+                                            </tr>
+                                            @endif
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">${{ number_format($item['subtotal'],2,'.',',') }}</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </small>
+                            </div>
+                            <button class="btn btn-danger pull-right" @click="removeRow($event, {{ $key }})">Remove</button>
+                        </div>
+                    </div>
+                    <div class="card hidden-md-up item" item-id="{{ $key }}">
 
-{{-- Form Row 3 --}}
-      <div class="form-group row">
-      <div class="col-12">
-      <form>
-               
-                <input type="text" class="form-control" id="Company" placeholder="Company Name (optional)">
-                <small id="companyHelp" class="form-text text-muted">Please enter your company name. (optional)</small>
-              
-      </form>
-      </div>
-      </div>
+                        <img class="cart-img-top img-fluid mx-auto d-block lazy" data-original="{{ asset($item['img_src']) }}" alt="Generic placeholder image" style="max-height:150px;">
+                        <div class="card-block">
+                            <h5 class="mt-0 text-center">{{ $item['inventoryItem']['name'] }}</h5>
+                            <p>{{ $item['inventoryItem']['desc'] }}</p>
+                            <div class="table-responsive"> 
+                                <small>             
+                                    <table class="table table-condensed">
+                                        <tfoot class="text-muted">
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Quantity:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['quantity'] }}</th>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Ring Size:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['ring_size'] }}</th>
+                                            </tr>
+                                            @if($item['inventoryItem']['metals'])
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Metal Type:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['metal_name'] }}</th>
+                                            </tr>
+                                            @endif
+                                            @if($item['inventoryItem']['stones'])
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Stone Type:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['stone_type'] }}</th>
+                                            </tr>
+                                            @endif
+                                            @if($item['inventoryItem']['sizes'])
+                                            <tr >
+                                                <td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
+                                            </tr>
+                                            @endif
+                                            <tr>
+                                                <td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+                                                <th class="text-left" style="border:none;">${{ number_format($item['subtotal'],2,'.',',') }}</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </small>
+                            </div>
+                            
+                        </div>
+                        <button class="btn btn-danger btn-block btn-sm" @click="removeRow($event,{{ $key }})">Remove</button>
+                    </div>
+                </div>
+                <hr/>
+                @endforeach
+            @endif
+            <div class="row-fluid">
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <tfoot>
+                            <tr>
+                                <td class="text-right" style="border:none;">Quantity:&nbsp;</td>
+                                <th class="text-left" style="border:none;">@{{ totals.quantity }}</th>
+                            </tr>
+                            <tr>
+                                <td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+                                <th class="text-left" style="border:none;" >@{{ totals.subtotal }}</th>
+                            </tr>
+                            <tr>
+                                <td class="text-right" style="border:none;">Tax:&nbsp;</td>
+                                <th class="text-left" style="border:none;"> @{{ totals.tax }}</th>
+                            </tr>
+                            <tr>
+                                <td class="text-right" style="border:none;">Shipping:&nbsp;</td>
+                                <th class="text-left" style="border:none;"> @{{ totals.shipping }}</th>
+                            </tr>
+                            <tr>
+                                <td class="text-right" style="border:none;">Total:&nbsp;</td>
+                                <th class="text-left" style="border:none;" >@{{ totals.total}}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <hr/>
+            {{-- Mail Test --}}
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn btn-success btn-block" type="submit" v-if="totals.quantity > 0">Complete Transaction</button>
+                    <button class="btn btn-success btn-block" disabled type="submit" v-else>Complete Transaction</button>
+                </div>
+            </div>
+            <hr/>
 
-{{-- Shipping Address --}}
-         <div class="row">
-          
-              <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-start">
-              <h5>Shipping Address</h5>
-              </div>
-
-          </div>
-{{-- Form Row 4 --}}
-      <div class="form-group row">
-        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
-        <form>
-                 
-                  <input type="text" class="form-control" id="Address" placeholder="Address">
-                  <small id="addressHelp" class="form-text text-muted">Please enter your address.</small>
-        </form>
+            <div class="row align-items-center">
+                <div class="col-6">
+                    <a href="{{ route('home.cart') }}" class="btn btn-primary btn-block">Return to Cart</a>
+                </div>
+                <div class="col-6">
+                    <a href="#" class="btn btn-primary btn-block">Refund Policy</a>
+                </div>
+            </div>
+            <hr/>
         </div>
-              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-              <form>
-                     
-                      <input type="text" class="form-control" id="Address2" placeholder="Apt/Ste/Etc (optional)">
-                    
-              </form>
-              </div>
-      </div>
-{{-- Form Row 5 --}}
-      <div class="form-group row">
-      <div class="col-12">
-      <form>
-               
-                <input type="text" class="form-control" id="City" placeholder="City">
-                <small id="cityHelp" class="form-text text-muted">Please enter your city.</small>
-              
-      </form>
-      </div>
-      </div>
-{{-- Form Row 6 --}}
-      <div class="form-group row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <form>
-                 
-                <select class="form-control" id="countrySelect" placeholder="Country">
-                <option>United States</option>
-                <option>Canada</option>
-                <option>Mexico</option>
-                <option>UK</option>
-                <option>China</option>
-                </select>
-                <small id="countryHelp" class="form-text text-muted">Country</small>
-        </form>
-        </div>
-              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-              <form>
-                     
-                <select class="form-control" id="stateSelect" placeholder="State">
-                <option>Texas</option>
-                <option>California</option>
-                <option>Oklahoma</option>
-                <option>Washington</option>
-                <option>Nevada</option>
-                </select>
-                <small id="stateHelp" class="form-text text-muted">State</small>
-                    
-              </form>
-              </div>
-              <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-              <form>
-                     
-                      <input type="integer" min="0" class="form-control" id="zipCode" placeholder="Zip Code">
-                      <small id="zipHelp" class="form-text text-muted">Zip Code</small>
-                    
-              </form>
-              </div>
-      </div>
-{{-- Form Row 7 --}}
-      <div class="form-group row">
-      <div class="col-12">
-      <form>
-               
-                <input type="text" class="form-control" id="PhoneNumber" placeholder="Phone Number">
-                <small id="phoneHelp" class="form-text text-muted">Please enter a valid phone number.</small>
-              
-      </form>
-      </div>
-      </div>
-
- <div class="row align-items-center">
-          
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-start">
-          <a href="/cart">< Return to Cart</a>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-end">
-          <button type="button" class="btn btn-info btn-block">Continue to Shipping Method</button>
-          </div>
-
-      </div>
-<hr>
-
-<div class="row align-items-center">
-          
-          <div class="col-12 justify-content-start">
-          <a href="#">Refund Policy</a>
-          </div>
-
-      </div>
-
-{{-- Mail Test --}}
-      <div class="row align-items-center">
-          
-          <div class="col-12 justify-content-start">
-          <a role="button" class="btn btn-warning btn-block" href="{{ route('sendEmail') }}">Send Email</a>
-          </div>
-
-      </div>
-
-
-</div>
-</div>
-
-{{-- Customer Order Summary Sidebar --}}
-
-  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-5 d-flex justify-content-center">
-
-    <div class="order-summary hidden-md-down">
-      @include('layouts.themes.theme2.partials.checkout-side')
-    </div>
-    <div class="hidden-lg-up" id="orderSummary">
-      <hr>
-      @include('layouts.themes.theme2.partials.checkout-side')
     </div>
 </div>
-</div>
-
-
+{!! Form::close() !!}
 @endsection
 @section('modals')
 @endsection
 @section('variables')
+<div id="variable-root" 
+    totals="{{ json_encode($totals) }}"></div>
 @endsection

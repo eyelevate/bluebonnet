@@ -27,7 +27,7 @@
 		    </div>
 		</template>
 		<template slot="footer">
-			<a href="{{ route('tax.create') }}" class="btn btn-primary">Add Tax</a>
+			<a href="{{ route('tax.create') }}" class="btn btn-primary">Set Tax Rate</a>
 			{{-- <a href="{{ route('service_item.index') }}" class="btn btn-secondary">Manage Service Items</a> --}}
 		</template>
 	</bootstrap-card>
@@ -37,57 +37,5 @@
 
 
 @section('modals')
-@if (count($rows) > 0)
-	@foreach($rows as $row)
-		<bootstrap-modal id="viewModal-{{ $row->id }}" b-size="modal-lg">
-			<template slot="header">View Stone - {{ $row->rate }}</template>
-			<template slot="body">
-				<!-- Rate -->
-				<bootstrap-readonly
-					use-input="true"
-					b-value="{{ $row->rate }}"
-					use-label="true"
-					b-label="Rate">	
-				</bootstrap-readonly>
 
-				<!-- Status -->
-				<bootstrap-readonly
-					use-textarea="true"
-					b-value="{{ $row->status }}"
-					use-label="true"
-					b-label="Status">		
-				</bootstrap-readonly>
-
-
-				<!-- End -->
-				<bootstrap-readonly
-					use-input="true"
-					b-value="{{ $row->end }}"
-					use-label="true"
-					b-label="End">		
-				</bootstrap-readonly>
-
-
-			
-			<template slot="footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal-{{ $row->id }}">Delete</button>	
-
-				<a href="{{ route('tax.edit',$row->id) }}" class="btn btn-primary">Edit</a>
-			</template>
-		</bootstrap-modal>
-		{!! Form::open(['method'=>'delete','route'=>['tax.destroy',$row->id]]) !!}
-		<bootstrap-modal id="deleteModal-{{ $row->id }}">
-			<template slot="header">Delete Confirmation</template>
-			<template slot="body">
-				Are you sure you wish to delete {{ $row->name }}?
-			</template>
-			<template slot="footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="submit" class="btn btn-danger">Delete</button>	
-			</template>
-		</bootstrap-modal>
-		{!! Form::close() !!}
-	@endforeach
-@endif
 @endsection

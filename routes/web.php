@@ -19,11 +19,15 @@ Route::get('/logout', 'HomeController@logout')->name('home.logout');
 Route::get('/privacy-policy', 'HomeController@privacy')->name('home.privacy');
 Route::get('/shipping', 'HomeController@shipping')->name('home.shipping');
 Route::get('/shop', 'HomeController@shop')->name('home.shop');
+Route::post('/address-validate', 'HomeController@addressValidate')->name('home.address_validate');
+Route::post('/update-shipping', 'HomeController@updateShipping')->name('home.update_shipping');
 Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
 Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
-Route::post('/checkout/{inventoryItem}', 'InventoryItemController@checkout')->name('inventory_item.checkout');
+Route::post('/finish', 'HomeController@finish')->name('home.finish');
+Route::post('/inventory-items/{inventoryItem}/add-to-cart', 'InventoryItemController@addToCart')->name('inventory_item.add_to_cart');
 Route::get('/item/{inventory_item}/shop', 'InventoryItemController@shop')->name('inventory_item.shop');
 Route::post('/inventory-items/{inventory_item}/get-subtotal', 'InventoryItemController@subtotal')->name('inventory_item.subtotal');
+Route::post('/inventory-items/delete-cart-item', 'InventoryItemController@deleteCartItem')->name('inventory_item.delete_cart_item');
 Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
 
 Auth::routes();
@@ -211,9 +215,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/taxes', 'TaxController@index')->name('tax.index');
     Route::get('/taxes/create', 'TaxController@create')->name('tax.create');
     Route::post('/taxes/store', 'TaxController@store')->name('tax.store');
-    Route::get('/taxes/{tax}/show', 'TaxController@show')->name('tax.show');
-    Route::get('/taxes/{tax}/edit', 'TaxController@edit')->name('tax.edit');
-    Route::patch('/taxes/{tax}', 'TaxController@update')->name('tax.update');
+
 
 
     // Vendors

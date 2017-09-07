@@ -195,6 +195,18 @@
 	                	</div>
 	                </div>
 	                <hr/>
+
+	                <!-- Fingers -->
+
+					<bootstrap-switch 
+	                	switch-type=""
+	                	switch-color="switch-success"
+	                	use-label="true" 
+	                	label="Selectable Ring Size?" 
+	                	input-name="fingers"
+	                	input-checked="false">
+	                </bootstrap-switch>
+	                <hr/>
 	                <!-- Taxable -->
 
 					<bootstrap-switch 

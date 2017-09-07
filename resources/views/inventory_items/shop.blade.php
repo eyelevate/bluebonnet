@@ -5,7 +5,7 @@
 @section('styles')
 @endsection
 @section('header')
-{!! Form::open(['method'=>'post','route'=>['inventory_item.checkout',$inventoryItem->id]]) !!}
+{!! Form::open(['method'=>'post','route'=>['inventory_item.add_to_cart',$inventoryItem->id]]) !!}
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-7">
@@ -60,6 +60,7 @@
 				</div>
 				
 			</div>
+			@if($inventoryItem->fingers)
 			<div class="row-fluid">
 				<hr/>
 				<div class="form-group {{ $errors->has('finger_id') ? ' has-danger' : '' }}">
@@ -70,7 +71,7 @@
 					</div>
 				</div>
 			</div>
-			
+			@endif
 			@if($inventoryItem->metals)
 			<div class="row-fluid">
 				<hr/>
@@ -125,8 +126,7 @@
 			<div class="row-fluid">
 				<hr/>
 				<a class="btn btn-sm btn-secondary" href="#">Back</a>
-				<button type="button" class="btn btn-info btn-sm">Add To Cart</button>
-				<button type="submit" class="btn btn-success btn-sm">Checkout</button>
+				<button type="submit" class="btn btn-success btn-sm">Add To Cart</button>
 			</div>
 		</div>
 		
@@ -139,7 +139,7 @@
 @section('modals')
 @endsection
 @section('variables')
-<<<<<<< HEAD
+
 <div id="variable-root" 
 	 itemId="{{ $inventoryItem->id }}" 
 	 subtotal="{{ money_format('$%!.2n',$inventoryItem->subtotal) }}"
@@ -147,7 +147,5 @@
 	 	
 </div>
 {!! Form::close() !!}
-=======
-<div id="variable-root" itemId="{{ $inventoryItem->id }}" subtotal="${{ number_format($inventoryItem->subtotal, 2,".",",") }}"></div>
->>>>>>> origin/master
+
 @endsection
