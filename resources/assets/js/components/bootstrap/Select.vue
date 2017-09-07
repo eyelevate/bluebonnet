@@ -1,7 +1,9 @@
 <template>
 	<div class = "form-group">
         <label v-if="uLabel">{{label}}</label>
+        <div class="input-group">
         <slot name="select"></slot> 
+        </div>
         
         <span class="help-block text-danger" v-if="err">
             <small>{{ bError }}</small>

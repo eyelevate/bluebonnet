@@ -27,9 +27,15 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Job $job)
     {
-        return view('companies.create');
+        $states = $job->prepareStates();
+        $countries = $job->prepareCountries();
+        $hours = $job->prepareHours();
+        $minutes = $job->prepareMinutes();
+        $ampm = $job->prepareAmpm();
+        $open = $job->prepareOpen();
+        return view('companies.create', compact(['states','countries','hours','minutes','ampm','open']));
     }
 
     /**
@@ -41,10 +47,17 @@ class CompanyController extends Controller
     public function store(Request $request, Company $company)
     {
         $this->validate(request(), [
-             'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:20',
+            'street' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'zipcode' => 'required|string|max:255',
         ]);
-        flash('Successfully created a Company!')->success();
+        $request->merge(['hours'=>json_encode($request->hours)]);
         $company->create(request()->all());
+        flash('Successfully created a Company!')->success();
+        
         return redirect()->route('company.index');
     }
 
