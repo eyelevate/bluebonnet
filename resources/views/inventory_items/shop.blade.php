@@ -51,30 +51,49 @@
 			</strong></p>
 			<div class="row-fluid">
 				<hr/>
-				<h5>Quantity</h5>
-				{{ Form::select('quantity',[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],1,['class'=>'form-control','v-on:change'=>'setQuantity($event)']) }}
+				<div class="form-group {{ $errors->has('quantity') ? ' has-danger' : '' }}">
+					<h5>Quantity</h5>
+					{{ Form::select('quantity',[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10], (old('quantity')) ? old('quantity') : 1,['class'=>"form-control {($errors->has('quantity') ? 'form-control-danger' : ''}",'v-on:change'=>'setQuantity($event)']) }}
+					<div class="{{ ($errors->has('quantity')) ? '' : 'hide' }}">
+						<small class="form-control-feedback">{{ $errors->first('quantity') }}</small>
+					</div>
+				</div>
+				
 			</div>
 			<div class="row-fluid">
 				<hr/>
-				<h5>Select Finger Size</h5>
-				{{ Form::select('finger_id',$fingers,'',['class'=>'form-control','v-on:change'=>'setFinger($event)']) }}
+				<div class="form-group {{ $errors->has('finger_id') ? ' has-danger' : '' }}">
+					<h5>Select Finger Size</h5>
+					{{ Form::select('finger_id',$fingers,old('finger_id'),['class'=>"form-control {($errors->has('finger_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setFinger($event)']) }}
+					<div class="{{ ($errors->has('finger_id')) ? '' : 'hide' }}">
+						<small class="form-control-feedback">{{ $errors->first('finger_id') }}</small>
+					</div>
+				</div>
 			</div>
 			
 			@if($inventoryItem->metals)
 			<div class="row-fluid">
 				<hr/>
-				<h5>Select Metal Type</h5>
-				{{ Form::select('metal_id',$metals,'',['class'=>'form-control','v-on:change'=>'setMetal($event)']) }}
-
+				<div class="form-group {{ $errors->has('metal_id') ? ' has-danger' : '' }}">
+					<h5>Select Metal Type</h5>
+					{{ Form::select('metal_id',$metals,old('metal_id'),['class'=>"form-control {($errors->has('metal_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setMetal($event)']) }}
+					<div class="{{ ($errors->has('metal_id')) ? '' : 'hide' }}">
+						<small class="form-control-feedback">{{ $errors->first('metal_id') }}</small>
+					</div>
+				</div>
 			</div>
 			@endif
 
 			@if($inventoryItem->stones)
 			<div class="row-fluid">
 				<hr/>
-				<h5>Select Stone Type</h5>
-				{{ Form::select('stone_id',$stone_select,'',['class'=>'form-control','v-on:change'=>'setStone($event)']) }}
-
+				<div class="form-group {{ $errors->has('stone_id') ? ' has-danger' : '' }}">
+					<h5>Select Stone Type</h5>
+					{{ Form::select('stone_id',$stone_select,old('stone_id'),['class'=>"form-control {($errors->has('stone_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setStone($event)']) }}
+					<div class="{{ ($errors->has('stone_id')) ? '' : 'hide' }}">
+						<small class="form-control-feedback">{{ $errors->first('stone_id') }}</small>
+					</div>
+				</div>
 			</div>
 			<div class="row-fluid">
 				
@@ -82,13 +101,17 @@
 					@foreach($stones as $stone)
 					<div v-if="stoneId == {{ $stone->id }}">
 						<hr/>
-						<h5>Select Stone Size</h5>
-						@if ($stone->email)
-						<p>Must contact us for custom price. Please continue the form and we will contact you for further instructions!</p>
-						@else
-						{{ Form::select('stone_size_id['.$stone->id.']',$stone_sizes[$stone->id],'',['class'=>'form-control','v-on:change'=>'setSize($event)']) }}
-						@endif
-						
+						<div class="form-group {{ $errors->has("stone_size_id.{$stone->id}") ? ' has-danger' : '' }}">
+							<h5>Select Stone Size</h5>
+							@if ($stone->email)
+							<p>Must contact us for custom price. Please continue the form and we will contact you for further instructions!</p>
+							@else
+							{{ Form::select('stone_size_id['.$stone->id.']',$stone_sizes[$stone->id],'',['class'=>"form-control {($errors->has('stone_size_id.'.$stone->id)) ? 'form-control-danger' : ''}",'v-on:change'=>'setSize($event)']) }}
+							@endif
+						<div class="{{ ($errors->has("stone_size_id.{$stone->id}")) ? '' : 'hide' }}">
+							<small class="form-control-feedback">{{ $errors->first("stone_size_id.{$stone->id}") }}</small>
+						</div>
+					</div>						
 					</div>
 					@endforeach
 				@endif
@@ -101,7 +124,7 @@
 			</div>
 			<div class="row-fluid">
 				<hr/>
-				<a class="btn btn-sm btn-secondary" href="{{ route('collection.show',$inventoryItem->collectionItem[0]->id) }}">Back</a>
+				<a class="btn btn-sm btn-secondary" href="#">Back</a>
 				<button type="button" class="btn btn-info btn-sm">Add To Cart</button>
 				<button type="submit" class="btn btn-success btn-sm">Checkout</button>
 			</div>
@@ -109,12 +132,22 @@
 		
 	</div>
 </div>
-{!! Form::close() !!}
+
 
 @endsection
 
 @section('modals')
 @endsection
 @section('variables')
+<<<<<<< HEAD
+<div id="variable-root" 
+	 itemId="{{ $inventoryItem->id }}" 
+	 subtotal="{{ money_format('$%!.2n',$inventoryItem->subtotal) }}"
+	 stoneId="{{ old('stone_id') ? old('stone_id') : '' }}">
+	 	
+</div>
+{!! Form::close() !!}
+=======
 <div id="variable-root" itemId="{{ $inventoryItem->id }}" subtotal="${{ number_format($inventoryItem->subtotal, 2,".",",") }}"></div>
+>>>>>>> origin/master
 @endsection

@@ -6,6 +6,9 @@ use App\Finger;
 use App\Image;
 use App\Inventory;
 use App\InventoryItem;
+use App\ItemMetal;
+use App\ItemStone;
+use App\ItemSize;
 use App\Job;
 use App\Metal;
 use App\Stone;
@@ -46,9 +49,11 @@ class InventoryItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Inventory $inventory)
+    public function create(Inventory $inventory, Stone $stone, Metal $metal)
     {
-        return view('inventory_items.create',compact('inventory'));
+        $stones = $stone->prepareData($stone->all());
+        $metals = $metal->all();
+        return view('inventory_items.create',compact('inventory','stones','metals'));
     }
 
     /**
@@ -72,8 +77,51 @@ class InventoryItemController extends Controller
         $inventory_item->active = ($request->active == 'on') ? true : false;
         $inventory_item->metals = ($request->metals == 'on') ? true : false;
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
+        $inventory_item->sizes = ($request->stones) ? ($request->sizes == 'on') ? true : false : false;
         $inventory_item->featured = ($request->featured == 'on') ? true : false;
+
         if ($inventory_item->save()) {
+            if ($inventory_item->metals) {
+                // add item metals
+                if (count($request->itemMetal) > 0) {
+                    foreach ($request->itemMetal as $key => $value) {
+                        $im = new ItemMetal();
+                        $im->inventory_item_id = $inventory_item->id;
+                        $im->metal_id = $key;
+                        $im->price = (isset($value['price'])) ? $value['price'] : null;
+                        $im->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                        $im->save();
+                    }
+                }
+            }
+            if ($inventory_item->stones) {
+                // add item stones
+                if (count($request->itemStone) > 0) {
+                    foreach ($request->itemStone as $key => $value) {
+                        $istone = new ItemStone();
+                        $istone->inventory_item_id = $inventory_item->id;
+                        $istone->stone_id = $key;
+                        $istone->price = (isset($value['price'])) ? $value['price'] : null;
+                        $istone->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                        $istone->save();
+                    }
+                }
+                if ($inventory_item->sizes) {
+                    // add item sizes 
+                    if (count($request->itemSize) > 0) {
+                        foreach ($request->itemSize as $key => $value) {
+                            $isize = new ItemSize();
+                            $isize->inventory_item_id = $inventory_item->id;
+                            $isize->stone_size_id = $key;
+                            $isize->price = (isset($value['price'])) ? $value['price'] : null;
+                            $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                            $isize->save();
+                        }
+                    }
+                }
+            }
+            
+
             // loop primary images array check for true set primary if true also compare to imgs and remove deleted images
             if (count($request->imgs) > 0) {
                 foreach ($request->imgs as $key => $value) {
@@ -122,14 +170,14 @@ class InventoryItemController extends Controller
      * @param  \App\InventoryItem  $inventoryItem
      * @return \Illuminate\Http\Response
      */
-    public function shop(InventoryItem $inventoryItem, Finger $finger, Metal $metal, Stone $stone, StoneSize $stoneSize)
+    public function shop(InventoryItem $inventoryItem, Finger $finger, ItemMetal $itemMetal, ItemStone $itemStone, ItemSize $itemSize, Stone $stone)
     {
         $layout = $this->layout;
         $fingers = $finger->prepareSelect($finger->all());
-        $metals = $metal->prepareSelect($metal->all());
+        $metals = $itemMetal->prepareSelect($inventoryItem->itemMetal);
         $stones = $stone->all();
-        $stone_select = $stone->prepareSelect($stone->all());
-        $stone_sizes = $stoneSize->prepareSelect($stone->all());
+        $stone_select = $itemStone->prepareSelect($inventoryItem->itemStone);
+        $stone_sizes = $itemSize->prepareSelect($inventoryItem);
         return view('inventory_items.shop',compact(['layout','inventoryItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
 
@@ -139,10 +187,14 @@ class InventoryItemController extends Controller
      * @param  \App\InventoryItem  $inventoryItem
      * @return \Illuminate\Http\Response
      */
-    public function edit(InventoryItem $inventoryItem, Image $image)
+    public function edit(InventoryItem $inventoryItem, Image $image,Stone $stone, Metal $metal)
     {
+
+        $inventoryItem = $inventoryItem->prepareDataSingle($inventoryItem);
+        $stones = $stone->prepareData($stone->all());
+        $metals = $metal->all();
         $image_variables = $image->prepareVariableInventoryItems($inventoryItem->images);
-        return view('inventory_items.edit',compact(['inventoryItem','image_variables']));
+        return view('inventory_items.edit',compact(['inventoryItem','image_variables','stones','metals']));
     }
 
     /**
@@ -155,10 +207,11 @@ class InventoryItemController extends Controller
     public function update(Request $request, InventoryItem $inventory_item, Image $image)
     {
 
-        $this->validate(request(), [
-            'name' => 'required|string|max:255',
-            'subtotal' => 'required'
-        ]);
+        // $this->validate(request(), [
+        //     'name' => 'required|string|max:255',
+        //     'subtotal' => 'required'
+        // ]);
+
         $original_images = $inventory_item->images;
         $inventory_item->name = $request->name;
         $inventory_item->desc = $request->desc;
@@ -167,8 +220,67 @@ class InventoryItemController extends Controller
         $inventory_item->active = ($request->active == 'on') ? true : false;
         $inventory_item->metals = ($request->metals == 'on') ? true : false;
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
+        $inventory_item->sizes = ($request->stones) ? ($request->sizes == 'on') ? true : false : false;
         $inventory_item->featured = ($request->featured == 'on') ? true : false;
         if ($inventory_item->save()) {
+            if ($inventory_item->metals) {
+                if (count($request->itemMetal) > 0) {
+                    foreach ($request->itemMetal as $key => $value) {
+                        $im = new ItemMetal();
+                        if (count($inventory_item->itemMetal)>0) {
+                            $im = ItemMetal::find($key);
+                        } else {
+                            $im->inventory_item_id = $inventory_item->id;
+                            $im->metal_id = $key;
+                        }
+                        $im->price = (isset($value['price'])) ? $value['price'] : null;
+                        $im->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                        
+                        $im->save();
+                    }
+                }
+                
+            } 
+            if ($inventory_item->stones) {
+                // add item stones
+                if (count($request->itemStone) > 0) {
+                    foreach ($request->itemStone as $key => $value) {
+                        
+                        $istone = new ItemStone();
+                        if (count($inventory_item->itemStone)>0) {
+                            $istone = ItemStone::find($key);
+                            
+                        } else {
+                            
+                            $istone->inventory_item_id = $inventory_item->id;
+                            $istone->stone_id = $key;
+                        }
+                        $istone->price = (isset($value['price'])) ? $value['price'] : null;
+                        $istone->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                        $istone->save();
+                    }
+                }    
+            
+                if ($inventory_item->sizes) {
+                    // add item sizes 
+                    if (count($request->itemSize) > 0) {
+                        foreach ($request->itemSize as $key => $value) {
+                            $isize = new ItemSize();
+                            if (count($inventory_item->itemSize)>0) {
+                                $isize = ItemSize::find($key);
+                            } else {
+                                $isize->inventory_item_id = $inventory_item->id;
+                                $isize->stone_size_id = $key;
+                            }
+                            
+                            $isize->price = (isset($value['price'])) ? $value['price'] : null;
+                            $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                            $isize->save();
+                        }
+                    }
+                }
+            }
+
             // set all primary images to false 
             $inventory_item->images()->update(['primary'=>false]);
 
@@ -315,35 +427,71 @@ class InventoryItemController extends Controller
 
     public function checkout(Request $request, InventoryItem $inventoryItem)
     {
-        if($inventoryItem->metals && $inventoryItems->stones) {
+        
+        if($inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes) {
+
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required',
                 'metal_id' => 'required',
                 'stone_id' => 'required',
-                'stone_size_id'=>'required'
+                "stone_size_id.{$request->stone_id}"=>'required'
             ]);
-        } elseif ($inventoryItem->metals && !$inventoryItems->stones) {
+            
+        } elseif ($inventoryItem->metals && !$inventoryItem->stones) {
+
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required',
                 'metal_id' => 'required'
             ]);
-        } elseif (!$inventoryItem->metals && $inventoryItems->stones) {
+            
+        } elseif (!$inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes) {
+
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required',
                 'stone_id' => 'required',
-                'stone_size_id'=>'required'
+                "stone_size_id.{$request->stone_id}"=>'required'
             ]);
+            
+        } elseif ($inventoryItem->metals && $inventoryItem->stones && !$inventoryItem->sizes) {
+
+            $this->validate(request(), [
+                'quantity' => 'required',
+                'finger_id' => 'required',
+                'metal_id' => 'required',
+                'stone_id' => 'required'
+            ]);
+            
         } else {
+
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required'
             ]);
+            
         }
+
+        if ($request->session()->has('cart')) {
+            session()->push([
+                'inventoryItem'=>$inventoryItem,
+                'finger_id'=>$request->finger_id,
+                'metal_id'=>$request->metal_id,
+                'stone_id'=>$request->stone_id,
+                'stone_size_id'=>$request->stone_size_id
+                ],'cart');
+        } else {
+            session(['cart'=>[
+                'inventoryItem'=>$inventoryItem,
+                'finger_id'=>$request->finger_id,
+                'metal_id'=>$request->metal_id,
+                'stone_id'=>$request->stone_id,
+                'stone_size_id'=>$request->stone_size_id]
+            ]);
+        }
+
+        return redirect()->route('home.cart');
         
-        
-        dd($request->all());
     }
 }

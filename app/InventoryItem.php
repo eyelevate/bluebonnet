@@ -5,6 +5,8 @@ namespace App;
 use App\StoneSize;
 use App\Stone;
 use App\Metal;
+use App\ItemStone;
+use App\ItemSize;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -28,9 +30,23 @@ class InventoryItem extends Model
         'active',
         'metals',
         'stones',
+        'sizes',
         'featured'
     ];
 
+    public function messages()
+    {
+        return [
+            'finger_id.required' => 'Please select a proper finger size.',
+            'stone_id.required' => 'Please select a proper stone type.',
+            'metal_id.required' => 'Please select a proper metal type.',
+            'stone_size_id.required' => 'Please select a proper stone size.'
+        ];
+    }
+
+    /** 
+    * PUBLIC METHODS
+    */
     public function inventories()
     {
         return $this->belongsTo(Inventory::class, 'inventory_id', 'id');
@@ -39,6 +55,21 @@ class InventoryItem extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'inventory_item_id', 'id');
+    }
+
+    public function itemMetal()
+    {
+        return $this->hasMany(ItemMetal::class, 'inventory_item_id', 'id');
+    }
+
+    public function itemSize()
+    {
+        return $this->hasMany(ItemSize::class, 'inventory_item_id', 'id');
+    }
+
+    public function itemStone()
+    {
+        return $this->hasMany(ItemStone::class, 'inventory_item_id', 'id');
     }
 
     public function collectionItem()
@@ -55,22 +86,25 @@ class InventoryItem extends Model
         if (isset($data)) {
             $subtotal = $data->subtotal;
             if(isset($stone_id)) {
-                $stone = Stone::find($stone_id);
-                if($stone->email) {
+                $stone = $data->itemStone()->where('stone_id',$stone_id)->first();
+                // $stone = Stone::find($stone_id);
+                if($stone->stones->email) {
                     $email = true;
                 }
                 $subtotal += $stone->price;
             }
             if(isset($stone_size_id)) {
-                $stoneSize = StoneSize::find($stone_size_id);
-                if($stoneSize->stones->email) {
+                $stoneSize = $data->itemSize()->where('stone_size_id',$stone_size_id)->first();
+                // $stoneSize = StoneSize::find($stone_size_id);
+                if($stoneSize->stoneSizes->stones->email) {
                     $email = true;
 
                 }
                 $subtotal += $stoneSize->price;
             }
             if(isset($metal_id)) {
-                $metal = Metal::find($metal_id);
+                $metal = $data->itemMetal()->where('metal_id',$metal_id)->first();
+                // $metal = Metal::find($metal_id);
                 $subtotal += $metal->price;
             }
 
@@ -87,6 +121,30 @@ class InventoryItem extends Model
 
         return $subtotal;
     }
+
+    public function prepareDataSingle($data)
+    {   
+        $itemStone = new ItemStone;
+        $itemSize = new ItemSize;
+        if (isset($data)) {
+            if (count($data->itemStone) > 0) {
+                $data->itemStone = $itemStone->prepareDataEdit($data->itemStone, $data->itemSize);
+            }
+
+            if (count($data->itemMetal) > 0) {
+                foreach ($data->itemMetal as $key => $value) {
+                    $data->itemMetal[$key]['name'] = $value->metals->name;
+                }
+            }
+            
+
+
+        }
+        
+
+
+        return $data;
+    }   
 
     public function prepareForFrontend($data)
     {

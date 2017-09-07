@@ -29,7 +29,7 @@ class Size extends Model
                 'filterable'=> true
             
             ], [
-                'label'=>'Unit',
+                'label'=>'Name',
                 'field'=> 'name',
                 'filterable'=> true
             ], [

@@ -3,9 +3,9 @@
         <label v-if="uLabel">{{ label }}</label>
         <div class="row-fluid">
             <label class="switch switch-text" :class="sClass" >
-                <input id="switch-input-on" :name="iName" type="checkbox" class="switch-input" v-if="iChecked" checked>
-                <input id="switch-input-off" :name="iName" type="checkbox" class="switch-input" v-else>
-                <span class="switch-label" data-on="Yes" data-off="No" @click="applied(onChecked)"></span>
+                <input id="switch-input-on" :name="iName" type="checkbox" class="switch-input" v-if="iChecked" checked @click="applied(onChecked)">
+                <input id="switch-input-off" :name="iName" type="checkbox" class="switch-input" v-else @click="applied(onChecked)">
+                <span class="switch-label" data-on="Yes" data-off="No" ></span>
                 <span class="switch-handle"></span>
             </label>    
 

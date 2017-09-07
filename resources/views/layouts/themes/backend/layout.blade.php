@@ -76,7 +76,7 @@
         <!-- Modals -->
         @yield('modals')
     </div>
-    
+    @yield('variables')
     <!-- Footer -->
     <footer class="app-footer">
         @include('layouts.themes.backend.partials.footer')    
@@ -95,7 +95,7 @@
     <!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
     @yield('scripts')
-    @yield('variables')
+    
     
 </body>
 
