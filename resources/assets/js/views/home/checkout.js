@@ -2,7 +2,10 @@ const app = new Vue({
 	el: '#root',
 	props: [],
 	data: {
-		totals: []
+		totals: [],
+		email: '',
+		pw: '',
+		remember: false,
 	},
 	methods: {
 		removeRow($event, $row) {
@@ -59,6 +62,23 @@ const app = new Vue({
 			$("select[name='billing_state']").val(($($event.target).is(':checked')) ? state : '');
 			$("select[name='billing_country']").val(($($event.target).is(':checked')) ? country : '');
 			$("input[name='billing_zipcode']").val(($($event.target).is(':checked')) ? zipcode : '');
+		},
+		attemptLogin() {
+			// get the price subtotal with all options selected
+			axios.post('/attempt-login',{
+				'email':this.email,
+				'password': this.pw,
+				'remember': this.remember
+			}).then(response => {
+
+				if (response.data.status) { // Refresh Page
+					location.reload();
+				} else { // show errors
+					alert(response.data.message);
+				}
+				
+
+			});
 		}
 	},
 	computed: {

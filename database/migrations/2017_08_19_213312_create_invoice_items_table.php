@@ -17,6 +17,10 @@ class CreateInvoiceItemsTable extends Migration
             $table->increments('id');
             $table->integer('invoice_id');
             $table->integer('inventory_item_id')->nullable();
+            $table->integer('item_metal_id')->nullable();
+            $table->integer('item_stone_id')->nullable();
+            $table->integer('item_size_id')->nullable();
+            $table->integer('finger_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->decimal('subtotal',11,2)->nullable();
             $table->softDeletes();

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Authorize;
+use App\Company;
 use App\Collection;
 use App\Instagram;
 use App\InventoryItem;
 use App\Invoice;
 use App\InvoiceItem;
 use App\Job;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 // Mail Test
@@ -226,11 +229,8 @@ class HomeController extends Controller
                 }
             }
             return response()->json([
-
                 'status'=>true,
                 'rate'=>$total_rate
-
-
             ]);
         } catch (Exception $e) {
             return response()->json(['status'=>false,'reason'=>$e]);
@@ -240,26 +240,122 @@ class HomeController extends Controller
 
     }
 
-    public function finish(Request $request)
+    public function finish(Request $request, Authorize $authorize, Job $job, InventoryItem $inventoryItem, User $user, Invoice $invoice, Company $company, InvoiceItem $invoiceItem)
     {
         $this->validate(request(), [
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            "street"=>'required',
-            'city' => 'required',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:20',
+            "street"=>'required|string|max:255',
+            'city' => 'required|string|max:255',
             'state' => 'required',
-            'zipcode' => 'required',
-            'billing_street' => 'required',
-            'billing_city' => 'required',
-            'billing_state' => 'required',
-            'billing_zipcode' => 'required',
-            'card_number' => 'required',
-            'exp_month' => 'required',
-            'exp_year' => 'required',
-            'cvv' => 'required'
+            'zipcode' => 'required|string|max:10',
+            'billing_street' => 'required|string|max:255',
+            'billing_city' => 'required|string|max:255',
+            'billing_state' => 'required|string|max:255',
+            'billing_zipcode' => 'required|string|max:255',
+            'card_number' => 'required|numeric',
+            'exp_month' => 'required|numeric|max:12',
+            'exp_year' => 'required|numeric|max:9999',
+            'cvv' => 'required|numeric|max:9999'
         ]);
-        dd($request->all());
+        // Prepare all the variables required for saving
+        $company_info = $company->find(1);
+
+        $cart = session()->get('cart');
+        $totals = $inventoryItem->prepareTotals($cart);
+        $due = $totals['_total'];
+        $shipping = $request->shipping;
+
+        $customer = [
+            'id'=>(auth()->check()) ? auth()->user()->id : NULL,
+            'first_name'=>$request->first_name,
+            'last_name'=>$request->last_name,
+            'email'=>$request->email,
+            'phone'=>$request->phone,
+            'street'=>$request->street,
+            'suite'=>$request->suite,
+            'city'=>$request->city,
+            'state'=>$request->state,
+            'zipcode'=>$request->zipcode,
+            'country'=>$request->country,
+            'billing_street'=>$request->billing_street,
+            'billing_suite'=>$request->billing_suite,
+            'billing_city'=>$request->billing_city,
+            'billing_state'=>$request->billing_state,
+            'billing_zipcode'=>$request->billing_zipcode,
+            'comment'=>NULL,
+            'shipping'=>$shipping
+        ]; 
+
+        $card = [
+            'card_number'=>$job->stripAllButNumbers($request->card_number),
+            'exp_month'=>$job->stripAllButNumbers($request->exp_month),
+            'exp_year'=>$job->stripAllButNumbers($request->exp_year),
+            'cvv'=>$job->stripAllButNumbers($request->cvv)
+        ];
+
+        // $sent = Mail::to($customer['email'])->send(new InvoiceUserOrder($customer,$totals,$cart));
+
+        // Attempt to make the payment for the item
+        $result = $authorize->chargeCreditCard($due, $card, $customer);
+        
+        if  ($result['status']) { // Payment has been processed, proceed to save invoice
+
+
+            // save the invoice
+            $new_invoice = $invoice->newInvoice($totals, $customer, $result, $card);
+            
+            if ($new_invoice) {
+                // successfully saved invoice now saving invoice items
+                $new_items = $invoiceItem->newInvoiceItems($new_invoice,$cart);
+                if ($new_items) {
+                    // Send Email
+                    $sent = Mail::to($customer['email'])->send(new InvoiceUserOrder($new_invoice, $company_info));
+                    if ($sent) {
+                        // All Done
+                        flash('Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!')->success();
+                    } else { // Error sending email
+                        flash("Thank you for your business! It looks like there was a problem sending out your email. Please call us at {$job->formatPhone($company_info->phone)} to receive a copy of your invoice. We are sorry for the inconvenience.")->warning();
+                    }
+
+                } else { // error saving invoice items
+                    flash("The invoice has been paid and properly saved. However, there was an error saving items from your cart. Please call us at {$job->formatPhone($company_info->phone)} to remedy this error. We are sorry for the inconvenience.")->warning();
+                }
+                // remove the session data
+                session()->forget('cart');
+
+                // last but not least send user to thank you page
+                return redirect()->route('home.thank_you');
+            }
+        } else { // Payment was not processed due to error
+            flash($result['error_message'])->error()->important();
+            return redirect()->back();
+        }
+    }
+
+    public function thankYou()
+    {
+        return view('home.thank_you');
+    }
+
+    public function attemptLogin(Request $request)
+    {
+        $email = $request->email;
+        $password = $request->password;
+        $rememberToken = $request->remember;
+
+        // Attempt login if successful then return true status and refresh the page so auth data can autofill form
+        if (Auth::attempt(['email'=>$email,'password'=>$password],$rememberToken)) {
+            return response()->json([
+                'status'=>true
+            ]);
+        } else { // send back false message with false status and have user authenticate again
+            return response()->json([
+                'status'=>false,
+                'message'=>'Your credentials did not authenticate. Please try again.'
+            ]);
+        }
     }
 }

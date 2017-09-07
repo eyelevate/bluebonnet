@@ -38,12 +38,13 @@
                 {{-- Customer Form --}}
                 <div class="row">
 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-start">
+                    <div class="text-center col-12">
                         <h5>Customer Information</h5>
                     </div>
                     @if (!auth()->check())
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 d-flex justify-content-end">
-                        Already have an Account? &nbsp; <a href="{{ route('login') }}">Log in</a>
+                    <div class="col-12 text-center">
+
+                            <p>Already have an Account? &nbsp; <a class="btn btn-info btn-sm" data-toggle="modal" data-target="#loginModal" style="color:#ffffff;">Log in</a></p>
                     </div>
                     @endif
 
@@ -98,7 +99,7 @@
                 <hr/>
                 <div class="row">
 
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 d-flex justify-content-start">
+                    <div class="text-center col-12">
                         <h5>Shipping Address</h5>
                     </div>
 
@@ -178,7 +179,7 @@
                 <div class="row">
 
                     <div class="col-12">
-                        <h5>Shipping Options</h5>
+                        <h5 class="text-center">Shipping Options</h5>
                         <small>
                             <blockquote class="blockquote">
                                 <p class="mb-0">All shipping will dates will be calculated from the moment your item is ready to be shipped. Custom designs and certified / lab created diamonds can require up 8 weeks from point of sale. Please keep in mind we will ship out as soon as the item is in perfect order and keep in communication all along the way!</p>
@@ -222,11 +223,11 @@
                 <hr/>
                 <div class="row">
 
-                    <div class="col-12">
+                    <div class="col-12 text-center">
                         <h5>Payment Information</h5>
                     </div>
                 </div>
-                <div class="row-fluid">
+                <div class="row-fluid text-center">
                     
                     <label class="form-control-label">
                         <input type="checkbox" @click="sameAsShipping($event)" />    
@@ -514,6 +515,39 @@
 {!! Form::close() !!}
 @endsection
 @section('modals')
+<bootstrap-modal id="loginModal">
+    <template slot="header">Login</template>
+    <template slot="body">
+        <!-- Email -->
+        <div class="form-group {{ $errors->has('email') ? ' has-danger' : '' }}">
+            <label>Email Address</label>
+            {{ Form::text('email', old('email'),['class'=>'form-control','type'=>'email','v-model'=>'email']) }}
+            <div class="{{ ($errors->has('email')) ? '' : 'hide' }}">
+                <small class="form-control-feedback">{{ $errors->first('email') }}</small>
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group {{ $errors->has('password') ? ' has-danger' : '' }}">
+            <label>Password</label>
+            <input id="password" type="password" class="form-control" name="password" required v-model="pw">
+            <div class="{{ ($errors->has('password')) ? '' : 'hide' }}">
+                <small class="form-control-feedback">{{ $errors->first('password') }}</small>
+            </div>
+        </div>
+
+
+            <label>
+                <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }} v-model="remember"> Remember Me
+            </label>
+
+    </template>
+    <template slot="footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success" @click="attemptLogin">Login</button>    
+    </template>
+</bootstrap-modal>
+
 @endsection
 @section('variables')
 <div id="variable-root" 

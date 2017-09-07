@@ -16,7 +16,7 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('employee_id');
+            $table->integer('employee_id')->nullable();
             $table->integer('vendor_id')->nullable();
             $table->string('fob')->nullable();
             $table->string('po_number')->nullable();
@@ -24,6 +24,7 @@ class CreateInvoicesTable extends Migration
             $table->integer('quantity')->nullable();
             $table->decimal('subtotal', 11, 2)->nullable();
             $table->decimal('tax', 11, 2)->nullable();
+            $table->decimal('shipping_total', 11, 2)->nullable();
             $table->decimal('total', 11, 2)->nullable();
             $table->decimal('tendered', 11, 2)->nullable();
             $table->tinyInteger('payment_type')->default(1);
@@ -39,6 +40,7 @@ class CreateInvoicesTable extends Migration
             $table->string('state')->nullable();
             $table->string('country')->nullable();
             $table->string('zipcode')->nullable();
+            $table->tinyInteger('shipping')->nullable();
             $table->text('comment')->nullable();
             $table->tinyInteger('terms')->default(1);
             $table->tinyInteger('status')->default(1);

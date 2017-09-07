@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
 
-        // Footer
+        // Parts
         view()->composer([
             'layouts.themes.theme1.partials.footer',
             'layouts.themes.theme2.partials.footer',

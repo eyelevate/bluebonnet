@@ -9,7 +9,7 @@ use net\authorize\api\controller as AnetController;
 class Authorize extends Model
 {
     
-    public function chargeCreditCard($amount, $card, $customer, $invoice)
+    public function chargeCreditCard($amount, $card, $customer)
     {
     	// establish variables here
     	$expiration = $card['exp_year'].'-'.$card['exp_month'];
@@ -18,14 +18,14 @@ class Authorize extends Model
 	       retrieved from the constants file */
 	    $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
 	    $merchantAuthentication->setName(env('AUTHORIZE_API_ID'));
-	    $merchantAuthentication->setTransactionKey(eng('AUTHORIZE_API_TOKEN'));
+	    $merchantAuthentication->setTransactionKey(env('AUTHORIZE_API_TOKEN'));
 	    
 	    // Set the transaction's refId
 	    $refId = 'ref' . time();
 
 	    // Create the payment data for a credit card
 	    $creditCard = new AnetAPI\CreditCardType();
-	    $creditCard->setCardNumber($card['number']);
+	    $creditCard->setCardNumber($card['card_number']);
 	    $creditCard->setExpirationDate($expiration);
 	    $creditCard->setCardCode($card['cvv']);
 
@@ -42,17 +42,20 @@ class Authorize extends Model
 	    $customerAddress = new AnetAPI\CustomerAddressType();
 	    $customerAddress->setFirstName($customer['first_name']);
 	    $customerAddress->setLastName($customer['last_name']);
-	    $customerAddress->setCompany("");
-	    $customerAddress->setAddress($customer['street']);
-	    $customerAddress->setCity($customer['city']);
-	    $customerAddress->setState($customer['state']);
-	    $customerAddress->setZip($customer['zipcode']);
+	    // $customerAddress->setCompany("");
+	    $customerAddress->setAddress($customer['billing_street']);
+	    $customerAddress->setCity($customer['billing_city']);
+	    $customerAddress->setState($customer['billing_state']);
+	    $customerAddress->setZip($customer['billing_zipcode']);
 	    $customerAddress->setCountry("USA");
 
 	    // Set the customer's identifying information
 	    $customerData = new AnetAPI\CustomerDataType();
 	    $customerData->setType("individual");
-	    $customerData->setId($customer['id']);
+	    if(isset($customer['id'])) {
+	    	$customerData->setId($customer['id']);
+	    }
+	    
 	    $customerData->setEmail($customer['email']);
 
 	    // Add values for transaction settings
@@ -96,7 +99,7 @@ class Authorize extends Model
 	    $check = false;
 	    if ($response != null) {
 	        // Check to see if the API request was successfully received and acted upon
-	        if ($response->getMessages()->getResultCode() == \SampleCode\Constants::RESPONSE_OK) {
+	        if ($response->getMessages()->getResultCode() == "Ok") {
 	            // Since the API request was successful, look for a transaction response
 	            // and parse it to display the results of authorizing the card
 	            $tresponse = $response->getTransactionResponse();
