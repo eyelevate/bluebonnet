@@ -126,6 +126,7 @@
 	                <bootstrap-select class="form-group-no-border {{ $errors->has('state') ? ' has-danger' : '' }}"
 	                    use-label = "true"
 	 					label = "State"
+	 					b-name="state"
 	                    b-err="{{ $errors->has('state') }}"
 	                    b-error="{{ $errors->first('state') }}"
 	                    >
