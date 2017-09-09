@@ -14,9 +14,9 @@ class EmployeeController extends Controller
      */
     public function index(User $user)
     {
-        $role = 3;
+        $role = 4;
         $columns = $user->prepareTableColumns();
-        $rows = $user->prepareTableRows($user->where('role_id', $role)->get(), $role);
+        $rows = $user->prepareTableRows($user->where('role_id','<', $role)->get(), $role);
         // $rows = $user->prepareTableRows($user->all());
         return view('employees.index', compact(['columns','rows']));
     }
@@ -81,9 +81,20 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $employee)
+    public function edit($employee = null, User $user)
     {
-         return view('employees.edit', compact('employee'));
+        $employee = $user->find($employee);
+
+        if ($employee->role_id > 1) {
+            if (auth()->user()->id != $employee->id) {
+                flash('You do not have access to change this employees information. Please contact administrator');
+                return redirect()->back();
+            }
+        }
+
+        return view('employees.edit', compact('employee'));
+
+        
     }
 
     /**
@@ -93,8 +104,9 @@ class EmployeeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $employee)
+    public function update(Request $request, $employee = null, User $user)
     {
+        $employee = $user->find($employee);
            //Check if the user enters the password.
         if (trim($request->password) == '') {
             //Validate the form
@@ -104,7 +116,8 @@ class EmployeeController extends Controller
                 'phone' => 'required|string|max:20',
                 'email' => 'required|string|email|max:255'
             ]);
-            $client->update([
+
+            $employee->update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'phone' => $request->phone,
@@ -119,7 +132,7 @@ class EmployeeController extends Controller
                 'email' => 'required|string|email|max:255',
                 'password' => 'required|string|min:6|confirmed',
             ]);
-            $client->update([
+            $employee->update([
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'phone' => $request->phone,

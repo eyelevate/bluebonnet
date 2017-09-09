@@ -26,7 +26,11 @@
 			<img class="d-flex align-self-start mr-3 lazy" data-original="{{ asset($item['img_src']) }}" alt="Generic placeholder image" style="max-height:150px;">
 			
 			<div class="media-body">
+				@if ($item['email'])
+				<h5 class="mt-0">{{ $item['inventoryItem']['name'] }} <strong class="pull-right">Priced Later</strong></h5>
+				@else
 				<h5 class="mt-0">{{ $item['inventoryItem']['name'] }} <strong class="pull-right">${{ number_format($item['subtotal'],2,'.',',') }}</strong></h5>
+				@endif
 				<p>{{ $item['inventoryItem']['desc'] }}</p>
 				<div class="table-responsive">		
 					<small>
@@ -52,11 +56,13 @@
 									<th class="text-left" style="border:none;">{{ $item['stone_type'] }}</th>
 								</tr>
 								@endif
-								@if($item['inventoryItem']['sizes'])
-								<tr >
-									<td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
-									<th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
-								</tr>
+								@if (!$item['email'])
+									@if($item['inventoryItem']['sizes'])
+									<tr >
+										<td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
+										<th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
+									</tr>
+									@endif
 								@endif
 							</tfoot>
 						</table>
@@ -95,15 +101,21 @@
 									<th class="text-left" style="border:none;">{{ $item['stone_type'] }}</th>
 								</tr>
 								@endif
-								@if($item['inventoryItem']['sizes'])
-								<tr >
-									<td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
-									<th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
-								</tr>
+								@if (!$item['email'])
+									@if($item['inventoryItem']['sizes'])
+									<tr >
+										<td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
+										<th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
+									</tr>
+									@endif
 								@endif
 								<tr>
 									<td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+									@if($item['email'])
+									<th class="text-left" style="border:none;">Priced Later</th>
+									@else
 									<th class="text-left" style="border:none;">${{ number_format($item['subtotal'],2,'.',',') }}</th>
+									@endif
 								</tr>
 							</tfoot>
 						</table>
@@ -130,15 +142,29 @@
 					</tr>
 					<tr>
 						<td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+						@if ($email)
+						<th class="text-left" style="border:none;" >Priced Later</th>
+						@else
 						<th class="text-left" style="border:none;" >@{{ totals.subtotal }}</th>
+						@endif
 					</tr>
 					<tr>
 						<td class="text-right" style="border:none;">Tax:&nbsp;</td>
+						@if ($email)
+						<th class="text-left" style="border:none;" >Priced Later</th>
+						@else
 						<th class="text-left" style="border:none;"> @{{ totals.tax }}</th>
+						@endif
+						
 					</tr>
 					<tr>
 						<td class="text-right" style="border:none;">Total:&nbsp;</td>
+						@if ($email)
+						<th class="text-left" style="border:none;" >Priced Later</th>
+						@else
 						<th class="text-left" style="border:none;" >@{{ totals.total}}</th>
+						@endif
+						
 					</tr>
 				</tfoot>
 			</table>

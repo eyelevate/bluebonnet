@@ -81,6 +81,19 @@
 	                    >
 	                </bootstrap-input>
 
+	                <!-- Email -->
+	              	<bootstrap-control class="form-group-no-border {{ $errors->has('email') ? ' has-danger' : '' }}" 
+	                    use-label = "true"
+	 					label = "Email"
+	                    b-name="email"
+	                    b-err="{{ $errors->has('email') }}"
+	                    b-error="{{ $errors->first('email') }}"
+	                    >
+	                    <template slot="control">
+	                    	{{ Form::text('email',old('email') ? old('email') : $company->email,['class'=>'form-control','type'=>'email','placeholder'=>'email@email.com']) }}
+	                    </template>
+	                </bootstrap-control>
+
 	                <!-- Street -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('street') ? ' has-danger' : '' }}" 
 	                    use-label = "true"

@@ -137,4 +137,60 @@ class Invoice extends Model
         return false;
 
     }
+
+    public function newInvoiceEmail($totals, $customer)
+    {
+        $new_invoice = new Invoice();
+        if (auth()->check()) {
+            $user = User::find(auth()->user()->id)->update([
+                'first_name'=>$customer['first_name'],
+                'last_name'=>$customer['last_name'],
+                'phone'=>$customer['phone'],
+                'street'=>$customer['street'],
+                'suite'=>$customer['suite'],
+                'city'=>$customer['city'],
+                'state'=>$customer['state'],
+                'country'=>$customer['country'],
+                'zipcode'=>$customer['zipcode']]);
+
+            
+            $new_invoice->user_id = auth()->user()->id;
+
+
+        } else { // Guest user we will keep track of shipping info on invoice only
+            $new_invoice->first_name = $customer['first_name'];
+            $new_invoice->last_name = $customer['last_name'];
+            $new_invoice->street = $customer['street'];
+            $new_invoice->suite = $customer['suite'];
+            $new_invoice->city = $customer['city'];
+            $new_invoice->state = $customer['state'];
+            $new_invoice->zipcode = $customer['zipcode'];
+            $new_invoice->country = $customer['country'];
+            $new_invoice->phone = $customer['phone'];
+            $new_invoice->email = $customer['email'];
+        }
+
+        // unused columns = po_number, vendor_id, requisitioner, fob, terms 
+
+        // save the rest of the invoice
+        $new_invoice->quantity = $totals['quantity'];
+        // $new_invoice->subtotal = $totals['_subtotal'];
+        // $new_invoice->tax = $totals['_tax'];
+        // $new_invoice->total = $totals['_total'];
+        // $new_invoice->tendered = $totals['_total'];
+        // $new_invoice->shipping_total = $totals['_shipping'];
+        // $new_invoice->payment_type = 1; // Credit Card
+        // $new_invoice->last_four = substr($card['card_number'], -4);
+        // $new_invoice->transaction_id = $payment['transaction_id'];
+        $new_invoice->comment = $customer['comment'];
+        $new_invoice->shipping = $customer['shipping'];
+        $new_invoice->status = 2; // Pending 
+
+        if ($new_invoice->save()) {
+            return $new_invoice;
+        } 
+
+        return false;
+
+    }
 }

@@ -4,6 +4,7 @@ namespace App;
 
 use App\InventoryItem;
 use App\InvoiceItem;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -55,20 +56,47 @@ class InvoiceItem extends Model
 
     // methods
 
+    public function makeTopTen()
+    {
+        $invoiceItems = $this->groupBy('inventory_item_id')
+            ->having('inventory_item_id', '>', 0)
+            ->select('inventory_item_id', \DB::raw('count(*) as total'))
+            ->orderBy('total','desc')
+            ->take(10)
+            ->get();
+
+        if (count($invoiceItems) > 0) {
+            foreach ($invoiceItems as $key => $value) {
+                if(isset($value->inventoryItem)){
+                    if(isset($value->inventoryItem->images)) {
+                        foreach ($value->inventoryItem->images as $imkey => $image) {
+                            if($image->primary) {
+                                $invoiceItems[$key]['inventoryItem']['img_src'] = asset(str_replace('public/','storage/',$image->img_src));
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+        return $invoiceItems;
+    }
+
     public function newInvoiceItems($invoice, $cart)
     {
         $inventoryItem = new InventoryItem();
         $cart_count = count($cart);
         if (count($cart) > 0) {
             foreach ($cart as $item) {
+                $email = $item['email'];
                 $ii = $item['inventoryItem'];
                 $invItemObject = $inventoryItem->find($ii['id']);
                 $quantity = $item['quantity'];
-                $item_size_id = ($ii['sizes']) ? $item['stone_size_id'] : NULL;
+                $item_size_id = (!$email) ? ($ii['sizes']) ? $item['stone_size_id'] : NULL : NULL;
                 $item_metal_id = ($ii['metals']) ? $item['metal_id'] : NULL;
                 $item_stone_id = ($ii['stones']) ? $item['stone_id'] : NULL;
                 $item_finger_id = ($ii['fingers']) ? $item['finger_id'] : NULL;
-                $subtotal = $inventoryItem->getSubtotal($invItemObject,$quantity,$item_metal_id,$item_stone_id, $item_size_id);
+                $subtotal = (!$email) ? $inventoryItem->getSubtotal($invItemObject,$quantity,$item_metal_id,$item_stone_id, $item_size_id) : NULL;
 
                 $invoice_item = new InvoiceItem();
                 $invoice_item->invoice_id = $invoice->id;

@@ -22,6 +22,7 @@ class CompaniesTableSeeder extends Seeder
             'country' => 'US',
             'zipcode' => '75240',
             'phone' => '6824723039',
+            'email' => 'info@freyasfinejewelry.com',
             'phone_option' => '',
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()

@@ -305,7 +305,7 @@
                         <small class="form-control-feedback">{{ $errors->first('billing_zipcode') }}</small>
                     </div>
                 </div>
-
+                @if (!$email)
                 {{-- card --}}
                 <div class="form-group {{ $errors->has('card_number') ? ' has-danger' : '' }}">
                     <label class="form-control-label">Credit Card Number</label>
@@ -339,6 +339,7 @@
                     </div>
                     
                 </div>
+                @endif
                 <div class="row-fluid text-danger">
                     <ul class="col-12">
                         <li class="{{ ($errors->has('exp_month')) ? '' : 'hide' }}">
@@ -393,21 +394,23 @@
                                                 <th class="text-left" style="border:none;">{{ $item['stone_type'] }}</th>
                                             </tr>
                                             @endif
-                                            @if($item['inventoryItem']['sizes'])
-                                            <tr >
-                                                <td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
-                                                <th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
-                                            </tr>
+                                            @if(!$item['email'])
+                                                @if($item['inventoryItem']['sizes'])
+                                                <tr >
+                                                    <td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
+                                                    <th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
+                                                </tr>
+                                                @endif
                                             @endif
                                             <tr>
                                                 <td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
-                                                <th class="text-left" style="border:none;">${{ number_format($item['subtotal'],2,'.',',') }}</th>
+                                                <th class="text-left" style="border:none;">{{ (!$item['email']) ? '$'.number_format($item['subtotal'],2,'.',',') : 'Priced Later' }}</th>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </small>
                             </div>
-                            <button class="btn btn-danger pull-right" @click="removeRow($event, {{ $key }})">Remove</button>
+                            <button type="button" class="btn btn-danger pull-right" @click="removeRow($event, {{ $key }})">Remove</button>
                         </div>
                     </div>
                     <div class="card hidden-md-up item" item-id="{{ $key }}">
@@ -440,15 +443,21 @@
                                                 <th class="text-left" style="border:none;">{{ $item['stone_type'] }}</th>
                                             </tr>
                                             @endif
-                                            @if($item['inventoryItem']['sizes'])
-                                            <tr >
-                                                <td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
-                                                <th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
-                                            </tr>
+                                            @if(!$item['email'])
+                                                @if($item['inventoryItem']['sizes'])
+                                                <tr >
+                                                    <td class="text-right" style="border:none;">Stone Size:&nbsp;</td>
+                                                    <th class="text-left" style="border:none;">{{ $item['size_name'] }}</th>
+                                                </tr>
+                                                @endif
                                             @endif
                                             <tr>
                                                 <td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+                                                @if($item['email'])
+                                                <th class="text-left" style="border:none;">PL</th>
+                                                @else
                                                 <th class="text-left" style="border:none;">${{ number_format($item['subtotal'],2,'.',',') }}</th>
+                                                @endif
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -456,7 +465,7 @@
                             </div>
                             
                         </div>
-                        <button class="btn btn-danger btn-block btn-sm" @click="removeRow($event,{{ $key }})">Remove</button>
+                        <button type="button" class="btn btn-danger btn-block btn-sm" @click="removeRow($event,{{ $key }})">Remove</button>
                     </div>
                 </div>
                 <hr/>
@@ -472,19 +481,38 @@
                             </tr>
                             <tr>
                                 <td class="text-right" style="border:none;">Subtotal:&nbsp;</td>
+                                @if($email)
+                                <th class="text-left" style="border:none;" >Priced Later</th>
+                                @else
                                 <th class="text-left" style="border:none;" >@{{ totals.subtotal }}</th>
+                                @endif
                             </tr>
                             <tr>
                                 <td class="text-right" style="border:none;">Tax:&nbsp;</td>
+                                @if($email)
+                                <th class="text-left" style="border:none;" >Priced Later</th>
+                                @else
                                 <th class="text-left" style="border:none;"> @{{ totals.tax }}</th>
+                                @endif
+
                             </tr>
                             <tr>
                                 <td class="text-right" style="border:none;">Shipping:&nbsp;</td>
+                                @if($email)
+                                <th class="text-left" style="border:none;" >Priced Later</th>
+                                @else
                                 <th class="text-left" style="border:none;"> @{{ totals.shipping }}</th>
+                                @endif
+
                             </tr>
                             <tr>
                                 <td class="text-right" style="border:none;">Total:&nbsp;</td>
+                                @if($email)
+                                <th class="text-left" style="border:none;" >Priced Later</th>
+                                @else
                                 <th class="text-left" style="border:none;" >@{{ totals.total}}</th>
+                                @endif
+                                
                             </tr>
                         </tfoot>
                     </table>
