@@ -193,4 +193,30 @@ class Invoice extends Model
         return false;
 
     }
+
+    public function summary()
+    {
+
+        $summary = $this->groupBy('status')
+            ->having('status', '>', 0)
+            ->select('status', \DB::raw('count(*) as total'))
+            ->orderBy('total','desc')
+            ->get();
+
+        return $summary;
+    }
+    public function details($summary)
+    {   
+        $details = [];
+
+        if (count($summary) > 0) {
+            foreach ($summary as $key => $value) {
+                $status = $value->status;
+                $get = $this->where('status',$status)->get();
+                $details[$status] = $get;
+            }
+        }
+
+        return $details;
+    }
 }

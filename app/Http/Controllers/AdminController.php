@@ -18,8 +18,11 @@ class AdminController extends Controller
      */
     public function index(User $user, Invoice $invoice, InvoiceItem $invoiceItem)
     {
+        $invoiceSummary = $invoice->summary();
+
+        $invoiceDetails = $invoice->details($invoiceSummary);
         $topTenInvoiceItem = $invoiceItem->makeTopTen();
-        return view('admins.index',compact(['topTenInvoiceItem']));
+        return view('admins.index',compact(['topTenInvoiceItem','invoiceSummary','invoiceDetails']));
     }
 
     /**
@@ -92,6 +95,7 @@ class AdminController extends Controller
     {
 
         if (auth()->check()) {
+            
             return redirect()->route('admin.index');
         }
         return view('admins.login');
@@ -100,7 +104,7 @@ class AdminController extends Controller
     public function authenticate(Request $request)
     {
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], true)) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
             if (Auth::user()->role_id > 3) {
                 flash()->message('Successfully logged in, however, you are not authorized to view this page.')->warning();
                 return redirect()->route('home.index');
@@ -115,7 +119,7 @@ class AdminController extends Controller
         }
     }
 
-    public function logout()
+    public function logout(User $user)
     {
         if (Auth::check()) {
             Auth::logout();
