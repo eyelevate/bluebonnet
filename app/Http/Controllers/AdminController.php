@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Invoice;
+use App\InvoiceItem;
 use App\User;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -13,10 +16,10 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function index(User $user, Invoice $invoice, InvoiceItem $invoiceItem)
     {
-
-        return view('admins.index');
+        $topTenInvoiceItem = $invoiceItem->makeTopTen();
+        return view('admins.index',compact(['topTenInvoiceItem']));
     }
 
     /**
@@ -87,7 +90,8 @@ class AdminController extends Controller
 
     public function login()
     {
-        if (Auth::check()) {
+
+        if (auth()->check()) {
             return redirect()->route('admin.index');
         }
         return view('admins.login');
@@ -96,7 +100,7 @@ class AdminController extends Controller
     public function authenticate(Request $request)
     {
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember)) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], true)) {
             if (Auth::user()->role_id > 3) {
                 flash()->message('Successfully logged in, however, you are not authorized to view this page.')->warning();
                 return redirect()->route('home.index');

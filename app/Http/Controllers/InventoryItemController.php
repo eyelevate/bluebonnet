@@ -16,6 +16,7 @@ use App\StoneSize;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
+use Session;
 
 class InventoryItemController extends Controller
 {
@@ -77,6 +78,7 @@ class InventoryItemController extends Controller
         $inventory_item->active = ($request->active == 'on') ? true : false;
         $inventory_item->metals = ($request->metals == 'on') ? true : false;
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
+        $inventory_item->fingers = ($request->fingers == 'on') ? true : false;
         $inventory_item->sizes = ($request->stones) ? ($request->sizes == 'on') ? true : false : false;
         $inventory_item->featured = ($request->featured == 'on') ? true : false;
 
@@ -220,6 +222,7 @@ class InventoryItemController extends Controller
         $inventory_item->active = ($request->active == 'on') ? true : false;
         $inventory_item->metals = ($request->metals == 'on') ? true : false;
         $inventory_item->stones = ($request->stones == 'on') ? true : false;
+        $inventory_item->fingers = ($request->fingers == 'on') ? true : false;
         $inventory_item->sizes = ($request->stones) ? ($request->sizes == 'on') ? true : false : false;
         $inventory_item->featured = ($request->featured == 'on') ? true : false;
         if ($inventory_item->save()) {
@@ -425,20 +428,31 @@ class InventoryItemController extends Controller
         
     }
 
-    public function checkout(Request $request, InventoryItem $inventoryItem)
+    public function addToCart(Request $request, InventoryItem $inventoryItem, ItemStone $itemStone)
     {
+        // Check if stone is an email or not
+        $email = $itemStone->checkEmail($request->stone_id);
         
-        if($inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes) {
-
-            $this->validate(request(), [
-                'quantity' => 'required',
-                'finger_id' => 'required',
-                'metal_id' => 'required',
-                'stone_id' => 'required',
-                "stone_size_id.{$request->stone_id}"=>'required'
-            ]);
+        if($inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes && $inventoryItem->fingers) {
+            if ($email) {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'finger_id' => 'required',
+                    'metal_id' => 'required',
+                    'stone_id' => 'required'
+                ]);
+            } else {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'finger_id' => 'required',
+                    'metal_id' => 'required',
+                    'stone_id' => 'required',
+                    "stone_size_id.{$request->stone_id}"=>'required'
+                ]);
+            }
             
-        } elseif ($inventoryItem->metals && !$inventoryItem->stones) {
+            
+        } elseif ($inventoryItem->metals && !$inventoryItem->stones && $inventoryItem->fingers) {
 
             $this->validate(request(), [
                 'quantity' => 'required',
@@ -446,52 +460,87 @@ class InventoryItemController extends Controller
                 'metal_id' => 'required'
             ]);
             
-        } elseif (!$inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes) {
-
-            $this->validate(request(), [
-                'quantity' => 'required',
-                'finger_id' => 'required',
-                'stone_id' => 'required',
-                "stone_size_id.{$request->stone_id}"=>'required'
-            ]);
+        } elseif (!$inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes && $inventoryItem->fingers) {
+            if ($email) {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'finger_id' => 'required',
+                    'stone_id' => 'required'
+                ]);
+            } else {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'finger_id' => 'required',
+                    'stone_id' => 'required',
+                    "stone_size_id.{$request->stone_id}"=>'required'
+                ]);
+            }
             
-        } elseif ($inventoryItem->metals && $inventoryItem->stones && !$inventoryItem->sizes) {
-
+            
+        } elseif ($inventoryItem->metals && $inventoryItem->stones && !$inventoryItem->sizes && $inventoryItem->fingers) {
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required',
                 'metal_id' => 'required',
                 'stone_id' => 'required'
             ]);
+        } elseif(!$inventoryItem->fingers && $inventoryItem->metals && $inventoryItem->sizes && $inventoryItem->stones) {
+            if ($email) {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'metal_id' => 'required',
+                    'stone_id' => 'required'
+                    
+                ]);
+            } else {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'metal_id' => 'required',
+                    'stone_id' => 'required',
+                    "stone_size_id.{$request->stone_id}"=>'required'
+                ]);
+            }
             
         } else {
 
             $this->validate(request(), [
                 'quantity' => 'required',
-                'finger_id' => 'required'
             ]);
             
         }
-
-        if ($request->session()->has('cart')) {
-            session()->push([
+        $row = [
+                'shipping' => 1, // ground basic shipping + $0.00
+                'quantity' => $request->quantity,
                 'inventoryItem'=>$inventoryItem,
                 'finger_id'=>$request->finger_id,
                 'metal_id'=>$request->metal_id,
                 'stone_id'=>$request->stone_id,
-                'stone_size_id'=>$request->stone_size_id
-                ],'cart');
+                'stone_size_id'=>$request->stone_size_id[$request->stone_id],
+                'email'=>$email
+                ];
+        
+        if (session()->has('cart')) {
+            session()->push('cart',$row);
+            
         } else {
-            session(['cart'=>[
-                'inventoryItem'=>$inventoryItem,
-                'finger_id'=>$request->finger_id,
-                'metal_id'=>$request->metal_id,
-                'stone_id'=>$request->stone_id,
-                'stone_size_id'=>$request->stone_size_id]
-            ]);
+            session()->put('cart.0',$row);
         }
-
+        
         return redirect()->route('home.cart');
         
+    }
+
+    public function deleteCartItem(Request $request, InventoryItem $inventoryItem)
+    {
+        $row = $request->row;
+
+        session()->forget('cart.'.$row);
+        $totals = $inventoryItem->prepareTotals(session()->get('cart'));
+
+        return response()->json([
+            'status' => true,
+            'data'=>session()->get('cart'),
+            'totals'=>$totals
+        ]);
     }
 }

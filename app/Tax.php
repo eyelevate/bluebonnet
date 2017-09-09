@@ -46,11 +46,7 @@ class Tax extends Model
                 'type'=>'date',
                 'inputFormat'=> 'YYYY-MM-DD HH:MM:SS',
                 'outputFormat'=> 'MM/DD/YY hh:mm:ssa'
-            ], [
-                'label'=>'Action',
-                'field'=> 'action',
-                'html'=>true
-            ]        ];
+            ]];
 
         return json_encode($columns);
     }

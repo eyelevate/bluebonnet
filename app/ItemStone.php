@@ -33,6 +33,35 @@ class ItemStone extends Model
         return $this->belongsTo(Stone::class, 'stone_id', 'id');
     }
 
+    // methods
+    public function checkEmail($stone_id)
+    {
+        $email = false;
+        $stones = $this->find($stone_id);
+        if ($stones) {
+            $email = $stones->stones->email;
+        }
+
+        return $email;
+    }
+    public function checkEmailAll($cart)
+    {
+        $email = false;
+        if (count($cart) > 0) {
+            foreach ($cart as $item) {
+                $stone_id = $item['stone_id'];
+                $stones = $this->find($stone_id);
+                if ($stones) {
+                    if ($stones->stones->email) {
+                        $email = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $email;
+    }
 
     public function prepareSelect($data)
     {

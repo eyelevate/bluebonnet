@@ -21,14 +21,16 @@ class AppServiceProvider extends ServiceProvider
             'layours.themes.backend.partials.nav',
             'layouts.themes.theme1.layout',
             'layouts.themes.theme2.layout',
-            'layouts.themes.theme2.partials.nav'
+            'layouts.themes.theme2.partials.nav',
+            'home.thank_you'
             ], function($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
+
             $view->with('company', $company);
         });
 
 
-        // Footer
+        // Parts
         view()->composer([
             'layouts.themes.theme1.partials.footer',
             'layouts.themes.theme2.partials.footer',
@@ -36,6 +38,14 @@ class AppServiceProvider extends ServiceProvider
             ], function ($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
             $view->with('company', $company);
+        });
+
+        // backend nav
+        view()->composer([
+            'layouts.themes.backend.partials.nav'
+            ], function ($view) {
+            $active_invoices = \App\Invoice::where('status','<',5)->whereBetween('created_at',[date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')])->count();
+            $view->with('active_invoices', $active_invoices);
         });
 
         // Send asset issues data globally to sidebar

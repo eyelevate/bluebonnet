@@ -17,7 +17,8 @@ class CreateTaxesTable extends Migration
             $table->increments('id');
             $table->float('rate',5,4);
             $table->tinyInteger('status')->default(1);
-            $table->dateTime('end');
+            $table->dateTime('end')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

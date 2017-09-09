@@ -1,7 +1,7 @@
 
 
 $(document).ready(function(){
-	charts.fill();
+	// charts.fill();
 });
 
 charts = {

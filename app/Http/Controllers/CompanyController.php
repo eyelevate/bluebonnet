@@ -53,6 +53,7 @@ class CompanyController extends Controller
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
             'zipcode' => 'required|string|max:255',
+            'email'=>'required|string|email|max:255|unique:companies',
         ]);
         $request->merge(['hours'=>json_encode($request->hours)]);
         $company->create(request()->all());

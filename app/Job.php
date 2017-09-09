@@ -497,4 +497,14 @@ class Job extends Model
     {
         return "(".substr($data, 0, 3).") ".substr($data, 3, 3)."-".substr($data, 6);
     }
+
+    public function formatPhone($data)
+    {
+        return "(".substr($data, 0, 3).") ".substr($data, 3, 3)."-".substr($data, 6);
+    }
+
+    public function stripAllButNumbers($number)
+    {
+        return preg_replace('/\D/', '', $number);
+    }
 }

@@ -22,14 +22,26 @@
                 <li class="nav-item">
                     <a class="nav-link" href="#">CUSTOM</a>
                 </li>
+                @if(auth()->check())
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->email }}</a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="{{ route('home.logout') }}">Logout</a>
+                        </div>
+                </li>
+                @else
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Sign-in</a>
+                    <a class="nav-link" href="{{ route('login') }}">Sign-in</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Register</a>
+                    <a class="nav-link" href="{{ route('register') }}">Register</a>
                 </li>
+
+                @endif
+                
                 <li class="nav-item clearfix" style="">
-                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
                 </li>
             </ul>
         </div>
@@ -49,21 +61,21 @@
                 <ul class="navbar-nav">
                     @if (auth()->check())
                     <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->email }}</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{{ route('home.logout') }}">Logout</a>
-                        </div>
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ auth()->user()->email }}</a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="{{ route('home.logout') }}">Logout</a>
+                            </div>
                     </li>
                     @else
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/login') }}">login</a>
+                        <a class="nav-link" href="{{ route('login') }}">login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url('/register') }}">register</a>
+                        <a class="nav-link" href="{{ route('register') }}">register</a>
                     </li>
                     @endif
                     <li class="nav-item clearfix" style="">
-                        <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                        <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
                     </li>
                     <li>&nbsp;</li>
                 </ul>
@@ -100,14 +112,14 @@
                 </li>
                 @else
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/login') }}">login</a>
+                    <a class="nav-link" href="{{ route('login') }}">login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ url('/register') }}">register</a>
+                    <a class="nav-link" href="{{ route('register') }}">register</a>
                 </li>
                 @endif
                 <li class="nav-item clearfix" style="">
-                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
                 </li>
                 <li>&nbsp;</li>
             </ul>
@@ -145,14 +157,14 @@
             </li>
             @else
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/login') }}">login</a>
+                <a class="nav-link" href="{{ route('login') }}">login</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('/register') }}">register</a>
+                <a class="nav-link" href="{{ route('register') }}">register</a>
             </li>
             @endif
             <li class="nav-item clearfix" style="">
-                <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">0</span></i></a>
+                <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
             </li>
             <li>&nbsp;</li>
         </ul>

@@ -31,12 +31,12 @@
         <!-- End Navbar -->
         <div class="wrapper">
             <!-- Start header -->
+            
             @yield('header')
-
+            @include('flash::message')
             <!-- End header -->
             <!-- Start Content -->
             <div class="main">
-                
                 @yield('content')
             </div>
             <!-- End Content -->

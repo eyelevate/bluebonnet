@@ -70,9 +70,9 @@
             @yield('content')
         </main>
 
-        <aside class="aside-menu">
+{{--         <aside class="aside-menu">
             @include('layouts.themes.backend.partials.aside')
-        </aside>
+        </aside> --}}
         <!-- Modals -->
         @yield('modals')
     </div>

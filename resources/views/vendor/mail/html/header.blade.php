@@ -1,7 +1,7 @@
 <tr>
     <td class="header">
         <a href="{{ $url }}">
-            {{ $slot }} - Invoice: #
+            {{ $slot }}
         </a>
     </td>
 </tr>

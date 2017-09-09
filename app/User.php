@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\User;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -190,13 +191,15 @@ class User extends Authenticatable
         return $rows;
     }
 
-    public static function countEmployees($role_id = 3)
+    public static function countEmployees($role_id = 4)
     {
-        return User::where('role_id', $role_id)->count();
+
+        return User::where('role_id','<', $role_id)->count();
     }
 
     public static function countCustomers($role_id = 4)
     {
+         
         return User::where('role_id', $role_id)->count();
     }
 

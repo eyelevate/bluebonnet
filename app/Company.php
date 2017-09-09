@@ -27,6 +27,7 @@ class Company extends Model
         'phone',
         'phone_option',
         'hours',
+        'email',
         'status'
     ];
 

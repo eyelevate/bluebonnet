@@ -4,9 +4,11 @@ namespace App;
 
 use App\StoneSize;
 use App\Stone;
+use App\Finger;
 use App\Metal;
 use App\ItemStone;
 use App\ItemSize;
+use App\Tax;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -30,6 +32,7 @@ class InventoryItem extends Model
         'active',
         'metals',
         'stones',
+        'fingers',
         'sizes',
         'featured'
     ];
@@ -120,6 +123,115 @@ class InventoryItem extends Model
 
 
         return $subtotal;
+    }
+
+
+    public function prepareCart($data)
+    {
+        // dd($data);
+
+        if(isset($data)){
+            foreach ($data as $key => $value) {
+                // get ring size
+                $ring_size = Finger::find($value['finger_id']);
+                $data[$key]['ring_size'] = $ring_size->name;
+                $get_subtotal = $this->getSubtotal($value['inventoryItem'],$value['quantity'],$value['metal_id'],$value['stone_id'], $value['stone_size_id']);
+                $data[$key]['subtotal'] = $get_subtotal;
+
+                // get stone type
+                if($value['inventoryItem']['stones']) {
+                    $stone_type = ItemStone::find($value['stone_id']);
+                    $data[$key]['stone_type'] = '';
+                    if (isset($stone_type)) {
+                        $data[$key]['stone_type'] = $stone_type->stones->name;
+                    }
+                }
+                
+                // get stone size
+                if ($value['inventoryItem']['sizes']) {
+                    $stone_size = ItemSize::find($value['stone_size_id']);
+                    if (isset($stone_size)) {
+                        $data[$key]['size_name'] = $stone_size->stoneSizes->sizes->name;
+                    }
+                }
+                
+                
+                // get metal type
+                if ($value['inventoryItem']['metals']) {
+                    $metal_type = ItemMetal::find($value['metal_id']);
+                    if (isset($metal_type)) {
+                        $data[$key]['metal_name'] = $metal_type->metals->name;
+                    }
+                }
+                
+
+
+                // set primary image
+                $primary_img = '';
+                if(isset($value['inventoryItem']['images'])) {
+                    foreach ($value['inventoryItem']['images'] as $ikey => $ivalue) {
+                        
+                        if ($ivalue->primary) {
+                            $primary_img = str_replace('public/','storage/',$ivalue->img_src);
+                            break;
+                        }
+                    }
+                }
+                $data[$key]['img_src'] = $primary_img;
+
+            }
+
+        }
+        return $data;
+    }
+
+    public function prepareTotals($data)
+    {
+        $totals = [
+            'quantity'=>0,
+            'subtotal'=>0,
+            '_subtotal'=>0,
+            'tax'=>0,
+            '_tax'=>0,
+            'shipping'=>0,
+            '_shipping'=>0,
+            'total'=>0,
+            '_total'=>0,
+        ];
+        $quantity = 0;
+        $sub_total = 0;
+        $tax = 0;
+        $total = 0;
+        $shipping = 0;
+        $taxes = new Tax();
+        $tax_rate = $taxes->where('status',1)->first();
+        if(isset($data)){
+            foreach ($data as $key => $value) {
+
+                $get_subtotal = $this->getSubtotal($value['inventoryItem'],$value['quantity'],$value['metal_id'],$value['stone_id'], $value['stone_size_id']);            
+
+                // calculate totals
+                $totals['quantity'] += $value['quantity'];
+                $totals['_subtotal'] += $get_subtotal;
+                $shipping_id = (isset($value['shipping'])) ? $value['shipping'] : 1;
+                $shipping = $this->shippingRates($shipping_id);
+            }
+
+            $total = round($totals['_subtotal'] * (1+$tax_rate->rate),2);
+            $tax = $total - $totals['_subtotal'];
+            $final_total = $total + $shipping;
+
+            $totals['subtotal'] = '$'.number_format($totals['_subtotal'],2,'.',',');
+            $totals['total'] = '$'.number_format($final_total,2,'.',',');
+            $totals['_total'] = $final_total;
+            $totals['tax'] = '$'.number_format($tax,2,'.',',');
+            $totals['_tax'] = $tax;
+            $totals['shipping'] = '$'.number_format($shipping,2,'.',',');
+            $totals['_shipping'] = $shipping;
+
+        }
+
+        return $totals;        
     }
 
     public function prepareDataSingle($data)
@@ -304,6 +416,11 @@ class InventoryItem extends Model
                             $inventories[$key]['inventoryItems'][$iikey]['stones_status'] = ($iivalue->stones) ? 'Yes' :  'No';
                         } 
 
+                        // Fingers
+                        if (isset($inventories[$key]['inventoryItems'][$iikey]['fingers'])) {
+                            $inventories[$key]['inventoryItems'][$iikey]['fingers_status'] = ($iivalue->stones) ? 'Yes' :  'No';
+                        } 
+
                         // Featured
                         if (isset($inventories[$key]['inventoryItems'][$iikey]['featured'])) {
                             $inventories[$key]['inventoryItems'][$iikey]['featured_status'] = ($iivalue->featured) ? 'Yes' :  'No';
@@ -331,5 +448,27 @@ class InventoryItem extends Model
     public static function countInventoryItems()
     {
         return InventoryItem::count();
+    }
+
+    /**
+    * Private Functions
+    **/
+    private function shippingRates($shipping)
+    {
+        $rate = 0;
+
+        switch ($shipping) {
+            case 2: // 2 day air
+                $rate = 10;
+                break;
+            case 3:
+                $rate = 20;
+                break;
+            default:
+                $rate = 0;
+                break;
+        }
+
+        return $rate;
     }
 }

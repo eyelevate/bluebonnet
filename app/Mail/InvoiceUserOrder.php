@@ -16,9 +16,12 @@ class InvoiceUserOrder extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($invoice, $company, $email)
     {
-        //
+        $this->invoice = $invoice;
+        $this->company = $company;
+        $this->email = $email;
+
     }
 
     /**
@@ -28,6 +31,9 @@ class InvoiceUserOrder extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.user.invoiceuserorder');
+        return $this->markdown('emails.user.invoiceuserorder')
+            ->with('invoice',$this->invoice)
+            ->with('company',$this->company)
+            ->with('email',$this->email);
     }
 }
