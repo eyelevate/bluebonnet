@@ -89,12 +89,14 @@ class InventoryItem extends Model
         if (isset($data)) {
             $subtotal = $data->subtotal;
             if(isset($stone_id)) {
-                $stone = $data->itemStone()->where('stone_id',$stone_id)->first();
-                // $stone = Stone::find($stone_id);
-                if($stone->stones->email) {
-                    $email = true;
+                $stone = $data->itemStone()->find($stone_id);
+                if ($stone) {
+                    if($stone->stones->email) {
+                        $email = true;
+                    }
+                    $subtotal += $stone->price;
                 }
-                $subtotal += $stone->price;
+                
             }
             if(isset($stone_size_id)) {
                 $stoneSize = $data->itemSize()->where('stone_size_id',$stone_size_id)->first();
@@ -106,9 +108,12 @@ class InventoryItem extends Model
                 $subtotal += $stoneSize->price;
             }
             if(isset($metal_id)) {
-                $metal = $data->itemMetal()->where('metal_id',$metal_id)->first();
-                // $metal = Metal::find($metal_id);
-                $subtotal += $metal->price;
+
+                $metal = $data->itemMetal()->find($metal_id);
+                if ($metal) {
+                    $subtotal += $metal->price;
+                }
+
             }
 
         }
