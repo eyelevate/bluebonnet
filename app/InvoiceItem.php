@@ -60,7 +60,7 @@ class InvoiceItem extends Model
     {
         $invoiceItems = $this->groupBy('inventory_item_id')
             ->having('inventory_item_id', '>', 0)
-            ->select('inventory_item_id', \DB::raw('count(*) as total'))
+            ->select('quantity', \DB::raw('count(quantity) as total'))
             ->orderBy('total','desc')
             ->take(10)
             ->get();
