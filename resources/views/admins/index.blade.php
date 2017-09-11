@@ -37,7 +37,7 @@
                             </div>
                             @elseif($summary->status == 3)
                             <div class="col-sm-6 nav-item">
-                                <a class="nav-link" href="#summary-{{ $status }}">
+                                <a class="nav-link" href="#summary-{{ $summary->status }}">
                                     <div class="callout callout-warning">
                                         <small class="text-muted">Paid</small>
                                         <br>
