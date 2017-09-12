@@ -32,6 +32,7 @@ const app = new Vue({
 		},
 		setStone($event) {
 			this.stoneId = $($event.target).find('option:selected').val();
+			this.sizeId = '';
 			this.setSubtotal();
 		},
 		setSubtotal() {

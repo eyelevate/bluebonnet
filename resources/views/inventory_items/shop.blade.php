@@ -98,21 +98,21 @@
 			</div>
 			<div class="row-fluid">
 				
-				@if (count($stones) > 0)
-					@foreach($stones as $stone)
+				@if (count($inventoryItem->itemStone) > 0)
+					@foreach($inventoryItem->itemStone as $stone)
 					<div v-if="stoneId == {{ $stone->id }}">
 						<hr/>
 						<div class="form-group {{ $errors->has("stone_size_id.{$stone->id}") ? ' has-danger' : '' }}">
 							<h5>Select Stone Size</h5>
-							@if ($stone->email)
+							@if ($stone->stones->email)
 							<p>Must contact us for custom price. Please continue the form and we will contact you for further instructions!</p>
 							@else
-							{{ Form::select('stone_size_id['.$stone->id.']',$stone_sizes[$stone->id],'',['class'=>"form-control {($errors->has('stone_size_id.'.$stone->id)) ? 'form-control-danger' : ''}",'v-on:change'=>'setSize($event)']) }}
+							{{ Form::select('stone_size_id['.$stone->id.']',$stone_sizes[$stone->stone_id],'',['class'=>"form-control {($errors->has('stone_size_id.'.$stone->id)) ? 'form-control-danger' : ''}",'v-on:change'=>'setSize($event)','v-model'=>'sizeId']) }}
 							@endif
-						<div class="{{ ($errors->has("stone_size_id.{$stone->id}")) ? '' : 'hide' }}">
-							<small class="form-control-feedback">{{ $errors->first("stone_size_id.{$stone->id}") }}</small>
-						</div>
-					</div>						
+							<div class="{{ ($errors->has("stone_size_id.{$stone->id}")) ? '' : 'hide' }}">
+								<small class="form-control-feedback">{{ $errors->first("stone_size_id.{$stone->id}") }}</small>
+							</div>
+						</div>						
 					</div>
 					@endforeach
 				@endif

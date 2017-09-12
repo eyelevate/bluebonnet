@@ -365,7 +365,7 @@
 										<tbody>
 										@if(count($inventoryItem->itemSize) > 0)
 											@foreach($inventoryItem->itemSize as $size)
-												@if ($size->stoneSizes->stone_id == $stone->id)
+												@if ($size->stoneSizes->stone_id == $stone->stones->id)
 												<tr class="{{ $size->active ? '' : 'table-active' }}">
 													<td>
 														<bootstrap-control>

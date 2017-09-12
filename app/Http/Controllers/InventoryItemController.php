@@ -69,7 +69,6 @@ class InventoryItemController extends Controller
             'name' => 'required|string|max:255',
             'subtotal' => 'required'
         ]);
-
         $inventory_item->name = $request->name;
         $inventory_item->desc = $request->desc;
         $inventory_item->inventory_id = $inventory->id;
@@ -180,6 +179,7 @@ class InventoryItemController extends Controller
         $stones = $stone->all();
         $stone_select = $itemStone->prepareSelect($inventoryItem->itemStone);
         $stone_sizes = $itemSize->prepareSelect($inventoryItem);
+        
         return view('inventory_items.shop',compact(['layout','inventoryItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
 
@@ -193,7 +193,7 @@ class InventoryItemController extends Controller
     {
 
         $inventoryItem = $inventoryItem->prepareDataSingle($inventoryItem);
-        $stones = $stone->prepareData($stone->all());
+        $stones = $stone->prepareData($inventoryItem->itemStone);
         $metals = $metal->all();
         $image_variables = $image->prepareVariableInventoryItems($inventoryItem->images);
         return view('inventory_items.edit',compact(['inventoryItem','image_variables','stones','metals']));

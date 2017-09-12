@@ -90,6 +90,8 @@ class InvoiceItemController extends Controller
 
         if ($invoiceItem->update($request->all())) {
             // check to see if email if so then update status and update invoice totals
+            $email = $invoiceItem->itemStone->stones->email;
+            $new_status = 2;
             dd($invoiceItem->itemStone->stones->email);
         }
         dd($request->all());
