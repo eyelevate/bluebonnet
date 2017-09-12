@@ -462,7 +462,7 @@ class InventoryItem extends Model
 
                         // Fingers
                         if (isset($inventories[$key]['inventoryItems'][$iikey]['fingers'])) {
-                            $inventories[$key]['inventoryItems'][$iikey]['fingers_status'] = ($iivalue->stones) ? 'Yes' :  'No';
+                            $inventories[$key]['inventoryItems'][$iikey]['fingers_status'] = ($iivalue->fingers) ? 'Yes' :  'No';
                         } 
 
                         // Featured
