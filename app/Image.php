@@ -96,8 +96,8 @@ class Image extends Model
 
             Storage::makeDirectory('public/tmp');
         }
-        $crop->save(public_path("storage/tmp/{$resize_name}"));
-        $saved_image_uri = "{$resize->dirname}/{$resize->basename}";
+        $crop->save(public_path("storage/tmp/{$crop_name}"));
+        $saved_image_uri = "{$crop->dirname}/{$crop->basename}";
         $crop->destroy();
         return $saved_image_uri;
 
