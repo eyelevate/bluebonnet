@@ -416,12 +416,35 @@ class InventoryItemController extends Controller
         $subtotal = $inventoryItem->getSubtotal($inventoryItem,$quantity,$metal_id,$stone_id, $stone_size_id);
         if ($subtotal) {
             return response()->json([
-                'subtotal' => $subtotal,
+                'subtotal' => number_format($subtotal,2,'.',''),
                 'subtotal_formatted'=>"$".number_format($subtotal, 2,'.',',')
             ]);
         } else {
             return response()->json([
-                'subtotal' => 0,
+                'subtotal' => '0.00',
+                'subtotal_formatted' => 'Contact for estimate'
+            ]);
+        }
+        
+    }
+
+    public function subtotalAdmin(Request $request, InventoryItem $inventoryItem)
+    {
+        $quantity = $request->quantity;
+        $metal_id = $request->metal_id;
+        $stone_id = $request->stone_id;
+        $stone_size_id = $request->size_id;
+        $custom_price = $request->custom_price;
+
+        $subtotal = $inventoryItem->getSubtotalAdmin($inventoryItem,$quantity,$metal_id,$stone_id, $stone_size_id, $custom_price);
+        if ($subtotal) {
+            return response()->json([
+                'subtotal' => number_format($subtotal,2,'.',''),
+                'subtotal_formatted'=>"$".number_format($subtotal, 2,'.',',')
+            ]);
+        } else {
+            return response()->json([
+                'subtotal' => '0.00',
                 'subtotal_formatted' => 'Contact for estimate'
             ]);
         }

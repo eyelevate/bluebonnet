@@ -117,15 +117,50 @@ class InventoryItem extends Model
             }
 
         }
-
         if (!$email) {
             $subtotal *= $quantity;
         } else {
             $subtotal = false;
         }
-        
+        return $subtotal;
+    }
 
+    public function getSubtotalAdmin($data,$quantity = 1,$metal_id = null,$stone_id= null, $stone_size_id = null, $custom_price = null)
+    {
+        $email = false;
+        $subtotal = 0;
+        if (isset($data)) {
+            $subtotal = $data->subtotal;
+            if(isset($stone_id)) {
+                $stone = $data->itemStone()->find($stone_id);
+                if ($stone) {
+                    if($stone->stones->email) {
+                        $email = true;
+                        $subtotal += $custom_price;
+                    } else {
+                        $subtotal += $stone->price;
+                    }
+                    
+                }
+                $stoneSize = $data->itemSize()->where('stone_size_id',$stone_size_id)->first();
+                // $stoneSize = StoneSize::find($stone_size_id);
+                if(!$email) {
+                    $subtotal += $stoneSize->price;
+                } 
+                   
+            }
+            
+            if(isset($metal_id)) {
 
+                $metal = $data->itemMetal()->find($metal_id);
+                if ($metal) {
+                    $subtotal += $metal->price;
+                }
+
+            }
+
+        }
+        $subtotal *= $quantity;
 
         return $subtotal;
     }
@@ -138,8 +173,12 @@ class InventoryItem extends Model
         if(isset($data)){
             foreach ($data as $key => $value) {
                 // get ring size
-                $ring_size = Finger::find($value['finger_id']);
-                $data[$key]['ring_size'] = $ring_size->name;
+                if ($value['inventoryItem']['fingers']) {
+                    $ring_size = Finger::find($value['finger_id']);
+                    $data[$key]['ring_size'] = $ring_size->name;
+                }
+                
+                
                 $get_subtotal = $this->getSubtotal($value['inventoryItem'],$value['quantity'],$value['metal_id'],$value['stone_id'], $value['stone_size_id']);
                 $data[$key]['subtotal'] = $get_subtotal;
 

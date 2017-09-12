@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Job;
 use App\User;
 use App\Invoice;
 use Illuminate\Database\Eloquent\Model;
@@ -197,26 +198,128 @@ class Invoice extends Model
     public function summary()
     {
 
+
         $summary = $this->groupBy('status')
             ->having('status', '>', 0)
-            ->select('status', \DB::raw('count(*) as total'))
+            ->select('*', \DB::raw('count(id) as total'))
             ->orderBy('total','desc')
             ->get();
 
+        // dd($summary);
+
         return $summary;
     }
-    public function details($summary)
+    public function details()
     {   
-        $details = [];
+        $job = new Job();
+        $details = $this->where('status','<',4)->orderBy('id','desc')->get();
 
-        if (count($summary) > 0) {
-            foreach ($summary as $key => $value) {
-                $status = $value->status;
-                $get = $this->where('status',$status)->get();
-                $details[$status] = $get;
+        if (count($details) > 0) {
+            foreach ($details as $key => $value) {
+                // first name
+                $details[$key]['first_name'] = (isset($value->users)) ? ucFirst($value->users->first_name) : ucFirst($value->first_name);
+
+                // last Name
+                $details[$key]['last_name'] = (isset($value->users)) ? ucFirst($value->users->last_name) : ucFirst($value->last_name);
+
+                // full name
+                $details[$key]['full_name'] = ucFirst($value->last_name).', '.ucFirst($value->first_name);
+                if (isset($value->users)) {
+                    $details[$key]['full_name'] = ucFirst($value->users->last_name).', '.ucFirst($value->users->first_name);
+                }
+
+                // Shipping Address
+                $street = (isset($value->users)) ? $value->users->street : $value->street;
+                $suite = (isset($value->users)) ? $value->users->suite : $value->suite;
+                $full_street = (isset($suite)) ? $street.' '.$suite : $street;
+                $city = (isset($value->users)) ? $value->users->city : $value->city;
+                $state = (isset($value->users)) ? $value->users->state : $value->state;
+                $country = (isset($value->users)) ? $value->users->country : $value->country;
+                $zipcode = (isset($value->users)) ? $value->users->zipcode : $value->zipcode;
+
+                $shipping_address = $full_street." <br/> ".ucFirst($city).", ".ucFirst($state)." ".$zipcode;
+
+                $details[$key]['shipping_address'] = $shipping_address;
+
+
+                // Phone
+                $phone = (isset($value->users)) ? $value->users->phone : $value->phone;
+                $details[$key]['phone'] = $job->formatPhone($phone);
+
+
+                // Email
+                $email = (isset($value->users)) ? $value->users->email : $value->email;
+                $details[$key]['email'] = $email;
+
+                // Shipping Type
+                $details[$key]['shipping_type'] = $this->getShippingType($value->shipping);
+
+                // Payment Type
+                $details[$key]['payment_type'] = $this->getPaymentType($value->payment_type);
+
+                // status_html
+                if (isset($value->status)) {
+                    switch ($value->status) {
+                        case 1:
+                            $details[$key]['status_html'] = '<span class="badge">Created By Admin</span>';
+                            break;
+                        case 2:
+                            $details[$key]['status_html'] = '<span class="badge badge-warning">Pending</span>';
+                            break;
+                        case 3:
+                            $details[$key]['status_html'] = '<span class="badge badge-success">Paid</span>';
+                            break;
+                    }
+                }
+
+                if (count($value->invoiceItems) > 0) {
+                    foreach ($value->invoiceItems as $item) {
+                        // dd($item);
+                    }
+                }
             }
         }
 
         return $details;
+    }
+
+    public function getShippingType($shipping)
+    {
+        // Shipping Type
+        switch ($shipping) {
+            case 1: // Ground
+                $shipping_type = 'Ground Shipping';
+                break;
+            case 2: // 2 Day Air
+                $shipping_type = '2 Day Air';
+                break;
+            case 3: // Next Day Air
+                $shipping_type = 'Next Day Air';
+                break;
+            default: // In Store Pickup
+                $shipping_type = 'In-store Pickup';
+                break;
+        }
+
+        return $shipping_type;
+    }
+
+    public function getPaymentType($type)
+    {
+        switch ($type) {
+            case 1:
+                $payment_type = 'Credit Card';
+                break;
+
+            case 1:
+                $payment_type = 'Check';
+                break;
+            
+            default:
+                $payment_type = 'Cash';
+                break;
+        }
+
+        return $payment_type;
     }
 }

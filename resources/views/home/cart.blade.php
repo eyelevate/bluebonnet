@@ -40,10 +40,12 @@
 									<td class="text-right" style="border:none; width:100px;">Quantity:&nbsp;</td>
 									<th class="text-left" style="border:none;">{{ $item['quantity'] }}</th>
 								</tr>
+								@if($item['inventoryItem']['fingers'])
 								<tr>
 									<td class="text-right" style="border:none;">Ring Size:&nbsp;</td>
 									<th class="text-left" style="border:none;">{{ $item['ring_size'] }}</th>
 								</tr>
+								@endif
 								@if($item['inventoryItem']['metals'])
 								<tr>
 									<td class="text-right" style="border:none;">Metal Type:&nbsp;</td>
@@ -85,10 +87,12 @@
 									<td class="text-right" style="border:none;">Quantity:&nbsp;</td>
 									<th class="text-left" style="border:none;">{{ $item['quantity'] }}</th>
 								</tr>
+								@if($item['inventoryItem']['fingers'])
 								<tr>
 									<td class="text-right" style="border:none;">Ring Size:&nbsp;</td>
 									<th class="text-left" style="border:none;">{{ $item['ring_size'] }}</th>
 								</tr>
+								@endif
 								@if($item['inventoryItem']['metals'])
 								<tr>
 									<td class="text-right" style="border:none;">Metal Type:&nbsp;</td>

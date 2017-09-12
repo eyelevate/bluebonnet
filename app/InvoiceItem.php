@@ -23,6 +23,8 @@ class InvoiceItem extends Model
         'item_metal_id',
         'item_stone_id',
         'item_size_id',
+        'custom_stone_price',
+        'serial',
         'finger_id',
         'quantity',
         'subtotal'
@@ -60,7 +62,7 @@ class InvoiceItem extends Model
     {
         $invoiceItems = $this->groupBy('inventory_item_id')
             ->having('inventory_item_id', '>', 0)
-            ->select('quantity', \DB::raw('count(quantity) as total'))
+            ->select('inventory_item_id',\DB::raw('sum(quantity) as total'))
             ->orderBy('total','desc')
             ->take(10)
             ->get();
@@ -70,6 +72,7 @@ class InvoiceItem extends Model
                 if(isset($value->inventoryItem)){
                     if(isset($value->inventoryItem->images)) {
                         foreach ($value->inventoryItem->images as $imkey => $image) {
+
                             if($image->primary) {
                                 $invoiceItems[$key]['inventoryItem']['img_src'] = asset(str_replace('public/','storage/',$image->img_src));
                             }

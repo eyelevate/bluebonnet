@@ -20,7 +20,7 @@ class AdminController extends Controller
     {
         $invoiceSummary = $invoice->summary();
 
-        $invoiceDetails = $invoice->details($invoiceSummary);
+        $invoiceDetails = $invoice->details();
         $topTenInvoiceItem = $invoiceItem->makeTopTen();
         return view('admins.index',compact(['topTenInvoiceItem','invoiceSummary','invoiceDetails']));
     }

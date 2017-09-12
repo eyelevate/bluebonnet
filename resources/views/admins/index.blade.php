@@ -10,161 +10,374 @@
 </ol>
 
 <div class="container-fluid">
-    <div class="animated fadeIn">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Active Invoices
+                </div>
+                <div class="card-block">
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        Active Invoices
-                    </div>
-                    <div class="card-block">
-                        <div class="nav">
-                            @if (count($invoiceSummary) > 0)
-                            @foreach($invoiceSummary as $key => $summary)
-                            @if($summary->status == 2)
-                            <div class="col-sm-6 nav-item">
-                                <a class="nav-link active" href="#summary-{{ $summary->status }}">
-                                    <div class="callout callout-danger">
-                                        <small class="text-muted">Pending</small>
-                                        <br>
-                                        <strong class="h4">{{ $summary->total }}</strong>
-                                        <div class="chart-wrapper">
-                                            <canvas id="sparkline-chart-5" width="100" height="30"></canvas>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                            @elseif($summary->status == 3)
-                            <div class="col-sm-6 nav-item">
-                                <a class="nav-link" href="#summary-{{ $summary->status }}">
-                                    <div class="callout callout-warning">
-                                        <small class="text-muted">Paid</small>
-                                        <br>
-                                        <strong class="h4">{{ $summary->total }}</strong>
-                                        <div class="chart-wrapper">
-                                            <canvas id="sparkline-chart-6" width="100" height="30"></canvas>
-                                        </div>
-                                    </div>
-                                </a>
+                    <div class="nav">
+                        @if (count($invoiceSummary) > 0)
+                        @foreach($invoiceSummary as $key => $summary)
+                        @if($summary->status == 1)
+                        <div class="col-sm-4 nav-item">
+
+                            <div class="callout callout-danger">
+                                <small class="text-muted">Created</small>
+                                <br>
+                                <strong class="h4">{{ $summary->total }}</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-5" width="100" height="30"></canvas>
+                                </div>
                             </div>
 
-                            @endif
-                            <!--/.col-->
-                            @endforeach
-                            @endif
+                        </div>
+                        @elseif($summary->status == 2)
+                        <div class="col-sm-4 nav-item">
+
+                            <div class="callout callout-warning">
+                                <small class="text-muted">Pending</small>
+                                <br>
+                                <strong class="h4">{{ $summary->total }}</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-6" width="100" height="30"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                        @elseif($summary->status == 3)
+                        <div class="col-sm-4 nav-item">
+
+                            <div class="callout callout-success">
+                                <small class="text-muted">Paid</small>
+                                <br>
+                                <strong class="h4">{{ $summary->total }}</strong>
+                                <div class="chart-wrapper">
+                                    <canvas id="sparkline-chart-6" width="100" height="30"></canvas>
+                                </div>
+                            </div>
+
                         </div>
 
-                        <div class ="tab-content">
-                            @if (count($invoiceDetails) > 0)
-                            @php
-                            $idx = 0;                            
-                            @endphp
-                            @foreach($invoiceDetails as $key => $details)
-                            @php
-                            $idx++;                            
-                            @endphp
-                            <div class="tab-pane {{ ($idx == 1) ? 'active' : '' }}" id="summary-{{ $key }}" role="tabpanel">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-outline mb-0">
-                                        <thead class="thead-default col-12">
-                                            <tr>
-                                                <th>Invoice</th>
-                                                <th>Client</th>
-                                                <th>Item</th>
-                                                <th>Status</th>
-                                                <th>Method</th>
-                                                <th>Created</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @if(count($details) > 0)
-                                            @foreach($details as $dkey => $detail)
+                        @endif
+                        <!--/.col-->
+                        @endforeach
+                        @endif
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table table-hover table-outline mb-0">
+                            <thead class="thead-default col-12">
+                                <tr>
+                                    <th>Invoice</th>
+                                    <th>Client</th>
+                                    <th>Quantity</th>
+                                    <th>Subtotal</th>
+                                    <th>Tax</th>
+                                    <th>Shipping</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (count($invoiceDetails) >0)
+                                @foreach($invoiceDetails as $key => $value)
+                                <div class="tab-pane {{ ($key == 0) ? 'active' : '' }}" id="summary-{{ $key }}" role="tabpanel">
 
-                                            <tr>
-                                                <td class="text-center">{{ $detail->id }}</td>
-                                                <td>{{ $detail->user_id }}</td>
-                                                <td>test</td>
-                                                <td>{{ $detail->status }}</td>
-                                                <td>test</td>
-                                                <td>{{ $detail->created_at }}</td>
-                                                <td><a href="{{ route('invoice.edit',$detail->id) }}" class="btn btn-secondary">Edit</a></td>
-                                            </tr>
-                                            @endforeach
-                                            @endif
-                                        </tbody>
-
-                                    </table>
+                                    @if(count($value->invoiceItems) > 0)
+                                    @foreach($value->invoiceItems as $item)
+                                    <tr>
+                                        <td>{{ str_pad($value->id,6,0,STR_PAD_LEFT) }}</td>
+                                        <td>{{ $value->full_name }}</td>
+                                        <td>{{ $value->quantity }}</td>
+                                        <td>${{ number_format($value->subtotal,2,'.',',') }}</td>
+                                        <td>${{ number_format($value->tax,2,'.',',') }}</td>
+                                        <td>${{ number_format($value->shipping_total,2,'.',',') }}</td>
+                                        <td>${{ number_format($value->total,2,'.',',') }}</td>
+                                        <td>{!! $value->status_html !!}</td>
+                                        <td>{{ date('n/d/Y g:ia',strtotime($value->created_at)) }}</td>
+                                        <td><a href="{{ route('invoice.edit',$value->id) }}" class="btn btn-secondary" data-toggle="modal" data-target="#viewModal-{{ $value->id }}">View Order</a></td>
+                                    </tr>
+                                    @endforeach
+                                    @endif
                                 </div>
                             </div>
                             @endforeach
                             @endif
-
-
                         </tbody>
                     </table>
                 </div>   
             </div> 
         </div>
-
     </div>
+    <!--/.col-->
 </div>
-<!--/.col-->
-</div>
-        <!--/.row-->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">
-                        Top 10 Selling Items
-                    </div>
-                    <div class="card-block">
-                        <div class="row">
-                            <!--/.col-->
-                            <div class="col-12">
-                                <ul class="icons-list">
+    <!--/.row-->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    Top 10 Selling Items
+                </div>
+                <div class="card-block">
+                    <div class="row">
+                        <!--/.col-->
+                        <div class="col-12">
+                            <ul class="icons-list">
                                 @if (count($topTenInvoiceItem))
-                                    @foreach($topTenInvoiceItem as $key => $value)
-                                    <li>
+                                @foreach($topTenInvoiceItem as $key => $value)
+                                <li>
 
-                                        <i class="" ><img src="{{ $value->inventoryItem->img_src }}" style="height:40px;"></i>
-                                        <div class="desc">
-                                            <div class="title"><strong>#{{ $key + 1 }}</strong></div>
-                                            <small>{{ $value->inventoryItem->name }} - {{ $value->inventoryItem->desc }}</small>
-                                        </div>
-                                        <div class="value">
-                                            <div class="small text-muted">Total Sold</div>
-                                            <strong>{{ $value->total }}</strong>
-                                        </div>
-                                        <div class="actions">
-                                            <a href="{{ route('inventory_item.edit',$value->inventoryItem->id) }}" class="btn"><i class="icon-settings"></i>
-                                            </a>
-                                        </div>
-                                    </li>
-                                    @endforeach
+                                    <i class="" ><img src="{{ $value->inventoryItem->img_src }}" style="height:40px;"></i>
+                                    <div class="desc">
+                                        <div class="title"><strong>#{{ $key + 1 }}</strong></div>
+                                        <small>{{ $value->inventoryItem->name }} - {{ $value->inventoryItem->desc }}</small>
+                                    </div>
+                                    <div class="value">
+                                        <div class="small text-muted">Total Sold</div>
+                                        <strong>{{ $value->total }}</strong>
+                                    </div>
+                                    <div class="actions">
+                                        <a href="{{ route('inventory_item.edit',$value->inventoryItem->id) }}" class="btn"><i class="icon-settings"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                                @endforeach
                                 @endif
 
-                                    <li class="divider text-center">
- 
-                                    </li>
-                                </ul>
-                            </div>
-                            <!--/.col-->
+                                <li class="divider text-center">
+
+                                </li>
+                            </ul>
                         </div>
-                        <!--/.row-->
-                        
+                        <!--/.col-->
                     </div>
+                    <!--/.row-->
+
                 </div>
             </div>
-            <!--/.col-->
         </div>
-        <!--/.row-->
+        <!--/.col-->
     </div>
+<!--/.row-->
 </div>
+
 <!-- /.conainer-fluid -->
 @endsection
 
 @section('modals')
+@if (count($invoiceDetails) > 0)
+    @foreach($invoiceDetails as $detail)
+    <bootstrap-modal id="viewModal-{{ $detail->id }}" b-size="modal-lg">
+        <template slot="header">Invoice - #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}</template>
+        <template slot="body">
+            <div class="container">
+                <h3 class="text-center">Invoice Progress</h3>
+                <div class="progress">
+                    @if ($detail->status == 1)
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                    @elseif($detail->status==2)
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    @else
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                    @endif
+                </div>
+                <hr/>
+                <h3 class="text-center">Invoice Details</h3>
+                <div class="table-responsive">
+                    <table class="table table-outline table-condensed">
+                        <tbody>
+                            <tr>
+                                <th>Invoice #</th>
+                                <td>{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Client</th>
+                                <td>{{ $detail->full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Shipping Address</th>
+                                <td>{!! $detail->shipping_address !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>{!! $detail->phone !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{!! $detail->email !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <td>{!! $detail->quantity !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Subtotal</th>
+                                <td>${!! number_format($detail->subtotal,2,'.',',') !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Tax</th>
+                                <td>${!! number_format($detail->tax,2,'.',',') !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Shipping</th>
+                                <td>${!! number_format($detail->shipping_total,2,'.',',') !!} <strong>({{ $detail->shipping_type }})</strong></td>
+                            </tr>
+                            <tr>
+                                <th>Total</th>
+                                <td>${!! number_format($detail->total,2,'.',',') !!}</td>
+                            </tr>
+                            <tr>
+                                <th>Payment Type</th>
+                                <td>{{ $detail->payment_type }}</td>
+                            </tr>
 
+                            <tr>
+                                <th>Last Four</th>
+                                <td>{{ $detail->last_four }}</td>
+                            </tr>
+                            <tr>
+                                <th>Transaction ID #</th>
+                                <td>{{ $detail->transaction_id }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr/>
+                <h3 class="text-center">Invoice Item Details</h3>
+                <div class="table-responsive">
+                    <table class="table table-outline table-condensed">
+                        <tbody>
+                        @if (count($detail->invoiceItems) > 0)
+                            @foreach($detail->invoiceItems as $item)
+                            <tr>
+                                <th>Item Name</th>
+                                <td>{{ $item->inventoryItem->name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Quantity</th>
+                                <td>{{ $item->quantity }}</td>
+                            </tr>
+                            <tr>
+                                <th>Metal Type</th>
+                                @if (isset($item->itemMetal))
+                                <td>{{ $item->itemMetal->metals->name }}</td>
+                                @else
+                                <td>N/A</td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <th>Stone Type</th>
+                                @if(isset($item->itemStone))
+                                <td>{{ $item->itemStone->stones->name }}</td>
+                                @else
+                                <td>N/A</td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <th>Stone Size</th>
+                                @if(isset($item->itemSize))
+                                    @if(isset($item->itemSize->stoneSizes))
+                                    <td>{{ $item->itemSize->stoneSizes->sizes->name }}</td>
+                                    @else
+                                    <td>N/A</td>
+                                    @endif
+                                @else
+                                <td>N/A</td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <th>Finger Size</th>
+                                @if(isset($item->finger_id))
+                                <td>{{ $item->fingers->name }}</td>
+                                @else
+                                <td>N/A</td>
+                                @endif
+                            </tr>
+                            <tr>
+                                <th>Subtotal</th>      
+                                <td>${{ number_format($item->subtotal,2,'.',',') }}</td>
+                            </tr>
+                            @if ($detail->status == 2)
+                            <tr>
+                                <td colspan="2">
+                                    <a href="{{ route('invoice_item.edit',$item->id) }}" class="btn btn-info btn-block" >Edit Item</a>  
+                                </td>
+                            </tr>
+                            @endif
+                            @endforeach
+                        @endif
+                        </tbody>
+                    </table>
+                </div>
+                
+                <hr/>
+                <h3 class="text-center">Invoice Actions</h3>
+                
+                @if ($detail->status == 3)
+                <div class="row-fluid">
+                    <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#completeModal-{{ $detail->id }}">Complete Invoice</button>  
+                </div>
+                <hr/>
+                <div class="row-fluid">
+                    <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#refundModal-{{ $detail->id }}">Refund Only</button>  
+                </div>
+                <hr/>
+                @endif
+
+                <div class="row-fluid">
+                    <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal-{{ $detail->id }}">{{ ($detail->status == 3) ? 'Cancel Invoice & Refund' : 'Cancel Invoice' }}</button>  
+                </div>
+            </div>
+        </template>
+        <template slot="footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> 
+            <a href="{{ route('invoice.edit',$detail->id) }}" class="btn btn-primary">Edit</a>
+        </template>
+    </bootstrap-modal>
+    {{-- Cancel & Refund --}}
+    {!! Form::open(['method'=>'delete','route'=>['invoice.destroy',$detail->id]]) !!}
+    <bootstrap-modal id="deleteModal-{{ $detail->id }}">
+        <template slot="header">Cancel Confirmation</template>
+        <template slot="body">
+            Are you sure you wish to cancel & refund invoice #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}?
+        </template>
+        <template slot="footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Proceed</button>    
+        </template>
+    </bootstrap-modal>
+    {!! Form::close() !!}
+    {{-- Refund Only --}}
+    {!! Form::open(['method'=>'post','route'=>['invoice.refund',$detail->id]]) !!}
+    <bootstrap-modal id="refundModal-{{ $detail->id }}">
+        <template slot="header">Refund Confirmation</template>
+        <template slot="body">
+            Are you sure you wish to refund invoice #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}?
+        </template>
+        <template slot="footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Proceed</button>    
+        </template>
+    </bootstrap-modal>
+    {!! Form::close() !!}
+    {{-- Cancel & Refund --}}
+    {!! Form::open(['method'=>'post','route'=>['invoice.complete',$detail->id]]) !!}
+    <bootstrap-modal id="completeModal-{{ $detail->id }}">
+        <template slot="header">Complete Confirmation</template>
+        <template slot="body">
+            Click proceed to complete this invoice #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}?
+        </template>
+        <template slot="footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Proceed</button>    
+        </template>
+    </bootstrap-modal>
+    {!! Form::close() !!}
+
+    @endforeach
+@endif
 @endsection

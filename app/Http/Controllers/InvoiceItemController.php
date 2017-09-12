@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Finger;
+use App\ItemMetal;
+use App\ItemStone;
+use App\ItemSize;
+use App\Stone;
 use App\InvoiceItem;
+use App\InventoryItem;
 use Illuminate\Http\Request;
 
 class InvoiceItemController extends Controller
@@ -55,9 +61,18 @@ class InvoiceItemController extends Controller
      * @param  \App\InvoiceItem  $invoiceItem
      * @return \Illuminate\Http\Response
      */
-    public function edit(InvoiceItem $invoiceItem)
+    public function edit(InvoiceItem $invoiceItem, InventoryItem $inventoryItem, Finger $finger, ItemMetal $itemMetal, ItemStone $itemStone, ItemSize $itemSize, Stone $stone)
     {
-        //
+
+        $fingers = $finger->prepareSelect($finger->all());
+        $metals = $itemMetal->prepareSelect($invoiceItem->inventoryItem->itemMetal);
+        $stones = $stone->all();
+
+        $stone_select = $itemStone->prepareSelect($invoiceItem->inventoryItem->itemStone);
+        $stone_sizes = $itemSize->prepareSelect($invoiceItem->inventoryItem);
+
+
+        return view('invoice_items.edit',compact(['invoiceItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
 
     /**
@@ -81,5 +96,10 @@ class InvoiceItemController extends Controller
     public function destroy(InvoiceItem $invoiceItem)
     {
         //
+    }
+
+    public function updatePrice(Request $request, InvoiceItem $invoiceItem)
+    {
+
     }
 }

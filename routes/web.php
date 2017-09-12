@@ -149,6 +149,7 @@ Route::group(['middleware' => ['check:3']], function () {
     
     Route::get('/inventory-items/{inventory_item}/edit', 'InventoryItemController@edit')->name('inventory_item.edit');
     Route::patch('/inventory-items/{inventory_item}', 'InventoryItemController@update')->name('inventory_item.update');
+    Route::post('/inventory-items/{inventory_item}/get-subtotal-admins', 'InventoryItemController@subtotalAdmin')->name('inventory_item.subtotal_admin');
 
     // Invoices
     Route::get('/invoices', 'InvoiceController@index')->name('invoice.index');
@@ -158,7 +159,8 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/invoices/{invoice}/show', 'InvoiceController@show')->name('invoice.show');
     Route::get('/invoices/{invoice}/edit', 'InvoiceController@edit')->name('invoice.edit');
     Route::patch('/invoices/{invoice}', 'InvoiceController@update')->name('invoice.update');
-
+    Route::post('/invoices/{invoice}/complete', 'InvoiceController@complete')->name('invoice.complete');
+    Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');
     Route::get('/invoice-items/create', 'InvoiceItemController@create')->name('invoice_item.create');
@@ -167,7 +169,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/invoice-items/{invoiceItem}/show', 'InvoiceItemController@show')->name('invoice_item.show');
     Route::get('/invoice-items/{invoiceItem}/edit', 'InvoiceItemController@edit')->name('invoice_item.edit');
     Route::patch('/invoice-items/{invoiceItem}', 'InvoiceItemController@update')->name('invoice_item.update');
-
+    Route::post('/invoice-items/{invoiceItem}/update-price', 'InvoiceItemController@updatePrice')->name('invoice_item.update_price');
     // Line
     Route::get('/lines', 'LineController@index')->name('line.index');
     Route::get('/lines/create', 'LineController@create')->name('line.create');

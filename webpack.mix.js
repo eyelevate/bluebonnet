@@ -85,6 +85,8 @@ mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/in
    .js('resources/assets/js/views/inventory_items/edit.js','public/js/views/inventory_items')
    .js('resources/assets/js/views/inventory_items/shop.js','public/js/views/inventory_items');
 
+// invoice items
+mix.js('resources/assets/js/views/invoice_items/edit.js','public/js/views/invoice_items');
 
 // metal
 mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');

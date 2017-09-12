@@ -20,6 +20,8 @@ class CreateInvoiceItemsTable extends Migration
             $table->integer('item_metal_id')->nullable();
             $table->integer('item_stone_id')->nullable();
             $table->integer('item_size_id')->nullable();
+            $table->string('serial')->nullable();
+            $table->decimal('custom_stone_price',11,2)->nullable();
             $table->integer('finger_id')->nullable();
             $table->integer('quantity')->nullable();
             $table->decimal('subtotal',11,2)->nullable();

@@ -82,4 +82,14 @@ class InvoiceController extends Controller
     {
         //
     }
+
+    public function refund(Request $request, Invoice $invoice)
+    {
+        //
+    }
+
+    public function complete(Request $request, Invoice $invoice)
+    {
+        //
+    }
 }
