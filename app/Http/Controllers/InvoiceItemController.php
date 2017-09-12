@@ -63,7 +63,6 @@ class InvoiceItemController extends Controller
      */
     public function edit(InvoiceItem $invoiceItem, InventoryItem $inventoryItem, Finger $finger, ItemMetal $itemMetal, ItemStone $itemStone, ItemSize $itemSize, Stone $stone)
     {
-
         $fingers = $finger->prepareSelect($finger->all());
         $metals = $itemMetal->prepareSelect($invoiceItem->inventoryItem->itemMetal);
         $stones = $stone->all();
@@ -84,7 +83,18 @@ class InvoiceItemController extends Controller
      */
     public function update(Request $request, InvoiceItem $invoiceItem)
     {
-        //
+        $this->validate(request(), [
+            'quantity' => 'required|numeric',
+            'subtotal'=>'required'
+        ]);
+
+        if ($invoiceItem->update($request->all())) {
+            // check to see if email if so then update status and update invoice totals
+            dd($invoiceItem->itemStone->stones->email);
+        }
+        dd($request->all());
+        
+        
     }
 
     /**

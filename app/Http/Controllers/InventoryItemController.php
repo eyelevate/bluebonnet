@@ -524,6 +524,22 @@ class InventoryItemController extends Controller
                 ]);
             }
             
+        } elseif(!$inventoryItem->fingers && $inventoryItem->metals && !$inventoryItem->sizes && $inventoryItem->stones) {
+            if ($email) {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'metal_id' => 'required',
+                    'stone_id' => 'required'
+                    
+                ]);
+            } else {
+                $this->validate(request(), [
+                    'quantity' => 'required',
+                    'metal_id' => 'required',
+                    'stone_id' => 'required'
+                ]);
+            }
+            
         } else {
 
             $this->validate(request(), [
