@@ -58,7 +58,9 @@ class Image extends Model
     {
         // resize regular images to 480x480 and then save it to db
         $resize = \Intervention::make($file);
-        $resize->resize($width,$height);
+        $resize->resize($width,$height, function ($constraint) {
+            $constraint->aspectRatio();
+        });
         $resize_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).'.'.$file->getClientOriginalExtension();
 
         // Check to see if tmp file exists
@@ -71,6 +73,32 @@ class Image extends Model
         $resize->save(public_path("storage/tmp/{$resize_name}"));
         $saved_image_uri = "{$resize->dirname}/{$resize->basename}";
         $resize->destroy();
+        return $saved_image_uri;
+
+    }
+
+    /**
+     * Crop image and sends it to tmp file
+     *
+     * @return path to tmp image (public/tmp)
+     */
+    public function crop($file, $width, $height, $x = null, $y = null)
+    {
+        // crop regular images to 480x480 and then save it to db
+        $crop = \Intervention::make($file);
+        $crop->crop($width,$height, $x, $y);
+        $crop_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).'.'.$file->getClientOriginalExtension();
+
+        // Check to see if tmp file exists
+        if(!is_dir(public_path('tmp'))) {
+            
+            // path does not exist so create it
+
+            Storage::makeDirectory('public/tmp');
+        }
+        $crop->save(public_path("storage/tmp/{$resize_name}"));
+        $saved_image_uri = "{$resize->dirname}/{$resize->basename}";
+        $crop->destroy();
         return $saved_image_uri;
 
     }

@@ -44,7 +44,7 @@
 					
 					<div class="form-group {{ $errors->has('item_metal_id') ? ' has-danger' : '' }}">
 						<label>Select Metal Type</label>
-						{{ Form::select('item_metal_id',$metals,old('item_metal_id') ?  old('item_metal_id') : $invoiceItem->itemMetal->metal_id,['class'=>"form-control {($errors->has('metal_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setMetal($event)']) }}
+						{{ Form::select('item_metal_id',$metals,old('item_metal_id') ?  old('item_metal_id') : $invoiceItem->item_metal_id,['class'=>"form-control {($errors->has('item_metal_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setMetal($event)']) }}
 						<div class="{{ ($errors->has('item_metal_id')) ? '' : 'hide' }}">
 							<small class="form-control-feedback">{{ $errors->first('item_metal_id') }}</small>
 						</div>
@@ -57,7 +57,7 @@
 					
 					<div class="form-group {{ $errors->has('item_stone_id') ? ' has-danger' : '' }}">
 						<label>Select Stone Type</label>
-						{{ Form::select('item_stone_id',$stone_select,old('item_stone_id') ? old('item_stone_id') : $invoiceItem->itemStone->stone_id,['class'=>"form-control {($errors->has('stone_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setStone($event)']) }}
+						{{ Form::select('item_stone_id',$stone_select,old('item_stone_id') ? old('item_stone_id') : $invoiceItem->item_stone_id,['class'=>"form-control {($errors->has('stone_id')) ? 'form-control-danger' : ''}",'v-on:change'=>'setStone($event)']) }}
 						<div class="{{ ($errors->has('item_stone_id')) ? '' : 'hide' }}">
 							<small class="form-control-feedback">{{ $errors->first('item_stone_id') }}</small>
 						</div>
