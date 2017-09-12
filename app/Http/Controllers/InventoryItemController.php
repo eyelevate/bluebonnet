@@ -457,6 +457,7 @@ class InventoryItemController extends Controller
         $email = $itemStone->checkEmail($request->stone_id);
         
         if($inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes && $inventoryItem->fingers) {
+            dd(1);
             if ($email) {
                 $this->validate(request(), [
                     'quantity' => 'required',
@@ -476,7 +477,7 @@ class InventoryItemController extends Controller
             
             
         } elseif ($inventoryItem->metals && !$inventoryItem->stones && $inventoryItem->fingers) {
-
+            dd(2);
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required',
@@ -484,6 +485,7 @@ class InventoryItemController extends Controller
             ]);
             
         } elseif (!$inventoryItem->metals && $inventoryItem->stones && $inventoryItem->sizes && $inventoryItem->fingers) {
+            dd(3);
             if ($email) {
                 $this->validate(request(), [
                     'quantity' => 'required',
@@ -501,6 +503,7 @@ class InventoryItemController extends Controller
             
             
         } elseif ($inventoryItem->metals && $inventoryItem->stones && !$inventoryItem->sizes && $inventoryItem->fingers) {
+            dd(4);
             $this->validate(request(), [
                 'quantity' => 'required',
                 'finger_id' => 'required',
@@ -508,6 +511,7 @@ class InventoryItemController extends Controller
                 'stone_id' => 'required'
             ]);
         } elseif(!$inventoryItem->fingers && $inventoryItem->metals && $inventoryItem->sizes && $inventoryItem->stones) {
+            dd(5);
             if ($email) {
                 $this->validate(request(), [
                     'quantity' => 'required',
@@ -525,22 +529,16 @@ class InventoryItemController extends Controller
             }
             
         } elseif(!$inventoryItem->fingers && $inventoryItem->metals && !$inventoryItem->sizes && $inventoryItem->stones) {
-            if ($email) {
-                $this->validate(request(), [
-                    'quantity' => 'required',
-                    'metal_id' => 'required',
-                    'stone_id' => 'required'
-                    
-                ]);
-            } else {
-                $this->validate(request(), [
-                    'quantity' => 'required',
-                    'metal_id' => 'required',
-                    'stone_id' => 'required'
-                ]);
-            }
+            dd(6);
+            $this->validate(request(), [
+                'quantity' => 'required',
+                'metal_id' => 'required',
+                'stone_id' => 'required'
+                
+            ]);
             
         } else {
+            dd(7);
 
             $this->validate(request(), [
                 'quantity' => 'required',
