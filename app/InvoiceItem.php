@@ -78,6 +78,22 @@ class InvoiceItem extends Model
                             }
                         }
                     }
+                } else {
+                    $trashed = $value->inventoryItem()->withTrashed()->first();
+                    $inventoryItems[$key]['inventoryItem']= $trashed;
+                    if (isset($trashed)) {
+                        $imgs = $trashed->images;
+                        if(isset($imgs)) {
+                            
+                            foreach ($imgs as $imkey => $image) {
+
+                                if($image->primary) {
+                                    $invoiceItems[$key]['inventoryItem'][$tkey]['img_src'] = asset(str_replace('public/','storage/',$image->img_src));
+                                }
+                            }
+                        }
+                    }
+
                 }
                 
             }

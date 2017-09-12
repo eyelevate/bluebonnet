@@ -87,8 +87,6 @@
                                 @foreach($invoiceDetails as $key => $value)
                                 <div class="tab-pane {{ ($key == 0) ? 'active' : '' }}" id="summary-{{ $key }}" role="tabpanel">
 
-                                    @if(count($value->invoiceItems) > 0)
-                                    @foreach($value->invoiceItems as $item)
                                     <tr>
                                         <td>{{ str_pad($value->id,6,0,STR_PAD_LEFT) }}</td>
                                         <td>{{ $value->full_name }}</td>
@@ -101,8 +99,6 @@
                                         <td>{{ date('n/d/Y g:ia',strtotime($value->created_at)) }}</td>
                                         <td><a href="{{ route('invoice.edit',$value->id) }}" class="btn btn-secondary" data-toggle="modal" data-target="#viewModal-{{ $value->id }}">View Order</a></td>
                                     </tr>
-                                    @endforeach
-                                    @endif
                                 </div>
                             </div>
                             @endforeach
@@ -128,24 +124,26 @@
                         <div class="col-12">
                             <ul class="icons-list">
                                 @if (count($topTenInvoiceItem))
-                                @foreach($topTenInvoiceItem as $key => $value)
-                                <li>
+                                    @foreach($topTenInvoiceItem as $key => $value)
+                                        @if (isset($value->inventoryItem))
+                                        <li>
 
-                                    <i class="" ><img src="{{ $value->inventoryItem->img_src }}" style="height:40px;"></i>
-                                    <div class="desc">
-                                        <div class="title"><strong>#{{ $key + 1 }}</strong></div>
-                                        <small>{{ $value->inventoryItem->name }} - {{ $value->inventoryItem->desc }}</small>
-                                    </div>
-                                    <div class="value">
-                                        <div class="small text-muted">Total Sold</div>
-                                        <strong>{{ $value->total }}</strong>
-                                    </div>
-                                    <div class="actions">
-                                        <a href="{{ route('inventory_item.edit',$value->inventoryItem->id) }}" class="btn"><i class="icon-settings"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                                @endforeach
+                                            <i class="" ><img src="{{ (isset($value->inventoryItem)) ? $value->inventoryItem->img_src : '' }}" style="height:40px;"></i>
+                                            <div class="desc">
+                                                <div class="title"><strong>#{{ $key + 1 }}</strong></div>
+                                                <small>{{ $value->inventoryItem->name }} - {{ $value->inventoryItem->desc }}</small>
+                                            </div>
+                                            <div class="value">
+                                                <div class="small text-muted">Total Sold</div>
+                                                <strong>{{ $value->total }}</strong>
+                                            </div>
+                                            <div class="actions">
+                                                <a href="{{ route('inventory_item.edit',$value->inventoryItem->id) }}" class="btn"><i class="icon-settings"></i>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        @endif
+                                    @endforeach
                                 @endif
 
                                 <li class="divider text-center">
@@ -243,75 +241,89 @@
                                 <th>Transaction ID #</th>
                                 <td>{{ $detail->transaction_id }}</td>
                             </tr>
+                            @if($detail->status == 2)
+                            <tr>
+                                <td colspan="2">
+                                    {!! Form::open(['method'=>'post','route'=>['invoice.email',$detail->id]]) !!}
+                                    <button type="submit" class="btn btn-warning btn-block" >Email Invoice</button>  
+                                    {!! Form::close() !!}
+                                </td>
+                            </tr>
+                            @endif
+
                         </tbody>
                     </table>
                 </div>
                 <hr/>
                 <h3 class="text-center">Invoice Item Details</h3>
                 <div class="table-responsive">
-                    <table class="table table-outline table-condensed">
-                        <tbody>
-                        @if (count($detail->invoiceItems) > 0)
-                            @foreach($detail->invoiceItems as $item)
-                            <tr>
-                                <th>Item Name</th>
-                                <td>{{ $item->inventoryItem->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Quantity</th>
-                                <td>{{ $item->quantity }}</td>
-                            </tr>
-                            <tr>
-                                <th>Metal Type</th>
-                                @if (isset($item->itemMetal))
-                                <td>{{ $item->itemMetal->metals->name }}</td>
-                                @else
-                                <td>N/A</td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Stone Type</th>
-                                @if(isset($item->itemStone))
-                                <td>{{ $item->itemStone->stones->name }}</td>
-                                @else
-                                <td>N/A</td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Stone Size</th>
-                                @if(isset($item->itemSize))
-                                    @if(isset($item->itemSize->stoneSizes))
-                                    <td>{{ $item->itemSize->stoneSizes->sizes->name }}</td>
+                @if (count($detail->invoiceItems) > 0)
+                    @foreach($detail->invoiceItems as $item)
+                        @if (isset($item->inventoryItem))
+                        <table class="table table-outline table-condensed">
+                            <tbody>
+
+                                <tr>
+                                    <th>Item Name</th>
+                                    <td>{{ $item->inventoryItem->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Quantity</th>
+                                    <td>{{ $item->quantity }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Metal Type</th>
+                                    @if (isset($item->itemMetal))
+                                    <td>{{ $item->itemMetal->metals->name }}</td>
                                     @else
                                     <td>N/A</td>
                                     @endif
-                                @else
-                                <td>N/A</td>
+                                </tr>
+                                <tr>
+                                    <th>Stone Type</th>
+                                    @if(isset($item->itemStone))
+                                    <td>{{ $item->itemStone->stones->name }}</td>
+                                    @else
+                                    <td>N/A</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <th>Stone Size</th>
+                                    @if(isset($item->itemSize))
+                                        @if(isset($item->itemSize->stoneSizes))
+                                        <td>{{ $item->itemSize->stoneSizes->sizes->name }}</td>
+                                        @else
+                                        <td>N/A</td>
+                                        @endif
+                                    @else
+                                    <td>N/A</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <th>Finger Size</th>
+                                    @if(isset($item->finger_id))
+                                    <td>{{ $item->fingers->name }}</td>
+                                    @else
+                                    <td>N/A</td>
+                                    @endif
+                                </tr>
+                                <tr>
+                                    <th>Subtotal</th>      
+                                    <td>${{ number_format($item->subtotal,2,'.',',') }}</td>
+                                </tr>
+                                @if ($detail->status == 2)
+                                <tr>
+                                    <td colspan="2">
+                                        <a href="{{ route('invoice_item.edit',$item->id) }}" class="btn btn-info btn-block" >Edit Item</a>  
+                                    </td>
+                                </tr>
                                 @endif
-                            </tr>
-                            <tr>
-                                <th>Finger Size</th>
-                                @if(isset($item->finger_id))
-                                <td>{{ $item->fingers->name }}</td>
-                                @else
-                                <td>N/A</td>
-                                @endif
-                            </tr>
-                            <tr>
-                                <th>Subtotal</th>      
-                                <td>${{ number_format($item->subtotal,2,'.',',') }}</td>
-                            </tr>
-                            @if ($detail->status == 2)
-                            <tr>
-                                <td colspan="2">
-                                    <a href="{{ route('invoice_item.edit',$item->id) }}" class="btn btn-info btn-block" >Edit Item</a>  
-                                </td>
-                            </tr>
-                            @endif
-                            @endforeach
+
+                            </tbody>
+                        </table>
                         @endif
-                        </tbody>
-                    </table>
+                    @endforeach
+                @endif
                 </div>
                 
                 <hr/>
@@ -365,7 +377,7 @@
     </bootstrap-modal>
     {!! Form::close() !!}
     {{-- Cancel & Refund --}}
-    {!! Form::open(['method'=>'post','route'=>['invoice.complete',$detail->id]]) !!}
+    {!! Form::open(['method'=>'patch','route'=>['invoice.complete',$detail->id]]) !!}
     <bootstrap-modal id="completeModal-{{ $detail->id }}">
         <template slot="header">Complete Confirmation</template>
         <template slot="body">

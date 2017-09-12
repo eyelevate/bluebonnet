@@ -7,6 +7,7 @@ use App\ItemMetal;
 use App\ItemStone;
 use App\ItemSize;
 use App\Stone;
+use App\Invoice;
 use App\InvoiceItem;
 use App\InventoryItem;
 use Illuminate\Http\Request;
@@ -70,7 +71,6 @@ class InvoiceItemController extends Controller
         $stone_select = $itemStone->prepareSelect($invoiceItem->inventoryItem->itemStone);
         $stone_sizes = $itemSize->prepareSelect($invoiceItem->inventoryItem);
 
-
         return view('invoice_items.edit',compact(['invoiceItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
 
@@ -81,7 +81,7 @@ class InvoiceItemController extends Controller
      * @param  \App\InvoiceItem  $invoiceItem
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, InvoiceItem $invoiceItem)
+    public function update(Request $request, InvoiceItem $invoiceItem, Invoice $invoice)
     {
         $this->validate(request(), [
             'quantity' => 'required|numeric',
@@ -91,10 +91,18 @@ class InvoiceItemController extends Controller
         if ($invoiceItem->update($request->all())) {
             // check to see if email if so then update status and update invoice totals
             $email = $invoiceItem->itemStone->stones->email;
-            $new_status = 2;
-            dd($invoiceItem->itemStone->stones->email);
+            $update_totals = $invoice->updateTotalsFromId($invoiceItem->invoice_id);
+            if ($update_totals) {
+                flash('Successfully updated invoice item and its totals!')->success();
+                return redirect()->route('admin.index');
+            }
+            
         }
-        dd($request->all());
+        flash('Error processing your save. Please try again')->warning();
+        return redirect()->back();
+
+
+
         
         
     }

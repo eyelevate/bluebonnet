@@ -161,6 +161,25 @@ class HomeController extends Controller
             'totals'=>$totals
         ]);
     }
+    // Update Shipping Rates on Finish Page
+    public function updateShippingFinish(Request $request, InventoryItem $inventoryItem)
+    {
+        $cart = session()->get('cart');
+        if(count($cart) > 0) {
+            foreach ($cart as $key => $value) {
+                $cart[$key]['shipping'] = $request->shipping;
+            }
+        }
+        
+        session()->put('cart',$cart);
+
+        $totals = $inventoryItem->prepareTotalsFinish($cart);
+
+        return response()->json([
+            'status'=>true,
+            'totals'=>$totals
+        ]);
+    }
 
     // Address Validator
     public function addressValidate(Request $request)
@@ -383,6 +402,8 @@ class HomeController extends Controller
             }
         }
     }
+
+    
 
     public function thankYou()
     {

@@ -5,6 +5,7 @@ namespace App;
 use App\Job;
 use App\User;
 use App\Invoice;
+use App\Tax;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -68,7 +69,8 @@ class Invoice extends Model
         'status',
         'first_name',
         'last_name',
-        'shipping'
+        'shipping',
+        'email_token'
 
     ];
 
@@ -126,6 +128,8 @@ class Invoice extends Model
         $new_invoice->shipping_total = $totals['_shipping'];
         $new_invoice->payment_type = 1; // Credit Card
         $new_invoice->last_four = substr($card['card_number'], -4);
+        $new_invoice->exp_month = $card['exp_month'];
+        $new_invoice->exp_year = $card['exp_year'];
         $new_invoice->transaction_id = $payment['transaction_id'];
         $new_invoice->comment = $customer['comment'];
         $new_invoice->shipping = $customer['shipping'];
@@ -133,6 +137,61 @@ class Invoice extends Model
 
         if ($new_invoice->save()) {
             return $new_invoice;
+        } 
+
+        return false;
+
+    }
+
+    public function updateInvoice($invoice_id,$totals, $customer, $payment, $card)
+    {
+        $invoice = $this->find($invoice_id);
+        if ($invoice->users) {
+            $user = User::find($invoice->users->id)->update([
+                'first_name'=>$customer['first_name'],
+                'last_name'=>$customer['last_name'],
+                'phone'=>$customer['phone'],
+                'street'=>$customer['street'],
+                'suite'=>$customer['suite'],
+                'city'=>$customer['city'],
+                'state'=>$customer['state'],
+                'country'=>$customer['country'],
+                'zipcode'=>$customer['zipcode']]);
+
+        } else { // Guest user we will keep track of shipping info on invoice only
+            $invoice->first_name = $customer['first_name'];
+            $invoice->last_name = $customer['last_name'];
+            $invoice->street = $customer['street'];
+            $invoice->suite = $customer['suite'];
+            $invoice->city = $customer['city'];
+            $invoice->state = $customer['state'];
+            $invoice->zipcode = $customer['zipcode'];
+            $invoice->country = $customer['country'];
+            $invoice->phone = $customer['phone'];
+            $invoice->email = $customer['email'];
+        }
+
+        // unused columns = po_number, vendor_id, requisitioner, fob, terms 
+
+        // save the rest of the invoice
+        $invoice->quantity = $totals['quantity'];
+        $invoice->subtotal = $totals['_subtotal'];
+        $invoice->tax = $totals['_tax'];
+        $invoice->total = $totals['_total'];
+        $invoice->tendered = $totals['_total'];
+        $invoice->shipping_total = $totals['_shipping'];
+        $invoice->payment_type = 1; // Credit Card
+        $invoice->last_four = substr($card['card_number'], -4);
+        $invoice->exp_month = $card['exp_month'];
+        $invoice->exp_year = $card['exp_year'];
+        $invoice->transaction_id = $payment['transaction_id'];
+        $invoice->comment = $customer['comment'];
+        $invoice->shipping = $customer['shipping'];
+        $invoice->status = 3; // Paid 
+        $invoice->email_token = NULL;
+
+        if ($invoice->save()) {
+            return $invoice;
         } 
 
         return false;
@@ -190,6 +249,37 @@ class Invoice extends Model
         if ($new_invoice->save()) {
             return $new_invoice;
         } 
+
+        return false;
+
+    }
+
+    public function updateTotalsFromId($id)
+    {
+        $totals = [];
+        $invoice = $this->find($id);
+
+        // quantity
+        $quantity = $invoice->invoiceItems()->sum('quantity');
+        $invoice->quantity = $quantity;
+
+        // subtotal
+        $subtotal = $invoice->invoiceItems()->sum('subtotal');
+        $invoice->subtotal = $subtotal;
+        // tax
+        $taxes = new Tax();
+        $tax_rate = $taxes->where('status',1)->first();
+        //Total
+        $total = round($subtotal*(1+($tax_rate->rate)),2);
+        $tax = $total - $subtotal;
+        $invoice->tax = $tax;
+
+        //Shipping
+        $shipping_total = (isset($shipping_total)) ? $shipping_total : 0;
+        $invoice->total = $total + $shipping_total;
+        if ($invoice->save()) {
+            return true;
+        }
 
         return false;
 
@@ -281,6 +371,83 @@ class Invoice extends Model
         }
 
         return $details;
+    }
+
+    public function singleDetail($data)
+    {   
+        $job = new Job();
+
+        if (isset($data)) {
+            // first name
+            $data['first_name'] = (isset($data->users)) ? ucFirst($data->users->first_name) : ucFirst($data->first_name);
+
+            // last Name
+            $data['last_name'] = (isset($data->users)) ? ucFirst($data->users->last_name) : ucFirst($data->last_name);
+
+            // full name
+            $data['full_name'] = ucFirst($data->last_name).', '.ucFirst($data->first_name);
+            if (isset($data->users)) {
+                $data['full_name'] = ucFirst($data->users->last_name).', '.ucFirst($data->users->first_name);
+            }
+
+            // Shipping Address
+            $street = (isset($data->users)) ? $data->users->street : $data->street;
+            $suite = (isset($data->users)) ? $data->users->suite : $data->suite;
+            $full_street = (isset($suite)) ? $street.' '.$suite : $street;
+            $city = (isset($data->users)) ? $data->users->city : $data->city;
+            $state = (isset($data->users)) ? $data->users->state : $data->state;
+            $country = (isset($data->users)) ? $data->users->country : $data->country;
+            $zipcode = (isset($data->users)) ? $data->users->zipcode : $data->zipcode;
+
+            $shipping_address = $full_street." <br/> ".ucFirst($city).", ".ucFirst($state)." ".$zipcode;
+
+            $data['shipping_address'] = $shipping_address;
+            $data['street'] = $street;
+            $data['suite'] = $suite;
+            $data['city'] = $city;
+            $data['state'] = $state;
+            $data['country'] = $country;
+            $data['zipcode'] = $zipcode;
+
+
+            // Phone
+            $phone = (isset($data->users)) ? $data->users->phone : $data->phone;
+            $data['phone_formatted'] = $job->formatPhone($phone);   
+            $data['phone'] = $phone;
+
+            // Email
+            $email = (isset($data->users)) ? $data->users->email : $data->email;
+            $data['email'] = $email;
+
+            // Shipping Type
+            $data['shipping_type'] = $this->getShippingType($data->shipping);
+
+            // Payment Type
+            $data['payment_type'] = $this->getPaymentType($data->payment_type);
+
+            // status_html
+            if (isset($data->status)) {
+                switch ($data->status) {
+                    case 1:
+                        $data['status_html'] = '<span class="badge">Created By Admin</span>';
+                        break;
+                    case 2:
+                        $data['status_html'] = '<span class="badge badge-warning">Pending</span>';
+                        break;
+                    case 3:
+                        $data['status_html'] = '<span class="badge badge-success">Paid</span>';
+                        break;
+                }
+            }
+
+            if (count($data->invoiceItems) > 0) {
+                foreach ($data->invoiceItems as $item) {
+                    // dd($item);
+                }
+            }
+
+        }
+        return $data;
     }
 
     public function getShippingType($shipping)

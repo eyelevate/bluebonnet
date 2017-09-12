@@ -29,6 +29,8 @@ class CreateInvoicesTable extends Migration
             $table->decimal('tendered', 11, 2)->nullable();
             $table->tinyInteger('payment_type')->default(1);
             $table->string('last_four')->nullable();
+            $table->string('exp_month')->nullable();
+            $table->string('exp_year')->nullable();
             $table->string('transaction_id')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
@@ -42,6 +44,7 @@ class CreateInvoicesTable extends Migration
             $table->string('zipcode')->nullable();
             $table->tinyInteger('shipping')->nullable();
             $table->text('comment')->nullable();
+            $table->string('email_token')->nullable();
             $table->tinyInteger('terms')->default(1);
             $table->tinyInteger('status')->default(1);
             $table->softDeletes();

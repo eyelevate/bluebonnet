@@ -21,16 +21,25 @@ Route::get('/shipping', 'HomeController@shipping')->name('home.shipping');
 Route::get('/shop', 'HomeController@shop')->name('home.shop');
 Route::post('/address-validate', 'HomeController@addressValidate')->name('home.address_validate');
 Route::post('/update-shipping', 'HomeController@updateShipping')->name('home.update_shipping');
+Route::post('/update-shipping-finish', 'HomeController@updateShippingFinish')->name('home.update_shipping_finish');
 Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
 Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
 Route::post('/finish', 'HomeController@finish')->name('home.finish');
 Route::post('/attempt-login', 'HomeController@attemptLogin')->name('home.attempt_login');
 Route::get('/thank-you', 'HomeController@thankYou')->name('home.thank_you');
+
+// collections
+Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
+
+// Invoice 
+Route::patch('/done/{invoice}', 'InvoiceController@done')->name('invoice.done');
+Route::get('/invoices/{token}/finish', 'InvoiceController@finish')->name('invoice.finish');
+
+// inventory items
 Route::post('/inventory-items/{inventoryItem}/add-to-cart', 'InventoryItemController@addToCart')->name('inventory_item.add_to_cart');
 Route::get('/item/{inventory_item}/shop', 'InventoryItemController@shop')->name('inventory_item.shop');
 Route::post('/inventory-items/{inventory_item}/get-subtotal', 'InventoryItemController@subtotal')->name('inventory_item.subtotal');
 Route::post('/inventory-items/delete-cart-item', 'InventoryItemController@deleteCartItem')->name('inventory_item.delete_cart_item');
-Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
 
 Auth::routes();
 
@@ -159,8 +168,9 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/invoices/{invoice}/show', 'InvoiceController@show')->name('invoice.show');
     Route::get('/invoices/{invoice}/edit', 'InvoiceController@edit')->name('invoice.edit');
     Route::patch('/invoices/{invoice}', 'InvoiceController@update')->name('invoice.update');
-    Route::post('/invoices/{invoice}/complete', 'InvoiceController@complete')->name('invoice.complete');
+    Route::patch('/invoices/{invoice}', 'InvoiceController@complete')->name('invoice.complete');
     Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
+    Route::post('/invoices/{invoice}/send-email', 'InvoiceController@sendEmail')->name('invoice.email');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');
     Route::get('/invoice-items/create', 'InvoiceItemController@create')->name('invoice_item.create');

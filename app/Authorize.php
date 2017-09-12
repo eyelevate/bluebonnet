@@ -149,4 +149,209 @@ class Authorize extends Model
 
 	    return $results;    	
     }
+
+    public function getTransactionDetails($transactionId)
+    {
+		/* Create a merchantAuthenticationType object with authentication details
+		retrieved from the constants file */
+	    $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+	    $merchantAuthentication->setName(env('AUTHORIZE_API_ID'));
+	    $merchantAuthentication->setTransactionKey(env('AUTHORIZE_API_TOKEN'));
+
+		// Set the transaction's refId
+		$refId = 'ref' . time();
+
+		$request = new AnetAPI\GetTransactionDetailsRequest();
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setTransId($transactionId);
+
+		$controller = new AnetController\GetTransactionDetailsController($request);
+
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		// if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
+		// {
+
+		// 	echo "SUCCESS: Transaction Status:" . $response->getTransaction()->getTransactionStatus() . "\n";
+		// 	echo "                Auth Amount:" . $response->getTransaction()->getAuthAmount() . "\n";
+		// 	echo "                   Trans ID:" . $response->getTransaction()->getTransId() . "\n";
+		// }
+		// else
+		// {
+		// 	echo "ERROR :  Invalid response\n";
+		// 	$errorMessages = $response->getMessages()->getMessage();
+		// 	echo "Response : " . $errorMessages[0]->getCode() . "  " .$errorMessages[0]->getText() . "\n";
+		// }
+
+		return $response;
+	}
+	function refundTransaction($amount, $last_four, $exp_month, $exp_year)
+	{
+		$year = substr($exp_year, -2);
+		$month = str_pad($exp_month, 2,0,STR_PAD_LEFT);
+		$expiration = $month.$year;
+		/* Create a merchantAuthenticationType object with authentication details
+		retrieved from the constants file */
+	    $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+	    $merchantAuthentication->setName(env('AUTHORIZE_API_ID'));
+	    $merchantAuthentication->setTransactionKey(env('AUTHORIZE_API_TOKEN'));
+
+		// Set the transaction's refId
+		$refId = 'ref' . time();
+
+		// Create the payment data for a credit card
+		$creditCard = new AnetAPI\CreditCardType();
+		$creditCard->setCardNumber($last_four);
+		$creditCard->setExpirationDate();
+		$paymentOne = new AnetAPI\PaymentType();
+		$paymentOne->setCreditCard($creditCard);
+		//create a transaction
+		$transactionRequest = new AnetAPI\TransactionRequestType();
+		$transactionRequest->setTransactionType( "refundTransaction"); 
+		$transactionRequest->setAmount($amount);
+		$transactionRequest->setPayment($paymentOne);
+
+
+		$request = new AnetAPI\CreateTransactionRequest();
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setRefId($refId);
+		$request->setTransactionRequest( $transactionRequest);
+		$controller = new AnetController\CreateTransactionController($request);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$result = [];
+		if ($response != null)
+		{
+			if($response->getMessages()->getResultCode() == "Ok")
+			{
+				$tresponse = $response->getTransactionResponse();
+
+				if ($tresponse != null && $tresponse->getMessages() != null)   
+				{
+					$result = [
+						'status' => true,
+						'message' => $tresponse->getMessages()[0]->getDescription()
+					];
+				}
+				else
+				{
+
+					$result = [
+						'status'=>false,
+						'reason'=>$tresponse->getErrors()[0]->getErrorText()
+					];
+				}
+			}
+			else
+			{
+
+				// echo "Transaction Failed \n";
+				$tresponse = $response->getTransactionResponse();
+				if($tresponse != null && $tresponse->getErrors() != null)
+				{        
+					$result = [
+						'status'=>false,
+						'reason'=>$tresponse->getErrors()[0]->getErrorText()
+					];
+				}
+				else
+				{
+					$result = [
+						'status'=>false,
+						'reason'=>$response->getMessages()->getMessage()[0]->getText()
+					];
+				}
+			}      
+		}
+		else
+		{
+			$result = [
+				'status'=>false,
+				'reason'=>"No response returned"
+			];
+		}
+
+		return $result;
+	}
+
+    public function voidTransaction($transactionid)
+    {
+		/* Create a merchantAuthenticationType object with authentication details
+		retrieved from the constants file */
+	    $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
+	    $merchantAuthentication->setName(env('AUTHORIZE_API_ID'));
+	    $merchantAuthentication->setTransactionKey(env('AUTHORIZE_API_TOKEN'));
+
+		// Set the transaction's refId
+		$refId = 'ref' . time();
+
+		//create a transaction
+		$transactionRequestType = new AnetAPI\TransactionRequestType();
+		$transactionRequestType->setTransactionType( "voidTransaction"); 
+		$transactionRequestType->setRefTransId($transactionid);
+
+		$request = new AnetAPI\CreateTransactionRequest();
+		$request->setMerchantAuthentication($merchantAuthentication);
+		$request->setRefId($refId);
+		$request->setTransactionRequest( $transactionRequestType);
+		$controller = new AnetController\CreateTransactionController($request);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$result = [];
+		if ($response != null)
+		{
+			if($response->getMessages()->getResultCode() == "Ok")
+			{
+				$tresponse = $response->getTransactionResponse();
+
+				if ($tresponse != null && $tresponse->getMessages() != null)   
+				{
+					$result = [
+						'status'=>true,
+						'message'=>$tresponse->getMessages()[0]->getDescription()
+					];
+					// echo " Transaction Response code : " . $tresponse->getResponseCode() . "\n";
+					// echo " Void transaction SUCCESS AUTH CODE: " . $tresponse->getAuthCode() . "\n";
+					// echo " Void transaction SUCCESS TRANS ID  : " . $tresponse->getTransId() . "\n";
+					// echo " Code : " . $tresponse->getMessages()[0]->getCode() . "\n"; 
+					// echo " Description : " . $tresponse->getMessages()[0]->getDescription() . "\n";
+				}
+				else
+				{
+					
+					if($tresponse->getErrors() != null)
+					{
+						$result = [
+							'status'=>false,
+							'reason'=>$tresponse->getErrors()[0]->getErrorText()
+						];          
+					}
+				}
+			}
+			else
+			{
+				$tresponse = $response->getTransactionResponse();
+				if($tresponse != null && $tresponse->getErrors() != null)
+				{
+					$result = [
+						'status'=>false,
+						'reason'=>$tresponse->getErrors()[0]->getErrorText()
+					];                      
+				}
+				else
+				{
+					$result = [
+						'status'=>false,
+						'reason'=>$response->getMessages()->getMessage()[0]->getText()
+					];  
+				}
+			}      
+		}
+		else
+		{
+			$result = [
+				'status'=>false,
+				'reason'=>"No response returned"
+			];  
+		}
+
+		return $result;
+	}
 }

@@ -35,7 +35,7 @@ Below are the details of your order. In order to  We will get to work on your or
 |:--------:|:--------------------- |-------:|
 @if(count($invoice->invoiceItems) > 0)
 	@foreach($invoice->invoiceItems as $item)
-		@if(!$item->itemStone->stones->email)
+		@if(!$email)
 |{{ $item->quantity }}|{{ $item->inventoryItem->name }} - {{ $item->inventoryItem->desc }}|${{ number_format($item->subtotal,2,'.',',') }}      |
 		@else
 |{{ $item->quantity }}|{{ $item->inventoryItem->name }} - {{ $item->inventoryItem->desc }}|To Be Priced     |
