@@ -98,9 +98,12 @@ class Instagram extends Model
 	            if ($feed->num_results > 0) {
 	            	foreach ($items as $value) {
 	            		$type = $value->media_type;
-	            		$caption = (isset($caption)) ? $value->caption->text : 'Empty Caption';
+	            		// $caption = (isset($caption)) ? $value->caption->text : 'Empty Caption';
+	            		$caption = ($value->caption->text) ? $value->caption->text : 'Empty Caption';
+
 
 	            		$truncated_caption = (strlen($caption) > 50) ? substr($caption, 0, 50) . '...' : $caption;
+
 	            		if ($count > 0){
 	            			switch ($type) {
 		            			case 1: // Image
@@ -108,6 +111,7 @@ class Instagram extends Model
 		            				$src = $value->image_versions2->candidates[$image_type]->url;
 		            				array_push($grab, ['type'=>1,'src'=>$src,'caption'=>$truncated_caption]);
 		            				break;
+
 		            			case 2: // Video
 		            				$count--;
 		            				$src = $value->video_versions[$video_type]->url;
@@ -133,6 +137,7 @@ class Instagram extends Model
 	            		}
 	            	}
 	            }
+
 
 	            return ['status'=>true,'data'=>$grab];
 	            
