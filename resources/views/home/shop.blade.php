@@ -26,7 +26,7 @@
 </div> -->
 @endsection
 @section('content')
-<div class="container" style="">
+<div class="container" style="margin-top:1.5em;">
 	<h3 class="text-center">OUR COLLECTIONS</h3>
 	<div class="row">
 		@if (count($collections) > 0)
