@@ -36,8 +36,7 @@
     }
 
     .card-img-top-items {
-        height:300px !important; 
-        width:100% !important;
+        max-height:300px !important; 
     }
 
     .card-img-top-featured {
@@ -45,7 +44,7 @@
     }
 
     .card-img-top-collection-featured {
-        max-height:600px;
+        max-height:400px;
     }
 
 }

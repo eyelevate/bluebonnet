@@ -5,7 +5,7 @@
 @section('styles')
 @endsection
 @section('header')
-<div class="container">
+<!-- <div class="container">
 	<div class="row-fluid" style="">
 		<theme1-shop-card 
 			use-body="true" 
@@ -23,7 +23,7 @@
 			</template>
 		</theme1-shop-card>
 	</div>
-</div>
+</div> -->
 @endsection
 @section('content')
 <div class="container" style="">
@@ -35,7 +35,7 @@
 			class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-class="card-img-top-items"
+			img-top-class="card-img-top-items mx-auto d-block"
 			img-top-src="{{ asset(str_replace('public/','storage/',$collection->img_src)) }}">
 				<template slot="body">
 					<div class="text-center">

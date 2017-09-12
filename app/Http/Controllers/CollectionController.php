@@ -68,8 +68,9 @@ class CollectionController extends Controller
         
 
         // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
-        $resized_image_uri = $image->resize($request->img, 480, 480);
+        $resized_image_uri = $image->crop($request->img,1250, 1250);
         $path = Storage::putFile('public/collections', new File($resized_image_uri));
+        
 
         //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
         unlink($resized_image_uri);
@@ -143,7 +144,7 @@ class CollectionController extends Controller
             // remove old image
             Storage::delete($collection->img_src);
             // add new image
-            $resized_image_uri = $image->resize($request->img, 480, 480);
+            $resized_image_uri = $image->crop($request->img,1250, 1250);
             $path = Storage::putFile('public/collections', new File($resized_image_uri));
 
             //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
