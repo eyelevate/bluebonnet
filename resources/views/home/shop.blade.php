@@ -5,7 +5,7 @@
 @section('styles')
 @endsection
 @section('header')
-<div class="container">
+<!-- <div class="container">
 	<div class="row-fluid" style="">
 		<theme1-shop-card 
 			use-body="true" 
@@ -23,7 +23,7 @@
 			</template>
 		</theme1-shop-card>
 	</div>
-</div>
+</div> -->
 @endsection
 @section('content')
 <div class="container" style="">

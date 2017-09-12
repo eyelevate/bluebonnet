@@ -19,7 +19,7 @@
 			class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
 			use-body="true" 
 			use-img-top="true" 
-			img-top-class="card-img-top-items"
+			img-top-class="card-img-top-items mx-auto d-block"
 			img-top-src="{{ $item->primary_src }}">
 				<template slot="body">
 					<div class="text-center">

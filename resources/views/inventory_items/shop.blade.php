@@ -142,7 +142,7 @@
 
 <div id="variable-root" 
 	 itemId="{{ $inventoryItem->id }}" 
-	 subtotal="{{ money_format('$%!.2n',$inventoryItem->subtotal) }}"
+	 subtotal="{{ number_format($inventoryItem->subtotal, 2,".",",") }}"
 	 stoneId="{{ old('stone_id') ? old('stone_id') : '' }}">
 	 	
 </div>
