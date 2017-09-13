@@ -27,6 +27,8 @@ Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
 Route::post('/finish', 'HomeController@finish')->name('home.finish');
 Route::post('/attempt-login', 'HomeController@attemptLogin')->name('home.attempt_login');
 Route::get('/thank-you', 'HomeController@thankYou')->name('home.thank_you');
+Route::get('/custom', 'HomeController@custom')->name('home.custom');
+Route::get('/contact', 'HomeController@contact')->name('home.contact');
 
 // collections
 Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');

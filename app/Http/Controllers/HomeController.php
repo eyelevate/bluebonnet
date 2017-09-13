@@ -122,6 +122,18 @@ class HomeController extends Controller
         return view('home.tos', compact(['layout']));
     }
 
+    public function custom()
+    {
+        $layout = $this->layout;
+        return view('home.custom', compact(['layout']));
+    }
+
+    public function contact()
+    {
+        $layout = $this->layout;
+        return view('home.contact', compact(['layout']));
+    }
+
 
     public function checkout(InventoryItem $inventoryItem, Job $job, ItemStone $itemStone)
     {
