@@ -35,10 +35,12 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(InventoryItem $ii)
+    public function create(InventoryItem $ii, Job $job)
     {
+        $states = $job->prepareStates();
+        $countries = $job->prepareCountries();
         $inventoryItems = $ii->prepareForShowInventory($ii->orderBy('name','asc')->get());
-        return view('invoices.create',compact(['inventoryItems']));
+        return view('invoices.create',compact(['inventoryItems','states','countries']));
     }
 
     /**
