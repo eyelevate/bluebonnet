@@ -25,6 +25,13 @@
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Eco Friendly</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
 			</div>
+			<div class="carousel-item">
+				<video class="d-block img-fluid lazy" src="video/vidtest.mp4" alt="Fourth slide" autoplay="on" loop="on">
+				</video>
+				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Here for You</h2>
+				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Here for You</h3>
+				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
+			</div>
 		</div>
 	</div>
 </div>

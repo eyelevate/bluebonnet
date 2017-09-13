@@ -103,3 +103,6 @@ mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones')
 
 // size
 mix.js('resources/assets/js/views/sizes/create.js','public/js/views/sizes');
+
+//Video
+mix.copyDirectory('resources/assets/video','public/video');
