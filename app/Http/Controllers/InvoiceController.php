@@ -330,4 +330,11 @@ class InvoiceController extends Controller
             'status' => true
         ]);
     }
+
+    public function revert(Request $request, Invoice $invoice) {
+        $status = 3;
+        $invoice->update(['status'=>$status]);
+        flash('successfully reverted invoice to paid')->success();
+        return redirect()->back();
+    }
 }

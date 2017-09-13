@@ -72,7 +72,12 @@
 
 			<template slot = "footer">
 				<a href="{{ route('invoice.index') }}" class="btn btn-secondary">Cancel</a>
-				<button type="button" class = "btn btn-primary pull-right" @click="next">Next</button>
+
+				<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepOne">Next</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepOne">Next</button>	
+
+				
 			</template>
 		</bootstrap-card>
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true" v-if="current == 2">
@@ -124,7 +129,9 @@
 											</template>
 										</bootstrap-control>
 										<div v-if="option.inventoryItem.sizes">
-											<div v-for="size, stone_id in option.stone_sizes" v-if="option.stone_id == stone_id">
+
+											<div v-for="size, stone_id in option.stone_sizes" v-if="option.stones_compare[option.stone_id] == stone_id">
+
 												<bootstrap-control
 													use-label="true"
 													label="Stone Size"
@@ -180,7 +187,9 @@
 
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				<button type="button" class = "btn btn-primary pull-right" @click="next">Next</button>
+				<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepTwo">Next</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepTwo">Next</button>	
 			</template>
 		</bootstrap-card>
 
@@ -273,7 +282,9 @@
 
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				<button type="button" class = "btn btn-primary pull-right" @click="next">Next</button>
+				<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepThree">Next</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepThree">Next</button>	
 			</template>
 		</bootstrap-card>
 
@@ -366,12 +377,14 @@
 
 		        </div>
 		        <hr/>
-		        <button type="submit" class = "btn btn-success btn-block">Create</button>
+
 			</template>
 
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				
+				<button type="submit" class = "btn btn-success pull-right" v-if="stepFour">Create</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepFour">Create</button>	
 			</template>
 		</bootstrap-card>
 	{!! Form::close() !!}

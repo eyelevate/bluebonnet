@@ -28,7 +28,10 @@ const app = new Vue({
 		expMonth:'',
 		expYear:'',
 		sas: false,
-		totals: []
+		totals: [],
+		stepOne: false,
+		stepTwo: false,
+		stepThree: false,
 	},
 	methods: {
 		searchInventoryItem(){
@@ -51,6 +54,7 @@ const app = new Vue({
 			}).then(response => {
 				if (response.data.status) {
 					this.selectedOptions = response.data.selected;
+					this.validation();
 				}
 			});
 		},
@@ -64,14 +68,17 @@ const app = new Vue({
 		},
 		back() {
 			this.current -= 1;
+			this.validation();
 		},
 		next() {
 			this.current += 1;
+			this.validation();
 		},
 		selectItem(item_id) {
 			this.selectedItems.push(item_id);
 			this.searchInventoryItem();
 			this.selectedItemOptions();
+			this.validation();
 		},
 		removeItem(row, $event) {
 
@@ -87,31 +94,37 @@ const app = new Vue({
 			this.selectedOptions = rows;
 			this.selectedItems = ids;
 			this.searchInventoryItem();
+			this.validation();
 
 
 		},
 		fingerSelected(row,$event) {
 			this.selectedOptions[row]['finger_id'] = $($event.target).find('option:selected').val();
+			this.validation();
 		},
 		quantitySelected(row,$event) {
 			this.selectedOptions[row]['quantity'] = $($event.target).find('option:selected').val();
 			this.subtotal(row);
+			this.validation();
 		},
 		stoneSelected(row, $event) {
-
+		
 			this.selectedOptions[row]['stone_id'] = $($event.target).find('option:selected').val();
 			this.selectedOptions[row]['size_id'] = '';
 			this.subtotal(row);
+			this.validation();
 		},
 		sizeSelected(row, $event) {
 
 			this.selectedOptions[row]['size_id'] = $($event.target).find('option:selected').val();
 			this.subtotal(row);
+			this.validation();
 		},
 		metalSelected(row, $event) {
 
 			this.selectedOptions[row]['metal_id'] = $($event.target).find('option:selected').val();
 			this.subtotal(row);
+			this.validation();
 		},
 		subtotal(row) {
 			// get the price subtotal with all options selected
@@ -144,6 +157,76 @@ const app = new Vue({
 				this.billingCountry = this.country;
 				this.billingZipcode = this.zipcode;
 			}
+
+		},
+		validation() {
+			// Step 1
+			this.stepOne = false;
+			if (this.selectedItems.length > 0) {
+				this.stepOne = true;
+			}
+
+			// Step 2
+			this.stepTwo = false;
+			checkTwo = true;
+			$.each(this.selectedOptions, function(index, val) {
+				 /* iterate through array or object */
+				 // determine the rules
+				 var fingers = val.inventoryItem.fingers;
+				 var metals = val.inventoryItem.metals;
+				 var stones = val.inventoryItem.stones;
+				 var sizes = val.inventoryItem.sizes;
+				 var email = false;
+				 if (fingers) {
+				 	if (val.finger_id == null || val.finger_id == '') {
+				 		checkTwo = false;
+				 		return false;
+				 	}
+				 }
+
+				 if (metals) {
+				 	if (val.metal_id == null || val.metal_id == '') {
+				 		checkTwo = false;
+				 		return false;
+				 	}
+				 }
+
+				 if (stones) {
+				 	
+				 	$.each(val.item_stone,function(k, v) {
+				 		if (v.stone_id == val.stone_id) {
+				 			email = v.stones.email;
+				 			return false;
+				 		}
+				 	});
+
+				 	if (val.stone_id == null || val.stone_id == '') {
+				 		checkTwo = false;
+				 		return false;
+				 	}
+				 	if (!email) {
+				 		if (sizes) {
+					 		if (val.size_id == null || val.size_id == '') {
+						 		checkTwo = false;
+						 		return false;
+						 	}
+					 	}
+				 	}
+				 	
+				 }
+
+
+			});
+			if (checkTwo) {
+				this.stepTwo = true;
+			}
+
+			// Step 3
+			this.stepThree = false;
+
+			// Step 4
+			this.stepFour = false;
+
 
 		}
 	},

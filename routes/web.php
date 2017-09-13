@@ -174,6 +174,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
     Route::post('/invoices/{invoice}/send-email', 'InvoiceController@sendEmail')->name('invoice.email');
     Route::post('/invoices/reset', 'InvoiceController@reset')->name('invoice.reset');
+    Route::patch('/invoices/{invoice}/revert', 'InvoiceController@revert')->name('invoice.revert');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');
     Route::get('/invoice-items/create', 'InvoiceItemController@create')->name('invoice_item.create');

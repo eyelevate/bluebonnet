@@ -15,7 +15,7 @@
 	
 	<bootstrap-card use-header="true" use-body="true" use-footer="true">
 		
-		<template slot="header">Invoices Size </template>
+		<template slot="header">Invoices </template>
 		
 		<template slot="body">
 			<div class="table-responsive">
@@ -211,10 +211,16 @@
                 </div>
                 <hr/>
                 @endif
-
+                @if ($detail->status < 5)
                 <div class="row-fluid">
                     <button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteModal-{{ $detail->id }}">{{ ($detail->status == 3) ? 'Cancel Invoice & Refund' : 'Cancel Invoice' }}</button>  
                 </div>
+                @else
+
+                <div class="row-fluid">
+                    <button type="button" class="btn btn-block btn-default" data-toggle="modal" data-target="#revertModal-{{ $detail->id }}">Revert Status</button>  
+                </div>
+                @endif
             </div>
         </template>
         <template slot="footer">
@@ -254,6 +260,20 @@
         <template slot="header">Complete Confirmation</template>
         <template slot="body">
             Click proceed to complete this invoice #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}?
+        </template>
+        <template slot="footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-success">Proceed</button>    
+        </template>
+    </bootstrap-modal>
+    {!! Form::close() !!}
+
+    {{-- Revert --}}
+    {!! Form::open(['method'=>'patch','route'=>['invoice.revert',$detail->id]]) !!}
+    <bootstrap-modal id="revertModal-{{ $detail->id }}">
+        <template slot="header">Revert Status</template>
+        <template slot="body">
+            Click to proceed in reverting status back from <span class="badge badge-default">Complete</span> to <span class="badge badge-success">Paid</span>.
         </template>
         <template slot="footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

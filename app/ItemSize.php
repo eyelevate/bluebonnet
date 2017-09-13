@@ -43,10 +43,11 @@ class ItemSize extends Model
     
         if (count($data)> 0) {
             $itemSizes = $data->itemSize;
+
             if (count($itemSizes) > 0) {
 
                 foreach ($itemSizes as $iskey => $isvalue) {
-
+            
                     if ($isvalue->active) {
                         $select[$isvalue->stoneSizes->stone_id] = [''=>'Select Stone Size'];
                     } 
@@ -64,6 +65,7 @@ class ItemSize extends Model
                 }
             }
         }
+
         return $select;
     }
 
