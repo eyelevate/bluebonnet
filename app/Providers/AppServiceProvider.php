@@ -58,6 +58,7 @@ class AppServiceProvider extends ServiceProvider
             $finger_count = \App\Finger::countFingers();
             $inventory_count = \App\Inventory::countInventories();
             $inventory_item_count = \App\InventoryItem::countInventoryItems();
+            $invoice_count = \App\Invoice::countInvoices();
             $metal_count = \App\Metal::countMetals();
             $size_count = \App\Size::countSizes();
             $stone_count = \App\Stone::countStones();
@@ -70,6 +71,7 @@ class AppServiceProvider extends ServiceProvider
             ->with('finger_count', $finger_count)
             ->with('inventory_count', $inventory_count)
             ->with('inventory_item_count', $inventory_item_count)
+            ->with('invoice_count',$invoice_count)
             ->with('metal_count', $metal_count)
             ->with('size_count',$size_count)
             ->with('stone_count', $stone_count)

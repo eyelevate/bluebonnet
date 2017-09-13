@@ -574,4 +574,55 @@ class InventoryItemController extends Controller
             'totals'=>$totals
         ]);
     }
+
+    public function findItems(Request $request, InventoryItem $inventoryItem)
+    {
+        $query = $request->name;
+        $notIn = $request->selected;
+        $inventoryItems = $inventoryItem->prepareForShowInventory($inventoryItem->whereNotIn('id',$notIn)->where('name','like','%'.$query.'%')->orderBy('name','asc')->get());
+
+        return response()->json([
+            'status' => true,
+            'items'=> $inventoryItems
+        ]);
+    }
+
+    public function getOptions(Request $request, InventoryItem $inventoryItem, Finger $finger, ItemMetal $itemMetal, ItemStone $itemStone, ItemSize $itemSize, Stone $stone)
+    {
+        $ids = $request->selected;
+        $inventoryItems = $inventoryItem->prepareForShowInventory($inventoryItem->whereIn('id',$ids)->get());
+        $fingers = $finger->prepareSelect($finger->all());
+        $stones = $stone->all();
+        
+        $selected = [];
+        if (count($inventoryItems) > 0) {
+            foreach ($inventoryItems as $item) {
+                $stone_select = $itemStone->prepareSelect($item->itemStone);
+                $stone_sizes = $itemSize->prepareSelect($item);
+                $metals = $itemMetal->prepareSelect($item->itemMetal);
+                $row = [
+                    'quantity_select'=>[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],
+                    'quantity'=>1,
+                    'fingers'=>$fingers,
+                    'finger_id'=>NULL,
+                    'stones'=>$stones,
+                    'inventoryItem'=>$item,
+                    'stone_select'=>$stone_select,
+                    'stone_id'=>NULL,
+                    'stone_sizes'=>$stone_sizes,
+                    'size_id'=>NULL,
+                    'metals'=>$metals,
+                    'metal_id'=>NULL,
+                    'subtotal'=>'0.00',
+                    'subtotal_formatted'=>'$0.00'
+                ];
+                array_push($selected, $row);
+            }   
+        }
+        return response()->json([
+            'status' => true,
+            'selected'=> $selected
+        ]);
+
+    }
 }

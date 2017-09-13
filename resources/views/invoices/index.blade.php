@@ -1,169 +1,41 @@
 @extends('layouts.themes.backend.layout')
+@section('styles')	
+@endsection
 @section('scripts')
 <script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
-
 @endsection
+
 @section('content')
 <!-- Breadcrumb -->
 <ol class="breadcrumb">
-    <li class="breadcrumb-item active">Home</li>
+    <li class="breadcrumb-item"><a href="{{ route('admin.index') }}">Home</a></li>
+    <li class="breadcrumb-item active">Invoices </li>
 </ol>
-
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Active Invoices
-                </div>
-                <div class="card-block">
+	
+	<bootstrap-card use-header="true" use-body="true" use-footer="true">
+		
+		<template slot="header">Invoices Size </template>
+		
+		<template slot="body">
+			<div class="table-responsive">
+				<bootstrap-table
+					:columns="{{ $columns }}"
+					:rows="{{ $rows }}"
+					:paginate="true"
+					:global-search="true"
+					:line-numbers="true"/>
+				</bootstrap-table>
+		    </div>
+		</template>
 
-                    <div class="nav">
-                        @if (count($invoiceSummary) > 0)
-                        @foreach($invoiceSummary as $key => $summary)
-                        @if($summary->status == 1)
-                        <div class="col-sm-4 nav-item">
+		<template slot="footer">
+			<a href="{{ route('invoice.create') }}" class="btn btn-primary">Create Invoice</a>
+		</template>
 
-                            <div class="callout callout-danger">
-                                <small class="text-muted">Created</small>
-                                <br>
-                                <strong class="h4">{{ $summary->total }}</strong>
-                                <div class="chart-wrapper">
-                                    <canvas id="sparkline-chart-5" width="100" height="30"></canvas>
-                                </div>
-                            </div>
-
-                        </div>
-                        @elseif($summary->status == 2)
-                        <div class="col-sm-4 nav-item">
-
-                            <div class="callout callout-warning">
-                                <small class="text-muted">Pending</small>
-                                <br>
-                                <strong class="h4">{{ $summary->total }}</strong>
-                                <div class="chart-wrapper">
-                                    <canvas id="sparkline-chart-6" width="100" height="30"></canvas>
-                                </div>
-                            </div>
-
-                        </div>
-                        @elseif($summary->status == 3)
-                        <div class="col-sm-4 nav-item">
-
-                            <div class="callout callout-success">
-                                <small class="text-muted">Paid</small>
-                                <br>
-                                <strong class="h4">{{ $summary->total }}</strong>
-                                <div class="chart-wrapper">
-                                    <canvas id="sparkline-chart-6" width="100" height="30"></canvas>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        @endif
-                        <!--/.col-->
-                        @endforeach
-                        @endif
-                    </div>
-                    <div class="table-responsive">
-                        <table class="table table-hover table-outline mb-0">
-                            <thead class="thead-default col-12">
-                                <tr>
-                                    <th>Invoice</th>
-                                    <th>Client</th>
-                                    <th>Quantity</th>
-                                    <th>Subtotal</th>
-                                    <th>Tax</th>
-                                    <th>Shipping</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                    <th>Created</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (count($invoiceDetails) >0)
-                                @foreach($invoiceDetails as $key => $value)
-                                <div class="tab-pane {{ ($key == 0) ? 'active' : '' }}" id="summary-{{ $key }}" role="tabpanel">
-
-                                    <tr>
-                                        <td>{{ str_pad($value->id,6,0,STR_PAD_LEFT) }}</td>
-                                        <td>{{ $value->full_name }}</td>
-                                        <td>{{ $value->quantity }}</td>
-                                        <td>${{ number_format($value->subtotal,2,'.',',') }}</td>
-                                        <td>${{ number_format($value->tax,2,'.',',') }}</td>
-                                        <td>${{ number_format($value->shipping_total,2,'.',',') }}</td>
-                                        <td>${{ number_format($value->total,2,'.',',') }}</td>
-                                        <td>{!! $value->status_html !!}</td>
-                                        <td>{{ date('n/d/Y g:ia',strtotime($value->created_at)) }}</td>
-                                        <td><a href="{{ route('invoice.edit',$value->id) }}" class="btn btn-secondary" data-toggle="modal" data-target="#viewModal-{{ $value->id }}">View Order</a></td>
-                                    </tr>
-                                </div>
-                            </div>
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>   
-            </div> 
-        </div>
-    </div>
-    <!--/.col-->
+	</bootstrap-card>
+	
 </div>
-    <!--/.row-->
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    Top 10 Selling Items
-                </div>
-                <div class="card-block">
-                    <div class="row">
-                        <!--/.col-->
-                        <div class="col-12">
-                            <ul class="icons-list">
-                                @if (count($topTenInvoiceItem))
-                                    @foreach($topTenInvoiceItem as $key => $value)
-                                        @if (isset($value->inventoryItem))
-                                        <li>
-
-                                            <i class="" ><img src="{{ (isset($value->inventoryItem)) ? $value->inventoryItem->img_src : '' }}" style="height:40px;"></i>
-                                            <div class="desc">
-                                                <div class="title"><strong>#{{ $key + 1 }}</strong></div>
-                                                <small>{{ $value->inventoryItem->name }} - {{ $value->inventoryItem->desc }}</small>
-                                            </div>
-                                            <div class="value">
-                                                <div class="small text-muted">Total Sold</div>
-                                                <strong>{{ $value->total }}</strong>
-                                            </div>
-                                            <div class="actions">
-                                                <a href="{{ route('inventory_item.edit',$value->inventoryItem->id) }}" class="btn"><i class="icon-settings"></i>
-                                                </a>
-                                            </div>
-                                        </li>
-                                        @endif
-                                    @endforeach
-                                @endif
-
-                                <li class="divider text-center">
-
-                                </li>
-                            </ul>
-                        </div>
-                        <!--/.col-->
-                    </div>
-                    <!--/.row-->
-
-                </div>
-            </div>
-        </div>
-        <!--/.col-->
-    </div>
-<!--/.row-->
-</div>
-
-<!-- /.conainer-fluid -->
 @endsection
 
 @section('modals')
@@ -392,4 +264,7 @@
 
     @endforeach
 @endif
+@endsection
+
+@section('variables')
 @endsection

@@ -6,6 +6,7 @@ use App\StoneSize;
 use App\Stone;
 use App\Finger;
 use App\Metal;
+use App\Job;
 use App\ItemStone;
 use App\ItemSize;
 use App\Tax;
@@ -463,14 +464,23 @@ class InventoryItem extends Model
 
     public function prepareForShowInventory($data)
     {
+
+        $job = new Job();
         if (isset($data)) {
             foreach ($data as $ikey => $ivalue) {
+                //name 
+                $data[$ikey]['name_short'] = $job->stringToDotDotDot($ivalue->name);
+                $data[$ikey]['desc_short'] = $job->stringToDotDotDot($ivalue->desc);
+    
+
+
+
                 // collection item
                 $data[$ikey]['collection_set'] = false;
                 if (count($ivalue->collectionItem) > 0) {
                     foreach ($ivalue->collectionItem as $collection) {
                         $pivot_collection_id = $collection->pivot->collection_id;
-                        if ($pivot_collection_id == $collection_id) {
+                        if ($pivot_collection_id == $collection->id) {
                             $data[$ikey]['collection_set'] = true;
                             break;
                         }

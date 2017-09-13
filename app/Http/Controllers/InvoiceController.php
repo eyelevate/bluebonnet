@@ -22,9 +22,12 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Invoice $invoice)
     {
-        //
+        $columns = $invoice->prepareTableColumns();
+        $rows = $invoice->prepareTableRows();
+        $invoiceDetails = $invoice->details(true);
+        return view('invoices.index', compact(['columns','rows','invoiceDetails']));
     }
 
     /**
@@ -32,9 +35,10 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(InventoryItem $ii)
     {
-        //
+        $inventoryItems = $ii->prepareForShowInventory($ii->orderBy('name','asc')->get());
+        return view('invoices.create',compact(['inventoryItems']));
     }
 
     /**
@@ -79,7 +83,7 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, Invoice $invoice)
     {
-        //
+
     }
 
     /**
@@ -92,6 +96,7 @@ class InvoiceController extends Controller
     {
         
         $transaction_id = $invoice->transaction_id;
+        flash('successfully cancelled invoice')->success();
         if (isset($transaction_id)) {
             $get_transaction_details = $authorize->getTransactionDetails($transaction_id);
             if (($get_transaction_details != null) && ($get_transaction_details->getMessages()->getResultCode() == "Ok")) {
@@ -127,8 +132,8 @@ class InvoiceController extends Controller
             }
             
         }
-        if ($invoice->delete) {
 
+        if ($invoice->delete()) {
             return redirect()->back();
         }
     }
@@ -315,5 +320,12 @@ class InvoiceController extends Controller
             return redirect()->back();
         }
     
+    }
+
+    public function reset(Request $request) {
+        session()->forget('cart');
+        return response()->json([
+            'status' => true
+        ]);
     }
 }

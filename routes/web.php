@@ -155,10 +155,12 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/inventory-items/{inventory}/create', 'InventoryItemController@create')->name('inventory_item.create');
     Route::delete('/inventory-items/{inventory_item}', 'InventoryItemController@destroy')->name('inventory_item.destroy');
     Route::post('/inventory-items/{inventory}/store', 'InventoryItemController@store')->name('inventory_item.store');
+    Route::post('/inventory-items/find-items', 'InventoryItemController@findItems')->name('inventory_item.find_items');
     
     Route::get('/inventory-items/{inventory_item}/edit', 'InventoryItemController@edit')->name('inventory_item.edit');
     Route::patch('/inventory-items/{inventory_item}', 'InventoryItemController@update')->name('inventory_item.update');
     Route::post('/inventory-items/{inventory_item}/get-subtotal-admins', 'InventoryItemController@subtotalAdmin')->name('inventory_item.subtotal_admin');
+    Route::post('/inventory-items/get-options', 'InventoryItemController@getOptions')->name('inventory_item.get_options');
 
     // Invoices
     Route::get('/invoices', 'InvoiceController@index')->name('invoice.index');
@@ -171,6 +173,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::patch('/invoices/{invoice}', 'InvoiceController@complete')->name('invoice.complete');
     Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
     Route::post('/invoices/{invoice}/send-email', 'InvoiceController@sendEmail')->name('invoice.email');
+    Route::post('/invoices/reset', 'InvoiceController@reset')->name('invoice.reset');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');
     Route::get('/invoice-items/create', 'InvoiceItemController@create')->name('invoice_item.create');

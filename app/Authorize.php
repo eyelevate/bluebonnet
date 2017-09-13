@@ -187,7 +187,7 @@ class Authorize extends Model
 	function refundTransaction($amount, $last_four, $exp_month, $exp_year)
 	{
 		$year = substr($exp_year, -2);
-		$month = str_pad($exp_month, 2,0,STR_PAD_LEFT);
+		$month = str_pad($exp_month, 2,'0',STR_PAD_LEFT);
 		$expiration = $month.$year;
 		/* Create a merchantAuthenticationType object with authentication details
 		retrieved from the constants file */

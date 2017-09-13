@@ -115,7 +115,7 @@ class AdminController extends Controller
             }
         } else {
             flash()->message('Could not log you in please try again..')->error();
-            Auth::logout();
+            // Auth::logout();
             return redirect()->route('admin.login');
         }
     }

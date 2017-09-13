@@ -28,18 +28,6 @@
                     </ul>
                 </li>
 
-{{--                 <li class="nav-item nav-dropdown">
-                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="icon-event"></i> Designs</a>
-                    <ul class="nav-dropdown-items">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('design.create') }}"><i class="icon-arrow-right-circle"></i> Create</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ route('design.index') }}"><i class="icon-arrow-right-circle"></i> Manage <span class="badge badge-info">{{ $design_count }}</span></a>
-                        </li>
-                    </ul>
-                </li> --}}
-
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link nav-dropdown-toggle" href="#"><i class="fa fa-shopping-basket"></i> Collections </a>
                     <ul class="nav-dropdown-items">
@@ -97,6 +85,18 @@
                             <a class="nav-link" href="{{ route('vendor.index') }}"><i class="icon-arrow-right-circle"></i> Vendors <span class="badge badge-info">{{ $vendor_count }}</span></a>
                         </li>
 
+                    </ul>
+                </li>
+
+                <li class="nav-item nav-dropdown">
+                    <a class="nav-link nav-dropdown-toggle" href="#"><i class="fa fa-archive"></i> Invoice(s)</a>
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('invoice.create') }}"><i class="icon-arrow-right-circle"></i> Create</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('invoice.index') }}"><i class="icon-arrow-right-circle"></i> Manage <span class="badge badge-info">{{ $invoice_count }}</span></a>
+                        </li>
                     </ul>
                 </li>
 
