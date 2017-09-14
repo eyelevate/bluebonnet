@@ -25,14 +25,14 @@
             
                         <div class="form-group">
                                 <select class="form-control" id="subjectSelect" name="subject" placeholder="Subject" required>
-                                <option>New Order</option>
                                 <option>Custom Order</option>
+                                <option>New Order</option>
                                 <option>Current Order</option>
                                 <option>Other</option>
                                 </select>
                         </div>
                         <div class="form-group">
-                        <textarea class="form-control" type="textarea" id="message" placeholder="Message" maxlength="140" rows="7"></textarea>                
+                        <textarea class="form-control" type="textarea" id="message" placeholder="Message" maxlength="800" rows="7"></textarea>                
                         </div>
                 
             <button type="button" id="submit" name="submit" class="btn btn-warning pull-right">Submit Form</button>
