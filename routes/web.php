@@ -28,12 +28,24 @@ Route::post('/finish', 'HomeController@finish')->name('home.finish');
 Route::post('/attempt-login', 'HomeController@attemptLogin')->name('home.attempt_login');
 Route::get('/thank-you', 'HomeController@thankYou')->name('home.thank_you');
 Route::get('/custom', 'HomeController@custom')->name('home.custom');
-Route::get('/contact', 'HomeController@contact')->name('home.contact');
+
+
+
+// Contactus
+//Route::get('/contact', 'HomeController@contact')->name('home.contact');
+Route::get('/contact', 'ContactusController@index')->name('home.index');
+Route::get('/contact/create', 'ContactusController@create')->name('contact.create');
+Route::delete('/contact/{contact}', 'ContactusController@destroy')->name('contact.destroy');
+Route::post('/contact/store', 'ContactusController@store')->name('contact.store');
+Route::get('/contact/{contact}/show', 'ContactusController@show')->name('contact.show');
+Route::get('/contact/{contact}/edit', 'ContactusController@edit')->name('contact.edit');
+Route::patch('/contact/{contact}', 'ContactusController@update')->name('contact.update');
+
 
 // collections
 Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
 
-// Invoice 
+// Invoice
 Route::patch('/done/{invoice}', 'InvoiceController@done')->name('invoice.done');
 Route::get('/invoices/{token}/finish', 'InvoiceController@finish')->name('invoice.finish');
 
@@ -254,7 +266,4 @@ Route::group(['middleware' => ['check:3']], function () {
 
     // Mail Test
     Route::get('/email', 'HomeController@email')->name('sendEmail');
-
-
 });
-

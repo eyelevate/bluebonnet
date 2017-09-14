@@ -6,7 +6,7 @@
 
 
 @section('content')
-
+{{-- 
 <div class="container">
     <div class="row justify-content-center">
     <div class="col-md-12 col-lg-8">
@@ -34,8 +34,10 @@
                         <div class="form-group">
                         <textarea class="form-control" type="textarea" id="message" placeholder="Message" maxlength="800" rows="7"></textarea>                
                         </div>
-                
-            <button type="button" id="submit" name="submit" class="btn btn-warning pull-right">Submit Form</button>
+
+
+                <a href="{{ route('contact.create') }}" class="btn btn-warning pull-right">Submit</a>
+            <button type="button" id="submit" name="submit" class="btn btn-warning pull-right">Submit Form</button> 
             </form>
         </div>
     </div>
@@ -43,7 +45,9 @@
 <br>
 <hr>
 
-</div>
+</div> --}}
+
+
 @endsection
 
 @section('modals')
