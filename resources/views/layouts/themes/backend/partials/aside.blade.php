@@ -1,284 +1,380 @@
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#timeline" role="tab"><i class="icon-list"></i></a>
+        <a class="nav-link active" data-toggle="tab" href="#unreadmessages" role="tab"><span class="badge badge-pill badge-danger" style="font-size: 8px; display:block; float:right;">3</span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#messages" role="tab"><i class="icon-speech"></i></a>
+        <a class="nav-link" data-toggle="tab" href="#readmessages" role="tab"><span class="badge badge-pill badge-success" style="font-size: 8px; display:block; float:right;">3</span><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
     </li>
-    <li class="nav-item">
+    {{--  <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#settings" role="tab"><i class="icon-settings"></i></a>
-    </li>
+    </li>  --}}
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content">
-    <div class="tab-pane active" id="timeline" role="tabpanel">
+
+{{--  Unread Messages  --}}
+
+    <div class="tab-pane active" id="unreadmessages" role="tabpanel">
         <div class="callout m-0 py-2 text-muted text-center bg-faded text-uppercase">
             <small><b>Today</b>
             </small>
         </div>
+
         <hr class="transparent mx-3 my-0">
-        <div class="callout callout-warning m-0 py-3">
-            <div class="avatar float-right">
-                <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-            </div>
-            <div>Meeting with
-                <strong>Lucas</strong>
-            </div>
-            <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 1 - 3pm</small>
-            <small class="text-muted"><i class="icon-location-pin"></i>&nbsp; Palo Alto, CA</small>
+
+<div class="panel panel-default">
+        <div class="callout callout-muted m-0 py-3">
+
+        <div class="card-header">
+                    <p data-toggle="collapse" data-parent="#accordion" href="#collapse1-main" class="panel-title expand">
+                    Subject: Custom Order
+                     <small style="align:left">
+                     Customer Name
+                     </small>
+                    <small style="text-align:right; color:#777;">&nbsp; 3:40pm</small>
+                    </p>
         </div>
-        <hr class="mx-3 my-0">
-        <div class="callout callout-info m-0 py-3">
-            <div class="avatar float-right">
-                <img src="/img/themes/coreui/avatars/4.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-            </div>
-            <div>Skype with
-                <strong>Megan</strong>
-            </div>
-            <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 4 - 5pm</small>
-            <small class="text-muted"><i class="icon-social-skype"></i>&nbsp; On-line</small>
-        </div>
-        <hr class="transparent mx-3 my-0">
-        <div class="callout m-0 py-2 text-muted text-center bg-faded text-uppercase">
-            <small><b>Tomorrow</b>
+                    <div id="collapse1-main" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+
+            <div>
+            <small>
+            Email@Address.com
             </small>
-        </div>
-        <hr class="transparent mx-3 my-0">
-        <div class="callout callout-danger m-0 py-3">
-            <div>New UI Project -
-                <strong>deadline</strong>
             </div>
-            <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 10 - 11pm</small>
-            <small class="text-muted"><i class="icon-home"></i>&nbsp; creativeLabs HQ</small>
-            <div class="avatars-stack mt-2">
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/2.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
+
+            <div>
+            <small>
+            555-555-5555
+            </small>
+            </div>
+            <hr class="transparent mx-0 my-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1" class="panel-title expand btn btn-secondary btn-block">
+                    Message
+                    </button>
                 </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/3.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/4.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/5.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
+                    <div id="collapse1" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                        nulla pariatur.
+                        </div>
+                        <hr class="transparent mx-0 my-1">
+                            <div class="row">
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-warning btn-small btn-block">Archive</button>
+                            </div>
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-primary btn-small btn-block">Email</button>
+                            </div>
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-danger btn-small btn-block">Delete</button>
+                            </div>
+                            </div>
+                   </div>
             </div>
         </div>
-        <hr class="mx-3 my-0">
+
+        </div>
+        </div>
+        <hr class="transparent mx-0 my-1">
+
         <div class="callout callout-success m-0 py-3">
-            <div>
-                <strong>#10 Startups.Garden</strong>Meetup</div>
-            <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 1 - 3pm</small>
-            <small class="text-muted"><i class="icon-location-pin"></i>&nbsp; Palo Alto, CA</small>
+        <div class="card-header">
+                    <p data-toggle="collapse" data-parent="#accordion" href="#collapse2-main" class="panel-title expand">
+                    Subject: Custom Order
+                     <small style="align:left">
+                     Customer Name
+                     </small>
+                    <small style="text-align:right; color:#777;">&nbsp; 3:45pm</small>
+                    </p>
         </div>
-        <hr class="mx-3 my-0">
-        <div class="callout callout-primary m-0 py-3">
-            <div>
-                <strong>Team meeting</strong>
-            </div>
-            <small class="text-muted mr-3"><i class="icon-calendar"></i>&nbsp; 4 - 6pm</small>
-            <small class="text-muted"><i class="icon-home"></i>&nbsp; creativeLabs HQ</small>
-            <div class="avatars-stack mt-2">
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/2.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/3.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/4.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/5.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-                <div class="avatar avatar-xs">
-                    <img src="/img/themes/coreui/avatars/8.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                </div>
-            </div>
-        </div>
-        <hr class="mx-3 my-0">
-    </div>
-    <div class="tab-pane p-3" id="messages" role="tabpanel">
-        <div class="message">
-            <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                    <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="avatar-status badge-success"></span>
-                </div>
-            </div>
-            <div>
-                <small class="text-muted">Lukasz Holeczek</small>
-                <small class="text-muted float-right mt-1">1:52 PM</small>
-            </div>
-            <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
-            <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt...</small>
-        </div>
-        <hr>
-        <div class="message">
-            <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                    <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="avatar-status badge-success"></span>
-                </div>
-            </div>
-            <div>
-                <small class="text-muted">Lukasz Holeczek</small>
-                <small class="text-muted float-right mt-1">1:52 PM</small>
-            </div>
-            <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
-            <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt...</small>
-        </div>
-        <hr>
-        <div class="message">
-            <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                    <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="avatar-status badge-success"></span>
-                </div>
-            </div>
-            <div>
-                <small class="text-muted">Lukasz Holeczek</small>
-                <small class="text-muted float-right mt-1">1:52 PM</small>
-            </div>
-            <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
-            <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt...</small>
-        </div>
-        <hr>
-        <div class="message">
-            <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                    <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="avatar-status badge-success"></span>
-                </div>
-            </div>
-            <div>
-                <small class="text-muted">Lukasz Holeczek</small>
-                <small class="text-muted float-right mt-1">1:52 PM</small>
-            </div>
-            <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
-            <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt...</small>
-        </div>
-        <hr>
-        <div class="message">
-            <div class="py-3 pb-5 mr-3 float-left">
-                <div class="avatar">
-                    <img src="/img/themes/coreui/avatars/7.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="avatar-status badge-success"></span>
-                </div>
-            </div>
-            <div>
-                <small class="text-muted">Lukasz Holeczek</small>
-                <small class="text-muted float-right mt-1">1:52 PM</small>
-            </div>
-            <div class="text-truncate font-weight-bold">Lorem ipsum dolor sit amet</div>
-            <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt...</small>
-        </div>
-    </div>
-    <div class="tab-pane p-3" id="settings" role="tabpanel">
-        <h6>Settings</h6>
+                    <div id="collapse2-main" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
 
-        <div class="aside-options">
-            <div class="clearfix mt-4">
-                <small><b>Option 1</b>
-                </small>
-                <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-                    <input type="checkbox" class="switch-input" checked="">
-                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                    <span class="switch-handle"></span>
-                </label>
-            </div>
             <div>
-                <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
+            <small>
+            Email@Address.com
+            </small>
+            </div>
+
+            <div>
+            <small>
+            555-555-5555
+            </small>
+            </div>
+            <hr class="transparent mx-0 my-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2" class="panel-title expand btn btn-secondary btn-block">
+                    Message
+                    </button>
+                </div>
+                    <div id="collapse2" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                        nulla pariatur.
+                        </div>
+                        <hr class="transparent mx-0 my-1">
+                            <div class="row">
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-warning btn-small btn-block">Archive</button>
+                            </div>
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-primary btn-small btn-block">Email</button>
+                            </div>
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-danger btn-small btn-block">Delete</button>
+                            </div>
+                            </div>
+                   </div>
             </div>
         </div>
 
-        <div class="aside-options">
-            <div class="clearfix mt-3">
-                <small><b>Option 2</b>
-                </small>
-                <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-                    <input type="checkbox" class="switch-input">
-                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                    <span class="switch-handle"></span>
-                </label>
-            </div>
-            <div>
-                <small class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</small>
-            </div>
         </div>
-
-        <div class="aside-options">
-            <div class="clearfix mt-3">
-                <small><b>Option 3</b>
-                </small>
-                <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-                    <input type="checkbox" class="switch-input">
-                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                    <span class="switch-handle"></span>
-                </label>
-            </div>
         </div>
+        <hr class="transparent mx-0 my-1">
 
-        <div class="aside-options">
-            <div class="clearfix mt-3">
-                <small><b>Option 4</b>
-                </small>
-                <label class="switch switch-text switch-pill switch-success switch-sm float-right">
-                    <input type="checkbox" class="switch-input" checked="">
-                    <span class="switch-label" data-on="On" data-off="Off"></span>
-                    <span class="switch-handle"></span>
-                </label>
-            </div>
-        </div>
-
-        <hr>
-        <h6>System Utilization</h6>
-
-        <div class="text-uppercase mb-1 mt-4">
-            <small><b>CPU Usage</b>
+        <div class="callout m-0 py-2 text-muted text-center bg-faded text-uppercase">
+            <small><b>1 Day Ago</b>
             </small>
         </div>
-        <div class="progress progress-xs">
-            <div class="progress-bar bg-info" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        <small class="text-muted">348 Processes. 1/4 Cores.</small>
+        <hr class="transparent mx-3 my-0">
 
-        <div class="text-uppercase mb-1 mt-2">
-            <small><b>Memory Usage</b>
+
+               <div class="callout callout-success m-0 py-3">
+        <div class="card-header">
+                    <p data-toggle="collapse" data-parent="#accordion" href="#collapse3-main" class="panel-title expand">
+                    Subject: Custom Order
+                     <small style="align:left">
+                     Customer Name
+                     </small>
+                    <small style="text-align:right; color:#777;">&nbsp; 1:45pm</small>
+                    </p>
+        </div>
+                    <div id="collapse3-main" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+
+            <div>
+            <small>
+            Email@Address.com
+            </small>
+            </div>
+
+            <div>
+            <small>
+            555-555-5555
+            </small>
+            </div>
+            <hr class="transparent mx-0 my-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3" class="panel-title expand btn btn-secondary btn-block">
+                    Message
+                    </button>
+                </div>
+                    <div id="collapse3" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                        nulla pariatur.
+                        </div>
+                        <hr class="transparent mx-0 my-1">
+                            <div class="row">
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-warning btn-small btn-block">Archive</button>
+                            </div>
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-primary btn-small btn-block">Email</button>
+                            </div>
+                            <div class="col-4" style="padding:2px;">
+                            <button type="button" class="btn btn-danger btn-small btn-block">Delete</button>
+                            </div>
+                            </div>
+                   </div>
+            </div>
+        </div>
+
+        </div>
+        </div>
+        <hr class="transparent mx-0 my-1">
+    
+</div>
+</div>
+
+{{--  Read Messages  --}}
+
+
+<div class="tab-pane p3" id="readmessages" role="tabpanel">
+        <div class="callout m-0 py-2 text-muted text-center bg-faded text-uppercase">
+            <small><b>More Than 3 Days Ago</b>
             </small>
         </div>
-        <div class="progress progress-xs">
-            <div class="progress-bar bg-warning" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        <small class="text-muted">11444GB/16384MB</small>
 
-        <div class="text-uppercase mb-1 mt-2">
-            <small><b>SSD 1 Usage</b>
-            </small>
-        </div>
-        <div class="progress progress-xs">
-            <div class="progress-bar bg-danger" role="progressbar" style="width: 95%" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-        </div>
-        <small class="text-muted">243GB/256GB</small>
+        <hr class="transparent mx-3 my-0">
 
-        <div class="text-uppercase mb-1 mt-2">
-            <small><b>SSD 2 Usage</b>
-            </small>
+<div class="panel panel-default">
+
+{{--  <div class="tab-pane p-3" id="readmessages" role="tabpanel">  --}}
+   
+
+        <div class="message" style="padding: 10px;">
+
+            <div class="card-header">
+                    <p data-toggle="collapse" data-parent="#accordion" href="#collapse1-read" class="panel-title expand">
+                    Subject: Custom Order
+                     <small style="align:left">
+                     Customer Name
+                     </small>
+                    <small style="text-align:right; color:#777;">&nbsp; 9/01/2017</small>
+                    </p>
+            </div>
+                <div id="collapse1-read" class="panel-collapse collapse" style="padding-top: 5px;">
+                <div class="panel-body">
+
+                    <div>
+                    <small>
+                    Email@Address.com
+                    </small>
+                    </div>
+
+                    <div>
+                    <small>
+                    555-555-5555
+                    </small>
+                    </div>
+                    <hr class="transparent mx-0 my-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapse1-readsub" class="panel-title expand btn btn-secondary btn-block">
+                    Message
+                    </button>
+                </div>
+                    <div id="collapse1-readsub" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                        nulla pariatur.
+                        </div>
+                        <hr class="transparent mx-0 my-1">
+                            <div>
+                            <button type="button" class="btn btn-danger btn-small btn-block">Delete</button>
+                            </div>
+                   </div>
+            </div>
         </div>
-        <div class="progress progress-xs">
-            <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                </div>
+        <hr class="transparent mx-0 my-1">
+    
+
+            <div class="message" style="padding: 10px;">
+
+            <div class="card-header">
+                    <p data-toggle="collapse" data-parent="#accordion" href="#collapse2-read" class="panel-title expand">
+                    Subject: Custom Order
+                     <small style="align:left">
+                     Customer Name
+                     </small>
+                    <small style="text-align:right; color:#777;">&nbsp; 9/01/2017</small>
+                    </p>
+            </div>
+                <div id="collapse2-read" class="panel-collapse collapse" style="padding-top: 5px;">
+                <div class="panel-body">
+
+                    <div>
+                    <small>
+                    Email@Address.com
+                    </small>
+                    </div>
+
+                    <div>
+                    <small>
+                    555-555-5555
+                    </small>
+                    </div>
+                    <hr class="transparent mx-0 my-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapse2-readsub" class="panel-title expand btn btn-secondary btn-block">
+                    Message
+                    </button>
+                </div>
+                    <div id="collapse2-readsub" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                        nulla pariatur.
+                        </div>
+                        <hr class="transparent mx-0 my-1">
+                            <div>
+                            <button type="button" class="btn btn-danger btn-small btn-block">Delete</button>
+                            </div>
+                   </div>
+            </div>
         </div>
-        <small class="text-muted">25GB/256GB</small>
-    </div>
+                </div>
+                </div>
+        <hr class="transparent mx-0 my-1">
+
+    
+            <div class="message" style="padding: 10px;">
+
+            <div class="card-header">
+                    <p data-toggle="collapse" data-parent="#accordion" href="#collapse3-read" class="panel-title expand">
+                    Subject: Custom Order
+                     <small style="align:left">
+                     Customer Name
+                     </small>
+                    <small style="text-align:right; color:#777;">&nbsp; 9/01/2017</small>
+                    </p>
+            </div>
+                <div id="collapse3-read" class="panel-collapse collapse" style="padding-top: 5px;">
+                <div class="panel-body">
+
+                    <div>
+                    <small>
+                    Email@Address.com
+                    </small>
+                    </div>
+
+                    <div>
+                    <small>
+                    555-555-5555
+                    </small>
+                    </div>
+                    <hr class="transparent mx-0 my-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <button type="button" data-toggle="collapse" data-parent="#accordion" href="#collapse3-readsub" class="panel-title expand btn btn-secondary btn-block">
+                    Message
+                    </button>
+                </div>
+                    <div id="collapse3-readsub" class="panel-collapse collapse" style="padding-top: 5px;">
+                        <div class="panel-body">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et 
+                        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                        ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                        nulla pariatur.
+                        </div>
+                        <hr class="transparent mx-0 my-1">
+                            <div>
+                            <button type="button" class="btn btn-danger btn-small btn-block">Delete</button>
+                            </div>
+                   </div>
+            </div>
+        </div>
+                </div>
+                </div>
+        <hr class="transparent mx-0 my-1">
+</div>
 </div>

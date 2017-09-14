@@ -12,10 +12,12 @@
 </ul>
 <ul class="nav navbar-nav ml-auto">
     <li class="nav-item d-md-down-none ">
-        <a class="nav-link" href="{{ route('invoice.index') }}"><i class="icon-bell"></i><span class="badge badge-pill badge-danger">{{ $active_invoices }}</span></a>
+        <a class="nav-link" href="{{ route('invoice.index') }}"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge badge-pill badge-danger">{{ $active_invoices }}</span></a>
     </li>
-
-    <li class="nav-item dropdown">
+    <li class="nav-item d-md-down-none">
+        <a class="nav-link navbar-toggler aside-menu-toggler" href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i><span class="badge badge-pill badge-danger" style="font-size: 10px;">3</span></a>
+    </li>
+    <li class="nav-item dropdown" style="padding-right: 2rem;">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
             <span class="">{{ Auth::user()->email }}</span>
         </a>
@@ -30,8 +32,6 @@
             <a class="dropdown-item" href="{{ route('admin.logout') }}"><i class="fa fa-lock"></i> Logout</a>
         </div>
     </li>
-    <li class="nav-item d-md-down-none">
-        <a class="nav-link navbar-toggler aside-menu-toggler" href="#">☰</a>
-    </li>
+
 
 </ul>
