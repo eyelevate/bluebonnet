@@ -1,6 +1,6 @@
 <ul class="nav nav-tabs" role="tablist">
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#unreadmessages" role="tab"><span class="badge badge-pill badge-danger" style="font-size: 8px; display:block; float:right;">3</span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>
+        <a class="nav-link active" data-toggle="tab" href="#unreadmessages" role="tab"><span class="badge badge-pill badge-danger" style="font-size: 8px; display:block; float:right;">1</span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>
     </li>
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#readmessages" role="tab"><span class="badge badge-pill badge-success" style="font-size: 8px; display:block; float:right;">3</span><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
@@ -27,6 +27,8 @@
         <div class="callout callout-muted m-0 py-3">
 
         <div class="card-header">
+                    <span class="badge badge-pill badge-danger" style="font-size: 10px; float:right;">New</span>
+                    <hr class="transparent mx-0 my-2">
                     <p data-toggle="collapse" data-parent="#accordion" href="#collapse1-main" class="panel-title expand">
                     Subject: Custom Order
                      <small style="align:left">

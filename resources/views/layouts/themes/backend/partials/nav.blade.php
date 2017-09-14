@@ -15,7 +15,7 @@
         <a class="nav-link" href="{{ route('invoice.index') }}"><i class="fa fa-bell-o" aria-hidden="true"></i><span class="badge badge-pill badge-danger">{{ $active_invoices }}</span></a>
     </li>
     <li class="nav-item d-md-down-none">
-        <a class="nav-link navbar-toggler aside-menu-toggler" href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i><span class="badge badge-pill badge-danger" style="font-size: 10px;">3</span></a>
+        <a class="nav-link navbar-toggler aside-menu-toggler" href="#"><i class="fa fa-commenting-o" aria-hidden="true"></i><span class="badge badge-pill badge-danger" style="font-size: 10px;">1</span></a>
     </li>
     <li class="nav-item dropdown" style="padding-right: 2rem;">
         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
