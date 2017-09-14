@@ -69,6 +69,7 @@ class InventoryItemController extends Controller
             'name' => 'required|string|max:255',
             'subtotal' => 'required'
         ]);
+
         $inventory_item->name = $request->name;
         $inventory_item->desc = $request->desc;
         $inventory_item->inventory_id = $inventory->id;
@@ -179,6 +180,7 @@ class InventoryItemController extends Controller
         $stones = $stone->all();
         $stone_select = $itemStone->prepareSelect($inventoryItem->itemStone);
         $stone_sizes = $itemSize->prepareSelect($inventoryItem);
+
         
         return view('inventory_items.shop',compact(['layout','inventoryItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
@@ -600,6 +602,7 @@ class InventoryItemController extends Controller
                 $stone_select = $itemStone->prepareSelect($item->itemStone);
                 $stone_sizes = $itemSize->prepareSelect($item);
                 $metals = $itemMetal->prepareSelect($item->itemMetal);
+                $stones_compare = $itemStone->stonesCompare($item->itemStone);
                 $row = [
                     'quantity_select'=>[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],
                     'quantity'=>1,
@@ -610,11 +613,13 @@ class InventoryItemController extends Controller
                     'stone_select'=>$stone_select,
                     'stone_id'=>NULL,
                     'stone_sizes'=>$stone_sizes,
-                    'size_id'=>NULL,
+                    'stones_compare'=>$stones_compare,
+                    'stone_size_id'=>NULL,
                     'metals'=>$metals,
                     'metal_id'=>NULL,
                     'subtotal'=>'0.00',
-                    'subtotal_formatted'=>'$0.00'
+                    'subtotal_formatted'=>'$0.00',
+                    'shipping'=> 1
                 ];
                 array_push($selected, $row);
             }   
@@ -624,5 +629,17 @@ class InventoryItemController extends Controller
             'selected'=> $selected
         ]);
 
+    }
+
+    public function getTotals(Request $request, InventoryItem $inventoryItem)
+    {
+        $items = $request->items;
+
+        $totals = $inventoryItem->prepareTotalsFinish($items);
+
+        return response()->json([
+            'status'=>true,
+            'totals'=>$totals
+        ]);
     }
 }

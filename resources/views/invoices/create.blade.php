@@ -27,32 +27,27 @@
 	            		<label>Filter By Keywords</label>
 	            		<input type="text" v-model="itemName" class="form-control" @keydown.enter.prevent="searchInventoryItem"/>
 	            	</div>
-	            	<div class="row-fluid clearfix">
+	            	<div id="itemRow" class="row-fluid clearfix">
 	            		<label><span>@{{ searchInventoryCount }}</span> Results Found</label>
 	            		<div class="hidden-md-down" v-for="item in items">
 
 							<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 pull-left">
-								<bootstrap-card				
-									class=""
-									use-header="true"
-									use-img-top="true"
-									:img-top-src="item.primary_src"
-									use-body="true"
-									use-footer="true"
-								>
-									<template slot="header">@{{ item.name_short }}</template>
-									<template slot="body">
-										<p class="text-center">$@{{ item.subtotal }}</p>
-									</template>
-									<template slot="footer">
-										<div class="form-button-group">
+								<div class="card">
+								    <div class="card-header">
+								    	@{{ item.name_short }}
+								    </div>
+							        <img class="card-img-top" :src="item.primary_src" >    
+							        
+								    <div class="card-block">
+								    	<p class="text-center">$@{{ item.subtotal }}</p>
+								    </div>
+								    <div class="card-footer">
+								    	<div class="form-button-group">
 											<button class="remove-set btn btn-sm btn-block btn-success" type="button" @click="selectItem(item.id)">Select</button>
 										</div>
-									</template>
-								</bootstrap-card>
+								    </div>
+								</div>
 							</div>
-
-
 						</div>
 						<div class="hidden-lg-up" v-for="item in items">
 							<div class="media">
@@ -72,7 +67,12 @@
 
 			<template slot = "footer">
 				<a href="{{ route('invoice.index') }}" class="btn btn-secondary">Cancel</a>
-				<button type="button" class = "btn btn-primary pull-right" @click="next">Next</button>
+
+				<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepOne">Next</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepOne">Next</button>	
+
+				
 			</template>
 		</bootstrap-card>
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true" v-if="current == 2">
@@ -91,7 +91,7 @@
 											label="Quantity"
 										>
 											<template slot="control">
-												<select class="form-control" v-on:change="quantitySelected(okey,$event)">
+												<select class="form-control" v-on:change="quantitySelected(okey,$event)" v-model="option.quantity">
 													<option v-for="opt, key in option.quantity_select" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
 													<option v-for="opt, key in option.quantity_select" :value="key" >@{{ opt }}</option>
 												</select>
@@ -104,7 +104,7 @@
 											label="Ring Size"
 										>
 											<template slot="control">
-												<select class="form-control"  v-on:change="fingerSelected(okey,$event)">
+												<select class="form-control"  v-on:change="fingerSelected(okey,$event)" v-model="option.finger_id">
 													<option v-for="opt, key in option.fingers" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
 													<option v-for="opt, key in option.fingers" :value="key" >@{{ opt }}</option>
 												</select>
@@ -117,20 +117,22 @@
 											label="Stone Type"
 										>
 											<template slot="control">
-												<select class="form-control" :name="'item['+option.inventoryItem.id+'][stone_id]'" v-on:change="stoneSelected(okey, $event)">
+												<select class="form-control" :name="'item['+option.inventoryItem.id+'][stone_id]'" v-on:change="stoneSelected(okey, $event)" v-model="option.stone_id">
 													<option v-for="opt, key in option.stone_select" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
 													<option v-for="opt, key in option.stone_select" :value="key" else>@{{ opt }}</option>
 												</select>
 											</template>
 										</bootstrap-control>
 										<div v-if="option.inventoryItem.sizes">
-											<div v-for="size, stone_id in option.stone_sizes" v-if="option.stone_id == stone_id">
+
+											<div v-for="size, stone_id in option.stone_sizes" v-if="option.stones_compare[option.stone_id] == stone_id">
+
 												<bootstrap-control
 													use-label="true"
 													label="Stone Size"
 												>
 													<template slot="control">
-														<select class="form-control" v-on:change="sizeSelected(okey, $event)">
+														<select class="form-control" v-on:change="sizeSelected(okey, $event)" v-model="option.stone_size_id">
 															<option v-for="svalue, skey in size" :value="skey" v-if="skey == ''" checked>@{{ svalue }}</option>
 															<option v-for="svalue, skey in size" :value="skey" else>@{{ svalue }}</option>
 														</select>
@@ -147,7 +149,7 @@
 											label="Metal Type"
 										>
 											<template slot="control">
-												<select class="form-control" :name="'item['+option.inventoryItem.id+'][metal_id]'" v-on:change="metalSelected(okey, $event)">
+												<select class="form-control" :name="'item['+option.inventoryItem.id+'][metal_id]'" v-on:change="metalSelected(okey, $event)" v-model="option.metal_id">
 													<option v-for="opt, key in option.metals" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
 													<option v-for="opt, key in option.metals" :value="key" else>@{{ opt }}</option>
 												</select>
@@ -161,7 +163,7 @@
 											label="Subtotal"
 										>
 											<template slot="control">
-												<input :name="'item['+option.inventoryItem.id+'][subtotal]'" v-model="option.subtotal" class="form-control"/>
+												<input :name="'item['+option.inventoryItem.id+'][subtotal]'" v-model="option.subtotal" class="form-control" @blur="validation"/>
 											</template>
 										</bootstrap-control>
 									</div>
@@ -176,11 +178,36 @@
 	            	</div>
 					
 		        </div>
+		        <div class="table-responsive">
+		        	<h3 class="text-center">Totals</h3>
+		        	<table class="table table-condensed table-outline">
+		        		<tfoot>
+		        			<tr>
+		        				<td class="text-right">Quantity:&nbsp;</td>
+		        				<th>@{{ totals.quantity }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Subtotal:&nbsp;</td>
+		        				<th>@{{ totals.subtotal }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Tax:&nbsp;</td>
+		        				<th>@{{ totals.tax }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Total:&nbsp;</td>
+		        				<th>@{{ totals.total }}</th>
+		        			</tr>
+		        		</tfoot>
+		        	</table>
+		        </div>
 			</template>
 
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				<button type="button" class = "btn btn-primary pull-right" @click="next">Next</button>
+				<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepTwo">Next</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepTwo" @click="validation">Next</button>	
 			</template>
 		</bootstrap-card>
 
@@ -193,7 +220,7 @@
 	                    use-label = "true"
 	 					label = "First Name">
 	                    <template slot="control">
-	                    	<input type="text" required v-model="firstName" class="form-control"/>
+	                    	<input type="text" required v-model="firstName" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -202,7 +229,7 @@
 	                    use-label = "true"
 	 					label = "Last Name">
 	                    <template slot="control">
-	                    	<input type="text" required v-model="lastName" class="form-control"/>
+	                    	<input type="text" required v-model="lastName" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -211,7 +238,7 @@
 	                    use-label = "true"
 	 					label = "Phone">
 	                    <template slot="control">
-	                    	<input type="text" required v-model="phone" class="form-control"/>
+	                    	<input type="text" required v-model="phone" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -220,7 +247,7 @@
 	                    use-label = "true"
 	 					label = "Email">
 	                    <template slot="control">
-	                    	<input type="email" required v-model="email" class="form-control"/>
+	                    	<input type="email" required v-model="email" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -229,7 +256,7 @@
 	                    use-label = "true"
 	 					label = "Street">
 	                    <template slot="control">
-	                    	<input type="text" required v-model="street" class="form-control"/>
+	                    	<input type="text" required v-model="street" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 	                <!-- Suite -->
@@ -237,7 +264,7 @@
 	                    use-label = "true"
 	 					label = "Suite (optional)">
 	                    <template slot="control">
-	                    	<input type="text" v-model="suite" class="form-control"/>
+	                    	<input type="text" v-model="suite" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -246,7 +273,7 @@
 	                    use-label = "true"
 	 					label = "City">
 	                    <template slot="control">
-	                    	<input type="text" v-model="city" class="form-control"/>
+	                    	<input type="text" v-model="city" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -255,7 +282,7 @@
 	                    use-label = "true"
 	 					label = "State">
 	                    <template slot="control">
-	                    	{{ Form::select('',$states,'',['class'=>'form-control','v-model'=>'state']) }}
+	                    	{{ Form::select('',$states,'',['class'=>'form-control','v-model'=>'state','v-on:change'=>"validation"]) }}
 	                    </template>
 	                </bootstrap-control>
 
@@ -264,7 +291,16 @@
 	                    use-label = "true"
 	 					label = "Country">
 	                    <template slot="control">
-	                    	{{ Form::select('',$countries,'US',['class'=>'form-control','v-model'=>'country']) }}
+	                    	{{ Form::select('',$countries,'US',['class'=>'form-control','v-model'=>'country','v-on:change'=>"validation"]) }}
+	                    </template>
+	                </bootstrap-control>
+
+	                <!-- Zipcode -->
+	                <bootstrap-control class="form-group-no-border" 
+	                    use-label = "true"
+	 					label = "Zipcode">
+	                    <template slot="control">
+	                    	<input type="text" v-model="zipcode" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -273,7 +309,9 @@
 
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				<button type="button" class = "btn btn-primary pull-right" @click="next">Next</button>
+				<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepThree">Next</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepThree" @click="validation">Next</button>	
 			</template>
 		</bootstrap-card>
 
@@ -296,7 +334,7 @@
 	                    use-label = "true"
 	 					label = "Street">
 	                    <template slot="control">
-	                    	<input type="text" required v-model="billingStreet" class="form-control"/>
+	                    	<input type="text" required v-model="billingStreet" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 	                <!-- Suite -->
@@ -304,7 +342,7 @@
 	                    use-label = "true"
 	 					label = "Suite (optional)">
 	                    <template slot="control">
-	                    	<input type="text" v-model="billingSuite" class="form-control"/>
+	                    	<input type="text" v-model="billingSuite" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -313,7 +351,7 @@
 	                    use-label = "true"
 	 					label = "City">
 	                    <template slot="control">
-	                    	<input type="text" v-model="billingCity" class="form-control"/>
+	                    	<input type="text" v-model="billingCity" class="form-control" @blur="validation"/>
 	                    </template>
 	                </bootstrap-control>
 
@@ -335,12 +373,57 @@
 	                    </template>
 	                </bootstrap-control>
 
+	                <!-- Zipcode -->
+	                <bootstrap-control class="form-group-no-border" 
+	                    use-label = "true"
+	 					label = "Zipcode">
+	                    <template slot="control">
+	                    	<input type="text" class="form-control" v-model="billingZipcode" @blur="validation"/>
+	                    </template>
+	                </bootstrap-control>
+
+	                <hr/>
+					<div class="row-fluid">
+					<label>Shipping Type</label>
+	                    <div class="col-12">
+	                        
+	                        <label class="form-control-label">
+	                            <input type="radio" name="shipping" value="1" checked @click="updateShipping(1)">
+	                            &nbsp;Ground <small>(5-7 Business Days)</small>
+	                        </label>
+	                    </div>
+
+	                    <div class="col-12">
+	                        
+	                        <label class="form-control-label">
+	                            <input type="radio" name="shipping" value="2" @click="updateShipping(2)">
+	                            &nbsp;2 Day Air
+	                        </label>
+	                    </div>
+	                    <div class="col-12">
+	                        
+	                        <label class="form-control-label">
+	                            <input type="radio" name="shipping" value="3" @click="updateShipping(3)">
+	                            &nbsp;Next Day
+	                        </label>
+	                    </div>
+
+	                    <div class="col-12">
+	                        
+	                        <label class="form-control-label">
+	                            <input type="radio" name="shipping" value="4" @click="updateShipping(4)">
+	                            &nbsp;In-store Pickup
+	                        </label>
+	                    </div>
+	                </div>
+	                <hr/>
+
 	                <!-- card number -->
 	                <bootstrap-control class="form-group-no-border" 
 	                    use-label = "true"
 	 					label = "Card Number">
 	                    <template slot="control">
-	                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'cardNumber']) }}
+	                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'cardNumber','v-on:blur'=>'validation']) }}
 	                    </template>
 	                </bootstrap-control>
 
@@ -350,7 +433,7 @@
 		                    use-label = "true"
 		 					label = "Expiration Month">
 		                    <template slot="control">
-		                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expMonth']) }}
+		                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expMonth','v-on:blur'=>'validation']) }}
 		                    </template>
 		                </bootstrap-control>	
 		                <!-- expiration month -->
@@ -358,24 +441,85 @@
 		                    use-label = "true"
 		 					label = "Expiration Year">
 		                    <template slot="control">
-		                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expYear']) }}
+		                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expYear','v-on:blur'=>'validation']) }}
 		                    </template>
 		                </bootstrap-control>	
 	                </div>
-	                
-
 		        </div>
 		        <hr/>
-		        <button type="submit" class = "btn btn-success btn-block">Create</button>
+		        <h3 class="text-center">Totals</h3>
+		        <div class="table-responsive">
+		        	<table class="table table-condensed table-outline">
+		        		<tfoot>
+		        			<tr>
+		        				<td class="text-right">Quantity:&nbsp;</td>
+		        				<th>@{{ totals.quantity }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Subtotal:&nbsp;</td>
+		        				<th>@{{ totals.subtotal }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Tax:&nbsp;</td>
+		        				<th>@{{ totals.tax }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Shipping:&nbsp;</td>
+		        				<th>@{{ totals.shipping }}</th>
+		        			</tr>
+		        			<tr>
+		        				<td class="text-right">Total:&nbsp;</td>
+		        				<th>@{{ totals.total }}</th>
+		        			</tr>
+		        		</tfoot>
+		        	</table>
+		        </div>
 			</template>
-
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				
+				<button type="button" class = "btn btn-success pull-right" v-if="stepFour" @click="send" data-toggle="modal" data-target="#sendModal">Create</button>
+
+				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepFour">Create</button>	
 			</template>
 		</bootstrap-card>
 	{!! Form::close() !!}
 </div>
+@endsection
+@section('modals')
+<bootstrap-modal id="sendModal" b-size="modal-lg">
+	<template slot="header">Creating Invoice</template>
+	<template slot="body">
+		<div class="progress">
+			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
+		</div>	
+		<label>@{{ progress }}% Complete</label>
+		<ul>
+			<li class="text-muted" v-if="formStatusOne">Preparing form to create session...</li>
+			<li class="text-success" v-if="formStatusOne">Successfully created session!</li>
+			<li class="text-muted" v-if="formStatusThree">Authorizing Payment...</li>
+			<li class="text-success" v-if="formStatusFour">Successfully made payment transaction!</li>
+			<li class="text-muted" v-if="formStatusFive">Saving Invoice Information</li>
+			<li class="text-success" v-if="formStatusSix">Successfully saved invoice information!</li>
+			<li class="text-muted" v-if="formStatusSeven">Emailing Customer...</li>
+			<li class="text-success" v-if="formStatusEight">Successfully emailed Customer!</li>
+			<li class="text-muted" v-if="formStatusNine">Forgetting session and cleaning up form data...</li>
+			<li class="text-success" v-if="formStatusTen">Successfully completed all tasks!</li>
+		</ul>
+
+		<ul class="text-danger">
+			<li v-if="formErrorOne">Could not save session data. Please check your internet connection and try again.</li>
+			<li v-if="formErrorTwo">@{{ authorizationErrorMessage }}</li>
+			<li v-if="formErrorThree">Error saving invoice</li>
+			<li v-if="formErrorFour">Error Sending Email</li>
+			<li v-if="formErrorFour">Error removing session. Please manually press reset form to clear.</li>
+
+		</ul>
+		
+	</template>
+	<template slot="footer">
+		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	</template>
+</bootstrap-modal>
 @endsection
 @section('variables')
 <div id="variable-root"

@@ -205,6 +205,9 @@ class Invoice extends Model
                         case 3:
                             $details[$key]['status_html'] = '<span class="badge badge-success">Paid</span>';
                             break;
+                        default:
+                            $details[$key]['status_html'] = '<span class="badge badge-default">Complete</span>';
+                            break;
                     }
                 }
 
@@ -499,6 +502,9 @@ class Invoice extends Model
                         case 3:
                             $details[$key]['status_html'] = '<span class="badge badge-success">Paid</span>';
                             break;
+                        default:
+                            $details[$key]['status_html'] = '<span class="badge badge-success">Complete</span>';
+                            break;
                     }
                 }
 
@@ -509,7 +515,6 @@ class Invoice extends Model
                 }
             }
         }
-
         return $details;
     }
 

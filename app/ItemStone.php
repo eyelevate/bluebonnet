@@ -78,6 +78,19 @@ class ItemStone extends Model
         return $select;
     }
 
+    public function stonesCompare($data)
+    {
+        $compare = [];
+        if(isset($data)) {
+            foreach ($data as $key => $value) {
+                $compare[$value->id] = $value->stone_id;
+                
+            }
+        }
+
+        return $compare;
+    }
+
 
     public function prepareDataEdit($data)
     {

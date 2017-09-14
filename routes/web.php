@@ -27,6 +27,8 @@ Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
 Route::post('/finish', 'HomeController@finish')->name('home.finish');
 Route::post('/attempt-login', 'HomeController@attemptLogin')->name('home.attempt_login');
 Route::get('/thank-you', 'HomeController@thankYou')->name('home.thank_you');
+Route::get('/custom', 'HomeController@custom')->name('home.custom');
+Route::get('/contact', 'HomeController@contact')->name('home.contact');
 
 // collections
 Route::get('/collections/{collection}/show', 'CollectionController@show')->name('collection.show');
@@ -161,6 +163,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::patch('/inventory-items/{inventory_item}', 'InventoryItemController@update')->name('inventory_item.update');
     Route::post('/inventory-items/{inventory_item}/get-subtotal-admins', 'InventoryItemController@subtotalAdmin')->name('inventory_item.subtotal_admin');
     Route::post('/inventory-items/get-options', 'InventoryItemController@getOptions')->name('inventory_item.get_options');
+    Route::post('/inventory-items/get-totals', 'InventoryItemController@getTotals')->name('inventory_item.get_totals');
 
     // Invoices
     Route::get('/invoices', 'InvoiceController@index')->name('invoice.index');
@@ -174,6 +177,10 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
     Route::post('/invoices/{invoice}/send-email', 'InvoiceController@sendEmail')->name('invoice.email');
     Route::post('/invoices/reset', 'InvoiceController@reset')->name('invoice.reset');
+    Route::patch('/invoices/{invoice}/revert', 'InvoiceController@revert')->name('invoice.revert');
+    Route::post('/invoices/make-session', 'InvoiceController@makeSession')->name('invoice.make_session');
+    Route::post('/invoices/forget-session', 'InvoiceController@forgetSession')->name('invoice.forget_session');
+    Route::post('/invoices/authorize-payment', 'InvoiceController@authorizePayment')->name('invoice.authorize_payment');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');
     Route::get('/invoice-items/create', 'InvoiceItemController@create')->name('invoice_item.create');

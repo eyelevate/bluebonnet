@@ -17,10 +17,10 @@
                     <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CONTACT</a>
+                    <a class="nav-link" href="/contact">CONTACT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CUSTOM</a>
+                    <a class="nav-link" href="/custom">CUSTOM</a>
                 </li>
                 @if(auth()->check())
 
@@ -52,10 +52,10 @@
                         <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">CONTACT</a>
+                        <a class="nav-link" href="/contact">CONTACT</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">CUSTOM</a>
+                        <a class="nav-link" href="/custom">CUSTOM</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -95,10 +95,10 @@
                     <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CONTACT</a>
+                    <a class="nav-link" href="/contact">CONTACT</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">CUSTOM</a>
+                    <a class="nav-link" href="/custom">CUSTOM</a>
                 </li>
             </ul>
 
@@ -141,10 +141,10 @@
                 <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">CONTACT</a>
+                <a class="nav-link" href="/contact">CONTACT</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">CUSTOM</a>
+                <a class="nav-link" href="/custom">CUSTOM</a>
             </li>
         </ul>
         <ul class="navbar-nav">

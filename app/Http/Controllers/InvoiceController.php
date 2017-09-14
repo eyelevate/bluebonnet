@@ -43,6 +43,16 @@ class InvoiceController extends Controller
         return view('invoices.create',compact(['inventoryItems','states','countries']));
     }
 
+    public function makeSession(Request $request)
+    {
+
+    }
+
+    public function authorizePayment(Request $request)
+    {
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -52,6 +62,16 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function sendEmail(Request $request)
+    {
+
+    }
+
+    public function forgetSession(Request $request)
+    {
+        
     }
 
     /**
@@ -329,5 +349,12 @@ class InvoiceController extends Controller
         return response()->json([
             'status' => true
         ]);
+    }
+
+    public function revert(Request $request, Invoice $invoice) {
+        $status = 3;
+        $invoice->update(['status'=>$status]);
+        flash('successfully reverted invoice to paid')->success();
+        return redirect()->back();
     }
 }
