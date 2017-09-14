@@ -17,7 +17,6 @@ use Illuminate\Support\Facades\Auth;
 // Mail Test
 use Mail;
 use App\Mail\InvoiceUserOrder;
-use Mapper;
 
 class HomeController extends Controller
 {
@@ -36,8 +35,8 @@ class HomeController extends Controller
         $theme = 2;
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
-        $this->map = Mapper::map(32.9251348, -96.8153818, ['zoom' => 10, 'markers' => ['title' => 'My Location', 'animation' => 'DROP'], 'clusters' => ['size' => 10, 'center' => true, 'zoom' => 20]]);
         
+
     }
 
     /**
@@ -48,7 +47,7 @@ class HomeController extends Controller
     public function index(Instagram $instagram, Collection $collection, InventoryItem $inventoryItem)
     {
         $layout = $this->layout;
-        $map = $this->map;
+        
 
 
         // Instagram Images
@@ -65,7 +64,7 @@ class HomeController extends Controller
         // featured items (Randomly Selected)
         $items = $inventoryItem->where('featured', true)->where('active', true)->inRandomOrder()->take(2)->get();
         $featured_items = $inventoryItem->prepareForFrontend($items);
-        return view($this->view, compact(['layout','map','feed','featured_collection','featured_items']));
+        return view($this->view, compact(['layout','feed','featured_collection','featured_items']));
     }
 
     public function cart(InventoryItem $inventoryItem, ItemStone $itemStone)
