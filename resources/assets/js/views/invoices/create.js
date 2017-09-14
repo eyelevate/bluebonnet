@@ -27,6 +27,7 @@ const app = new Vue({
 		cardNumber:'',
 		expMonth:'',
 		expYear:'',
+		cvv:'',
 		sas: false,
 		totals: [],
 		stepOne: false,
@@ -50,6 +51,9 @@ const app = new Vue({
 		formErrorThree: false,
 		formErrorFour: false,
 		formErrorFive: false,
+		done: false,
+		formErrors: false,
+		authorizationErrorMessage: '',
 	},
 	methods: {
 		searchInventoryItem(){
@@ -77,12 +81,58 @@ const app = new Vue({
 			});
 		},
 		reset() {
-			// get the price subtotal with all options selected
-			axios.post('/invoices/reset').then(response => {
-				if (response.data.status) {
-					location.reload();
-				}
-			});
+			this.itemName= '';
+			this.searchInventoryCount= 0;
+			this.selectedItems= [];
+			this.selectedOptions= [];
+			this.items= [];
+			this.current=1;
+			this.firstName='';
+			this.lastName='';
+			this.phone='';
+			this.email='';
+			this.street='';
+			this.suite='';
+			this.city='';
+			this.state='TX';
+			this.country='US';
+			this.zipcode='';
+			this.billingStreet='';
+			this.billingSuite='';
+			this.billingCity='';
+			this.billingState='TX';
+			this.billingCountry='US';
+			this.billingZipcode='';
+			this.cardNumber='';
+			this.expMonth='';
+			this.expYear='';
+			this.cvv = '';
+			this.sas= false;
+			this.totals= [];
+			this.stepOne= false;
+			this.stepTwo= false;
+			this.stepThree= false;
+			this.stepFour= false;
+			this.shipping= 1;
+			this.progress= 0;
+			this.formStatusOne= false;
+			this.formStatusTwo= false;
+			this.formStatusThree= false;
+			this.formStatusFour= false;
+			this.formStatusFive= false;
+			this.formStatusSix= false;
+			this.formStatusSeven= false;
+			this.formStatusEight= false;
+			this.formStatusNine= false;
+			this.formStatusTen= false;
+			this.formErrorOne= false;
+			this.formErrorTwo= false;
+			this.formErrorThree= false;
+			this.formErrorFour= false;
+			this.formErrorFive= false;
+			this.done= false;
+			this.formErrors = false;
+			this.authorizationErrorMessage = '';
 		},
 		back() {
 			this.current -= 1;
@@ -278,7 +328,8 @@ const app = new Vue({
 				&& this.billingZipcode != ''
 				&& this.cardNumber != ''
 				&& this.expMonth != ''
-				&& this.expYear != '') {
+				&& this.expYear != ''
+				&& this.cvv != '') {
 				this.stepFour = true;
 			}
 
@@ -299,71 +350,157 @@ const app = new Vue({
 		makeSession() {
 			this.progress = 0;
 			this.formStatusOne = true;
-			axios.post('/invoices/make-session',{
-				'items': this.selectedOptions
-			}).then(response => {
-				if (response.data.status) {
-					this.progress = 10;
-					this.formStatusTwo = true;
-					this.authorizePayment();
-					
-				} else {
-					this.formErrorOne = true;
-				}
-			});
+			this.resetSendingForm();
+			try {
+				axios.post('/invoices/make-session',{
+					'selected_options': this.selectedOptions,
+					'first_name':this.firstName,
+					'last_name':this.lastName,
+					'phone':this.phone,
+					'email':this.email,
+					'street':this.street,
+					'suite':this.suite,
+					'city':this.city,
+					'state':this.state,
+					'country':this.country,
+					'zipcode':this.zipcode,
+					'billing_street':this.billingStreet,
+					'billing_suite':this.billingSuite,
+					'billing_city':this.billingCity,
+					'billing_state':this.billingState,
+					'billing_zipcode':this.billingZipcode,
+					'card_number':this.cardNumber,
+					'exp_month':this.expMonth,
+					'exp_year':this.expYear,
+					'cvv': this.cvv,
+					'item_name':this.itemName,
+					'search_inventory_count':this.searchInventoryCount,
+					'selected_items':this.selectedItems,
+					'items':this.items,
+					'current':this.current,
+					'sas':this.sas,
+					'totals':this.totals,
+					'shipping':this.shipping				
+				}).then(response => {
+					if (response.data.status) {
+						this.progress = 10;
+						this.formStatusTwo = true;
+						this.authorizePayment();
+						
+					} else {
+						this.formErrors = true;
+						this.formErrorOne = true;
+					}
+				});
+			} catch(e) {
+				this.formErrors = true;
+				this.formErrorOne = true;
+			}
+			
 		},
 		authorizePayment() {
 			this.progress = 20
 			this.formStatusThree = true;
-			axios.post('/invoices/authorize-payment').then(response => {
-				if (response.data.status) {
-					this.formStatusFour = true;
-					this.progress = 30;
-					this.store();
-				} else {
-					this.formErrorTwo = true;
-				}
-			});
+			try {
+				axios.post('/invoices/authorize-payment').then(response => {
+					if (response.data.status) {
+						this.formStatusFour = true;
+						this.progress = 30;
+						this.store();
+					} else {
+						this.formErrors = true;
+						this.formErrorTwo = true;
+						this.authorizationErrorMessage = response.data.message;
+					}
+				});
+			} catch(e) {
+				this.formErrors = true;
+				this.formErrorTwo = true;
+			}
+			
 		},
 		store() {
 			this.progress = 40;
 			this.formStatusFive = true;
-			axios.post('/invoices/store').then(response => {
-				if (response.data.status) {
-					this.formStatusSix = true;
-					this.progress = 50;
-					this.sendEmail();
-				} else {
-					this.formErrorThree = true;
-				}
-			});
+			try {
+				axios.post('/invoices/store').then(response => {
+					if (response.data.status) {
+						this.formStatusSix = true;
+						this.progress = 50;
+						this.sendEmail();
+					} else {
+						this.formErrors = true;
+						this.formErrorThree = true;
+					}
+				});
+			} catch(e) {
+				this.formErrors = true;
+				this.formErrorThree = true;
+			}
 		},
 		sendEmail() {
 			this.progress = 60;
 			this.formStatusSeven = true;
-			axios.post('/invoices/send-email').then(response => {
-				if (response.data.status) {
-					this.formStatusEight = true;
-					this.progress = 75;
-					this.forgetSession();
-				} else {
-					this.formErrorFour = true;
-				}
-			});
+			try {
+				axios.post('/invoices/push-email').then(response => {
+					if (response.data.status) {
+						this.formStatusEight = true;
+						this.progress = 75;
+						this.forgetSession();
+					} else {
+						this.formErrors = true;
+						this.formErrorFour = true;
+					}
+				});
+			} catch(e) {
+				// statements
+				this.formErrors = true;
+				this.formErrorFour = true;
+			}
+			
 		},
 		forgetSession() {
 			this.progress = 90;
 			this.formStatusNine = true;
-			axios.post('/invoices/forget-session').then(response => {
-				if (response.data.status) {
-					this.formStatusTen = true;
-					this.progress = 100;
-					// send user back to page
-				} else {
-					this.formErrorFive = true;
-				}
-			});
+			try {
+				axios.post('/invoices/forget-session').then(response => {
+					if (response.data.status) {
+						this.formStatusTen = true;
+						this.progress = 100;
+						this.done = true;
+						this.formErrors = false;
+						// send user back to page
+					} else {
+						this.formErrors = true;
+						this.formErrorFive = true;
 
+					}
+				});
+			} catch(e) {
+				this.formErrors = true;
+				this.formErrorFive = true;
+			}
+			
+
+		},
+		resetSendingForm() {
+			this.progress= 0;
+			this.formStatusOne= false;
+			this.formStatusTwo= false;
+			this.formStatusThree= false;
+			this.formStatusFour= false;
+			this.formStatusFive= false;
+			this.formStatusSix= false;
+			this.formStatusSeven= false;
+			this.formStatusEight= false;
+			this.formStatusNine= false;
+			this.formStatusTen= false;
+			this.formErrorOne= false;
+			this.formErrorTwo= false;
+			this.formErrorThree= false;
+			this.formErrorFour= false;
+			this.formErrorFive= false;
+			this.done= false;
 		}
 	},
 	computed: {

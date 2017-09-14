@@ -45,11 +45,92 @@ class InvoiceController extends Controller
 
     public function makeSession(Request $request)
     {
+        session()->put('cartBackend',[
+            'selectedOptions'=> $request->selected_options,
+            'firstName'=>$request->first_name,
+            'lastName'=>$request->last_name,
+            'phone'=>$request->phone,
+            'email'=>$request->email,
+            'street'=>$request->street,
+            'suite'=>$request->suite,
+            'city'=>$request->city,
+            'state'=>$request->state,
+            'country'=>$request->country,
+            'zipcode'=>$request->zipcode,
+            'billingStreet'=>$request->billing_street,
+            'billingSuite'=>$request->billing_suite,
+            'billingCity'=>$request->billing_city,
+            'billingState'=>$request->billing_state,
+            'billingZipcode'=>$request->billing_zipcode,
+            'cardNumber'=>$request->card_number,
+            'expMonth'=>$request->exp_month,
+            'expYear'=>$request->exp_year,
+            'cvv'=>$request->cvv,
+            'itemName'=>$request->item_name,
+            'searchInventoryCount'=>$request->search_inventory_count,
+            'selectedItems'=>$request->selected_items,
+            'items'=>$request->items,
+            'current'=>$request->current,
+            'sas'=>$request->sas,
+            'totals'=>$request->totals,
+            'shipping'=>$request->shipping 
 
+        ]);
+        return response()->json([
+            'status' => true
+        ]);
     }
 
-    public function authorizePayment(Request $request)
+    public function authorizePayment(Request $request, Authorize $authorize, Job $job)
     {
+        // Prepare all the variables required for saving
+        $cart = session()->get('cartBackend');
+        $totals = $cart['totals'];
+        $due = $totals['_total'];
+        $shipping = $cart['shipping'];
+        $customer = [
+            'id'=> NULL,
+            'first_name'=>trim($cart['firstName']),
+            'last_name'=>trim($cart['lastName']),
+            'email'=>trim($cart['email']),
+            'phone'=>trim($cart['phone']),
+            'street'=>trim($cart['street']),
+            'suite'=>trim($cart['suite']),
+            'city'=>trim($cart['city']),
+            'state'=>trim($cart['state']),
+            'zipcode'=>trim($cart['zipcode']),
+            'country'=>trim($cart['country']),
+            'billing_street'=>trim($cart['billingStreet']),
+            'billing_suite'=>trim($cart['billingSuite']),
+            'billing_city'=>trim($cart['billingCity']),
+            'billing_state'=>trim($cart['billingState']),
+            'billing_zipcode'=>trim($cart['billingZipcode']),
+            'comment'=>NULL,
+            'shipping'=>$shipping
+        ]; 
+        // Run this if we are running payments, basically if the email variable is false
+
+        $card = [
+            'card_number'=>$job->stripAllButNumbers($cart['cardNumber']),
+            'exp_month'=>$job->stripAllButNumbers($cart['expMonth']),
+            'exp_year'=>$job->stripAllButNumbers($cart['expYear']),
+            'cvv'=>$job->stripAllButNumbers($cart['cvv'])
+        ];
+
+        // Attempt to make the payment for the item
+        $result = $authorize->chargeCreditCard($due, $card, $customer);
+        
+        if  ($result['status']) { // Payment has been processed, proceed to save invoice
+            return response()->json([
+                'status' => true
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message'=>$result['error_message']
+            ]);
+        }
+
 
     }
 
@@ -61,17 +142,23 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return response()->json([
+            'status' => true
+        ]);
     }
 
-    public function sendEmail(Request $request)
+    public function pushEmail(Request $request)
     {
-
+        return response()->json([
+            'status' => true
+        ]);
     }
 
     public function forgetSession(Request $request)
     {
-        
+        return response()->json([
+            'status' => false
+        ]);
     }
 
     /**

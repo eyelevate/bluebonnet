@@ -181,6 +181,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/invoices/make-session', 'InvoiceController@makeSession')->name('invoice.make_session');
     Route::post('/invoices/forget-session', 'InvoiceController@forgetSession')->name('invoice.forget_session');
     Route::post('/invoices/authorize-payment', 'InvoiceController@authorizePayment')->name('invoice.authorize_payment');
+    Route::post('/invoices/push-email', 'InvoiceController@pushEmail')->name('invoice.push_email');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');
     Route::get('/invoice-items/create', 'InvoiceItemController@create')->name('invoice_item.create');

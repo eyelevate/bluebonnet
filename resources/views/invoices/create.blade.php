@@ -429,7 +429,7 @@
 
 	                <div class="row">
 	                	<!-- expiration month -->
-		                <bootstrap-control class="form-group-no-border col-6" 
+		                <bootstrap-control class="form-group-no-border col-xs-12 col-sm-6 col-md-6 col-lg-4" 
 		                    use-label = "true"
 		 					label = "Expiration Month">
 		                    <template slot="control">
@@ -437,11 +437,19 @@
 		                    </template>
 		                </bootstrap-control>	
 		                <!-- expiration month -->
-		                <bootstrap-control class="form-group-no-border col-6" 
+		                <bootstrap-control class="form-group-no-border col-xs-12 col-sm-6 col-md-6 col-lg-4" 
 		                    use-label = "true"
 		 					label = "Expiration Year">
 		                    <template slot="control">
 		                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expYear','v-on:blur'=>'validation']) }}
+		                    </template>
+		                </bootstrap-control>
+		                <!-- CVV -->
+		                <bootstrap-control class="form-group-no-border col-xs-12 col-sm-6 col-md-6 col-lg-4" 
+		                    use-label = "true"
+		 					label = "CVV">
+		                    <template slot="control">
+		                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'cvv','v-on:blur'=>'validation']) }}
 		                    </template>
 		                </bootstrap-control>	
 	                </div>
@@ -477,7 +485,7 @@
 			</template>
 			<template slot = "footer">
 				<button type="button" class="btn btn-secondary" @click="back">Back</a>
-				<button type="button" class = "btn btn-success pull-right" v-if="stepFour" @click="send" data-toggle="modal" data-target="#sendModal">Create</button>
+				<button type="button" class = "btn btn-success pull-right" v-if="stepFour" @click="makeSession" data-toggle="modal" data-target="#sendModal">Create</button>
 
 				<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepFour">Create</button>	
 			</template>
@@ -489,8 +497,11 @@
 <bootstrap-modal id="sendModal" b-size="modal-lg">
 	<template slot="header">Creating Invoice</template>
 	<template slot="body">
-		<div class="progress">
+		<div class="progress" v-if="!done">
 			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
+		</div>
+		<div class="progress" v-if="done">
+			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>	
 		<label>@{{ progress }}% Complete</label>
 		<ul>
@@ -498,7 +509,7 @@
 			<li class="text-success" v-if="formStatusOne">Successfully created session!</li>
 			<li class="text-muted" v-if="formStatusThree">Authorizing Payment...</li>
 			<li class="text-success" v-if="formStatusFour">Successfully made payment transaction!</li>
-			<li class="text-muted" v-if="formStatusFive">Saving Invoice Information</li>
+			<li class="text-muted" v-if="formStatusFive">Saving Invoice Information...</li>
 			<li class="text-success" v-if="formStatusSix">Successfully saved invoice information!</li>
 			<li class="text-muted" v-if="formStatusSeven">Emailing Customer...</li>
 			<li class="text-success" v-if="formStatusEight">Successfully emailed Customer!</li>
@@ -518,6 +529,7 @@
 	</template>
 	<template slot="footer">
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Try Again</button>
 	</template>
 </bootstrap-modal>
 @endsection
