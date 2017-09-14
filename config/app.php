@@ -169,6 +169,12 @@ return [
         Laravel\Tinker\TinkerServiceProvider::class,
         Laravel\Passport\PassportServiceProvider::class,
 
+
+        /*
+         * Google Map Service Providers...
+         */
+        Cornford\Googlmapper\MapperServiceProvider::class,
+        'GoogleMaps\ServiceProvider\GoogleMapsServiceProvider',
         /*
          * Application Service Providers...
          */
@@ -234,7 +240,9 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
-        'Intervention' => Intervention\Image\Facades\Image::class
+        'Intervention' => Intervention\Image\Facades\Image::class,
+        'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
+        'GoogleMaps' => 'GoogleMaps\Facade\GoogleMapsFacade'
     ],
 
 ];

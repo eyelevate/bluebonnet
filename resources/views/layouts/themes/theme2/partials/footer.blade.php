@@ -19,11 +19,14 @@
                     <li class="col-12 text-center">{{ ucFirst($company->city) }}, {{ strtoupper($company->state) }} {{ $company->zipcode }}</li>
                     <li class="col-12 text-center">{{ $company->phone }}</li>
                     <li class="col-12 text-center">contact@bluebonnet.com</li>
-                    <li class="col-12 text-center"><a class="btn btn-sm btn-primary">map</a></li> 
-                    <li class="col-12 text-center"></li>
+                    <li class="col-12 text-center">
+                        <button type="button" data-toggle="modal" data-target="#map" class="btn btn-sm btn-primary">map</button>
+                    </li> 
+                    <li class="col-12 text-center">  
+                  </li>
                 </ul>
             </div>
-
+    
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <ul>
                     <li class="col-12 text-center"><h5 class="text-center"><strong>Follow Us</strong></h5></li>
@@ -45,4 +48,5 @@
           </ul>
         </div>
     </div>
+
 </footer>

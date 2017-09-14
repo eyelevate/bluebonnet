@@ -42,6 +42,28 @@
             <!-- End Content -->
             <!-- Start Modals -->
             @yield('modals')
+            <div class="modal fade modal-lg"  tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" id="map">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Location</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            {{-- <div  style="width: 100%; height: 100%;"> --}}
+                                {{-- {!! Mapper::render() !!} --}}
+                            {{-- </div> --}}
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- End Modals -->
             <!-- Start Footer -->
             @include('layouts.themes.theme2.partials.footer')
