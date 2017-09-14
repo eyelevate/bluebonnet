@@ -614,11 +614,12 @@ class InventoryItemController extends Controller
                     'stone_id'=>NULL,
                     'stone_sizes'=>$stone_sizes,
                     'stones_compare'=>$stones_compare,
-                    'size_id'=>NULL,
+                    'stone_size_id'=>NULL,
                     'metals'=>$metals,
                     'metal_id'=>NULL,
                     'subtotal'=>'0.00',
-                    'subtotal_formatted'=>'$0.00'
+                    'subtotal_formatted'=>'$0.00',
+                    'shipping'=> 1
                 ];
                 array_push($selected, $row);
             }   
@@ -628,5 +629,17 @@ class InventoryItemController extends Controller
             'selected'=> $selected
         ]);
 
+    }
+
+    public function getTotals(Request $request, InventoryItem $inventoryItem)
+    {
+        $items = $request->items;
+
+        $totals = $inventoryItem->prepareTotalsFinish($items);
+
+        return response()->json([
+            'status'=>true,
+            'totals'=>$totals
+        ]);
     }
 }

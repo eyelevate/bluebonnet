@@ -43,6 +43,16 @@ class InvoiceController extends Controller
         return view('invoices.create',compact(['inventoryItems','states','countries']));
     }
 
+    public function makeSession(Request $request)
+    {
+
+    }
+
+    public function authorizePayment(Request $request)
+    {
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -52,6 +62,16 @@ class InvoiceController extends Controller
     public function store(Request $request)
     {
         //
+    }
+
+    public function sendEmail(Request $request)
+    {
+
+    }
+
+    public function forgetSession(Request $request)
+    {
+        
     }
 
     /**

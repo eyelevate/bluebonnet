@@ -408,6 +408,7 @@ class InventoryItem extends Model
         return $totals;        
     }
 
+
     public function prepareTotalsAdmin($data)
     {
         $totals = [
