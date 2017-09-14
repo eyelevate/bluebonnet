@@ -17,13 +17,14 @@ use Illuminate\Support\Facades\Auth;
 // Mail Test
 use Mail;
 use App\Mail\InvoiceUserOrder;
+use Mapper;
 
 class HomeController extends Controller
 {
-
     private $layout;
     private $view;
     private $instagram;
+    private $map;
 
     /**
      * Create a new controller instance.
@@ -35,6 +36,7 @@ class HomeController extends Controller
         $theme = 2;
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
+        $this->map = Mapper::map(32.9251348, -96.8153818, ['zoom' => 10, 'markers' => ['title' => 'My Location', 'animation' => 'DROP'], 'clusters' => ['size' => 10, 'center' => true, 'zoom' => 20]]);
     }
 
     /**
@@ -45,23 +47,23 @@ class HomeController extends Controller
     public function index(Instagram $instagram, Collection $collection, InventoryItem $inventoryItem)
     {
         $layout = $this->layout;
+        $map = $this->map;
 
         // Instagram Images
         $ig = $instagram->getUserFeed(12, 0, 2);
         $feed = [];
         if ($ig['status']) {
             $feed = $ig['data'];
-
         } else {
             flash($ig['data'])->warning();
-        }  
+        }
 
         // featured collection (Randomly Selected)
-        $featured_collection = $collection->where('featured',true)->where('active',true)->inRandomOrder()->first();
+        $featured_collection = $collection->where('featured', true)->where('active', true)->inRandomOrder()->first();
         // featured items (Randomly Selected)
-        $items = $inventoryItem->where('featured',true)->where('active',true)->inRandomOrder()->take(2)->get();
+        $items = $inventoryItem->where('featured', true)->where('active', true)->inRandomOrder()->take(2)->get();
         $featured_items = $inventoryItem->prepareForFrontend($items);
-        return view($this->view,compact(['layout','feed','featured_collection','featured_items']));
+        return view($this->view, compact(['layout','map','feed','featured_collection','featured_items']));
     }
 
     public function cart(InventoryItem $inventoryItem, ItemStone $itemStone)
@@ -109,9 +111,8 @@ class HomeController extends Controller
 
     public function shop(Collection $collection)
     {
-        
-        $nonfeatured = $collection->where('active', true)->where('featured',false)->orderBy('id','desc');
-        $collections = $collection->where('featured',true)->where('active',true)->union($nonfeatured)->get();
+        $nonfeatured = $collection->where('active', true)->where('featured', false)->orderBy('id', 'desc');
+        $collections = $collection->where('featured', true)->where('active', true)->union($nonfeatured)->get();
         $layout = $this->layout;
         return view('home.shop', compact(['layout','collections']));
     }
@@ -158,13 +159,13 @@ class HomeController extends Controller
     public function updateShipping(Request $request, InventoryItem $inventoryItem)
     {
         $cart = session()->get('cart');
-        if(count($cart) > 0) {
+        if (count($cart) > 0) {
             foreach ($cart as $key => $value) {
                 $cart[$key]['shipping'] = $request->shipping;
             }
         }
         
-        session()->put('cart',$cart);
+        session()->put('cart', $cart);
 
         $totals = $inventoryItem->prepareTotals($cart);
 
@@ -177,13 +178,13 @@ class HomeController extends Controller
     public function updateShippingFinish(Request $request, InventoryItem $inventoryItem)
     {
         $cart = session()->get('cart');
-        if(count($cart) > 0) {
+        if (count($cart) > 0) {
             foreach ($cart as $key => $value) {
                 $cart[$key]['shipping'] = $request->shipping;
             }
         }
         
-        session()->put('cart',$cart);
+        session()->put('cart', $cart);
 
         $totals = $inventoryItem->prepareTotalsFinish($cart);
 
@@ -250,14 +251,14 @@ class HomeController extends Controller
             $shipment->addPackage($package);
             $rates = $rate->getRate($shipment);
             $total_rate = ['rate'=>0,'rate_formatted'=>'$0.00'];
-            if(count($rates) > 0) {
+            if (count($rates) > 0) {
                 foreach ($rates as $key => $value) {
                     $ratedShipment = $value;
                     if (count($ratedShipment) > 0) {
                         foreach ($ratedShipment as $rs) {
                             $totalCharges = $rs->TotalCharges->MonetaryValue;
                             $total_rate['rate'] = $totalCharges;
-                            $total_rate['rate_formatted'] = '$'.number_format($totalCharges,2,'.',',');
+                            $total_rate['rate_formatted'] = '$'.number_format($totalCharges, 2, '.', ',');
                         }
                     }
                 }
@@ -269,9 +270,6 @@ class HomeController extends Controller
         } catch (Exception $e) {
             return response()->json(['status'=>false,'reason'=>$e]);
         }
-
-        
-
     }
 
     public function finish(Request $request, Authorize $authorize, Job $job, InventoryItem $inventoryItem, User $user, Invoice $invoice, Company $company, InvoiceItem $invoiceItem, ItemStone $itemStone)
@@ -319,7 +317,7 @@ class HomeController extends Controller
         $due = $totals['_total'];
         $shipping = $request->shipping;
         $customer = [
-            'id'=>(auth()->check()) ? auth()->user()->id : NULL,
+            'id'=>(auth()->check()) ? auth()->user()->id : null,
             'first_name'=>trim($request->first_name),
             'last_name'=>trim($request->last_name),
             'email'=>trim($request->email),
@@ -335,9 +333,9 @@ class HomeController extends Controller
             'billing_city'=>$request->billing_city,
             'billing_state'=>$request->billing_state,
             'billing_zipcode'=>$request->billing_zipcode,
-            'comment'=>NULL,
+            'comment'=>null,
             'shipping'=>$shipping
-        ]; 
+        ];
 
 
 
@@ -355,7 +353,7 @@ class HomeController extends Controller
             // Attempt to make the payment for the item
             $result = $authorize->chargeCreditCard($due, $card, $customer);
             
-            if  ($result['status']) { // Payment has been processed, proceed to save invoice
+            if ($result['status']) { // Payment has been processed, proceed to save invoice
 
 
                 // save the invoice
@@ -363,20 +361,17 @@ class HomeController extends Controller
                 
                 if ($new_invoice) {
                     // successfully saved invoice now saving invoice items
-                    $new_items = $invoiceItem->newInvoiceItems($new_invoice,$cart);
+                    $new_items = $invoiceItem->newInvoiceItems($new_invoice, $cart);
                     if ($new_items) {
                         // Send Email
-                        try{
+                        try {
                             Mail::to($customer['email'])->send(new InvoiceUserOrder($new_invoice, $company_info, $email));
                             // All Done
-                            flash('Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!')->success();   
-                        } catch(\Exception $e) {
+                            flash('Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!')->success();
+                        } catch (\Exception $e) {
                             flash("The invoice has been paid and properly saved. However, there was an error saving items from your cart. Please call us at {$job->formatPhone($company_info->phone)} to remedy this error. We are sorry for the inconvenience.")->warning();
                         }
-                        
-
                     } else { // error saving invoice items
-                        
                     }
 
                     // last but not least send user to thank you page
@@ -393,17 +388,16 @@ class HomeController extends Controller
 
             if ($new_invoice) {
                 // successfully saved invoice now saving invoice items
-                $new_items = $invoiceItem->newInvoiceItems($new_invoice,$cart);
+                $new_items = $invoiceItem->newInvoiceItems($new_invoice, $cart);
                 if ($new_items) {
-                     // Send Email
-                    try{
+                    // Send Email
+                    try {
                         Mail::to($customer['email'])->send(new InvoiceUserOrder($new_invoice, $company_info, $email));
                         // All Done
-                        flash('Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!')->success()->important();   
-                    } catch(\Exception $e) {
+                        flash('Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!')->success()->important();
+                    } catch (\Exception $e) {
                         flash("The invoice has been paid and properly saved. However, there was an error saving items from your cart. Please call us at {$job->formatPhone($company_info->phone)} to remedy this error. We are sorry for the inconvenience.")->warning()->important();
                     }
-
                 } else { // error saving invoice items
                     flash("The invoice has been paid and properly saved. However, there was an error saving items from your cart. Please call us at {$job->formatPhone($company_info->phone)} to remedy this error. We are sorry for the inconvenience.")->warning()->important();
                 }
@@ -422,7 +416,7 @@ class HomeController extends Controller
         // remove the session data
         $cart = session()->pull('cart');
         $layout = $this->layout;
-        return view('home.thank_you',compact(['layout','cart']));
+        return view('home.thank_you', compact(['layout','cart']));
     }
 
     public function attemptLogin(Request $request)
@@ -432,7 +426,7 @@ class HomeController extends Controller
         $rememberToken = $request->remember;
 
         // Attempt login if successful then return true status and refresh the page so auth data can autofill form
-        if (Auth::attempt(['email'=>$email,'password'=>$password],$rememberToken)) {
+        if (Auth::attempt(['email'=>$email,'password'=>$password], $rememberToken)) {
             return response()->json([
                 'status'=>true
             ]);
