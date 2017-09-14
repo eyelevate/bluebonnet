@@ -87,7 +87,8 @@ mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/in
 
 // invoices
 mix.js('resources/assets/js/views/invoices/finish.js','public/js/views/invoices')
-   .js('resources/assets/js/views/invoices/create.js','public/js/views/invoices');
+   .js('resources/assets/js/views/invoices/create.js','public/js/views/invoices')
+   .js('resources/assets/js/views/invoices/edit.js','public/js/views/invoices');
 // invoice items
 mix.js('resources/assets/js/views/invoice_items/edit.js','public/js/views/invoice_items');
 

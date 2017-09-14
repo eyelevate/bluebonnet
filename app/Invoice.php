@@ -6,6 +6,10 @@ use App\Job;
 use App\User;
 use App\Invoice;
 use App\Tax;
+use App\InventoryItem;
+use App\Stone;
+use App\Finger;
+use App\Metal;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -633,6 +637,61 @@ class Invoice extends Model
         }
 
         return $payment_type;
+    }
+
+    public function makeSessionRow($data)
+    {
+        $selected_items = [];
+        $invoice_items = $data->invoiceItems;
+        
+        if(count($invoice_items) > 0) {
+            foreach ($invoice_items as $item) {
+                array_push($selected_items, $item->inventory_item_id);
+            }
+        }
+
+
+        $inventoryItem = new InventoryItem();
+        $stone = new Stone();
+        $finger = new Finger();
+        $totals = $inventoryItem->prepareTotalsAdmin($data);
+        $inventoryItems = $inventoryItem->prepareForShowInventory($inventoryItem->whereIn('id',$selected_items)->get());
+        $fingers = $finger->prepareSelect($finger->all());
+        $stones = $stone->all();
+        $options = $inventoryItem->makeOptions($invoice_items,$fingers,$stones,$selected_items);
+
+        return [
+            'selectedOptions'=> $options,
+            'firstName'=>($data->users) ? $data->users->first_name : $data->first_name,
+            'lastName'=>($data->users) ? $data->users->last_name : $data->last_name,
+            'phone'=>($data->users) ? $data->users->phone: $data->phone,
+            'email'=>($data->users) ? $data->users->email : $data->email,
+            'street'=>($data->users) ? $data->users->street : $data->street,
+            'suite'=>($data->users) ? $data->users->suite : $data->suite,
+            'city'=>($data->users) ? $data->users->city : $data->city,
+            'state'=>($data->users) ? $data->users->state : $data->state,
+            'country'=>($data->users) ? $data->users->country : $data->country,
+            'zipcode'=>($data->users) ? $data->users->zipcode : $data->zipcode,
+            'billingStreet'=>$data->billing_street,
+            'billingSuite'=>$data->billing_suite,
+            'billingCity'=>$data->billing_city,
+            'billingState'=>$data->billing_state,
+            'billingZipcode'=>$data->billing_zipcode,
+            'billingCountry'=>$data->billing_country,
+            'cardNumber'=>'',
+            'expMonth'=>$data->exp_month,
+            'expYear'=>$data->exp_year,
+            'cvv'=>'',
+            'itemName'=>'',
+            'searchInventoryCount'=>0,
+            'selectedItems'=>$selected_items,
+            'items'=>[],
+            'current'=>2,
+            'sas'=>false,
+            'totals'=>$totals,
+            'shipping'=>$data->shipping 
+
+        ];
     }
 
     public static function countInvoices()

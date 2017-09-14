@@ -7,7 +7,7 @@ const app = new Vue({
 		selectedItems: [],
 		selectedOptions: [],
 		items: [],
-		current:1,
+		current:2,
 		firstName:'',
 		lastName:'',
 		phone:'',
@@ -88,7 +88,7 @@ const app = new Vue({
 			this.selectedItems= [];
 			this.selectedOptions= [];
 			this.items= [];
-			this.current=1;
+			this.current=2;
 			this.firstName='';
 			this.lastName='';
 			this.phone='';
@@ -544,6 +544,30 @@ var vars = new Vue({
 	mounted: function mounted() {
 		app.items = JSON.parse(this.$el.attributes.items.value);
 		app.searchInventoryCount = app.items.length;
+		app.firstName = this.$el.attributes.firstName.value;
+		app.lastName = this.$el.attributes.lastName.value;
+		app.phone = this.$el.attributes.phone.value;
+		app.email = this.$el.attributes.email.value;
+		app.street = this.$el.attributes.street.value;
+		app.suite = this.$el.attributes.suite.value;
+		app.city = this.$el.attributes.city.value;
+		app.state = this.$el.attributes.state.value;
+		app.country = this.$el.attributes.country.value;
+		app.zipcode = this.$el.attributes.zipcode.value;
+		app.billingStreet = this.$el.attributes.billingStreet.value;
+		app.billingSuite = this.$el.attributes.billingSuite.value;
+		app.billingCity = this.$el.attributes.billingCity.value;
+		app.billingState = this.$el.attributes.billingState.value;
+		app.billingCountry = this.$el.attributes.billingCountry.value;
+		app.billingZipcode = this.$el.attributes.billingZipcode.value;
+		app.expMonth = this.$el.attributes.expMonth.value;
+		app.expYear = this.$el.attributes.expYear.value;
+		app.selectedOptions = JSON.parse(this.$el.attributes.selectedOptions.value);
+		app.selectedItems = JSON.parse(this.$el.attributes.selectedItems.value);
+		app.shipping = this.$el.attributes.shipping.value;
+		app.totals = JSON.parse(this.$el.attributes.totals.value);
+		app.searchInventoryItem();
+		app.validation();
 	}
 });
 
@@ -554,7 +578,6 @@ $(document).ready(function(){
 
 invoices = {
 	pageLoad(){
-
 	},
 	events: function(){
 	},

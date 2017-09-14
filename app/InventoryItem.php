@@ -7,6 +7,7 @@ use App\Stone;
 use App\Finger;
 use App\Metal;
 use App\Job;
+use App\ItemMetal;
 use App\ItemStone;
 use App\ItemSize;
 use App\Tax;
@@ -441,6 +442,17 @@ class InventoryItem extends Model
                     $data->itemMetal[$key]['name'] = $value->metals->name;
                 }
             }
+            if ($data->images) {
+
+
+                $primary_img = $data->images()->where('primary',true)->first();
+                $primary_src = ($primary_img) ? $primary_img->img_src : null;
+                
+                $non_primary_imgs = $data->images()->where('primary',false)->orderBy('ordered','asc')->get();
+                $data['primary_src'] = asset(str_replace('public/','storage/',$primary_src));
+                $data['non_primary_imgs'] = $non_primary_imgs;
+
+            }
         }
         return $data;
     }   
@@ -638,6 +650,45 @@ class InventoryItem extends Model
         }
 
         return $inventories;
+    }
+
+    public function makeOptions($invoiceItems,$fingers,$stones,$ids)
+    {
+        $selected = [];
+        $itemStone = new ItemStone();
+        $itemSize = new ItemSize();
+        $itemMetal = new ItemMetal();
+        if(count($invoiceItems) > 0) {
+            foreach ($invoiceItems as $item) {
+
+                $stone_select = $itemStone->prepareSelect($item->inventoryItem->itemStone);
+                $stone_sizes = $itemSize->prepareSelect($item->inventoryItem);
+                $metals = $itemMetal->prepareSelect($item->inventoryItem->itemMetal);
+                $stones_compare = $itemStone->stonesCompare($item->inventoryItem->itemStone);
+                $row = [
+                    'quantity_select'=>[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],
+                    'quantity'=>$item->quantity,
+                    'fingers'=>$fingers,
+                    'finger_id'=>$item->finger_id,
+                    'stones'=>($item->inventoryItem->stones) ? true : false,
+                    'inventoryItem'=>$this->prepareDataSingle($item->inventoryItem),
+                    'stone_select'=>$stone_select,
+                    'stone_id'=>$item->item_stone_id,
+                    'stone_sizes'=>$stone_sizes,
+                    'stones_compare'=>$stones_compare,
+                    'stone_size_id'=>$item->item_size_id,
+                    'metals'=>$metals,
+                    'metal_id'=>$item->item_metal_id,
+                    'subtotal'=>$item->subtotal,
+                    'subtotal_formatted'=>'$'.number_format($item->subtotal,2,'.',','),
+                    'shipping'=> 1
+                ];
+                array_push($selected, $row);
+            }
+        }
+
+
+        return $selected;
     }
 
 

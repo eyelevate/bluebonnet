@@ -122,7 +122,8 @@ class InvoiceController extends Controller
         
         if  ($result['status']) { // Payment has been processed, proceed to save invoice
             return response()->json([
-                'status' => true
+                'status' => true,
+                'result'=>$result
             ]);
         } else {
             return response()->json([
@@ -140,24 +141,115 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, InvoiceItem $invoiceItem, InventoryItem $inventoryItem, ItemStone $itemStone, Job $job, Invoice $invoice)
     {
+        $result = $request->result;
+        $cart = session()->get('cartBackend');
+        $email = $itemStone->checkEmailAll($cart['selectedOptions']);
+        $customer = [
+            'id'=> NULL,
+            'first_name'=>trim($cart['firstName']),
+            'last_name'=>trim($cart['lastName']),
+            'email'=>trim($cart['email']),
+            'phone'=>trim($cart['phone']),
+            'street'=>trim($cart['street']),
+            'suite'=>trim($cart['suite']),
+            'city'=>trim($cart['city']),
+            'state'=>trim($cart['state']),
+            'zipcode'=>trim($cart['zipcode']),
+            'country'=>trim($cart['country']),
+            'billing_street'=>trim($cart['billingStreet']),
+            'billing_suite'=>trim($cart['billingSuite']),
+            'billing_city'=>trim($cart['billingCity']),
+            'billing_state'=>trim($cart['billingState']),
+            'billing_zipcode'=>trim($cart['billingZipcode']),
+            'comment'=>NULL,
+            'shipping'=>$cart['shipping']
+        ]; 
+        $totals = $cart['totals'];
+        $card = [
+            'card_number'=>$job->stripAllButNumbers($cart['cardNumber']),
+            'exp_month'=>$job->stripAllButNumbers($cart['expMonth']),
+            'exp_year'=>$job->stripAllButNumbers($cart['expYear']),
+            'cvv'=>$job->stripAllButNumbers($cart['cvv'])
+        ];
+        $new_invoice = $invoice->newInvoice($totals, $customer, $result, $card);
+        if($new_invoice) {
+            $inventoryItem = new InventoryItem();
+            $count_cart = count($cart['selectedOptions']);
+            if (count($cart['selectedOptions']) > 0) {
+                foreach ($cart['selectedOptions'] as $item) {
+                    $ii = $item['inventoryItem'];
+                    $invItemObject = $inventoryItem->find($ii['id']);
+                    $quantity = $item['quantity'];
+                    $item_size_id = (!$email) ? ($ii['sizes']) ? $item['stone_size_id'] : NULL : NULL;
+                    $item_metal_id = ($ii['metals']) ? $item['metal_id'] : NULL;
+                    $item_stone_id = ($ii['stones']) ? $item['stone_id'] : NULL;
+                    $item_finger_id = ($ii['fingers']) ? $item['finger_id'] : NULL;
+                    $subtotal = $item['subtotal'];
+
+                    $invoice_item = new InvoiceItem();
+                    $invoice_item->invoice_id = $new_invoice->id;
+                    $invoice_item->inventory_item_id = $invItemObject->id;
+                    $invoice_item->quantity = $quantity;
+                    $invoice_item->subtotal = ($subtotal) ? $subtotal : 0;
+                    $invoice_item->item_metal_id = $item_metal_id;
+                    $invoice_item->item_stone_id = $item_stone_id;
+                    $invoice_item->finger_id = $item_finger_id;
+                    $invoice_item->item_size_id = $item_size_id;
+                    if($invoice_item->save()) {
+                        $count_cart--;
+                    }
+
+                    
+                }
+            }
+
+            if ($count_cart == 0) {
+                return response()->json([
+                    'status' => true,
+                    'new_invoice'=>$new_invoice
+                ]);
+            }
+        }
+
         return response()->json([
-            'status' => true
+            'status' => false
         ]);
+        
     }
 
-    public function pushEmail(Request $request)
+    public function pushEmail(Request $request, Company $company, ItemStone $itemStone, Invoice $invoice)
     {
+        $cart = session()->get('cartBackend');
+        $email_address = $request->email_address;
+        $email = $itemStone->checkEmailAll($cart['selectedOptions']);
+        $inv = $request->new_invoice;
+        $new_invoice = $invoice->find($inv['id']);
+        $company_info = $company->find(1);
+        // Send Email
+        try {
+            Mail::to($email_address)->send(new InvoiceUserOrder($new_invoice, $company_info, $email));
+            // All Done
+            $status = true;
+            $message = 'Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!';
+        } catch (\Exception $e) {
+            $status = false;
+            $message = "The invoice has been paid and properly saved. However, there was an error saving items from your cart. try sending the email again.";
+        }
+
         return response()->json([
-            'status' => true
+            'status' => $status,
+            'message' => $message
         ]);
+        
     }
 
     public function forgetSession(Request $request)
     {
+        session()->forget('cartBackend');
         return response()->json([
-            'status' => false
+            'status' => true
         ]);
     }
 
@@ -178,9 +270,14 @@ class InvoiceController extends Controller
      * @param  \App\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function edit(Invoice $invoice)
+    public function edit(Invoice $invoice, InventoryItem $ii, Job $job)
     {
-        //
+        $invoices = $invoice->makeSessionRow($invoice);
+
+        $states = $job->prepareStates();
+        $countries = $job->prepareCountries();
+        $inventoryItems = $ii->prepareForShowInventory($ii->orderBy('name','asc')->get());
+        return view('invoices.edit',compact(['invoices','inventoryItems','states','countries']));
     }
 
     /**

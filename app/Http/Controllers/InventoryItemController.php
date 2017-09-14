@@ -595,8 +595,9 @@ class InventoryItemController extends Controller
         $inventoryItems = $inventoryItem->prepareForShowInventory($inventoryItem->whereIn('id',$ids)->get());
         $fingers = $finger->prepareSelect($finger->all());
         $stones = $stone->all();
-        
+     
         $selected = [];
+
         if (count($inventoryItems) > 0) {
             foreach ($inventoryItems as $item) {
                 $stone_select = $itemStone->prepareSelect($item->itemStone);
