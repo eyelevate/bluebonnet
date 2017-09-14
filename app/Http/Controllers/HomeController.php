@@ -23,7 +23,6 @@ class HomeController extends Controller
     private $layout;
     private $view;
     private $instagram;
-    private $map;
 
     /**
      * Create a new controller instance.
@@ -35,8 +34,6 @@ class HomeController extends Controller
         $theme = 2;
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
-        
-
     }
 
     /**
@@ -128,12 +125,6 @@ class HomeController extends Controller
     {
         $layout = $this->layout;
         return view('home.custom', compact(['layout']));
-    }
-
-    public function contact()
-    {
-        $layout = $this->layout;
-        return view('home.contact', compact(['layout']));
     }
 
 
