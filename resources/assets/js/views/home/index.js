@@ -31,6 +31,14 @@ home = {
 		$grid.imagesLoaded().progress( function() {
 			$grid.masonry('layout');
 		});
+
+		// google map
+		$('#map').on('shown.bs.modal', function () {
+		    var map = maps[0].map;
+		    var currentCenter = map.getCenter();
+		    google.maps.event.trigger(map, "resize");
+		    map.setCenter(currentCenter);
+		});
 	},
 	events: function(){
 		$('img.lazy').lazyload();

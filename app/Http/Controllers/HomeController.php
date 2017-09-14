@@ -37,6 +37,7 @@ class HomeController extends Controller
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
         $this->map = Mapper::map(32.9251348, -96.8153818, ['zoom' => 10, 'markers' => ['title' => 'My Location', 'animation' => 'DROP'], 'clusters' => ['size' => 10, 'center' => true, 'zoom' => 20]]);
+        
     }
 
     /**
@@ -48,6 +49,7 @@ class HomeController extends Controller
     {
         $layout = $this->layout;
         $map = $this->map;
+
 
         // Instagram Images
         $ig = $instagram->getUserFeed(12, 0, 2);

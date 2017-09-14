@@ -42,7 +42,10 @@
             <!-- End Content -->
             <!-- Start Modals -->
             @yield('modals')
-            <div class="modal fade modal-lg"  tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" id="map">
+{{--             <div  style="width: 400px; height: 400px">
+                {!! Mapper::render() !!}
+            </div> --}}
+            <div class="modal fade"  tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" id="map">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -52,13 +55,12 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            {{-- <div  style="width: 100%; height: 100%;"> --}}
-                                {{-- {!! Mapper::render() !!} --}}
-                            {{-- </div> --}}
+                            <div class="mx-auto d-block table-responsive"  style="width: 325px; height: 325px">
+                                {!! Mapper::render() !!}
+                            </div>
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary">Save changes</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>

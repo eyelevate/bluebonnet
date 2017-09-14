@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Mapper;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,8 +26,9 @@ class AppServiceProvider extends ServiceProvider
             'home.thank_you'
             ], function($view) {
             $company = \App\Company::prepareCompany(\App\Company::find(1));
-
-            $view->with('company', $company);
+            $map = Mapper::map(32.9251348, -96.8153818, ['zoom' => 10, 'markers' => ['title' => 'My Location', 'animation' => 'DROP'], 'clusters' => ['size' => 10, 'center' => true, 'zoom' => 20]]);
+            $view->with('company', $company)
+                ->with('map',$map);
         });
 
 
