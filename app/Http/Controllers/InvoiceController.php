@@ -151,7 +151,7 @@ class InvoiceController extends Controller
             'first_name'=>trim($cart['firstName']),
             'last_name'=>trim($cart['lastName']),
             'email'=>trim($cart['email']),
-            'phone'=>trim($cart['phone']),
+            'phone'=>$job->stripAllButNumbers($cart['phone']),
             'street'=>trim($cart['street']),
             'suite'=>trim($cart['suite']),
             'city'=>trim($cart['city']),

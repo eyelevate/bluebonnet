@@ -31,7 +31,7 @@
         </div>
     </li>
     <li class="nav-item d-md-down-none">
-        {{-- <a class="nav-link navbar-toggler aside-menu-toggler" href="#">☰</a> --}}
+        <a class="nav-link navbar-toggler aside-menu-toggler" href="#">☰</a>
     </li>
 
 </ul>
