@@ -26,7 +26,7 @@
 <div class="panel panel-default">
         <div class="callout callout-muted m-0 py-3">
 
-        <div class="card-header">
+            <div class="card-header">
                     <span class="badge badge-pill badge-danger" style="font-size: 10px; float:right;">New</span>
                     <hr class="transparent mx-0 my-2">
                     <p data-toggle="collapse" data-parent="#accordion" href="#collapse1-main" class="panel-title expand">
@@ -36,7 +36,7 @@
                      </small>
                     <small style="text-align:right; color:#777;">&nbsp; 3:40pm</small>
                     </p>
-        </div>
+            </div>
                     <div id="collapse1-main" class="panel-collapse collapse" style="padding-top: 5px;">
                         <div class="panel-body">
 
@@ -85,8 +85,8 @@
         </div>
         <hr class="transparent mx-0 my-1">
 
-        <div class="callout callout-success m-0 py-3">
-        <div class="card-header">
+        <div class="callout callout-primary m-0 py-3">
+            <div class="card-header">
                     <p data-toggle="collapse" data-parent="#accordion" href="#collapse2-main" class="panel-title expand">
                     Subject: Custom Order
                      <small style="align:left">
@@ -150,8 +150,8 @@
         <hr class="transparent mx-3 my-0">
 
 
-               <div class="callout callout-success m-0 py-3">
-        <div class="card-header">
+               <div class="callout callout-primary m-0 py-3">
+                <div class="card-header">
                     <p data-toggle="collapse" data-parent="#accordion" href="#collapse3-main" class="panel-title expand">
                     Subject: Custom Order
                      <small style="align:left">
