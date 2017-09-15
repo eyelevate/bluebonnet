@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Authorize;
 use App\Job;
 use App\User;
 use App\Invoice;
@@ -251,18 +252,18 @@ class Invoice extends Model
             $new_invoice->user_id = auth()->user()->id;
 
 
-        } else { // Guest user we will keep track of shipping info on invoice only
-            $new_invoice->first_name = $customer['first_name'];
-            $new_invoice->last_name = $customer['last_name'];
-            $new_invoice->street = $customer['street'];
-            $new_invoice->suite = $customer['suite'];
-            $new_invoice->city = $customer['city'];
-            $new_invoice->state = $customer['state'];
-            $new_invoice->zipcode = $customer['zipcode'];
-            $new_invoice->country = $customer['country'];
-            $new_invoice->phone = $customer['phone'];
-            $new_invoice->email = $customer['email'];
         }
+
+        $new_invoice->first_name = $customer['first_name'];
+        $new_invoice->last_name = $customer['last_name'];
+        $new_invoice->street = $customer['street'];
+        $new_invoice->suite = $customer['suite'];
+        $new_invoice->city = $customer['city'];
+        $new_invoice->state = $customer['state'];
+        $new_invoice->zipcode = $customer['zipcode'];
+        $new_invoice->country = $customer['country'];
+        $new_invoice->phone = $customer['phone'];
+        $new_invoice->email = $customer['email'];
 
         // unused columns = po_number, vendor_id, requisitioner, fob, terms 
 
@@ -660,6 +661,26 @@ class Invoice extends Model
         $stones = $stone->all();
         $options = $inventoryItem->makeOptions($invoice_items,$fingers,$stones,$selected_items);
 
+        $authorize = new Authorize();
+        $transaction_id = $data->transaction_id;
+        $billingStreet = NULL;
+        $billingCity = NULL;
+        $billingState = NULL;
+        $billingCountry = NULL;
+        $billingZipcode = NULL;
+
+        if ($transaction_id) {
+            $transaction_details = $authorize->getTransactionDetails($transaction_id);
+            if ($transaction_details->getMessages()->getResultCode() == 'Ok') {
+                
+                $billingStreet = $transaction_details->getTransaction()->getBillTo()->getAddress();
+                $billingCity = $transaction_details->getTransaction()->getBillTo()->getCity();
+                $billingState = $transaction_details->getTransaction()->getBillTo()->getState();
+                $billingCountry = ($transaction_details->getTransaction()->getBillTo()->getCountry()=='USA') ? 'US' : $transaction_details->getTransaction()->getBillTo()->getCountry();
+                $billingZipcode = $transaction_details->getTransaction()->getBillTo()->getZip();
+            }
+        }
+
         return [
             'selectedOptions'=> $options,
             'firstName'=>($data->users) ? $data->users->first_name : $data->first_name,
@@ -672,12 +693,12 @@ class Invoice extends Model
             'state'=>($data->users) ? $data->users->state : $data->state,
             'country'=>($data->users) ? $data->users->country : $data->country,
             'zipcode'=>($data->users) ? $data->users->zipcode : $data->zipcode,
-            'billingStreet'=>$data->billing_street,
-            'billingSuite'=>$data->billing_suite,
-            'billingCity'=>$data->billing_city,
-            'billingState'=>$data->billing_state,
-            'billingZipcode'=>$data->billing_zipcode,
-            'billingCountry'=>$data->billing_country,
+            'billingStreet'=>$billingStreet,
+            'billingSuite'=>NULL,
+            'billingCity'=>$billingCity,
+            'billingState'=>$billingState,
+            'billingZipcode'=>$billingZipcode,
+            'billingCountry'=>$billingCountry,
             'cardNumber'=>'',
             'expMonth'=>$data->exp_month,
             'expYear'=>$data->exp_year,
@@ -688,6 +709,7 @@ class Invoice extends Model
             'items'=>[],
             'current'=>2,
             'sas'=>false,
+            'originalTotals'=>$totals,
             'totals'=>$totals,
             'shipping'=>$data->shipping 
 

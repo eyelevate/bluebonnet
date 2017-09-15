@@ -389,7 +389,8 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="1" checked @click="updateShipping(1)">
+                            <input type="radio" name="shipping" value="1" v-if="shipping ==1" checked @click="updateShipping(1)">
+                            <input type="radio" name="shipping" value="1" v-if="shipping !=1" @click="updateShipping(1)">
                             &nbsp;Ground <small>(5-7 Business Days)</small>
                         </label>
                     </div>
@@ -397,14 +398,16 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="2" @click="updateShipping(2)">
+                            <input type="radio" name="shipping" value="2" v-if="shipping ==2" checked @click="updateShipping(2)">
+                            <input type="radio" name="shipping" value="2" v-if="shipping !=2" @click="updateShipping(2)">
                             &nbsp;2 Day Air
                         </label>
                     </div>
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="3" @click="updateShipping(3)">
+                            <input type="radio" name="shipping" value="3" v-if="shipping ==3" checked @click="updateShipping(3)">
+                            <input type="radio" name="shipping" value="3" v-if="shipping !=3" @click="updateShipping(3)">
                             &nbsp;Next Day
                         </label>
                     </div>
@@ -412,7 +415,8 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="4" @click="updateShipping(4)">
+                            <input type="radio" name="shipping" value="4" v-if="shipping ==4" checked @click="updateShipping(4)">
+                            <input type="radio" name="shipping" value="4" v-if="shipping !=4" @click="updateShipping(4)">
                             &nbsp;In-store Pickup
                         </label>
                     </div>
@@ -483,20 +487,28 @@
 	        		</tfoot>
 	        	</table>
 	        </div>
+			<button id="last" type="button" class = "btn btn-primary btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepFour">Update</button>
+			<button id="last" type="button" class = "btn btn-primary btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepFive">Refund + Update + Email</button>
+			<button id="last" type="button" class = "btn btn-primary btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepSix">Refund + Update + New Payment</button>
+			
 		</template>
 		<template slot = "footer">
 			<button type="button" class="btn btn-secondary" @click="back">Back</button>
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
-			<button type="button" class = "btn btn-success pull-right" v-if="stepFour" @click="makeSession" data-toggle="modal" data-target="#sendModal">Create</button>
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepFour" @mouseover="validation">Create</button>	
+			
+				
 		</template>
 	</bootstrap-card>
 
 </div>
 @endsection
 @section('modals')
-<bootstrap-modal id="sendModal" b-size="modal-lg">
-	<template slot="header">Creating Invoice</template>
+<bootstrap-modal id="updateModal" b-size="modal-lg">
+	<template slot="header">
+		<div v-if="stepFour">Update Invoice</div>
+		<div v-if="stepFive">Refund + Update + Email</div>
+		<div v-if="stepSix">Refund + Update + Pay</div>
+	</template>
 	<template slot="body">
 		<div class="progress" v-if="!done">
 			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
@@ -507,15 +519,17 @@
 		<label>@{{ progress }}% Complete</label>
 		<ul>
 			<li class="text-muted" v-if="formStatusOne">Preparing form to create session...</li>
-			<li class="text-success" v-if="formStatusOne">Successfully created session!</li>
-			<li class="text-muted" v-if="formStatusThree">Authorizing Payment...</li>
-			<li class="text-success" v-if="formStatusFour">Successfully made payment transaction!</li>
+			<li class="text-success" v-if="formStatusTwo">Successfully created session!</li>
+			<li class="text-muted" v-if="formStatusThree">Attempting Refund...</li>
+			<li class="text-success" v-if="formStatusFour">Successfully made refund!</li>
 			<li class="text-muted" v-if="formStatusFive">Saving Invoice Information...</li>
 			<li class="text-success" v-if="formStatusSix">Successfully saved invoice information!</li>
-			<li class="text-muted" v-if="formStatusSeven">Emailing Customer...</li>
-			<li class="text-success" v-if="formStatusEight">Successfully emailed Customer!</li>
-			<li class="text-muted" v-if="formStatusNine">Forgetting session and cleaning up form data...</li>
-			<li class="text-success" v-if="formStatusTen">Successfully completed all tasks!</li>
+			<li class="text-muted" v-if="formStatusSeven">Authorizing Payment...</li>
+			<li class="text-success" v-if="formStatusEight">Successfully made payment transaction!</li>
+			<li class="text-muted" v-if="formStatusNine">Emailing Customer...</li>
+			<li class="text-success" v-if="formStatusTen">Successfully emailed Customer!</li>
+			<li class="text-muted" v-if="formStatusEleven">Forgetting session and cleaning up form data...</li>
+			<li class="text-success" v-if="formStatusTwelve">Successfully completed all tasks!</li>
 		</ul>
 
 		<ul class="text-danger">
@@ -530,12 +544,14 @@
 	</template>
 	<template slot="footer">
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Try Again</button>
+		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Update</button>
 	</template>
 </bootstrap-modal>
+
 @endsection
 @section('variables')
 <div id="variable-root"
+	invoiceId="{{ $invoice->id }}"
 	firstName="{{ $invoices['firstName'] }}"
 	lastName="{{ $invoices['lastName'] }}"
 	phone="{{ $invoices['phone'] }}"
@@ -558,6 +574,7 @@
 	selectedOptions="{{ json_encode($invoices['selectedOptions']) }}"
 	selectedItems="{{ json_encode($invoices['selectedItems']) }}"
 	totals="{{ json_encode($invoices['totals']) }}"
+	originalTotals="{{ json_encode($invoices['totals']) }}"
 	items="{{ (count($inventoryItems) > 0) ? json_encode($inventoryItems) : json_encode([]) }}"
 
 >

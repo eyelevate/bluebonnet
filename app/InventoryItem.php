@@ -666,6 +666,7 @@ class InventoryItem extends Model
                 $metals = $itemMetal->prepareSelect($item->inventoryItem->itemMetal);
                 $stones_compare = $itemStone->stonesCompare($item->inventoryItem->itemStone);
                 $row = [
+                    'id'=>$item->id,
                     'quantity_select'=>[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],
                     'quantity'=>$item->quantity,
                     'fingers'=>$fingers,

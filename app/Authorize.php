@@ -43,7 +43,8 @@ class Authorize extends Model
 	    $customerAddress->setFirstName($customer['first_name']);
 	    $customerAddress->setLastName($customer['last_name']);
 	    // $customerAddress->setCompany("");
-	    $customerAddress->setAddress($customer['billing_street']);
+	    $full_address = (isset($customer['billing_suite'])) ? $customer['billing_street'].' '.$customer['billing_suite'] :  $customer['billing_street'];
+	    $customerAddress->setAddress($full_address);
 	    $customerAddress->setCity($customer['billing_city']);
 	    $customerAddress->setState($customer['billing_state']);
 	    $customerAddress->setZip($customer['billing_zipcode']);

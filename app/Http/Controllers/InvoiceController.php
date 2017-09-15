@@ -272,12 +272,68 @@ class InvoiceController extends Controller
      */
     public function edit(Invoice $invoice, InventoryItem $ii, Job $job)
     {
+
         $invoices = $invoice->makeSessionRow($invoice);
 
         $states = $job->prepareStates();
         $countries = $job->prepareCountries();
         $inventoryItems = $ii->prepareForShowInventory($ii->orderBy('name','asc')->get());
-        return view('invoices.edit',compact(['invoices','inventoryItems','states','countries']));
+        return view('invoices.edit',compact(['invoice','invoices','inventoryItems','states','countries']));
+    }
+
+    public function refundPayment(Request $request, Invoice $invoice)
+    {
+        $transaction_id = $invoice->transaction_id;
+        $results = [
+            'status'=> false
+        ];
+        if (isset($transaction_id)) {
+            $get_transaction_details = $authorize->getTransactionDetails($transaction_id);
+            if (($get_transaction_details != null) && ($get_transaction_details->getMessages()->getResultCode() == "Ok")) {
+                // start the void process
+                switch ($get_transaction_details->getTransaction()->getTransactionStatus()) {
+                    case 'settledSuccessfully': // Must refund
+                        $refund = $authorize->refundTranscaction($invoice->total,$invoice->last_four,$invoice->exp_month,$invoice->exp_year);
+
+                        if ($refund['status']) {
+                            // change status to 2 pending
+                            $invoice->status = 2;
+                            $invoice->transaction_id = NULL;
+                            $invoice->save();
+                            $result['status'] = true;
+                            
+                        } else {
+                            $result=[
+                                'status'=>false,
+                                'message'=>$refund['reason']
+                            ];
+                        }
+                        break;
+                    
+                    default: // Must void
+                        $void = $authorize->voidTransaction($transaction_id);
+                        if ($void['status']) {
+                            $invoice->status = 2;
+                            $invoice->transaction_id = NULL;
+                            $invoice->save();
+                            $result['status'] = true;
+                        } else {
+                            $result=[
+                                'status'=>false,
+                                'message'=>$void['reason']
+                            ];
+                        }
+                        break;
+                }
+            } else {
+                $result=[
+                    'status'=>false,
+                    'message'=>'here was an error get details of the transaction. Please speak to your administrator.'
+                ];
+            }
+            
+        }
+        return response()->json($result);
     }
 
     /**
@@ -287,9 +343,53 @@ class InvoiceController extends Controller
      * @param  \App\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Invoice $invoice)
+    public function update(Request $request, InvoiceItem $invoiceItem, InventoryItem $inventoryItem, ItemStone $itemStone, Job $job, Invoice $invoice)
     {
+        $result = $request->result;
+        $cart = session()->get('cartBackend');
+        $email = $itemStone->checkEmailAll($cart['selectedOptions']);
+        $customer = [
+            'id'=> NULL,
+            'first_name'=>trim($cart['firstName']),
+            'last_name'=>trim($cart['lastName']),
+            'email'=>trim($cart['email']),
+            'phone'=>$job->stripAllButNumbers($cart['phone']),
+            'street'=>trim($cart['street']),
+            'suite'=>trim($cart['suite']),
+            'city'=>trim($cart['city']),
+            'state'=>trim($cart['state']),
+            'zipcode'=>trim($cart['zipcode']),
+            'country'=>trim($cart['country']),
+            'billing_street'=>trim($cart['billingStreet']),
+            'billing_suite'=>trim($cart['billingSuite']),
+            'billing_city'=>trim($cart['billingCity']),
+            'billing_state'=>trim($cart['billingState']),
+            'billing_zipcode'=>trim($cart['billingZipcode']),
+            'comment'=>NULL,
+            'shipping'=>$cart['shipping']
+        ]; 
+        $totals = $cart['totals'];
+        $card = [
+            'card_number'=>$job->stripAllButNumbers($cart['cardNumber']),
+            'exp_month'=>$job->stripAllButNumbers($cart['expMonth']),
+            'exp_year'=>$job->stripAllButNumbers($cart['expYear']),
+            'cvv'=>$job->stripAllButNumbers($cart['cvv'])
+        ];
+        $update_invoice = $invoice->updateInvoice($invoiceid,$totals, $customer, $payment, $card);
+        // $new_invoice = $invoice->newInvoice($totals, $customer, $result, $card);
+        if($new_invoice) {
 
+            return response()->json([
+                'status' => true,
+                'new_invoice'=>$new_invoice
+            ]);
+        
+        }
+
+        return response()->json([
+            'status' => false
+        ]);
+        
     }
 
     /**
@@ -356,7 +456,12 @@ class InvoiceController extends Controller
                         $refund = $authorize->refundTranscaction($invoice->total,$invoice->last_four,$invoice->exp_month,$invoice->exp_year);
 
                         if ($refund['status']) {
+                            // change status to 2 pending
+                            $invoice->status = 2;
+                            $invoice->transaction_id = NULL;
+                            $invoice->save();
                             flash('Successfully refunded transaction.')->success();
+                            
                         } else {
                             flash($refund['reason'])->error();
 
@@ -367,6 +472,9 @@ class InvoiceController extends Controller
                     default: // Must void
                         $void = $authorize->voidTransaction($transaction_id);
                         if ($void['status']) {
+                            $invoice->status = 2;
+                            $invoice->transaction_id = NULL;
+                            $invoice->save();
                             flash('Successfully voided transaction.')->success();
                         } else {
                             flash($void['reason'])->error();

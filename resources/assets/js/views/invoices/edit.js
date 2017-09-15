@@ -2,6 +2,7 @@ const app = new Vue({
 	el: '#root',
 	props: [],
 	data: {
+		invoiceId:'',
 		itemName: '',
 		searchInventoryCount: 0,
 		selectedItems: [],
@@ -29,11 +30,14 @@ const app = new Vue({
 		expYear:'',
 		cvv:'',
 		sas: false,
+		originalTotals: [],
 		totals: [],
 		stepOne: false,
 		stepTwo: false,
 		stepThree: false,
 		stepFour: false,
+		stepFive: false,
+		stepSix: false,
 		shipping: 1,
 		progress: 0,
 		formStatusOne: false,
@@ -46,6 +50,8 @@ const app = new Vue({
 		formStatusEight: false,
 		formStatusNine: false,
 		formStatusTen: false,
+		formStatusEleven: false,
+		formStatusTwelve: false,
 		formErrorOne: false,
 		formErrorTwo: false,
 		formErrorThree: false,
@@ -82,7 +88,7 @@ const app = new Vue({
 				}
 			});
 		},
-		reset() {
+		reset() { // Completely resets the form
 			this.itemName= '';
 			this.searchInventoryCount= 0;
 			this.selectedItems= [];
@@ -115,6 +121,8 @@ const app = new Vue({
 			this.stepTwo= false;
 			this.stepThree= false;
 			this.stepFour= false;
+			this.stepFive = false;
+			this.stepSix = false;
 			this.shipping= 1;
 			this.progress= 0;
 			this.formStatusOne= false;
@@ -127,6 +135,8 @@ const app = new Vue({
 			this.formStatusEight= false;
 			this.formStatusNine= false;
 			this.formStatusTen= false;
+			this.formStatusEleven= false;
+			this.formStatusTwelve= false;
 			this.formErrorOne= false;
 			this.formErrorTwo= false;
 			this.formErrorThree= false;
@@ -146,15 +156,15 @@ const app = new Vue({
 
 			
 		},
-		back() {
+		back() { // Goes back one step on the steppy
 			this.current -= 1;
 			this.validation();
 		},
-		next() {
+		next() { // Goes forward one step on the steppy
 			this.current += 1;
 			this.validation();
 		},
-		selectItem(item_id, $event) {
+		selectItem(item_id, $event) { // Selects item in step 1
 			
 			this.selectedItems.push(item_id);
 			this.searchInventoryItem();
@@ -163,7 +173,7 @@ const app = new Vue({
 			
 			
 		},
-		removeItem(row, $event) {
+		removeItem(row, $event) { // removes item in step 2
 
 			//remove the rows
 			rows = [];
@@ -182,7 +192,7 @@ const app = new Vue({
 
 
 		},
-		fingerSelected(row,$event) {
+		fingerSelected(row,$event) { // option in step 2
 			this.selectedOptions[row]['finger_id'] = $($event.target).find('option:selected').val();
 			this.validation();
 		},
@@ -235,6 +245,7 @@ const app = new Vue({
 				'items': this.selectedOptions
 			}).then(response => {
 				this.totals = response.data.totals;
+				this.validation();
 			});
 		},
 		sameAsShipping() {
@@ -337,17 +348,36 @@ const app = new Vue({
 
 			// Step 4
 			this.stepFour = false;
+			this.stepFive = false;
+			this.stepSix = false;
+			console.log('start');
 
-			if (this.billingStreet != ''
+			var cardReady = false;
+			if (this.cardNumber != '' && this.expMonth != '' && this.expYear != '' && this.cvv != '') {
+				cardReady = true;
+			}
+
+			// first check to see if the new totals = the original totals
+			if (parseFloat(this.totals._total).toFixed(2) - parseFloat(this.originalTotals._total).toFixed(2) == 0) { // update the form only
+
+				this.stepFour = true;
+				console.log('one');
+			} else if (this.billingStreet != ''
 				&& this.billingCity != ''
 				&& this.billingState != ''
 				&& this.billingCountry != ''
 				&& this.billingZipcode != ''
-				&& this.cardNumber != ''
-				&& this.expMonth != ''
-				&& this.expYear != ''
-				&& this.cvv != '') {
-				this.stepFour = true;
+				&& !cardReady) { // refund the payment, update the form, email customer with new payment form
+				this.stepFive = true;
+				console.log('two');
+			} else if (this.billingStreet != ''
+				&& this.billingCity != ''
+				&& this.billingState != ''
+				&& this.billingCountry != ''
+				&& this.billingZipcode != ''
+				&& cardReady) { // Refund the payment, update the form, resend payment to authorize
+				this.stepSix = true;
+				console.log('three');
 			}
 
 
@@ -361,7 +391,7 @@ const app = new Vue({
 			});
 
 			this.selectedOptions = options;
-
+			
 			this.getTotals();
 		},
 		makeSession() {
@@ -400,9 +430,16 @@ const app = new Vue({
 					'shipping':this.shipping				
 				}).then(response => {
 					if (response.data.status) {
+						// update the progress
 						this.progress = 10;
 						this.formStatusTwo = true;
-						this.authorizePayment();
+
+						// check which form to run next
+						if (this.stepFour) { //update only so skip to step 5
+							this.update();
+						} else {
+							this.refundPayment();
+						}
 						
 					} else {
 						this.formErrors = true;
@@ -415,16 +452,38 @@ const app = new Vue({
 			}
 			
 		},
-		authorizePayment() {
+		refundPayment() {
 			this.progress = 20
+			this.formStatusThree = true;
+			try {
+				axios.post('/invoices/'+this.invoiceId+'/refund-payment').then(response => {
+					if (response.data.status) {
+						this.formStatusFour = true;
+						this.progress = 30;
+						this.update();
+					} else {
+						this.formErrors = true;
+						this.formErrorTwo = true;
+						this.authorizationErrorMessage = response.data.message;
+						this.paymentResult = null;
+					}
+				});
+			} catch(e) {
+				this.formErrors = true;
+				this.formErrorTwo = true;
+			}
+			
+		},
+		authorizePayment() {
+			this.progress = 50
 			this.formStatusThree = true;
 			try {
 				axios.post('/invoices/authorize-payment').then(response => {
 					if (response.data.status) {
 						this.formStatusFour = true;
-						this.progress = 30;
+						this.progress = 60;
 						this.paymentResult = response.data.result;
-						this.store();
+						this.sendEmail();
 					} else {
 						this.formErrors = true;
 						this.formErrorTwo = true;
@@ -439,18 +498,25 @@ const app = new Vue({
 			}
 			
 		},
-		store() {
-			this.progress = 40;
+		update() { // TODO
+			this.progress = 35;
 			this.formStatusFive = true;
 			try {
-				axios.post('/invoices/store',{
+				axios.post('/invoices/'+this.invoiceId+'/update',{
 					'result':this.paymentResult
 				}).then(response => {
 					if (response.data.status) {
 						this.formStatusSix = true;
-						this.progress = 50;
+						this.progress = 45;
 						this.newInvoice = response.data.new_invoice;
-						this.sendEmail();
+						if(this.stepFour) {
+							this.forgetSession();
+						} else if(this.stepSix) {
+							this.authorizePayment();
+						} else {
+							this.sendEmail();
+						}
+						
 					} else {
 						this.formErrors = true;
 						this.formErrorThree = true;
@@ -464,7 +530,7 @@ const app = new Vue({
 			}
 		},
 		sendEmail() {
-			this.progress = 60;
+			this.progress = 70;
 			this.formStatusSeven = true;
 			try {
 				axios.post('/invoices/push-email',{
@@ -473,7 +539,7 @@ const app = new Vue({
 				}).then(response => {
 					if (response.data.status) {
 						this.formStatusEight = true;
-						this.progress = 75;
+						this.progress = 80;
 						this.forgetSession();
 					} else {
 						this.formErrors = true;
@@ -542,6 +608,7 @@ const app = new Vue({
 var vars = new Vue({
 	el: '#variable-root',
 	mounted: function mounted() {
+		app.invoiceId = this.$el.attributes.invoiceId.value;
 		app.items = JSON.parse(this.$el.attributes.items.value);
 		app.searchInventoryCount = app.items.length;
 		app.firstName = this.$el.attributes.firstName.value;
@@ -566,6 +633,7 @@ var vars = new Vue({
 		app.selectedItems = JSON.parse(this.$el.attributes.selectedItems.value);
 		app.shipping = this.$el.attributes.shipping.value;
 		app.totals = JSON.parse(this.$el.attributes.totals.value);
+		app.originalTotals = JSON.parse(this.$el.attributes.originalTotals.value);
 		app.searchInventoryItem();
 		app.validation();
 	}
