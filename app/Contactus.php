@@ -175,7 +175,11 @@ class Contactus extends Model
                 $contactus['second'][$value->created_at->diffInDays()][$key] = $value;
             }
         }
-
         return $contactus;
+    }
+
+    public static function countContactus()
+    {
+        return Contactus::where('status', 1)->count();
     }
 }
