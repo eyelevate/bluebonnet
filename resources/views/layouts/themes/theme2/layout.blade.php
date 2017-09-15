@@ -59,7 +59,7 @@
                             width="350"
                             height="350"
                             frameborder="0" style="border:0"
-                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAfyCNEFBT5l_ILymAdyLVeJlZaWIXOyDI&q=5550+Lyndon+B+Johnson+Fwy+%23420,+Dallas,+TX+75240" allowfullscreen>
+                            src="https://www.google.com/maps/embed/v1/place?key={{ env('GOOGLE_MAP_API_KEY') }}&q=5550+Lyndon+B+Johnson+Fwy+%23420,+Dallas,+TX+75240" allowfullscreen>
                             </iframe>
                          
                         </div>
