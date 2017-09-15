@@ -35,11 +35,8 @@ Route::get('/custom', 'HomeController@custom')->name('home.custom');
 //Route::get('/contact', 'HomeController@contact')->name('home.contact');
 Route::get('/contact', 'ContactusController@index')->name('home.index');
 Route::get('/contact/create', 'ContactusController@create')->name('contact.create');
-Route::delete('/contact/{contact}', 'ContactusController@destroy')->name('contact.destroy');
-Route::post('/contact/store', 'ContactusController@store')->name('contact.store');
-Route::get('/contact/{contact}/show', 'ContactusController@show')->name('contact.show');
-Route::get('/contact/{contact}/edit', 'ContactusController@edit')->name('contact.edit');
-Route::patch('/contact/{contact}', 'ContactusController@update')->name('contact.update');
+
+
 
 
 // collections
@@ -113,6 +110,16 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/collections/{collection}/set', 'CollectionController@set')->name('collection.set');
     Route::post('/collections/{collection}/add', 'CollectionController@add')->name('collection.add');
     Route::post('/collections/{collection}/remove', 'CollectionController@remove')->name('collection.remove');
+
+    // Contact Us
+    Route::delete('/contact/{contactus}', 'ContactusController@destroy')->name('contact.destroy');
+    Route::post('/contact/store', 'ContactusController@store')->name('contact.store');
+    Route::get('/contact/{contactus}/show', 'ContactusController@show')->name('contact.show');
+    Route::get('/contact/{contactus}/edit', 'ContactusController@edit')->name('contact.edit');
+    Route::patch('/contact/{contactus}', 'ContactusController@update')->name('contact.update');
+    Route::post('/contact/{contactus}/mark-as-read', 'ContactusController@markAsRead')->name('contact.mark_as_read');
+    Route::post('/contact/{contactus}/set-as-archive', 'ContactusController@setAsArchive')->name('contact.set_as_archive');
+    Route::post('/contact/{contactus}/set-as-deleted', 'ContactusController@setAsDeleted')->name('contact.set_as_deleted');
 
     // Designs
     Route::get('/designs', 'DesignController@index')->name('design.index');

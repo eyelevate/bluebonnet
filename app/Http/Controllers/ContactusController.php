@@ -116,4 +116,39 @@ class ContactusController extends Controller
             return redirect()->back();
         }
     }
+
+    public function markAsRead(Request $request, Contactus $contactus)
+    {
+        $contactus->status=2;
+        $contactus->save();
+        $contact_get = Contactus::prepareContactus();
+        return response()->json([
+            'status' => true,
+            'set' => $contact_get
+        ]);
+        
+    }
+
+    public function setAsArchive(Request $request, Contactus $contactus)
+    {
+        $contactus->status=3;
+        $contactus->save();
+        $contact_get = Contactus::prepareContactus();
+        return response()->json([
+            'status' => true,
+            'set' => $contact_get
+        ]);
+
+    }
+
+    public function setAsDeleted(Request $request, Contactus $contactus)
+    {
+        $contactus->delete();
+        $contact_get = Contactus::prepareContactus();
+        return response()->json([
+            'status' => true,
+            'set' => $contact_get
+        ]);
+    }
+
 }

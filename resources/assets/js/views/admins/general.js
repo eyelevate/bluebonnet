@@ -34,7 +34,38 @@ const base = new Vue({
 			this.secondMessages = secondMessages;
 			this.count = countFirst;
 			this.archivedCount = countSecond;
-		}
+		},
+		markAsRead(id) {
+			// mark the message as read
+			axios.post('/contact/'+id+'/mark-as-read').then(response => {
+				if (response.data.status) {
+					this.prepareData(response.data.set);
+					this.setNavCount();
+				}
+			});
+		},
+		setAsArchive(id) {
+			// set message as Archive
+			axios.post('/contact/'+id+'/set-as-archive').then(response => {
+				if (response.data.status) {
+					this.prepareData(response.data.set);
+					this.setNavCount();
+				}
+			});
+		},
+		setAsDeleted(id) {
+			// set message as Archive
+			axios.post('/contact/'+id+'/set-as-deleted').then(response => {
+				if (response.data.status) {
+					this.prepareData(response.data.set);
+					this.setNavCount();
+				}
+			});
+		},
+		setNavCount() {
+			// set nav count
+			$("#navCount").html(this.count);
+		},
 	},
 	computed: {
 
