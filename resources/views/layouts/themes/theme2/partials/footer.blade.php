@@ -15,10 +15,10 @@
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <ul>
                     <li class="col-12 text-center"><h5 class="text-center"><strong>Contact Us</strong></h5></li>
-                    <li class="col-12 text-center">{{ $company->street }}</li>
+                    <li class="col-12 text-center">{{ $company->street }}, Suite #420</li>
                     <li class="col-12 text-center">{{ ucFirst($company->city) }}, {{ strtoupper($company->state) }} {{ $company->zipcode }}</li>
                     <li class="col-12 text-center">{{ $company->phone }}</li>
-                    <li class="col-12 text-center">contact@bluebonnet.com</li>
+                    <li class="col-12 text-center">{{ $company->email }}</li>
                     <li class="col-12 text-center">
                         <button type="button" data-toggle="modal" data-target="#map" class="btn btn-sm btn-primary">map</button>
                     </li> 
@@ -43,7 +43,7 @@
         <br/><br/>
         <div class="row">
             <ul class="flex-row d-flex justify-content-center col-12">
-                <li>{{ date('©Y') }} blue bonnet diamond llc.</li>
+                <li>{{ date('©Y') }} {{ $company->name }}</li>
             
           </ul>
         </div>

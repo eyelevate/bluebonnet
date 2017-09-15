@@ -1,2 +1,2 @@
-<a href="http://coreui.io">CoreUI</a> © 2017 creativeLabs.
-<span class="float-right">Powered by <a href="http://coreui.io">CoreUI</a></span>
+<a href="http://www.cmleon.com">Chameleon</a> © 2017 Team Chameleon.
+<span class="float-right">Powered by <a href="http://www.cmleon.com">Chameleon</a></span>
