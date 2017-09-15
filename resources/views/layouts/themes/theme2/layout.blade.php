@@ -49,18 +49,20 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Location</h5>
+                            <h5 class="modal-title">Freya's Fine Jewelry</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <div class="mx-auto d-block table-responsive"  style="width: 325px; height: 325px">
-                                {!! Mapper::render() !!}
-                            </div>
-
+                        <div class="d-flex justify-content-center">
+                           <iframe
+                            width="350"
+                            height="350"
+                            frameborder="0" style="border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyAfyCNEFBT5l_ILymAdyLVeJlZaWIXOyDI&q=5550+Lyndon+B+Johnson+Fwy+%23420,+Dallas,+TX+75240" allowfullscreen>
+                            </iframe>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer d-flex justify-content-center">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>

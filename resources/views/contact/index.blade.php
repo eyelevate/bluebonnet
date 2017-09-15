@@ -7,32 +7,69 @@
 
 
 @section('content')
-<div class="ontainer-fluid">
-    {!! Form::open(['method'=>'post','route'=>['contact.store']]) !!}
+{{-- 
+<div class="container">
+    <div class="row justify-content-center">
+    <div class="col-md-12 col-lg-8">
+        <div class="form-area">  
+            <form role="form">
+                        <h3 style="margin-bottom: 25px; text-align: center;">Contact Form</h3>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="email" name="email" placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number" required>
+                        </div>
+            
+                        <div class="form-group">
+                                <select class="form-control" id="subjectSelect" name="subject" placeholder="Subject" required>
+                                <option>Custom Order</option>
+                                <option>New Order</option>
+                                <option>Current Order</option>
+                                <option>Other</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                        <textarea class="form-control" type="textarea" id="message" placeholder="Message" maxlength="800" rows="7"></textarea>                
+                        </div>
 
-        <bootstrap-card use-header = "true" use-body="true" use-footer = "true">
-            <template slot = "header" style="margin-bottom: 25px; text-align: center;" > Contact Form </template>
-            <template slot = "body">
+
+                <a href="{{ route('contact.create') }}" class="btn btn-warning pull-right">Submit</a>
+            <button type="button" id="submit" name="submit" class="btn btn-warning pull-right">Submit Form</button> 
+            </form>
+        </div>
+    </div>
+    </div>
+<br>
+<hr>
+
+</div> --}}
+<div class="container">
+ <div class="row justify-content-center">
+    <div class="col-md-12 col-lg-8">
+        <div class="form-area">  
+                        <h3 style="margin-bottom: 25px; text-align: center;">Contact Form</h3>
+    {!! Form::open(['method'=>'post','route'=>['contact.store']]) !!}
+        <hr>
                 <div class="content">
-                    
                     <!-- Name -->
                     <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
-                        use-label = "true"
-                        label = "Name"
                         b-placeholder="Name"
                         b-name="name"
                         b-type="text"
                         b-value="{{ old('name') }}"
                         b-err="{{ $errors->has('name') }}"
                         b-error="{{ $errors->first('name') }}"
-                        >
+                        required>
                     </bootstrap-input>
+
 
                     <!-- email -->
                     <bootstrap-input class="form-group-no-border {{ $errors->has('email') ? ' has-danger' : '' }}" 
-                        use-label = "true"
-                        label = "Email"
-                        b-placeholder="Email@email.com"
+                        b-placeholder="E-mail Address"
                         b-name="email"
                         b-type="text"
                         b-value="{{ old('email') }}"
@@ -41,11 +78,9 @@
                         >
                     </bootstrap-input>
 
-                    <!-- Mobile Number -->
+                    <!-- Phone Number -->
                     <bootstrap-input class="form-group-no-border {{ $errors->has('phone') ? ' has-danger' : '' }}" 
-                        use-label = "true"
-                        label = "Mobile Number"
-                        b-placeholder="Mobile Number"
+                        b-placeholder="Phone Number"
                         b-name="phone"
                         b-type="text"
                         b-value="{{ old('phone') }}"
@@ -56,7 +91,7 @@
 
                     <!-- Subject -->
 
-                   <bootstrap-control use-label="true" label="Subject" b-name="subject">
+                   <bootstrap-control class="form-group-no-border" b-name="subject">
                         <template slot="control">
                             <select class="form-control" name="subject">
                                     <option value="Custom Order">Custom Order</option>
@@ -73,11 +108,9 @@
 
                     <!-- Description -->
                     <bootstrap-textarea class="form-group-no-border {{ $errors->has('message') ? ' has-danger' : '' }}" 
-                        use-label = "true"
-                        label = "Message"
                         b-placeholder="Message"
                         b-name="message"
-                        b-type="text"
+                        b-type="textarea"
                         b-value="{{ old('message') }}"
                         b-err="{{ $errors->has('message') }}"
                         b-error="{{ $errors->first('message') }}"
@@ -86,13 +119,15 @@
 
 
                 </div>
-            </template>
-
-            <template slot = "footer">
-                <button type="submit" class = "btn btn-warning pull-right">Save</button>
-            </template>
-        </bootstrap-card>
+                <div class="clearfix">
+                <button type="submit" class ="btn btn-warning pull-right">Send</button>
+                </div>
     {!! Form::close() !!}
+      <hr>
+    </div>
+    </div>
+  </div>
+
 </div>
 
 </div> 

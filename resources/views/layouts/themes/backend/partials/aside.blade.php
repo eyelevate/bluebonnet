@@ -3,7 +3,7 @@
         <a class="nav-link active" data-toggle="tab" href="#unreadmessages" role="tab"><span class="badge badge-pill badge-danger" style="font-size: 8px; display:block; float:right;">1</span><i class="fa fa-envelope-open-o" aria-hidden="true"></i></a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#readmessages" role="tab"><span class="badge badge-pill badge-success" style="font-size: 8px; display:block; float:right;">3</span><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
+        <a class="nav-link" data-toggle="tab" href="#readmessages" role="tab"><span class="badge badge-pill badge-success" style="font-size: 8px; display:block; float:right;">{{ $contact_count}}</span><i class="fa fa-envelope-o" aria-hidden="true"></i></a>
     </li>
     {{--  <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#settings" role="tab"><i class="icon-settings"></i></a>
