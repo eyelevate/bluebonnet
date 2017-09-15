@@ -53,7 +53,7 @@ class ContactusController extends Controller
             'subject' => 'required',
             'message' => 'required'
         ]);
-          
+        $request->request->add(['status' => 1]);
         $contactus->create(request()->all());
         flash('Successfully created a Message! We will contact you as soon as possible ')->success();
         return redirect()->route('home');

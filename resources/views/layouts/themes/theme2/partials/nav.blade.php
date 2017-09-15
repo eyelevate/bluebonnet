@@ -41,7 +41,7 @@
                 @endif
                 
                 <li class="nav-item clearfix" style="">
-                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
+                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:35px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
                 </li>
             </ul>
         </div>
@@ -75,7 +75,7 @@
                     </li>
                     @endif
                     <li class="nav-item clearfix" style="">
-                        <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
+                        <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:35px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
                     </li>
                     <li>&nbsp;</li>
                 </ul>
@@ -119,7 +119,7 @@
                 </li>
                 @endif
                 <li class="nav-item clearfix" style="">
-                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
+                    <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:35px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
                 </li>
                 <li>&nbsp;</li>
             </ul>
@@ -164,7 +164,7 @@
             </li>
             @endif
             <li class="nav-item clearfix" style="">
-                <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:25px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
+                <a class="nav-link" href="{{route('home.cart')}}" style="padding-right:35px;"><i class="icon-bag" style="font-size:25px; position:absolute; "><span class="cart-number">{{ (count(session()->get('cart'))) ? count(session()->get('cart')) : 0 }}</span></i></a>
             </li>
             <li>&nbsp;</li>
         </ul>

@@ -61,7 +61,7 @@
         @include('layouts.themes.backend.partials.nav')
     </header>
 
-    <div id="root" class="app-body">
+    <div id="root" class="app-body" data="{{ json_encode($contact_get) }}">
         @include('layouts.themes.backend.partials.sidebar')
 
         <!-- Main content -->
@@ -70,7 +70,7 @@
             @yield('content')
         </main>
 
-        <aside class="aside-menu">
+        <aside class="aside-menu" >
             @include('layouts.themes.backend.partials.aside')
         </aside>
         <!-- Modals -->
@@ -89,12 +89,13 @@
     
     <!-- Custom scripts required by this view -->
     
-    <script type="text/javascript" src="{{ mix('/js/views/admins/general.js') }}"></script>
+    
     <!-- Page specific scripts -->
     <script type="text/javascript" src="{{ mix('/js/themes/coreui/coreui.js') }}"></script>
     <!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
     @yield('scripts')
+    <script type="text/javascript" src="{{ mix('/js/views/admins/general.js') }}"></script>
     
     
 </body>

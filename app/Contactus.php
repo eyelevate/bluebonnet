@@ -2,12 +2,20 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Contactus extends Model
 {
-    //
+    /**
+     * stuatus definition
+     * 1. new
+     * 2. read
+     * 3. archive
+     *
+     */
+
     use SoftDeletes;
 
     /**
@@ -15,12 +23,26 @@ class Contactus extends Model
      *
      * @var array
      */
+
+    
     protected $fillable = [
         'name',
         'email',
         'phone',
         'subject',
-        'message'
+        'message',
+        'status'
+    ];
+
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     public function prepareTableColumns()
@@ -110,6 +132,7 @@ class Contactus extends Model
 
     public function prepareTableRows($rows)
     {
+
         // check if exists
         if (isset($rows)) {
             foreach ($rows as $key => $value) {
@@ -123,8 +146,29 @@ class Contactus extends Model
         return $rows;
     }
 
-    public static function countContactus()
+    public static function prepareContactus()
     {
-        return Contactus::count();
+        $statuses = [1=>1,2=>2,3=>3]; // check statuses above
+        $contactus = [];
+        // first section new and read only
+        $first = Contactus::whereIn('status', [1,2])->orderBy('id', 'desc')->get();
+        $second = Contactus::where('status', 3)->orderBy('id', 'desc')->get();
+        $carbon = new Carbon();
+        if (count($first) >0) {
+            foreach ($first as $key => $value) {
+                $first[$key]['created_at_formatted'] = $value->created_at->diffForHumans();
+                $contactus['first'][$value->created_at->diffInDays()][$key] = $value;
+            }
+        }
+
+        $contactus['second'] = [];
+        if (count($second) >0) {
+            foreach ($second as $key => $value) {
+                $second[$key]['created_at_formatted'] = $value->created_at->diffForHumans();
+                $contactus['second'][$value->created_at->diffInDays()][$key] = $value;
+            }
+        }
+
+        return $contactus;
     }
 }
