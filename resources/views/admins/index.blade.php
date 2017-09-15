@@ -1,6 +1,6 @@
 @extends('layouts.themes.backend.layout')
 @section('scripts')
-{{-- <script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script> --}}
+<script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
 
 @endsection
 @section('content')
