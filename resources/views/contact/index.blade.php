@@ -120,7 +120,7 @@
 
                 </div>
                 <div class="clearfix">
-                <button type="submit" class ="btn btn-warning pull-right">Save</button>
+                <button type="submit" class ="btn btn-warning pull-right">Send</button>
                 </div>
     {!! Form::close() !!}
       <hr>

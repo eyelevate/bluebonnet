@@ -1,4 +1,4 @@
-@extends('layouts.themes.theme1.layout')
+@extends('layouts.themes.theme2.layout')
 @section('scripts')
 <script type="text/javascript" src="{{ mix('/js/views/auth/register.js') }}"></script>
 @endsection
@@ -9,8 +9,9 @@
         <template slot="body">
             <form class="" method="POST" action="{{ route('register') }}">
                 {{ csrf_field() }}
-                <div class="header header-primary text-center">
-                    <h4 >Register</h4>
+                <div class="header header-primary text-center" style="padding:0px !important;">
+                    <h4 style="margin-top:0px !important;">Register</h4>
+                    <hr>
                 </div>
 
                 <div class="form-group {{ $errors->has('first_name') ? ' has-danger' : '' }}">
