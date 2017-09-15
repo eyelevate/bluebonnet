@@ -1,5 +1,5 @@
-const app = new Vue({
-	el: '#root',
+const base = new Vue({
+	el: '#aside-root',
 	data: {
 		count:0,
 		archivedCount:0,
@@ -10,24 +10,27 @@ const app = new Vue({
 		prepareData(data) {
 			var countFirst = 0;
 			var countSecond = 0;
-			var firstMessages = [];
-			var secondMessages = [];
+			var firstMessages = {};
+			var secondMessages = {};
 			$.each(data['first'], function(index, val) {
-				countFirst++;
+				$.each(val, function(k, v) {
+					countFirst++;
+				});
+				
 				key = (index > 0) ? index+' day(s) ago' : 'Today'; 
 
 				firstMessages[key] = val;
 				
 			});
 			$.each(data['second'], function(index, val) {
-				countSecond++;
+				$.each(val, function(k, v) {
+					countSecond++;
+				});
 				key = (index > 0) ? index+' day(s) ago' : 'Today'; 	
 				secondMessages[key] = val;
 			});
 
-
 			this.firstMessages = firstMessages;
-			console.log(firstMessages);
 			this.secondMessages = secondMessages;
 			this.count = countFirst;
 			this.archivedCount = countSecond;
@@ -41,7 +44,7 @@ const app = new Vue({
 	},
 	mounted() {
 		// set variables for saving
-		var set = JSON.parse($("#root").attr('data'));
+		var set = JSON.parse($("#aside-root").attr('data'));
 		this.prepareData(set);
 	}
 });

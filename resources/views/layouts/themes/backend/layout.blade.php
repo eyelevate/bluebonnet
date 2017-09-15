@@ -61,16 +61,16 @@
         @include('layouts.themes.backend.partials.nav')
     </header>
 
-    <div id="root" class="app-body" data="{{ json_encode($contact_get) }}">
+    <div class="app-body" >
         @include('layouts.themes.backend.partials.sidebar')
 
         <!-- Main content -->
-        <main class="main">
+        <main id="root" class="main">
             @include('flash::message')
             @yield('content')
         </main>
 
-        <aside class="aside-menu" >
+        <aside id="aside-root" class="aside-menu" data="{{ json_encode($contact_get) }}" >
             @include('layouts.themes.backend.partials.aside')
         </aside>
         <!-- Modals -->
@@ -88,14 +88,14 @@
     {{-- <script type="text/javascript" src="{{ mix('/js/themes/coreui/dashboard-plugins.js') }}"></script> --}}
     
     <!-- Custom scripts required by this view -->
-    
+    <script type="text/javascript" src="{{ mix('/js/views/admins/general.js') }}"></script>
     
     <!-- Page specific scripts -->
     <script type="text/javascript" src="{{ mix('/js/themes/coreui/coreui.js') }}"></script>
     <!-- Bootstrap Datepicker -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
     @yield('scripts')
-    <script type="text/javascript" src="{{ mix('/js/views/admins/general.js') }}"></script>
+    
     
     
 </body>

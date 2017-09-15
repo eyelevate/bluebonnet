@@ -3,6 +3,7 @@
 namespace App;
 
 use Carbon\Carbon;
+use App\Job;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -148,6 +149,7 @@ class Contactus extends Model
 
     public static function prepareContactus()
     {
+        $job = new Job();
         $statuses = [1=>1,2=>2,3=>3]; // check statuses above
         $contactus = [];
         // first section new and read only
@@ -157,7 +159,10 @@ class Contactus extends Model
         if (count($first) >0) {
             foreach ($first as $key => $value) {
                 $first[$key]['created_at_formatted'] = $value->created_at->diffForHumans();
+                $first[$key]['phone_formatted'] = $job->formatPhone($value->phone);
+                $first[$key]['status_html'] = ($value->status == 1) ? 'callout-primary' :  'callout-muted';
                 $contactus['first'][$value->created_at->diffInDays()][$key] = $value;
+
             }
         }
 
@@ -165,6 +170,8 @@ class Contactus extends Model
         if (count($second) >0) {
             foreach ($second as $key => $value) {
                 $second[$key]['created_at_formatted'] = $value->created_at->diffForHumans();
+                $second[$key]['phone_formatted'] = $job->formatPhone($value->phone);
+                $second[$key]['status_html'] = 'callout-muted';
                 $contactus['second'][$value->created_at->diffInDays()][$key] = $value;
             }
         }
