@@ -35,7 +35,7 @@ Route::get('/custom', 'HomeController@custom')->name('home.custom');
 //Route::get('/contact', 'HomeController@contact')->name('home.contact');
 Route::get('/contact', 'ContactusController@index')->name('home.index');
 Route::get('/contact/create', 'ContactusController@create')->name('contact.create');
-
+Route::post('/contact/store', 'ContactusController@store')->name('contact.store');
 
 
 
@@ -113,7 +113,6 @@ Route::group(['middleware' => ['check:3']], function () {
 
     // Contact Us
     Route::delete('/contact/{contactus}', 'ContactusController@destroy')->name('contact.destroy');
-    Route::post('/contact/store', 'ContactusController@store')->name('contact.store');
     Route::get('/contact/{contactus}/show', 'ContactusController@show')->name('contact.show');
     Route::get('/contact/{contactus}/edit', 'ContactusController@edit')->name('contact.edit');
     Route::patch('/contact/{contactus}', 'ContactusController@update')->name('contact.update');
