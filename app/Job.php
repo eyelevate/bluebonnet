@@ -500,6 +500,7 @@ class Job extends Model
 
     public function formatPhone($data)
     {
+        $data = $this->stripAllButNumbers($data);
         return "(".substr($data, 0, 3).") ".substr($data, 3, 3)."-".substr($data, 6);
     }
 

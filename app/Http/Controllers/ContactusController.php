@@ -44,7 +44,7 @@ class ContactusController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Contactus $contactus)
+    public function store(Request $request, Contactus $contactus, Job $job)
     {
         $this->validate(request(), [
             'name' => 'required|string|max:255',
@@ -53,7 +53,9 @@ class ContactusController extends Controller
             'subject' => 'required',
             'message' => 'required'
         ]);
+        $phone = $job->stripAllButNumbers($request->phone);
         $request->request->add(['status' => 1]);
+        $request->merge(['phone'=>$phone]);
         $contactus->create(request()->all());
         flash('Successfully created a Message! We will contact you as soon as possible ')->success();
         return redirect()->route('home');
