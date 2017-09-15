@@ -68,13 +68,14 @@
         <main id="root" class="main">
             @include('flash::message')
             @yield('content')
+            @yield('modals')
         </main>
 
         <aside id="aside-root" class="aside-menu" data="{{ json_encode($contact_get) }}" >
             @include('layouts.themes.backend.partials.aside')
         </aside>
         <!-- Modals -->
-        @yield('modals')
+        
     </div>
     @yield('variables')
     <!-- Footer -->
