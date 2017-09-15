@@ -11,6 +11,7 @@ class CreateContactusesTable extends Migration
      *
      * @return void
      */
+    
     public function up()
     {
         Schema::create('contactuses', function (Blueprint $table) {
@@ -20,6 +21,7 @@ class CreateContactusesTable extends Migration
             $table->string('phone');
             $table->string('subject');
             $table->string('message');
+            $table->tinyInteger('status');
             $table->softDeletes();
             $table->timestamps();
         });

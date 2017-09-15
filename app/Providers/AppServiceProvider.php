@@ -19,18 +19,24 @@ class AppServiceProvider extends ServiceProvider
         view()->composer([
             'layouts.themes.backend.login',
             'layouts.themes.backend.layout',
-            'layours.themes.backend.partials.nav',
+            'layouts.themes.backend.partials.nav',
             'layouts.themes.theme1.layout',
             'layouts.themes.theme2.layout',
             'layouts.themes.theme2.partials.nav',
             'home.thank_you'
             ], function ($view) {
                 $company = \App\Company::prepareCompany(\App\Company::find(1));
+
                 $map = Mapper::map(32.9251348, -96.8153818, ['zoom' => 10, 'markers' => ['title' => 'My Location', 'animation' => 'DROP'], 'clusters' => ['size' => 10, 'center' => true, 'zoom' => 20]]);
                 $view->with('company', $company)
                 ->with('map', $map);
             });
-
+        view()->composer([
+            'layouts.themes.backend.layout'
+            ], function ($view) {
+                $contact_get = \App\Contactus::prepareContactus();
+                $view->with('contact_get', $contact_get);
+            });
 
         // Parts
         view()->composer([
@@ -48,9 +54,7 @@ class AppServiceProvider extends ServiceProvider
              'layouts.themes.backend.partials.aside',
             ], function ($view) {
                 $active_invoices = \App\Invoice::where('status', '<', 5)->whereBetween('created_at', [date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')])->count();
-                $contact_count = \App\Contactus::countContactus();
-                $view->with('active_invoices', $active_invoices)
-                ->with('contact_count', $contact_count);
+                $view->with('active_invoices', $active_invoices);
             });
 
         // Send asset issues data globally to sidebar
@@ -58,7 +62,6 @@ class AppServiceProvider extends ServiceProvider
             $collections_count = \App\Collection::countCollections();
             $customer_count = \App\User::countCustomers();
             $employee_count = \App\User::countEmployees();
-            $contact_count = \App\Contactus::countContactus();
             $companies_count = \App\Company::countCompanies();
             $fee_count = \App\Fee::countFees();
             $finger_count = \App\Finger::countFingers();
@@ -71,7 +74,6 @@ class AppServiceProvider extends ServiceProvider
             $vendor_count = \App\Vendor::countVendors();
             $view->with('companies_count', $companies_count)
             ->with('collections_count', $collections_count)
-            ->with('contact_count', $contact_count)
             ->with('customer_count', $customer_count)
             ->with('employee_count', $employee_count)
             ->with('fee_count', $fee_count)
