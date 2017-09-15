@@ -31,6 +31,7 @@
                     <hr class="transparent mx-0 my-2">
                     <p data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+ikey+'-main'" class="panel-title expand">
                         Subject: @{{ ival.subject }}
+                        <br>
                         <small style="align:left">
                             @{{ ival.name }}
                         </small>
@@ -104,6 +105,7 @@
                 <div class="card-header" >
                     <p data-toggle="collapse" data-parent="#accordion" :href="'#collapse'+ikey+'-archive'" class="panel-title expand">
                         Subject: @{{ ival.subject }}
+                        <br>
                         <small style="align:left">
                             @{{ ival.name }}
                         </small>
