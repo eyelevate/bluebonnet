@@ -383,6 +383,8 @@
         <template slot="body">
             Click proceed to complete this invoice #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}?
         </template>
+
+        
         <template slot="footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-success">Proceed</button>    
