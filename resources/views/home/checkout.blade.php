@@ -193,7 +193,7 @@
                         
                         <label class="form-control-label">
                             <input type="radio" name="shipping" value="1" {{ old('shipping') ? (old('shipping') == 1) ? 'checked' : '' : 'checked' }} @click="updateShipping(1)">
-                            &nbsp;Ground <small>(5-7 Business Days)</small>
+                            &nbsp;2 Day <small>(Free Shipping)</small>
                         </label>
                     </div>
 
@@ -201,24 +201,10 @@
                         
                         <label class="form-control-label">
                             <input type="radio" name="shipping" value="2" {{ (old('shipping') == 2) ? 'checked' : '' }} @click="updateShipping(2)">
-                            &nbsp;2 Day Air
-                        </label>
-                    </div>
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="3" {{ (old('shipping') == 3) ? 'checked' : '' }} @click="updateShipping(3)">
-                            &nbsp;Next Day
+                            &nbsp;Next Day <small>(Priced by weight and insurance)</small>
                         </label>
                     </div>
 
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="4" {{ (old('shipping') == 4) ? 'checked' : '' }} @click="updateShipping(4)">
-                            &nbsp;In-store Pickup
-                        </label>
-                    </div>
                 </div>
                 <hr/>
                 <div class="row">
@@ -307,38 +293,41 @@
                 </div>
                 @if (!$email)
                 {{-- card --}}
-                <div class="form-group {{ $errors->has('card_number') ? ' has-danger' : '' }}">
-                    <label class="form-control-label">Credit Card Number</label>
-                    {{ Form::text('card_number', old('card_number') ? old('card_number') : '',['class'=>'form-control']) }}
-                    <div class="{{ ($errors->has('card_number')) ? '' : 'hide' }} hidden-sm-down">
-                        <small class="form-control-feedback">{{ $errors->first('card_number') }}</small>
+                <div v-if="checkShipping">
+                    <div class="form-group {{ $errors->has('card_number') ? ' has-danger' : '' }}">
+                        <label class="form-control-label">Credit Card Number</label>
+                        {{ Form::text('card_number', old('card_number') ? old('card_number') : '',['class'=>'form-control']) }}
+                        <div class="{{ ($errors->has('card_number')) ? '' : 'hide' }} hidden-sm-down">
+                            <small class="form-control-feedback">{{ $errors->first('card_number') }}</small>
+                        </div>
                     </div>
-                </div>
-                {{-- Expiration --}}
-                <div class="form-group row">
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="form-group {{ $errors->has('exp_month') ? ' has-danger' : '' }}">
-                            <label class="form-control-label">Expiration Month</label>
-                            {{ Form::text('exp_month', old('exp_month') ? old('exp_month') : '',['class'=>'form-control','maxlength'=>2,'placeholder'=>'MM']) }}
+                    {{-- Expiration --}}
+                    <div class="form-group row">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="form-group {{ $errors->has('exp_month') ? ' has-danger' : '' }}">
+                                <label class="form-control-label">Expiration Month</label>
+                                {{ Form::text('exp_month', old('exp_month') ? old('exp_month') : '',['class'=>'form-control','maxlength'=>2,'placeholder'=>'MM']) }}
+
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="form-group {{ $errors->has('exp_year') ? ' has-danger' : '' }}">
+                                <label class="form-control-label">Expiration Year</label>
+                                {{ Form::text('exp_year', old('exp_year') ? old('exp_year') :'',['class'=>'form-control','maxlength'=>4,'placeholder'=>'YYYY']) }}
+                            </div>
 
                         </div>
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="form-group {{ $errors->has('exp_year') ? ' has-danger' : '' }}">
-                            <label class="form-control-label">Expiration Year</label>
-                            {{ Form::text('exp_year', old('exp_year') ? old('exp_year') :'',['class'=>'form-control','maxlength'=>4,'placeholder'=>'YYYY']) }}
-                        </div>
-     
-                    </div>
-                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-                        <div class="form-group {{ $errors->has('cvv') ? ' has-danger' : '' }}">
-                            <label class="form-control-label">CVV (back of card)</label>
-                            {{ Form::text('cvv', old('cvv') ? old('cvv') :'',['class'=>'form-control','maxlength'=>4,'placeholder'=>'cvv']) }}
-                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <div class="form-group {{ $errors->has('cvv') ? ' has-danger' : '' }}">
+                                <label class="form-control-label">CVV (back of card)</label>
+                                {{ Form::text('cvv', old('cvv') ? old('cvv') :'',['class'=>'form-control','maxlength'=>4,'placeholder'=>'cvv']) }}
+                            </div>
 
-                    </div>
-                    
+                        </div>
+                        
+                    </div>                    
                 </div>
+                
                 @endif
                 <div class="row-fluid text-danger">
                     <ul class="col-12">

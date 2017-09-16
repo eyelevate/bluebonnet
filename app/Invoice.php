@@ -75,6 +75,7 @@ class Invoice extends Model
         'first_name',
         'last_name',
         'shipping',
+        'shipping_total',
         'email_token'
 
     ];
@@ -327,14 +328,14 @@ class Invoice extends Model
         $invoice->tax = $totals['_tax'];
         $invoice->total = $totals['_total'];
         $invoice->tendered = $totals['_total'];
-        $invoice->shipping_total = $totals['_shipping'];
+        // $invoice->shipping_total = $totals['_shipping'];
         $invoice->payment_type = 1; // Credit Card
         $invoice->last_four = substr($card['card_number'], -4);
         $invoice->exp_month = $card['exp_month'];
         $invoice->exp_year = $card['exp_year'];
         $invoice->transaction_id = $payment['transaction_id'];
         $invoice->comment = $customer['comment'];
-        $invoice->shipping = $customer['shipping'];
+        // $invoice->shipping = $customer['shipping'];
         $invoice->status = 3; // Paid 
         $invoice->email_token = NULL;
 
@@ -423,7 +424,7 @@ class Invoice extends Model
         $invoice->tax = $tax;
 
         //Shipping
-        $shipping_total = (isset($shipping_total)) ? $shipping_total : 0;
+        $shipping_total = (isset($invoice->shipping_total)) ? $invoice->shipping_total : 0;
         $invoice->total = $total + $shipping_total;
         if ($invoice->save()) {
             return true;
@@ -454,6 +455,9 @@ class Invoice extends Model
 
         if (count($details) > 0) {
             foreach ($details as $key => $value) {
+                // id
+
+                $details[$key]['id_formatted'] = str_pad($value->id,6,0,STR_PAD_LEFT);
                 // first name
                 $details[$key]['first_name'] = (isset($value->users)) ? ucFirst($value->users->first_name) : ucFirst($value->first_name);
 
@@ -513,9 +517,28 @@ class Invoice extends Model
                     }
                 }
 
+
+                // subtotal formatted
+                $details[$key]['subtotal_formatted'] = '$'.number_format($value->subtotal,2,'.',',');
+
+                // tax formatted
+                $details[$key]['tax_formatted'] = '$'.number_format($value->tax,2,'.',',');
+
+                // shipping formatted
+                $details[$key]['shipping_formatted'] = '$'.number_format($value->shipping_total,2,'.',',');
+
+                // total formatted
+                $details[$key]['total_formatted'] = '$'.number_format($value->total,2,'.',',');
+
+
+
                 if (count($value->invoiceItems) > 0) {
-                    foreach ($value->invoiceItems as $item) {
-                        // dd($item);
+                    foreach ($value->invoiceItems as $itmKey => $itmValue) {
+                        $details[$key]['invoiceItems'][$itmKey]['itemMetal'] = ($itmValue->itemMetal) ? $itmValue->itemMetal : [];
+                        $details[$key]['invoiceItems'][$itmKey]['itemStone'] = ($itmValue->itemStone) ? $itmValue->itemStone : [];
+                        $details[$key]['invoiceItems'][$itmKey]['itemSize'] = ($itmValue->itemSize) ? $itmValue->itemSize : [];
+                        $details[$key]['invoiceItems'][$itmKey]['fingers'] = ($itmValue->fingers) ? $itmValue->fingers : [];
+                        $details[$key]['invoiceItems'][$itmKey]['inventoryItem'] = ($itmValue->inventoryItem) ? $itmValue->inventoryItem : [];
                     }
                 }
             }
@@ -605,16 +628,10 @@ class Invoice extends Model
         // Shipping Type
         switch ($shipping) {
             case 1: // Ground
-                $shipping_type = 'Ground Shipping';
+                $shipping_type = '2 Day';
                 break;
             case 2: // 2 Day Air
-                $shipping_type = '2 Day Air';
-                break;
-            case 3: // Next Day Air
-                $shipping_type = 'Next Day Air';
-                break;
-            default: // In Store Pickup
-                $shipping_type = 'In-store Pickup';
+                $shipping_type = 'Next Day';
                 break;
         }
 
@@ -711,8 +728,8 @@ class Invoice extends Model
             'sas'=>false,
             'originalTotals'=>$totals,
             'totals'=>$totals,
-            'shipping'=>$data->shipping 
-
+            'shipping'=>$data->shipping,
+            'shipping_total'=> (isset($data['shipping_total'])) ? number_format($data->shipping_total,2,'.',',') : number_format(0,2,'.',',')
         ];
     }
 

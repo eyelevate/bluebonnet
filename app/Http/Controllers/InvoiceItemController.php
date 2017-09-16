@@ -70,6 +70,7 @@ class InvoiceItemController extends Controller
 
         $stone_select = $itemStone->prepareSelect($invoiceItem->inventoryItem->itemStone);
         $stone_sizes = $itemSize->prepareSelect($invoiceItem->inventoryItem);
+        // dd($stone_sizes);
 
         return view('invoice_items.edit',compact(['invoiceItem','fingers','metals','stones','stone_select','stone_sizes']));
     }
@@ -87,7 +88,8 @@ class InvoiceItemController extends Controller
             'quantity' => 'required|numeric',
             'subtotal'=>'required'
         ]);
-
+        
+        $request->merge(['item_size_id'=>$request->item_size_id[$request->item_stone_id]]);
         if ($invoiceItem->update($request->all())) {
             // check to see if email if so then update status and update invoice totals
             $email = $invoiceItem->itemStone->stones->email;

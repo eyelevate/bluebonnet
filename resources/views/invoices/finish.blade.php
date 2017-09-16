@@ -186,31 +186,16 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="1" {{ (old('shipping') == 1 || $invoice->shipping == 1) ? 'checked' : '' }} @click="updateShipping(1)">
-                            &nbsp;Ground <small>(5-7 Business Days)</small>
+                            <input type="radio" disabled name="shipping" value="1" {{ (old('shipping') == 1 || $invoice->shipping == 1) ? 'checked' : '' }} @click="updateShipping(1)">
+                            &nbsp;2 Day
                         </label>
                     </div>
 
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="2" {{ (old('shipping') == 2 || $invoice->shipping == 2) ? 'checked' : '' }} @click="updateShipping(2)">
-                            &nbsp;2 Day Air
-                        </label>
-                    </div>
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="3" {{ (old('shipping') == 3 || $invoice->shipping == 3) ? 'checked' : '' }} @click="updateShipping(3)">
+                            <input type="radio" disabled name="shipping" value="2" {{ (old('shipping') == 2 || $invoice->shipping == 2) ? 'checked' : '' }} @click="updateShipping(2)">
                             &nbsp;Next Day
-                        </label>
-                    </div>
-
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="4" {{ (old('shipping') == 4 || $invoice->shipping == 4) ? 'checked' : '' }} @click="updateShipping(4)">
-                            &nbsp;In-store Pickup
                         </label>
                     </div>
                 </div>

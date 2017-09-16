@@ -69,7 +69,7 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepOne">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepOne" @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
 
 			
 		</template>
@@ -207,7 +207,7 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepTwo">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepTwo" @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
 		</template>
 	</bootstrap-card>
 
@@ -312,7 +312,7 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepThree">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepThree" @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
 		</template>
 	</bootstrap-card>
 
@@ -390,8 +390,8 @@
                         
                         <label class="form-control-label">
                             <input type="radio" name="shipping" value="1" v-if="shipping ==1" checked @click="updateShipping(1)">
-                            <input type="radio" name="shipping" value="1" v-if="shipping !=1" @click="updateShipping(1)">
-                            &nbsp;Ground <small>(5-7 Business Days)</small>
+                            <input type="radio" name="shipping" value="1" v-else @click="updateShipping(1)">
+                            &nbsp;2 Day
                         </label>
                     </div>
 
@@ -399,30 +399,21 @@
                         
                         <label class="form-control-label">
                             <input type="radio" name="shipping" value="2" v-if="shipping ==2" checked @click="updateShipping(2)">
-                            <input type="radio" name="shipping" value="2" v-if="shipping !=2" @click="updateShipping(2)">
-                            &nbsp;2 Day Air
-                        </label>
-                    </div>
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="3" v-if="shipping ==3" checked @click="updateShipping(3)">
-                            <input type="radio" name="shipping" value="3" v-if="shipping !=3" @click="updateShipping(3)">
+                            <input type="radio" name="shipping" value="2" v-else @click="updateShipping(2)">
                             &nbsp;Next Day
                         </label>
                     </div>
-
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="4" v-if="shipping ==4" checked @click="updateShipping(4)">
-                            <input type="radio" name="shipping" value="4" v-if="shipping !=4" @click="updateShipping(4)">
-                            &nbsp;In-store Pickup
-                        </label>
-                    </div>
                 </div>
-                <hr/>
-
+                
+                
+                <div class="form-group">
+                	<label>Shipping Price</label>
+                	<div class="input-group">
+                		<input class="form-control" v-model="shippingTotal"/>
+                		<div class="input-group-addon" @click="getTotals">Set</div>
+                	</div>	
+                </div>
+				<hr/>
                 <!-- card number -->
                 <bootstrap-control class="form-group-no-border" 
                     use-label = "true"
@@ -544,7 +535,8 @@
 	</template>
 	<template slot="footer">
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Update</button>
+		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Try Again</button>
+		<button type="button" class="btn btn-primary" @click="makeSession" v-else>Update</button>
 	</template>
 </bootstrap-modal>
 
@@ -575,6 +567,7 @@
 	selectedItems="{{ json_encode($invoices['selectedItems']) }}"
 	totals="{{ json_encode($invoices['totals']) }}"
 	originalTotals="{{ json_encode($invoices['totals']) }}"
+	shippingTotal = "{{ $invoices['shipping_total'] }}"
 	items="{{ (count($inventoryItems) > 0) ? json_encode($inventoryItems) : json_encode([]) }}"
 
 >

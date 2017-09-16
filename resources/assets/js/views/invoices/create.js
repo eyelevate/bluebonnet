@@ -35,6 +35,7 @@ const app = new Vue({
 		stepThree: false,
 		stepFour: false,
 		shipping: 1,
+		shippingTotal: 0,
 		progress: 0,
 		formStatusOne: false,
 		formStatusTwo: false,
@@ -116,6 +117,7 @@ const app = new Vue({
 			this.stepThree= false;
 			this.stepFour= false;
 			this.shipping= 1;
+			this.shippingTotal = 0;
 			this.progress= 0;
 			this.formStatusOne= false;
 			this.formStatusTwo= false;
@@ -230,11 +232,13 @@ const app = new Vue({
 		},
 		getTotals() {
 
-			// get the price subtotal with all options selected
-			axios.post('/inventory-items/get-totals',{
-				'items': this.selectedOptions
+						// get the price subtotal with all options selected
+			axios.post('/inventory-items/get-totals-edit',{
+				'items': this.selectedOptions,
+				'shippingTotal':this.shippingTotal
 			}).then(response => {
 				this.totals = response.data.totals;
+				this.validation();
 			});
 		},
 		sameAsShipping() {
@@ -353,6 +357,10 @@ const app = new Vue({
 
 		},
 		updateShipping(shipping) {
+			if (shipping == 1) {
+				this.shippingTotal = 0;
+			} 
+
 			this.shipping = shipping;
 
 			options = this.selectedOptions;
@@ -361,7 +369,7 @@ const app = new Vue({
 			});
 
 			this.selectedOptions = options;
-
+			
 			this.getTotals();
 		},
 		makeSession() {
@@ -397,7 +405,8 @@ const app = new Vue({
 					'current':this.current,
 					'sas':this.sas,
 					'totals':this.totals,
-					'shipping':this.shipping				
+					'shipping':this.shipping,
+					'shipping_total':this.shippingTotal			
 				}).then(response => {
 					if (response.data.status) {
 						this.progress = 10;

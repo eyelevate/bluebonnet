@@ -333,26 +333,28 @@ class InventoryItem extends Model
         $tax_rate = $taxes->where('status',1)->first();
         if(isset($data)){
             foreach ($data as $key => $value) {
-
-                $get_subtotal = $this->getSubtotal($value['inventoryItem'],$value['quantity'],$value['metal_id'],$value['stone_id'], $value['stone_size_id']);            
+                $shipping_id = (isset($value['shipping'])) ? $value['shipping'] : 1;
+                $shipping = $this->shippingRates($shipping_id);
+                if ($shipping) {
+                    $get_subtotal = $this->getSubtotal($value['inventoryItem'],$value['quantity'],$value['metal_id'],$value['stone_id'], $value['stone_size_id']);            
+                    $totals['_subtotal'] += $get_subtotal;
+                }
 
                 // calculate totals
                 $totals['quantity'] += $value['quantity'];
-                $totals['_subtotal'] += $get_subtotal;
-                $shipping_id = (isset($value['shipping'])) ? $value['shipping'] : 1;
-                $shipping = $this->shippingRates($shipping_id);
+
             }
 
-            $total = round($totals['_subtotal'] * (1+$tax_rate->rate),2);
-            $tax = $total - $totals['_subtotal'];
-            $final_total = $total + $shipping;
+            $total = ($shipping) ? round($totals['_subtotal'] * (1+$tax_rate->rate),2) : 0;
+            $tax = ($shipping) ?  $total - $totals['_subtotal'] :  0;
+            $final_total = ($shipping) ?  $total + $shipping: 0;
 
-            $totals['subtotal'] = '$'.number_format($totals['_subtotal'],2,'.',',');
-            $totals['total'] = '$'.number_format($final_total,2,'.',',');
-            $totals['_total'] = $final_total;
-            $totals['tax'] = '$'.number_format($tax,2,'.',',');
-            $totals['_tax'] = $tax;
-            $totals['shipping'] = '$'.number_format($shipping,2,'.',',');
+            $totals['subtotal'] = ($shipping) ? '$'.number_format($totals['_subtotal'],2,'.',',') : 'Priced Later';
+            $totals['total'] = ($shipping) ?  '$'.number_format($final_total,2,'.',',') : 'Priced Later';
+            $totals['_total'] = ($shipping) ?  $final_total : 0;
+            $totals['tax'] = ($shipping) ? '$'.number_format($tax,2,'.',',') : 'Priced Later';
+            $totals['_tax'] =  ($shipping) ? $tax :  0;
+            $totals['shipping'] = ($shipping) ? '$0.00' : 'Priced Later';
             $totals['_shipping'] = $shipping;
 
         }
@@ -382,27 +384,75 @@ class InventoryItem extends Model
         $tax_rate = $taxes->where('status',1)->first();
         if(isset($data)){
             foreach ($data as $key => $value) {
-
-                $get_subtotal = $value['subtotal'];            
-
-                // calculate totals
-                $totals['quantity'] += $value['quantity'];
-                $totals['_subtotal'] += $get_subtotal;
                 $shipping_id = (isset($value['shipping'])) ? $value['shipping'] : 1;
                 $shipping = $this->shippingRates($shipping_id);
+                $totals['quantity'] += $value['quantity'];
+                $get_subtotal = ($shipping) ? $value['subtotal'] : 0;
+                if ($shipping) {
+                    $totals['_subtotal'] += $get_subtotal;
+                }
+            }
+
+            $total = ($shipping) ? round($totals['_subtotal'] * (1+$tax_rate->rate),2) : 0;
+            $tax = ($shipping) ?  $total - $totals['_subtotal'] :  0;
+            $final_total = ($shipping) ?  $total + $shipping: 0;
+
+            $totals['subtotal'] = ($shipping) ? '$'.number_format($totals['_subtotal'],2,'.',',') : 'Priced Later';
+            $totals['total'] = ($shipping) ?  '$'.number_format($final_total,2,'.',',') : 'Priced Later';
+            $totals['_total'] = ($shipping) ?  $final_total : null;
+            $totals['tax'] = ($shipping) ? '$'.number_format($tax,2,'.',',') : 'Priced Later';
+            $totals['_tax'] =  ($shipping) ? $tax :  null;
+            $totals['shipping'] = ($shipping) ? '$0.00' : 'Priced Later';
+            $totals['_shipping'] = $shipping;
+
+
+        }
+
+        return $totals;        
+    }
+
+    public function prepareTotalsFinishEdit($data, $shippingTotal)
+    {
+        $totals = [
+            'quantity'=>0,
+            'subtotal'=>0,
+            '_subtotal'=>0,
+            'tax'=>0,
+            '_tax'=>0,
+            'shipping'=>0,
+            '_shipping'=>0,
+            'total'=>0,
+            '_total'=>0,
+        ];
+        $quantity = 0;
+        $sub_total = 0;
+        $tax = 0;
+        $total = 0;
+        $shipping = 0;
+        $taxes = new Tax();
+        $tax_rate = $taxes->where('status',1)->first();
+        if(isset($data)){
+            foreach ($data as $key => $value) {
+                $shipping_id = $value['shipping'];
+                $shipping = $this->shippingRates($shipping_id);
+                $totals['quantity'] += $value['quantity'];
+                $get_subtotal = $value['subtotal'];
+                $totals['_subtotal'] += $get_subtotal;
+   
             }
 
             $total = round($totals['_subtotal'] * (1+$tax_rate->rate),2);
             $tax = $total - $totals['_subtotal'];
-            $final_total = $total + $shipping;
+            $final_total = $total + $shippingTotal;
 
             $totals['subtotal'] = '$'.number_format($totals['_subtotal'],2,'.',',');
             $totals['total'] = '$'.number_format($final_total,2,'.',',');
             $totals['_total'] = $final_total;
             $totals['tax'] = '$'.number_format($tax,2,'.',',');
-            $totals['_tax'] = $tax;
-            $totals['shipping'] = '$'.number_format($shipping,2,'.',',');
-            $totals['_shipping'] = $shipping;
+            $totals['_tax'] =  $tax;
+            $totals['shipping'] = '$'.number_format($shippingTotal,2,'.',',');
+            $totals['_shipping'] = $shippingTotal;
+
 
         }
 
@@ -706,17 +756,12 @@ class InventoryItem extends Model
         $rate = 0;
 
         switch ($shipping) {
-            case 2: // 2 day air
-                $rate = 10;
-                break;
-            case 3:
-                $rate = 20;
+            case 1: 
+                return true;
                 break;
             default:
-                $rate = 0;
+                return false;
                 break;
         }
-
-        return $rate;
     }
 }

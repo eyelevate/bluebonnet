@@ -643,4 +643,16 @@ class InventoryItemController extends Controller
             'totals'=>$totals
         ]);
     }
+    public function getTotalsEdit(Request $request, InventoryItem $inventoryItem)
+    {
+        $items = $request->items;
+        $shippingTotal = $request->shippingTotal;
+
+        $totals = $inventoryItem->prepareTotalsFinishEdit($items, $shippingTotal);
+
+        return response()->json([
+            'status'=>true,
+            'totals'=>$totals
+        ]);
+    }
 }

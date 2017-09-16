@@ -182,6 +182,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/inventory-items/{inventory_item}/get-subtotal-admins', 'InventoryItemController@subtotalAdmin')->name('inventory_item.subtotal_admin');
     Route::post('/inventory-items/get-options', 'InventoryItemController@getOptions')->name('inventory_item.get_options');
     Route::post('/inventory-items/get-totals', 'InventoryItemController@getTotals')->name('inventory_item.get_totals');
+    Route::post('/inventory-items/get-totals-edit', 'InventoryItemController@getTotalsEdit')->name('inventory_item.get_totals_edit');
 
     // Invoices
     Route::get('/invoices', 'InvoiceController@index')->name('invoice.index');
@@ -191,7 +192,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/invoices/{invoice}/show', 'InvoiceController@show')->name('invoice.show');
     Route::get('/invoices/{invoice}/edit', 'InvoiceController@edit')->name('invoice.edit');
     Route::patch('/invoices/{invoice}', 'InvoiceController@update')->name('invoice.update');
-    Route::patch('/invoices/{invoice}', 'InvoiceController@complete')->name('invoice.complete');
+    Route::patch('/invoices/{invoice}/complete', 'InvoiceController@complete')->name('invoice.complete');
     Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
     Route::post('/invoices/{invoice}/send-email', 'InvoiceController@sendEmail')->name('invoice.email');
     Route::post('/invoices/reset', 'InvoiceController@reset')->name('invoice.reset');
@@ -199,6 +200,9 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/invoices/make-session', 'InvoiceController@makeSession')->name('invoice.make_session');
     Route::post('/invoices/forget-session', 'InvoiceController@forgetSession')->name('invoice.forget_session');
     Route::post('/invoices/authorize-payment', 'InvoiceController@authorizePayment')->name('invoice.authorize_payment');
+    Route::post('/invoices/{invoice}/update-shipping', 'InvoiceController@updateShipping')->name('invoice.update_shipping');
+
+
     Route::post('/invoices/push-email', 'InvoiceController@pushEmail')->name('invoice.push_email');
     // Invoice Item
     Route::get('/invoice-items', 'InvoiceItemController@index')->name('invoice_item.index');

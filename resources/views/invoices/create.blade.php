@@ -69,7 +69,7 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepOne">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepOne" @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
 
 			
 		</template>
@@ -207,7 +207,7 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepTwo">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepTwo" @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
 		</template>
 	</bootstrap-card>
 
@@ -220,7 +220,7 @@
                     use-label = "true"
  					label = "First Name">
                     <template slot="control">
-                    	<input type="text" required v-model="firstName" class="form-control" @blur="validation"/>
+                    	<input type="text" required v-model="firstName" name="first_name" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -229,7 +229,7 @@
                     use-label = "true"
  					label = "Last Name">
                     <template slot="control">
-                    	<input type="text" required v-model="lastName" class="form-control" @blur="validation"/>
+                    	<input type="text" required v-model="lastName" name="last_name" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -238,7 +238,7 @@
                     use-label = "true"
  					label = "Phone">
                     <template slot="control">
-                    	<input type="text" required v-model="phone" class="form-control" @blur="validation"/>
+                    	<input type="text" required v-model="phone" name="phone" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -247,7 +247,7 @@
                     use-label = "true"
  					label = "Email">
                     <template slot="control">
-                    	<input type="email" required v-model="email" class="form-control" @blur="validation"/>
+                    	<input type="email" required v-model="email" name="email" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -256,7 +256,7 @@
                     use-label = "true"
  					label = "Street">
                     <template slot="control">
-                    	<input type="text" required v-model="street" class="form-control" @blur="validation"/>
+                    	<input type="text" required v-model="street" name="street" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
                 <!-- Suite -->
@@ -264,7 +264,7 @@
                     use-label = "true"
  					label = "Suite (optional)">
                     <template slot="control">
-                    	<input type="text" v-model="suite" class="form-control" @blur="validation"/>
+                    	<input type="text" v-model="suite" name="suite" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -273,7 +273,7 @@
                     use-label = "true"
  					label = "City">
                     <template slot="control">
-                    	<input type="text" v-model="city" class="form-control" @blur="validation"/>
+                    	<input type="text" v-model="city" name="city" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -282,7 +282,7 @@
                     use-label = "true"
  					label = "State">
                     <template slot="control">
-                    	{{ Form::select('',$states,'',['class'=>'form-control','v-model'=>'state','v-on:change'=>"validation"]) }}
+                    	{{ Form::select('state',$states,'',['class'=>'form-control','v-model'=>'state','v-on:change'=>"validation"]) }}
                     </template>
                 </bootstrap-control>
 
@@ -291,7 +291,7 @@
                     use-label = "true"
  					label = "Country">
                     <template slot="control">
-                    	{{ Form::select('',$countries,'US',['class'=>'form-control','v-model'=>'country','v-on:change'=>"validation"]) }}
+                    	{{ Form::select('country',$countries,'US',['class'=>'form-control','v-model'=>'country','v-on:change'=>"validation"]) }}
                     </template>
                 </bootstrap-control>
 
@@ -300,7 +300,7 @@
                     use-label = "true"
  					label = "Zipcode">
                     <template slot="control">
-                    	<input type="text" v-model="zipcode" class="form-control" @blur="validation"/>
+                    	<input type="text" v-model="zipcode" name="zipcode" class="form-control" @blur="validation"/>
                     </template>
                 </bootstrap-control>
 
@@ -312,7 +312,7 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepThree">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepThree" @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
 		</template>
 	</bootstrap-card>
 
@@ -390,7 +390,7 @@
                         
                         <label class="form-control-label">
                             <input type="radio" name="shipping" value="1" checked @click="updateShipping(1)">
-                            &nbsp;Ground <small>(5-7 Business Days)</small>
+                            &nbsp;2 Day
                         </label>
                     </div>
 
@@ -398,24 +398,17 @@
                         
                         <label class="form-control-label">
                             <input type="radio" name="shipping" value="2" @click="updateShipping(2)">
-                            &nbsp;2 Day Air
-                        </label>
-                    </div>
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="3" @click="updateShipping(3)">
                             &nbsp;Next Day
                         </label>
                     </div>
 
-                    <div class="col-12">
-                        
-                        <label class="form-control-label">
-                            <input type="radio" name="shipping" value="4" @click="updateShipping(4)">
-                            &nbsp;In-store Pickup
-                        </label>
-                    </div>
+                </div>
+                <div class="form-group">
+                	<label>Shipping Price</label>
+                	<div class="input-group">
+                		<input class="form-control" v-model="shippingTotal"/>
+                		<div class="input-group-addon" @click="getTotals">Set</div>
+                	</div>	
                 </div>
                 <hr/>
 
@@ -487,8 +480,8 @@
 		<template slot = "footer">
 			<button type="button" class="btn btn-secondary" @click="back">Back</button>
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
-			<button type="button" class = "btn btn-success pull-right" v-if="stepFour" @click="makeSession" data-toggle="modal" data-target="#sendModal">Create</button>
-			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepFour" @mouseover="validation">Create</button>	
+			<button type="button" class = "btn btn-success pull-right" v-if="stepFour" data-toggle="modal" data-target="#sendModal">Create</button>
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Create</button>	
 		</template>
 	</bootstrap-card>
 
@@ -531,6 +524,7 @@
 	<template slot="footer">
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Try Again</button>
+		<button type="button" class="btn btn-primary" @click="makeSession" v-else>Create Invoice</button>
 	</template>
 </bootstrap-modal>
 @endsection

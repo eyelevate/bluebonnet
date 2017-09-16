@@ -1,6 +1,6 @@
 @extends('layouts.themes.backend.layout')
 @section('scripts')
-<script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
+<script type="text/javascript" src="{{ mix('/js/views/admins/home.js') }}"></script>
 
 @endsection
 @section('content')
@@ -168,7 +168,7 @@
 
 @section('modals')
 @if (count($invoiceDetails) > 0)
-    @foreach($invoiceDetails as $detail)
+    @foreach($invoiceDetails as $dkey => $detail)
     <bootstrap-modal id="viewModal-{{ $detail->id }}" b-size="modal-lg">
         <template slot="header">Invoice - #{{ str_pad($detail->id,6,0,STR_PAD_LEFT) }}</template>
         <template slot="body">
@@ -214,19 +214,32 @@
                             </tr>
                             <tr>
                                 <th>Subtotal</th>
-                                <td>${!! number_format($detail->subtotal,2,'.',',') !!}</td>
+                                <td id="subtotal-{{ $dkey }}">${!! number_format($detail->subtotal,2,'.',',') !!}</td>
                             </tr>
                             <tr>
                                 <th>Tax</th>
-                                <td>${!! number_format($detail->tax,2,'.',',') !!}</td>
+                                <td id="tax-{{ $dkey }}">${!! number_format($detail->tax,2,'.',',') !!}</td>
                             </tr>
                             <tr>
                                 <th>Shipping</th>
-                                <td>${!! number_format($detail->shipping_total,2,'.',',') !!} <strong>({{ $detail->shipping_type }})</strong></td>
+                                <td >
+                                    @if($detail->shipping == 1)
+        
+                                    ${!! number_format($detail->shipping_total,2,'.',',') !!} <strong>({{ $detail->shipping_type }})</strong>    
+                    
+                                    @else
+                                    <div class="input-group">
+                                        <input class="form-control" type="text" value="{{ $detail->shipping_total }}"  placeholder="update shipping total here">
+                                        <div class="input-group-addon btn btn-primary" @click="updateShipping({{ $dkey }}, $event)">Set</div>
+                                    </div>
+                                    
+                                    <span id="shippingError-{{ $dkey }}" class="text-danger"></span>
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
                                 <th>Total</th>
-                                <td>${!! number_format($detail->total,2,'.',',') !!}</td>
+                                <td id="total-{{ $dkey }}">${!! number_format($detail->total,2,'.',',') !!}</td>
                             </tr>
                             <tr>
                                 <th>Payment Type</th>
@@ -394,4 +407,10 @@
 
     @endforeach
 @endif
+@endsection
+
+@section('variables')
+<div id="variable-root"
+    invoices="{{ json_encode($invoiceDetails) }}"
+></div>
 @endsection

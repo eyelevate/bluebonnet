@@ -99,11 +99,18 @@
                             </bootstrap-control>
 
                             @else
-                            <label>Select Stone Size</label>
-                            {{ Form::select('item_size_id['.$stone->id.']',$stone_sizes[$stone->id],(old('item_size_id['.$stone->id.']')) ? (old('item_size_id['.$stone->id.']')) : $invoiceItem->item_size_id ,['class'=>"form-control {($errors->has('item_size_id.'.$stone->id)) ? 'form-control-danger' : ''}",'v-on:change'=>'setSize($event)']) }}
-                            <div class="{{ ($errors->has("item_size_id.{$stone->id}")) ? '' : 'hide' }}">
-                                <small class="form-control-feedback">{{ $errors->first("item_size_id.{$stone->id}") }}</small>
-                            </div>
+                                @if(count($stone_sizes) > 0)
+                                    @foreach($stone_sizes as $key => $ss)
+                                    <div v-if="stoneId == {{ $key }}">
+                                        <label>Select Stone Size</label>  
+                                        {{ Form::select('item_size_id['.$key.']',$ss,(old('item_size_id['.$key.']')) ? (old('item_size_id['.$key.']')) : $invoiceItem->item_size_id ,['class'=>"form-control {($errors->has('item_size_id.'.$stone->id)) ? 'form-control-danger' : ''}",'v-on:change'=>'setSize($event)']) }}
+                                        <div class="{{ ($errors->has("item_size_id.{$key}")) ? '' : 'hide' }}">
+                                            <small class="form-control-feedback">{{ $errors->first("item_size_id.{$stone->id}") }}</small>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                @endif
+                            
                             @endif
                             
                         </div>                      

@@ -39,6 +39,7 @@ const app = new Vue({
 		stepFive: false,
 		stepSix: false,
 		shipping: 1,
+		shippingTotal:0,
 		progress: 0,
 		formStatusOne: false,
 		formStatusTwo: false,
@@ -124,6 +125,7 @@ const app = new Vue({
 			this.stepFive = false;
 			this.stepSix = false;
 			this.shipping= 1;
+			this.shippingTotal = 0;
 			this.progress= 0;
 			this.formStatusOne= false;
 			this.formStatusTwo= false;
@@ -241,8 +243,9 @@ const app = new Vue({
 		getTotals() {
 
 			// get the price subtotal with all options selected
-			axios.post('/inventory-items/get-totals',{
-				'items': this.selectedOptions
+			axios.post('/inventory-items/get-totals-edit',{
+				'items': this.selectedOptions,
+				'shippingTotal':this.shippingTotal
 			}).then(response => {
 				this.totals = response.data.totals;
 				this.validation();
@@ -383,6 +386,10 @@ const app = new Vue({
 
 		},
 		updateShipping(shipping) {
+			if (shipping == 1) {
+				this.shippingTotal = 0;
+			} 
+
 			this.shipping = shipping;
 
 			options = this.selectedOptions;
@@ -632,6 +639,7 @@ var vars = new Vue({
 		app.selectedOptions = JSON.parse(this.$el.attributes.selectedOptions.value);
 		app.selectedItems = JSON.parse(this.$el.attributes.selectedItems.value);
 		app.shipping = this.$el.attributes.shipping.value;
+		app.shippingTotal = this.$el.attributes.shippingTotal.value;
 		app.totals = JSON.parse(this.$el.attributes.totals.value);
 		app.originalTotals = JSON.parse(this.$el.attributes.originalTotals.value);
 		app.searchInventoryItem();

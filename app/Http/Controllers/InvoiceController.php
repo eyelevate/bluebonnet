@@ -73,7 +73,8 @@ class InvoiceController extends Controller
             'current'=>$request->current,
             'sas'=>$request->sas,
             'totals'=>$request->totals,
-            'shipping'=>$request->shipping 
+            'shipping'=>$request->shipping,
+            'shippingTotal'=>$request->shipping_total
 
         ]);
         return response()->json([
@@ -164,7 +165,8 @@ class InvoiceController extends Controller
             'billing_state'=>trim($cart['billingState']),
             'billing_zipcode'=>trim($cart['billingZipcode']),
             'comment'=>NULL,
-            'shipping'=>$cart['shipping']
+            'shipping'=>$cart['shipping'],
+            'shipping_total'=>$cart['shippingTotal']
         ]; 
         $totals = $cart['totals'];
         $card = [
@@ -538,7 +540,7 @@ class InvoiceController extends Controller
 
             $totals = $inventoryItem->prepareTotalsAdmin($invs);
             $email = $itemStone->checkEmailAll($cart);
-            session()->put('cart',$cart);
+            session()->put('cartFinish',$cart);
             return view('invoices.finish', compact(['totals','states','countries','cart','email','invoice']));
         } else {
             flash('This token has expired or does not belong to you. Please contact administrator to send a new email. Thank you.')->error();
@@ -550,7 +552,7 @@ class InvoiceController extends Controller
     public function done(Request $request,Invoice $invoice, Authorize $authorize, Job $job, InventoryItem $inventoryItem, User $user, Company $company, InvoiceItem $invoiceItem, ItemStone $itemStone)
     {
         // Prepare all the variables required for saving
-        $cart = session()->get('cart');
+        $cart = session()->pull('cartFinish');
         $email = false;
         $this->validate(request(), [
             'first_name' => 'required|string|max:255',
@@ -593,7 +595,7 @@ class InvoiceController extends Controller
             'billing_state'=>$request->billing_state,
             'billing_zipcode'=>$request->billing_zipcode,
             'comment'=>NULL,
-            'shipping'=>$shipping
+            'shipping'=>$invoice->shipping
         ]; 
 
 
@@ -648,5 +650,32 @@ class InvoiceController extends Controller
         $invoice->update(['status'=>$status]);
         flash('successfully reverted invoice to paid')->success();
         return redirect()->back();
+    }
+
+    public function updateShipping(Request $request, Invoice $invoice)
+    {
+        $subtotal = $invoice->subtotal;
+        $tax = $invoice->tax;
+        $shipping_total = $request->total;
+        
+        if (is_numeric($request->total)) {
+            $total = $subtotal + $tax + $request->total;
+            $invoice->update(['shipping_total'=>$request->total,'total'=>$total,'status'=>2]);
+            return response()->json([
+                'status' => true,
+                'subtotal'=> '$'.number_format($subtotal,2,'.',','),
+                'shipping'=> number_format($shipping_total,2,'.',','),
+                'tax'=> '$'.number_format($tax,2,'.',','),
+                'total'=> '$'.number_format($total,2,'.',',')
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'message' => 'Shipping total must be a number. It cannot be left empty or have any non numeric characters. Try again'
+            ]);
+        }
+        
+
+        
     }
 }

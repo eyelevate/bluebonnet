@@ -156,10 +156,11 @@ class HomeController extends Controller
                 $cart[$key]['shipping'] = $request->shipping;
             }
         }
-        
-        session()->put('cart', $cart);
 
         $totals = $inventoryItem->prepareTotals($cart);
+
+        session()->put('cart', $cart);
+
 
         return response()->json([
             'status'=>true,
@@ -268,7 +269,7 @@ class HomeController extends Controller
     {
         // Prepare all the variables required for saving
         $cart = session()->get('cart');
-        $email = $itemStone->checkEmailAll($cart);
+        $email = ($request->shipping== 1) ? $itemStone->checkEmailAll($cart) : true;
         if (!$email) {
             $this->validate(request(), [
                 'first_name' => 'required|string|max:255',
@@ -304,6 +305,8 @@ class HomeController extends Controller
                 'billing_zipcode' => 'required|string|max:255',
             ]);
         }
+
+        
         $company_info = $company->find(1);
         $totals = $inventoryItem->prepareTotals($cart);
         $due = $totals['_total'];

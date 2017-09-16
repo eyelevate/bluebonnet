@@ -6,6 +6,7 @@ const app = new Vue({
 		email: '',
 		pw: '',
 		remember: false,
+		checkShipping: true,
 	},
 	methods: {
 		removeRow($event, $row) {
@@ -43,7 +44,7 @@ const app = new Vue({
 			}).then(response => {
 
 				this.totals = response.data.totals;
-				
+				this.checkShipping = (response.data.totals._shipping) ? true : false;
 
 			});
 		},
@@ -86,6 +87,7 @@ const app = new Vue({
 	created() {
 	},
 	mounted() {
+		this.updateShipping();
 	}
 });
 
