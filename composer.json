@@ -9,6 +9,7 @@
         "alexpechkarev/google-maps": "1.0.8",
         "authorizenet/authorizenet": "^1.9",
         "aws/aws-sdk-php": "^3.36",
+        "barryvdh/laravel-dompdf": "^0.8.1",
         "cornford/googlmapper": "2.*",
         "gabrielbull/ups-api": "^0.7.12",
         "highideas/laravel-users-online": "^2.2",
@@ -19,7 +20,6 @@
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
         "mgp25/instagram-php": "^2.0"
-
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -23,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
             'layouts.themes.theme1.layout',
             'layouts.themes.theme2.layout',
             'layouts.themes.theme2.partials.nav',
-            'home.thank_you'
+            'home.thank_you',
+            'layouts.themes.pdfs.layout'
             ], function ($view) {
                 $company = \App\Company::prepareCompany(\App\Company::find(1));
 

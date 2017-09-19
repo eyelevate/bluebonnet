@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class InvoicePending extends Mailable
+class InvoiceBackendOrder extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,10 +16,12 @@ class InvoicePending extends Mailable
      *
      * @return void
      */
-    public function __construct($invoice, $company)
+    public function __construct($invoice, $company, $email)
     {
         $this->invoice = $invoice;
         $this->company = $company;
+        $this->email = $email;
+
     }
 
     /**
@@ -29,9 +31,11 @@ class InvoicePending extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.invoices.pending')
-            ->subject('Pending Invoice')
+
+        return $this->markdown('emails.invoices.backend')
+            ->subject('Invoice Statement')
             ->with('invoice',$this->invoice)
-            ->with('company',$this->company);
+            ->with('company',$this->company)
+            ->with('email',$this->email);
     }
 }

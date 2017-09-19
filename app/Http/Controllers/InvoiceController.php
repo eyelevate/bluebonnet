@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Mail;
 use App\Mail\InvoicePending;
 use App\Mail\InvoiceUserOrder;
+use App\Mail\InvoiceBackendOrder;
 
 class InvoiceController extends Controller
 {
@@ -42,7 +43,9 @@ class InvoiceController extends Controller
         $inventoryItems = $ii->prepareForShowInventory($ii->orderBy('name','asc')->get());
         return view('invoices.create',compact(['inventoryItems','states','countries']));
     }
-
+    /**
+    * creates backend shopping cart session used in create and edit invoice
+    **/
     public function makeSession(Request $request)
     {
         session()->put('cartBackend',[
@@ -82,6 +85,9 @@ class InvoiceController extends Controller
         ]);
     }
 
+    /**
+    * Authorize a payment to authorize.net new payment 
+    **/
     public function authorizePayment(Request $request, Authorize $authorize, Job $job)
     {
         // Prepare all the variables required for saving
@@ -132,8 +138,6 @@ class InvoiceController extends Controller
                 'message'=>$result['error_message']
             ]);
         }
-
-
     }
 
     /**
@@ -220,7 +224,9 @@ class InvoiceController extends Controller
         ]);
         
     }
-
+    /**
+    * Resend email after editing invoice , invoice item
+    **/
     public function pushEmail(Request $request, Company $company, ItemStone $itemStone, Invoice $invoice)
     {
         $cart = session()->get('cartBackend');
@@ -231,7 +237,13 @@ class InvoiceController extends Controller
         $company_info = $company->find(1);
         // Send Email
         try {
-            Mail::to($email_address)->send(new InvoiceUserOrder($new_invoice, $company_info, $email));
+            // check if this is a lab certified diamond or a lab created diamond
+            if ($email) {
+                Mail::to($email_address)->send(new InvoiceBackendOrder($new_invoice, $company_info, $email));
+            } else {
+                Mail::to($email_address)->send(new InvoiceUserOrder($new_invoice, $company_info, $email));
+            }
+            
             // All Done
             $status = true;
             $message = 'Thank you for your business! We have sent an email of your invoice to you. Please check your email for further instructions!';
@@ -246,9 +258,12 @@ class InvoiceController extends Controller
         ]);
         
     }
-
+    /**
+    * another forget session script
+    **/
     public function forgetSession(Request $request)
     {
+        session()->forget('cart');
         session()->forget('cartBackend');
         return response()->json([
             'status' => true
@@ -283,11 +298,67 @@ class InvoiceController extends Controller
         return view('invoices.edit',compact(['invoice','invoices','inventoryItems','states','countries']));
     }
 
-    public function refundPayment(Request $request, Invoice $invoice)
+    /**
+    * Backend function which allows us to refund if the user has a previous transaction id 
+    **/
+    public function refund(Request $request, Invoice $invoice, Authorize $authorize)
     {
         $transaction_id = $invoice->transaction_id;
-        $results = [
-            'status'=> false
+        if (isset($transaction_id)) {
+            $get_transaction_details = $authorize->getTransactionDetails($transaction_id);
+            if (($get_transaction_details != null) && ($get_transaction_details->getMessages()->getResultCode() == "Ok")) {
+                // start the void process
+                switch ($get_transaction_details->getTransaction()->getTransactionStatus()) {
+                    case 'settledSuccessfully': // Must refund
+                        $refund = $authorize->refundTranscaction($invoice->total,$invoice->last_four,$invoice->exp_month,$invoice->exp_year);
+
+                        if ($refund['status']) {
+                            // change status to 2 pending
+                            $invoice->status = 2;
+                            $invoice->transaction_id = NULL;
+                            $invoice->save();
+                            flash('Successfully refunded transaction.')->success();
+                            
+                        } else {
+                            flash($refund['reason'])->error();
+
+                        }
+                        
+                        break;
+                    
+                    default: // Must void
+                        $void = $authorize->voidTransaction($transaction_id);
+                        if ($void['status']) {
+                            $invoice->status = 2;
+                            $invoice->transaction_id = NULL;
+                            $invoice->save();
+                            flash('Successfully voided transaction.')->success();
+                        } else {
+                            flash($void['reason'])->error();
+
+                        }
+                        # code...
+                        break;
+                }
+            } else {
+                flash('There was an error get details of the transaction. Please speak to your administrator.')->error();
+                // dd('error');
+                
+            }
+            
+        }
+        return redirect()->back();
+    }
+
+    /**
+    * Refund payment script 
+    **/
+    public function refundPayment(Request $request, Invoice $invoice, Authorize $authorize)
+    {
+        $transaction_id = $invoice->transaction_id;
+        $result = [
+            'status'=> false,
+            'message'=>'No refund to make. There was no previous transaction.'
         ];
         if (isset($transaction_id)) {
             $get_transaction_details = $authorize->getTransactionDetails($transaction_id);
@@ -377,14 +448,18 @@ class InvoiceController extends Controller
             'exp_year'=>$job->stripAllButNumbers($cart['expYear']),
             'cvv'=>$job->stripAllButNumbers($cart['cvv'])
         ];
-        $update_invoice = $invoice->updateInvoice($invoiceid,$totals, $customer, $payment, $card);
-        // $new_invoice = $invoice->newInvoice($totals, $customer, $result, $card);
-        if($new_invoice) {
 
-            return response()->json([
-                'status' => true,
-                'new_invoice'=>$new_invoice
-            ]);
+        $update_invoice = $invoice->updateInvoice($invoice->id,$totals, $customer, $result, $card);
+        // $new_invoice = $invoice->newInvoice($totals, $customer, $result, $card);
+        if($update_invoice) {
+            $update_invoice_items = $invoiceItem->updateInvoiceItems($cart);
+            if ($update_invoice_items) {
+                return response()->json([
+                    'status' => true,
+                    'invoice'=>$update_invoice
+                ]);
+            }
+            
         
         }
 
@@ -400,7 +475,7 @@ class InvoiceController extends Controller
      * @param  \App\Invoice  $invoice
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Invoice $invoice, Authorize $authorize)
+    public function destroy(Invoice $invoice, Authorize $authorize,InvoiceItem $invoiceItem)
     {
         
         $transaction_id = $invoice->transaction_id;
@@ -441,60 +516,21 @@ class InvoiceController extends Controller
             
         }
 
-        if ($invoice->delete()) {
-            return redirect()->back();
-        }
-    }
-
-    public function refund(Request $request, Invoice $invoice, Authorize $authorize)
-    {
-        $transaction_id = $invoice->transaction_id;
-        if (isset($transaction_id)) {
-            $get_transaction_details = $authorize->getTransactionDetails($transaction_id);
-            if (($get_transaction_details != null) && ($get_transaction_details->getMessages()->getResultCode() == "Ok")) {
-                // start the void process
-                switch ($get_transaction_details->getTransaction()->getTransactionStatus()) {
-                    case 'settledSuccessfully': // Must refund
-                        $refund = $authorize->refundTranscaction($invoice->total,$invoice->last_four,$invoice->exp_month,$invoice->exp_year);
-
-                        if ($refund['status']) {
-                            // change status to 2 pending
-                            $invoice->status = 2;
-                            $invoice->transaction_id = NULL;
-                            $invoice->save();
-                            flash('Successfully refunded transaction.')->success();
-                            
-                        } else {
-                            flash($refund['reason'])->error();
-
-                        }
-                        
-                        break;
-                    
-                    default: // Must void
-                        $void = $authorize->voidTransaction($transaction_id);
-                        if ($void['status']) {
-                            $invoice->status = 2;
-                            $invoice->transaction_id = NULL;
-                            $invoice->save();
-                            flash('Successfully voided transaction.')->success();
-                        } else {
-                            flash($void['reason'])->error();
-
-                        }
-                        # code...
-                        break;
-                }
-            } else {
-                flash('There was an error get details of the transaction. Please speak to your administrator.')->error();
-                // dd('error');
-                
+        // remove all invoice items associated with
+        $del_items = $invoice->invoiceItems()->delete();
+        if ($del_items) {
+            if ($invoice->delete()) {
+                return redirect()->back();
             }
-            
         }
-        return redirect()->back();
+        
     }
 
+    
+
+    /**
+    * Backend function which makes the invoice complete
+    **/
     public function complete(Request $request, Invoice $invoice)
     {
         $update = $invoice->update(['status'=>5]);
@@ -505,6 +541,9 @@ class InvoiceController extends Controller
         }
     }
 
+    /**
+    * Sends email from backend, showing updated totals
+    **/
     public function sendEmail(Request $request, Invoice $invoice, Company $company)
     {
         // generate the email
@@ -528,6 +567,46 @@ class InvoiceController extends Controller
         return redirect()->back();
     }
 
+    /**
+    * Sends email from backend, showing updated totals
+    **/
+    public function pushEmailForm(Request $request, Invoice $invoice, Company $company)
+    {
+        // generate the email
+        $result = [
+            'status' => false
+        ];
+        $company_info = $company->find(1);
+        // generate the token page
+        $token = bin2hex(random_bytes(20));
+        $invoice->email_token = $token;
+
+        if ($invoice->save()) {
+            $invoice_single = $invoice->singleDetail($invoice);
+            try{
+                Mail::to($invoice_single->email)->send(new InvoicePending($invoice_single, $company_info));
+                // All Done
+                $result = [
+                    'status' => true
+                ];
+                
+            } catch(\Exception $e) {
+                $result = [
+                    'status' => false,
+                    'message'=>$e->getMessage()
+                ];
+                
+            }
+        }
+
+        return response()->json($result);
+
+    }
+
+    /**
+    * displays pending form with updated totals from lab created diamons / certified diamonds. Customer fills
+    * out and authorizes payment. Returns status 3 which is paid back to admins page
+    **/
     public function finish(Request $request, $token = null,Invoice $invoice, Job $job, InventoryItem $inventoryItem, ItemStone $itemStone)
     {
         $invs = $invoice->where('email_token',$token)->first();
@@ -549,6 +628,9 @@ class InvoiceController extends Controller
         
     }
 
+    /**
+    * finalize checkout, authorize payment, save invoice, save invoice items, email customer
+    **/
     public function done(Request $request,Invoice $invoice, Authorize $authorize, Job $job, InventoryItem $inventoryItem, User $user, Company $company, InvoiceItem $invoiceItem, ItemStone $itemStone)
     {
         // Prepare all the variables required for saving
@@ -637,14 +719,20 @@ class InvoiceController extends Controller
         }
     
     }
-
+    /**
+    * Resets shopping cart session
+    **/
     public function reset(Request $request) {
         session()->forget('cart');
+        session()->forget('cartBackend');
         return response()->json([
             'status' => true
         ]);
     }
 
+    /**
+    * Reverts invoice statuses 
+    **/
     public function revert(Request $request, Invoice $invoice) {
         $status = 3;
         $invoice->update(['status'=>$status]);
@@ -652,6 +740,9 @@ class InvoiceController extends Controller
         return redirect()->back();
     }
 
+    /**
+    * Updates shipping costs 
+    **/
     public function updateShipping(Request $request, Invoice $invoice)
     {
         $subtotal = $invoice->subtotal;
@@ -678,4 +769,13 @@ class InvoiceController extends Controller
 
         
     }
+
+    public function showInvoicePdf(Invoice $invoice, Company $company) {
+        $inv = $invoice->singleDetail($invoice);
+        $company = $company->prepareCompany($company->find(1));
+        $pdf = \PDF::loadView('pdfs.invoice',compact(['inv','company']));
+        return $pdf->stream();
+    }
+
+
 }

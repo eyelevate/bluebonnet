@@ -620,7 +620,14 @@ class InventoryItemController extends Controller
                     'metal_id'=>NULL,
                     'subtotal'=>'0.00',
                     'subtotal_formatted'=>'$0.00',
-                    'shipping'=> 1
+                    'shipping'=> 1,
+                    'errors'=>[
+                        'finger_id'=> false,
+                        'stone_id'=> false,
+                        'stone_size_id'=> false,
+                        'metal_id'=> false,
+                        'subtotal'=> false,
+                    ]
                 ];
                 array_push($selected, $row);
             }   

@@ -234,7 +234,7 @@ class Invoice extends Model
 
     }
 
-    public function newInvoice($totals, $customer, $payment, $card)
+    public function newInvoice($totals, $customer, $payment = null, $card)
     {
         $new_invoice = new Invoice();
         if (auth()->check()) {
@@ -328,15 +328,15 @@ class Invoice extends Model
         $invoice->tax = $totals['_tax'];
         $invoice->total = $totals['_total'];
         $invoice->tendered = $totals['_total'];
-        // $invoice->shipping_total = $totals['_shipping'];
+        $invoice->shipping_total = $totals['_shipping'];
         $invoice->payment_type = 1; // Credit Card
         $invoice->last_four = substr($card['card_number'], -4);
         $invoice->exp_month = $card['exp_month'];
         $invoice->exp_year = $card['exp_year'];
-        $invoice->transaction_id = $payment['transaction_id'];
+        $invoice->transaction_id = (isset($payment)) ? $payment['transaction_id'] : NULL;
         $invoice->comment = $customer['comment'];
-        // $invoice->shipping = $customer['shipping'];
-        $invoice->status = 3; // Paid 
+        $invoice->shipping = $customer['shipping'];
+        $invoice->status = (isset($payment['transaction_id'])) ? 3 : 2; // Paid or still pending
         $invoice->email_token = NULL;
 
         if ($invoice->save()) {
@@ -551,6 +551,7 @@ class Invoice extends Model
         $job = new Job();
 
         if (isset($data)) {
+            $data['id_formatted'] = str_pad($data->id,6,0,STR_PAD_LEFT);
             // first name
             $data['first_name'] = (isset($data->users)) ? ucFirst($data->users->first_name) : ucFirst($data->first_name);
 
@@ -566,14 +567,14 @@ class Invoice extends Model
             // Shipping Address
             $street = (isset($data->users)) ? $data->users->street : $data->street;
             $suite = (isset($data->users)) ? $data->users->suite : $data->suite;
-            $full_street = (isset($suite)) ? $street.' '.$suite : $street;
+            $full_street = (isset($suite)) ? $street.' #'.$suite : $street;
             $city = (isset($data->users)) ? $data->users->city : $data->city;
             $state = (isset($data->users)) ? $data->users->state : $data->state;
             $country = (isset($data->users)) ? $data->users->country : $data->country;
             $zipcode = (isset($data->users)) ? $data->users->zipcode : $data->zipcode;
 
             $shipping_address = $full_street." <br/> ".ucFirst($city).", ".ucFirst($state)." ".$zipcode;
-
+            $data['full_street'] = $full_street;
             $data['shipping_address'] = $shipping_address;
             $data['street'] = $street;
             $data['suite'] = $suite;
@@ -613,9 +614,37 @@ class Invoice extends Model
                 }
             }
 
+            if(isset($data['subtotal'])) {
+                $data['subtotal_formatted'] = '$'.number_format($data->subtotal,2,'.',',');
+            }
+
+            if(isset($data['tax'])) {
+                $data['tax_formatted'] = '$'.number_format($data->tax,2,'.',',');
+            }
+
+            if(isset($data['shipping_total'])) {
+                $data['shipping_total_formatted'] = '$'.number_format($data->shipping_total,2,'.',',');
+            }
+
+            if(isset($data['shipping'])) {
+                $data['shipping_formatted'] = $this->getShippingType($data->shipping);
+            }
+
+            if(isset($data['total'])) {
+                $data['total_formatted'] = '$'.number_format($data->total,2,'.',',');
+            }
+
+            if(isset($data['tendered'])) {
+                $data['tendered_formatted'] = '$'.number_format($data->tendered,2,'.',',');
+            }
+
+            $data['due_formatted'] = '$'.number_format($data->total - $data->tendered,2,'.',',');
+
             if (count($data->invoiceItems) > 0) {
-                foreach ($data->invoiceItems as $item) {
-                    // dd($item);
+                foreach ($data->invoiceItems as $ikey => $item) {
+                    if (isset($data->invoiceItems[$ikey]['subtotal'])) {
+                        $data['invoiceItems'][$ikey]['subtotal_formatted'] = '$'.number_format($item->subtotal,2,'.',','); 
+                    }
                 }
             }
 

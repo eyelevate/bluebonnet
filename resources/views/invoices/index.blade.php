@@ -142,7 +142,7 @@
 
                                 <tr>
                                     <th>Item Name</th>
-                                    <td>{{ $item->inventoryItem->name }}</td>
+                                    <td><a href="{{ route('inventory_item.edit',$item->inventoryItem->id) }}" target="__blank">{{ $item->inventoryItem->name }}</a></td>
                                 </tr>
                                 <tr>
                                     <th>Quantity</th>
@@ -205,7 +205,10 @@
                 
                 <hr/>
                 <h3 class="text-center">Invoice Actions</h3>
-                
+                <div class="row-fluid">
+                    <a type="button" class="btn btn-inverse btn-block" target="__blank" href="{{ route('invoice.show_invoice_pdf',$detail->id) }}">Print Invoice PDF</a>  
+                </div>
+                <hr/>
                 @if ($detail->status == 3)
                 <div class="row-fluid">
                     <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#completeModal-{{ $detail->id }}">Complete Invoice</button>  

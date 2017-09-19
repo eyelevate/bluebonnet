@@ -58,17 +58,28 @@ class InvoiceItem extends Model
 
     // methods
 
-    public function makeTopTen()
+    public function makeTopTen($take = 20)
     {
+
+
         $invoiceItems = $this->groupBy('inventory_item_id')
-            ->having('inventory_item_id', '>', 0)
             ->select('inventory_item_id',\DB::raw('sum(quantity) as total'))
             ->orderBy('total','desc')
-            ->take(10)
+            ->take($take)
             ->get();
 
+        
         if (count($invoiceItems) > 0) {
             foreach ($invoiceItems as $key => $value) {
+                $sum = 0;
+                $grab = $this->where('inventory_item_id',$value->inventory_item_id)->get();
+                if (count($grab) > 0) {
+                    foreach ($grab as $g) {
+                        $sum += $g->quantity;
+
+                    }
+                }
+                $invoiceItems[$key]['total'] = $sum;
                 if(isset($value->inventoryItem)){
                     if(isset($value->inventoryItem->images)) {
                         foreach ($value->inventoryItem->images as $imkey => $image) {
@@ -127,6 +138,40 @@ class InvoiceItem extends Model
                 $invoice_item->finger_id = $item_finger_id;
                 $invoice_item->item_size_id = $item_size_id;
                 if ($invoice_item->save()) {
+                    $cart_count--;
+                }
+
+                
+            }
+        }
+        return ($cart_count == 0) ? true : false;
+    }
+
+    public function updateInvoiceItems($cart)
+    {
+        
+        $inventoryItem = new InventoryItem();
+        $cart_count = count($cart['selectedOptions']);
+        if (count($cart['selectedOptions']) > 0) {
+            foreach ($cart['selectedOptions'] as $item) {
+                $ii = $item['inventoryItem'];
+
+                $quantity = $item['quantity'];
+                $item_size_id = ($item['stone_size_id']) ? $item['stone_size_id'] : NULL;
+                $item_metal_id = ($item['metal_id']) ? $item['metal_id'] : NULL;
+                $item_stone_id = ($item['stone_id']) ? $item['stone_id'] : NULL;
+                $item_finger_id = ($item['finger_id']) ? $item['finger_id'] : NULL;
+                $subtotal = $item['subtotal'];
+
+                $invoiceItem = InvoiceItem::find($item['id']);
+                $invoiceItem->inventory_item_id = $ii['id'];
+                $invoiceItem->quantity = $quantity;
+                $invoiceItem->subtotal = ($subtotal) ? $subtotal : 0;
+                $invoiceItem->item_metal_id = $item_metal_id;
+                $invoiceItem->item_stone_id = $item_stone_id;
+                $invoiceItem->finger_id = $item_finger_id;
+                $invoiceItem->item_size_id = $item_size_id;
+                if ($invoiceItem->save()) {
                     $cart_count--;
                 }
 

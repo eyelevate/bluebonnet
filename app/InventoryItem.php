@@ -732,7 +732,14 @@ class InventoryItem extends Model
                     'metal_id'=>$item->item_metal_id,
                     'subtotal'=>$item->subtotal,
                     'subtotal_formatted'=>'$'.number_format($item->subtotal,2,'.',','),
-                    'shipping'=> 1
+                    'shipping'=> 1,
+                    'errors'=>[
+                        'finger_id'=> false,
+                        'stone_id'=> false,
+                        'stone_size_id'=> false,
+                        'metal_id'=> false,
+                        'subtotal'=> false,
+                    ]
                 ];
                 array_push($selected, $row);
             }

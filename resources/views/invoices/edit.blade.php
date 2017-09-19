@@ -66,7 +66,7 @@
 		<template slot = "footer">
 
 			<a href="{{ route('invoice.index') }}" class="btn btn-secondary">Cancel</a>
-			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
+
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepOne">Next</button>
 
 			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
@@ -98,73 +98,60 @@
 									</bootstrap-control>
 								</div>
 								<div v-if="option.inventoryItem.fingers">
-									<bootstrap-control
-										use-label="true"
-										label="Ring Size"
-									>
-										<template slot="control">
-											<select class="form-control"  v-on:change="fingerSelected(okey,$event)" v-model="option.finger_id">
-												<option v-for="opt, key in option.fingers" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
-												<option v-for="opt, key in option.fingers" :value="key" >@{{ opt }}</option>
-											</select>
-										</template>
-									</bootstrap-control>
+									<div class="form-group" :class="{'has-danger': option.errors.finger_id }">
+										<label class="form-control-label">Ring Size</label>
+										<select class="form-control" :class="{'form-control-danger': option.errors.finger_id}"  v-on:change="fingerSelected(okey,$event)" v-model="option.finger_id">
+											<option v-for="opt, key in option.fingers" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
+											<option v-for="opt, key in option.fingers" :value="key" >@{{ opt }}</option>
+										</select>
+										<div class="form-control-feedback" v-if="option.errors.finger_id">This is a required field. Please select a proper ring size.</div>
+									</div>
 								</div>
 								<div v-if="option.inventoryItem.stones">
-									<bootstrap-control
-										use-label="true"
-										label="Stone Type"
-									>
-										<template slot="control">
-											<select class="form-control" :name="'item['+option.inventoryItem.id+'][stone_id]'" v-on:change="stoneSelected(okey, $event)" v-model="option.stone_id">
+									<div class="form-group" :class="{'has-danger': option.errors.stone_id }">
+										<label class="form-control-label">Stone Type</label>
+										<select class="form-control" :class="{'form-control-danger': option.errors.stone_id}" :name="'item['+option.inventoryItem.id+'][stone_id]'" v-on:change="stoneSelected(okey, $event)" v-model="option.stone_id">
 												<option v-for="opt, key in option.stone_select" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
 												<option v-for="opt, key in option.stone_select" :value="key" else>@{{ opt }}</option>
 											</select>
-										</template>
-									</bootstrap-control>
+										<div class="form-control-feedback" v-if="option.errors.stone_id">This is a required field. Please select a proper stone type.</div>
+									</div>
+	
+
 									<div v-if="option.inventoryItem.sizes">
 
 										<div v-for="size, stone_id in option.stone_sizes" v-if="option.stones_compare[option.stone_id] == stone_id">
-
-											<bootstrap-control
-												use-label="true"
-												label="Stone Size"
-											>
-												<template slot="control">
-													<select class="form-control" v-on:change="sizeSelected(okey, $event)" v-model="option.stone_size_id">
-														<option v-for="svalue, skey in size" :value="skey" v-if="skey == ''" checked>@{{ svalue }}</option>
-														<option v-for="svalue, skey in size" :value="skey" else>@{{ svalue }}</option>
-													</select>
-												</template>
-											</bootstrap-control>	
+											<div class="form-group" :class="{'has-danger': option.errors.stone_size_id }">
+												<label class="form-control-label">Stone Size</label>
+												<select class="form-control" :class="{'form-control-danger': option.errors.stone_size_id}" v-on:change="sizeSelected(okey, $event)" v-model="option.stone_size_id">
+													<option v-for="svalue, skey in size" :value="skey" v-if="skey == ''" checked>@{{ svalue }}</option>
+													<option v-for="svalue, skey in size" :value="skey" else>@{{ svalue }}</option>
+												</select>
+												<div class="form-control-feedback" v-if="option.errors.stone_size_id">This is a required field. Please select a proper stone size.</div>
+											</div>
+	
 										</div>
 										
 									</div>
 								</div>
 								
 								<div v-if="option.inventoryItem.metals">
-									<bootstrap-control
-										use-label="true"
-										label="Metal Type"
-									>
-										<template slot="control">
-											<select class="form-control" :name="'item['+option.inventoryItem.id+'][metal_id]'" v-on:change="metalSelected(okey, $event)" v-model="option.metal_id">
-												<option v-for="opt, key in option.metals" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
-												<option v-for="opt, key in option.metals" :value="key" else>@{{ opt }}</option>
-											</select>
-										</template>
-									</bootstrap-control>
+									<div class="form-group" :class="{'has-danger': option.errors.metal_id }">
+										<label class="form-control-label">Metal Type</label>
+										<select class="form-control" :class="{'form-control-danger': option.errors.metal_id}" :name="'item['+option.inventoryItem.id+'][metal_id]'" v-on:change="metalSelected(okey, $event)" v-model="option.metal_id">
+											<option v-for="opt, key in option.metals" :value="key" v-if="key == ''" checked>@{{ opt }}</option>
+											<option v-for="opt, key in option.metals" :value="key" else>@{{ opt }}</option>
+										</select>
+										<div class="form-control-feedback" v-if="option.errors.metal_id">This is a required field. Please select a proper metal type.</div>
+									</div>	
 								</div>
 
 								<div class="row-fluid">
-									<bootstrap-control
-										use-label="true"
-										label="Subtotal"
-									>
-										<template slot="control">
-											<input :name="'item['+option.inventoryItem.id+'][subtotal]'" v-model="option.subtotal" class="form-control" @blur="subtotalUpdate(okey,$event)"/>
-										</template>
-									</bootstrap-control>
+									<div class="form-group" :class="{'has-danger': option.errors.subtotal }">
+										<label class="form-control-label">Subtotal</label>
+										<input :name="'item['+option.inventoryItem.id+'][subtotal]'" :class="{'form-control-danger': option.errors.subtotal}" v-model="option.subtotal" class="form-control" @blur="subtotalUpdate(okey,$event)"/>
+										<div class="form-control-feedback" v-if="option.errors.subtotal">This is a required field. Subtotal cannot be a zero value.</div>
+									</div>
 								</div>
 								<button type="button" class="btn btn-danger btn-block" @click="removeItem(okey,$event)">Remove</button>
 							</div>
@@ -204,10 +191,9 @@
 
 		<template slot = "footer">
 			<button type="button" class="btn btn-secondary" @click="back">Back</button>
-			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepTwo">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validationTwo">Next</button>	
 		</template>
 	</bootstrap-card>
 
@@ -216,103 +202,107 @@
 		<template slot = "body">
             <div class="content">
             	<!-- First Name -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "First Name">
-                    <template slot="control">
-                    	<input type="text" required v-model="firstName" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+            	<div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.firstName }">
+						<label class="form-control-label">First Name</label>
+						<input type="text" required v-model="firstName" name="first_name" class="form-control" :class="{'form-control-danger': errors.firstName}"/>
+						<div class="form-control-feedback" v-if="errors.firstName">This is a required field</div>
+					</div>
+				</div>
 
                 <!-- Last Name -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Last Name">
-                    <template slot="control">
-                    	<input type="text" required v-model="lastName" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.lastName }">
+						<label class="form-control-label">Last Name</label>
+						<input type="text" required v-model="lastName" name="last_name" class="form-control" :class="{'form-control-danger': errors.lastName}"/>
+						<div class="form-control-feedback" v-if="errors.lastName">This is a required field</div>
+					</div>
+				</div>
+
 
                 <!-- Phone -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Phone">
-                    <template slot="control">
-                    	<input type="text" required v-model="phone" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.phone }">
+						<label class="form-control-label">Phone</label>
+						<input type="text" required v-model="phone" name="phone" class="form-control" :class="{'form-control-danger': errors.phone}"/>
+						<div class="form-control-feedback" v-if="errors.phone">This is a required field</div>
+					</div>
+				</div>
 
                 <!-- Email -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Email">
-                    <template slot="control">
-                    	<input type="email" required v-model="email" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.email }">
+						<label class="form-control-label">Email</label>
+						<input type="email" required v-model="email" name="email" class="form-control" :class="{'form-control-danger': errors.email}"/>
+						<div class="form-control-feedback" v-if="errors.email">This is a required field</div>
+					</div>
+				</div>
 
                 <!-- Street -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Street">
-                    <template slot="control">
-                    	<input type="text" required v-model="street" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.street }">
+						<label class="form-control-label">Street</label>
+						<input type="text" required v-model="street" name="street" class="form-control" :class="{'form-control-danger': errors.street}"/>
+						<div class="form-control-feedback" v-if="errors.street">This is a required field</div>
+					</div>
+				</div>
+
                 <!-- Suite -->
                 <bootstrap-control class="form-group-no-border" 
                     use-label = "true"
  					label = "Suite (optional)">
                     <template slot="control">
-                    	<input type="text" v-model="suite" class="form-control" @blur="validation"/>
+                    	<input type="text" v-model="suite" name="suite" class="form-control" />
                     </template>
                 </bootstrap-control>
 
                 <!-- City -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "City">
-                    <template slot="control">
-                    	<input type="text" v-model="city" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.city }">
+						<label class="form-control-label">City</label>
+						<input type="text" required v-model="city" name="city" class="form-control" :class="{'form-control-danger': errors.city}"/>
+						<div class="form-control-feedback" v-if="errors.city">This is a required field</div>
+					</div>
+				</div>
 
                 <!-- state -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "State">
-                    <template slot="control">
-                    	{{ Form::select('',$states,'',['class'=>'form-control','v-model'=>'state','v-on:change'=>"validation"]) }}
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.state }">
+						<label class="form-control-label">State</label>
+						
+						{{ Form::select('state',$states,'',['class'=>'form-control','v-model'=>'state','v-bind:class'=>"{'form-control-danger':errors.state}"]) }}
+						<div class="form-control-feedback" v-if="errors.state">This is a required field</div>
+					</div>
+				</div>
 
                 <!-- country -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Country">
-                    <template slot="control">
-                    	{{ Form::select('',$countries,'US',['class'=>'form-control','v-model'=>'country','v-on:change'=>"validation"]) }}
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.country }">
+						<label class="form-control-label">Country</label>
+						{{ Form::select('country',$countries,'US',['class'=>'form-control','v-model'=>'country','v-bind:class'=>"{'form-control-danger':errors.country}"]) }}
+						<div class="form-control-feedback" v-if="errors.country">This is a required field</div>
+					</div>
+				</div>
+
 
                 <!-- Zipcode -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Zipcode">
-                    <template slot="control">
-                    	<input type="text" v-model="zipcode" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.zipcode }">
+						<label class="form-control-label">Zipcode</label>
+						<input type="text" required v-model="zipcode" name="zipcode" class="form-control" :class="{'form-control-danger': errors.zipcode}"/>
+						<div class="form-control-feedback" v-if="errors.zipcode">This is a required field</div>
+					</div>
+				</div>
+
 
 	        </div>
 		</template>
-
 		<template slot = "footer">
 			<button type="button" class="btn btn-secondary" @click="back">Back</button>
-			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
+
 			<button type="button" class = "btn btn-primary pull-right" @click="next" v-if="stepThree">Next</button>
 
-			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validation">Next</button>	
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validationThree">Next</button>	
 		</template>
 	</bootstrap-card>
 
@@ -320,76 +310,90 @@
 		<template slot = "header"> Step 4 - Billing & Payment Information </template>
 		<template slot = "body">
             <div class="content">
-            	<!-- Street -->
+            	<!-- Send Payment Form -->
                 <bootstrap-control class="form-group-no-border" >
                     <template slot="control">
                     	<label class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" @click="sameAsShipping">
+							<input type="checkbox" class="custom-control-input" checked @click="setSendPaymentForm">
 							<span class="custom-control-indicator"></span>
-							<span class="custom-control-description">Same As Shipping?</span>
+							<span class="custom-control-description" >I have the customers credit card information.</span>
 						</label>
                     </template>
                 </bootstrap-control>
-            	<!-- Street -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Street">
-                    <template slot="control">
-                    	<input type="text" required v-model="billingStreet" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
-                <!-- Suite -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Suite (optional)">
-                    <template slot="control">
-                    	<input type="text" v-model="billingSuite" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+                <div v-if="sendPaymentForm">
+                	
+	                
+	            	<!-- Same As Shipping -->
+	                <bootstrap-control class="form-group-no-border" >
+	                    <template slot="control">
+	                    	<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" @click="sameAsShipping">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Same As Shipping?</span>
+							</label>
+	                    </template>
+	                </bootstrap-control>
+	            	<!-- Street -->
+	            	<div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingStreet }">
+							<label class="form-control-label">Billing Street</label>
+							<input type="text" required v-model="billingStreet" name="billing_street" class="form-control" :class="{'form-control-danger': errors.billingStreet}"/>
+							<div class="form-control-feedback" v-if="errors.billingStreet">This is a required field</div>
+						</div>
+					</div>
+	                <!-- Suite -->
+	                <bootstrap-control class="form-group-no-border" 
+	                    use-label = "true"
+	 					label = "Suite (optional)">
+	                    <template slot="control">
+	                    	<input name="billing_suite" type="text" v-model="billingSuite" class="form-control" />
+	                    </template>
+	                </bootstrap-control>
 
-                <!-- City -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "City">
-                    <template slot="control">
-                    	<input type="text" v-model="billingCity" class="form-control" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
+	                <!-- City -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingCity }">
+							<label class="form-control-label">Billing City</label>
+							<input type="text" required v-model="billingCity" name="billing_city" class="form-control" :class="{'form-control-danger': errors.billingCity}"/>
+							<div class="form-control-feedback" v-if="errors.billingCity">This is a required field</div>
+						</div>
+					</div>
 
-                <!-- state -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "State">
-                    <template slot="control">
-                    	{{ Form::select('',$states,'',['class'=>'form-control','v-model'=>'billingState']) }}
-                    </template>
-                </bootstrap-control>
+	                <!-- state -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingState }">
+							<label class="form-control-label">Billing State</label>
+							
+							{{ Form::select('billing_state',$states,'',['class'=>'form-control','v-model'=>'billingState','v-bind:class'=>"{'form-control-danger':errors.billingState}"]) }}
+							<div class="form-control-feedback" v-if="errors.billingState">This is a required field</div>
+						</div>
+					</div>
 
-                <!-- country -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Country">
-                    <template slot="control">
-                    	{{ Form::select('',$countries,'US',['class'=>'form-control','v-model'=>'billingCountry']) }}
-                    </template>
-                </bootstrap-control>
+	                <!-- country -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingCountry }">
+							<label class="form-control-label">Billing Country</label>
+							{{ Form::select('billing_country',$countries,'US',['class'=>'form-control','v-model'=>'billingCountry','v-bind:class'=>"{'form-control-danger':errors.billingCountry}"]) }}
+							<div class="form-control-feedback" v-if="errors.billingCountry">This is a required field</div>
+						</div>
+					</div>
 
-                <!-- Zipcode -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Zipcode">
-                    <template slot="control">
-                    	<input type="text" class="form-control" v-model="billingZipcode" @blur="validation"/>
-                    </template>
-                </bootstrap-control>
-
+	                <!-- Zipcode -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingZipcode }">
+							<label class="form-control-label">Billing Zipcode</label>
+							<input type="text" required v-model="billingZipcode" name="billingZipcode" class="form-control" :class="{'form-control-danger': errors.billingZipcode}"/>
+							<div class="form-control-feedback" v-if="errors.billingZipcode">This is a required field</div>
+						</div>
+					</div>
+				</div>
                 <hr/>
 				<div class="row-fluid">
 				<label>Shipping Type</label>
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="1" v-if="shipping ==1" checked @click="updateShipping(1)">
+                            <input type="radio" name="shipping" value="1" v-if="shipping == 1" checked @click="updateShipping(1)">
                             <input type="radio" name="shipping" value="1" v-else @click="updateShipping(1)">
                             &nbsp;2 Day
                         </label>
@@ -398,56 +402,53 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="2" v-if="shipping ==2" checked @click="updateShipping(2)">
+                            <input type="radio" name="shipping" value="2" v-if="shipping == 2" checked @click="updateShipping(2)">
                             <input type="radio" name="shipping" value="2" v-else @click="updateShipping(2)">
                             &nbsp;Next Day
                         </label>
                     </div>
-                </div>
-                
-                
-                <div class="form-group">
-                	<label>Shipping Price</label>
-                	<div class="input-group">
-                		<input class="form-control" v-model="shippingTotal"/>
-                		<div class="input-group-addon" @click="getTotals">Set</div>
-                	</div>	
-                </div>
-				<hr/>
-                <!-- card number -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Card Number">
-                    <template slot="control">
-                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'cardNumber','v-on:blur'=>'validation']) }}
-                    </template>
-                </bootstrap-control>
 
-                <div class="row">
+                </div>
+                <div class="row-fluid">
+					<div class="form-group" :class="{'has-danger': errors.shippingTotal }">
+						<label class="form-control-label">Shipping Total</label>
+						<div class="input-group">
+	                		<input type="text" required v-model="shippingTotal" name="shipping_total" class="form-control" :class="{'form-control-danger': errors.shippingTotal}" @blur="getTotals"/>
+	                		<div class="input-group-addon btn btn-primary" style="cursor:pointer;" @click="getTotals">Set</div>
+	                	</div>
+						<div class="form-control-feedback" v-if="errors.shippingTotal">This is a required field</div>
+					</div>
+				</div>
+                <hr/>
+                
+                <!-- card number -->
+                <div class="row-fluid" v-if="sendPaymentForm">
+					<div class="form-group" :class="{'has-danger': errors.cardNumber }">
+						<label class="form-control-label">Card Number</label>
+						<input type="text" required v-model="cardNumber" name="card_number" class="form-control" :class="{'form-control-danger': errors.cardNumber}"/>
+						<div class="form-control-feedback" v-if="errors.cardNumber">This is a required field</div>
+					</div>
+				</div>
+
+                <div class="row" v-if="sendPaymentForm">
                 	<!-- expiration month -->
-	                <bootstrap-control class="form-group-no-border col-xs-12 col-sm-6 col-md-6 col-lg-4" 
-	                    use-label = "true"
-	 					label = "Expiration Month">
-	                    <template slot="control">
-	                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expMonth','v-on:blur'=>'validation','maxlength'=>2]) }}
-	                    </template>
-	                </bootstrap-control>	
-	                <!-- expiration month -->
-	                <bootstrap-control class="form-group-no-border col-xs-12 col-sm-6 col-md-6 col-lg-4" 
-	                    use-label = "true"
-	 					label = "Expiration Year">
-	                    <template slot="control">
-	                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'expYear','v-on:blur'=>'validation','maxlength'=>4]) }}
-	                    </template>
-	                </bootstrap-control>
+					<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.expMonth }">
+						<label class="form-control-label">Expiration Month</label>
+						<input type="text" required v-model="expMonth" name="exp_month" class="form-control" :class="{'form-control-danger': errors.expMonth}" maxlength="2"/>
+						<div class="form-control-feedback" v-if="errors.expMonth">This is a required field</div>
+					</div>
+	                <!-- expiration year -->
+	                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.expYear }">
+						<label class="form-control-label">Expiration Year</label>
+						<input type="text" required v-model="expYear" name="exp_year" class="form-control" :class="{'form-control-danger': errors.expYear}" maxlength="4"/>
+						<div class="form-control-feedback" v-if="errors.expYear">This is a required field</div>
+					</div>
 	                <!-- CVV -->
-	                <bootstrap-control class="form-group-no-border col-xs-12 col-sm-6 col-md-6 col-lg-4" 
-	                    use-label = "true"
-	 					label = "CVV">
-	                    <template slot="control">
-	                    	{{ Form::text('','',['class'=>'form-control','v-model'=>'cvv','v-on:blur'=>'validation','maxlength'=>4]) }}
-	                    </template>
-	                </bootstrap-control>	
+	                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.cvv }">
+						<label class="form-control-label">CVV</label>
+						<input type="text" required v-model="cvv" name="cvv" class="form-control" :class="{'form-control-danger': errors.cvv}" maxlength="4"/>
+						<div class="form-control-feedback" v-if="errors.cvv">This is a required field</div>
+					</div>
                 </div>
 	        </div>
 	        <hr/>
@@ -478,16 +479,15 @@
 	        		</tfoot>
 	        	</table>
 	        </div>
-			<button id="last" type="button" class = "btn btn-primary btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepFour">Update</button>
-			<button id="last" type="button" class = "btn btn-primary btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepFive">Refund + Update + Email</button>
-			<button id="last" type="button" class = "btn btn-primary btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepSix">Refund + Update + New Payment</button>
 			
+			<button id="last" type="button" class = "btn btn-success btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepFour">Update</button>
+			<button id="last" type="button" class = "btn btn-success btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepFive">Refund + Update + New Payment</button>
+			<button id="last" type="button" class = "btn btn-success btn-block" data-toggle="modal" data-target="#updateModal" v-if="stepSix">Refund + Update + Email Payment Form</button>
 		</template>
 		<template slot = "footer">
-			<button type="button" class="btn btn-secondary" @click="back">Back</button>
-			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
+			<button type="button" class="btn btn-secondary" @click="back">Back</button>	
+			<button type="button" class="btn btn-default pull-right" @click="validationFour">Validate Form</button>
 			
-				
 		</template>
 	</bootstrap-card>
 
@@ -497,10 +497,11 @@
 <bootstrap-modal id="updateModal" b-size="modal-lg">
 	<template slot="header">
 		<div v-if="stepFour">Update Invoice</div>
-		<div v-if="stepFive">Refund + Update + Email</div>
-		<div v-if="stepSix">Refund + Update + Pay</div>
+		<div v-if="stepFive">Refund + Update + Pay Now</div>
+		<div v-if="stepSix">Refund + Update + Email Form</div>
 	</template>
 	<template slot="body">
+		<label>Progress</label>
 		<div class="progress" v-if="!done">
 			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" :style="'width:'+progress+'%'" :aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>
@@ -508,15 +509,26 @@
 			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>	
 		<label>@{{ progress }}% Complete</label>
+		<!-- Send Email -->
+        <bootstrap-control class="form-group-no-border"  v-if="sendPaymentForm">
+            <template slot="control">
+            	<label class="custom-control custom-checkbox">
+					<input type="checkbox" class="custom-control-input" v-model="setSendEmail" checked>
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Send Email To Customer?</span>
+				</label>
+            </template>
+        </bootstrap-control>
 		<ul>
 			<li class="text-muted" v-if="formStatusOne">Preparing form to create session...</li>
 			<li class="text-success" v-if="formStatusTwo">Successfully created session!</li>
 			<li class="text-muted" v-if="formStatusThree">Attempting Refund...</li>
+			<li class="text-warning" v-if="formWarningRefund">@{{ refundErrorMessage }}</li>
 			<li class="text-success" v-if="formStatusFour">Successfully made refund!</li>
-			<li class="text-muted" v-if="formStatusFive">Saving Invoice Information...</li>
-			<li class="text-success" v-if="formStatusSix">Successfully saved invoice information!</li>
 			<li class="text-muted" v-if="formStatusSeven">Authorizing Payment...</li>
 			<li class="text-success" v-if="formStatusEight">Successfully made payment transaction!</li>
+			<li class="text-muted" v-if="formStatusFive">Saving Invoice Information...</li>
+			<li class="text-success" v-if="formStatusSix">Successfully saved invoice information!</li>
 			<li class="text-muted" v-if="formStatusNine">Emailing Customer...</li>
 			<li class="text-success" v-if="formStatusTen">Successfully emailed Customer!</li>
 			<li class="text-muted" v-if="formStatusEleven">Forgetting session and cleaning up form data...</li>
@@ -569,6 +581,8 @@
 	originalTotals="{{ json_encode($invoices['totals']) }}"
 	shippingTotal = "{{ $invoices['shipping_total'] }}"
 	items="{{ (count($inventoryItems) > 0) ? json_encode($inventoryItems) : json_encode([]) }}"
+	transactionId="{{ $invoice->transaction_id }}"
+	transaction="{{ ($invoice->transaction_id) ? true : false }}"
 
 >
 	

@@ -32,6 +32,7 @@ class InvoiceUserOrder extends Mailable
     public function build()
     {
         return $this->markdown('emails.user.invoiceuserorder')
+            ->subject('Invoice Statement')
             ->with('invoice',$this->invoice)
             ->with('company',$this->company)
             ->with('email',$this->email);

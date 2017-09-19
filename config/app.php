@@ -189,6 +189,7 @@ return [
         HighIdeas\UsersOnline\UsersOnlineServiceProvider::class,
         HighIdeas\UsersOnline\Providers\UsersOnlineEventServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -242,7 +243,8 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Intervention' => Intervention\Image\Facades\Image::class,
         'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
-        'GoogleMaps' => 'GoogleMaps\Facade\GoogleMapsFacade'
+        'GoogleMaps' => 'GoogleMaps\Facade\GoogleMapsFacade',
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

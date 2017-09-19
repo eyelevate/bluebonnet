@@ -32,9 +32,9 @@ const app = new Vue({
 		sas: false,
 		originalTotals: [],
 		totals: [],
-		stepOne: false,
-		stepTwo: false,
-		stepThree: false,
+		stepOne: true,
+		stepTwo: true,
+		stepThree: true,
 		stepFour: false,
 		stepFive: false,
 		stepSix: false,
@@ -58,11 +58,38 @@ const app = new Vue({
 		formErrorThree: false,
 		formErrorFour: false,
 		formErrorFive: false,
+		formWarningRefund: false,
 		done: false,
 		formErrors: false,
 		authorizationErrorMessage: '',
+		refundErrorMessage: '',
 		paymentResult: null,
 		newInvoice: null,
+		setSendEmail:true,
+		errors:{
+			firstName:false,
+			lastName:false,
+			phone:false,
+			email:false,
+			street:false,
+			city:false,
+			state:false,
+			country:false,
+			zipcode:false,
+			billingStreet:false,
+			billingCity:false,
+			billingState:false,
+			billingCountry:false,
+			billingZipcode:false,
+			cardNumber:false,
+			expMonth:false,
+			expYear:false,
+			cvv:false,
+
+		},
+		transaction: false,
+		transactionId:'',
+		sendPaymentForm: true
 	},
 	methods: {
 		searchInventoryItem(){
@@ -85,9 +112,17 @@ const app = new Vue({
 			}).then(response => {
 				if (response.data.status) {
 					this.selectedOptions = response.data.selected;
-					this.validation();
+
 				}
 			});
+		},
+		setSendPaymentForm() {
+			if(this.sendPaymentForm) {
+				this.sendPaymentForm = false;
+			} else {
+				this.sendPaymentForm = true;
+			}
+			this.validationFour();
 		},
 		reset() { // Completely resets the form
 			this.itemName= '';
@@ -144,11 +179,36 @@ const app = new Vue({
 			this.formErrorThree= false;
 			this.formErrorFour= false;
 			this.formErrorFive= false;
+			this.formWarningRefund = false;
 			this.done= false;
 			this.formErrors = false;
 			this.authorizationErrorMessage = '';
+			this.refundErrorMessage = '';
 			this.paymentResult = null;
 			this.newInvoice = null;
+			this.setSendEmail = true;
+			this.errors = {
+				firstName:false,
+				lastName:false,
+				phone:false,
+				email:false,
+				street:false,
+				city:false,
+				state:false,
+				country:false,
+				zipcode:false,
+				billingStreet:false,
+				billingCity:false,
+				billingState:false,
+				billingCountry:false,
+				billingZipcode:false,
+				cardNumber:false,
+				expMonth:false,
+				expYear:false,
+				cvv:false
+			};
+			this.transaction = false;
+			this.transactionId = '';
 
 			axios.post('/invoices/forget-session').then(response => {
 				if (response.data.status) {
@@ -160,18 +220,32 @@ const app = new Vue({
 		},
 		back() { // Goes back one step on the steppy
 			this.current -= 1;
-			this.validation();
 		},
 		next() { // Goes forward one step on the steppy
-			this.current += 1;
-			this.validation();
+			check = true;
+			switch (this.current) {
+				case 1:
+					check = this.validation();
+					break;
+				case 2:
+					check = this.validationTwo();
+					break;
+				case 3:
+					check = this.validationThree();
+					break;
+				default:
+					check = this.validationFour();
+					break;
+			}
+			if(check) {
+				this.current += 1;
+			}
 		},
 		selectItem(item_id, $event) { // Selects item in step 1
 			
 			this.selectedItems.push(item_id);
 			this.searchInventoryItem();
 			this.selectedItemOptions();
-			this.validation();
 			
 			
 		},
@@ -189,43 +263,37 @@ const app = new Vue({
 			this.selectedOptions = rows;
 			this.selectedItems = ids;
 			this.searchInventoryItem();
-			this.validation();
 			this.getTotals();
 
 
 		},
 		fingerSelected(row,$event) { // option in step 2
 			this.selectedOptions[row]['finger_id'] = $($event.target).find('option:selected').val();
-			this.validation();
 		},
 		quantitySelected(row,$event) {
 			this.selectedOptions[row]['quantity'] = $($event.target).find('option:selected').val();
 			this.subtotal(row);
-			this.validation();
 		},
 		stoneSelected(row, $event) {
 
 			this.selectedOptions[row]['stone_id'] = $($event.target).find('option:selected').val();
 			this.selectedOptions[row]['stone_size_id'] = '';
 			this.subtotal(row);
-			this.validation();
+
 		},
 		sizeSelected(row, $event) {
 
 			this.selectedOptions[row]['stone_size_id'] = $($event.target).find('option:selected').val();
 			this.subtotal(row);
-			this.validation();
 		},
 		metalSelected(row, $event) {
 
 			this.selectedOptions[row]['metal_id'] = $($event.target).find('option:selected').val();
 			this.subtotal(row);
-			this.validation();
 		},
 		subtotalUpdate(row, $event) {
 			this.selectedOptions[row]['subtotal'] = $($event.target).val();
 			this.getTotals();
-			this.validation();
 		},
 		subtotal(row) {
 			// get the price subtotal with all options selected
@@ -248,7 +316,6 @@ const app = new Vue({
 				'shippingTotal':this.shippingTotal
 			}).then(response => {
 				this.totals = response.data.totals;
-				this.validation();
 			});
 		},
 		sameAsShipping() {
@@ -269,20 +336,18 @@ const app = new Vue({
 				this.billingCountry = this.country;
 				this.billingZipcode = this.zipcode;
 			}
-			this.validation();
 
 		},
-		validation() {
-			// Step 1
-			this.stepOne = false;
-			if (this.selectedItems.length > 0) {
-				this.stepOne = true;
-			}
-
-			// Step 2
+		validationTwo() {
+			var validate = this.selectedOptions;
 			this.stepTwo = false;
 			checkTwo = true;
 			$.each(this.selectedOptions, function(index, val) {
+				validate[index].errors.finger_id = false;
+				validate[index].errors.metal_id = false;
+				validate[index].errors.stone_id = false;
+				validate[index].errors.stone_size_id = false;
+				validate[index].errors.subtotal = false;
 				 /* iterate through array or object */
 				 // determine the rules
 				 var fingers = val.inventoryItem.fingers;
@@ -293,14 +358,16 @@ const app = new Vue({
 				 if (fingers) {
 				 	if (val.finger_id == null || val.finger_id == '') {
 				 		checkTwo = false;
-				 		return false;
-				 	}
+				 		validate[index].errors.finger_id = true;
+
+				 	} 
 				 }
 
 				 if (metals) {
 				 	if (val.metal_id == null || val.metal_id == '') {
 				 		checkTwo = false;
-				 		return false;
+				 		validate[index].errors.metal_id = true;
+
 				 	}
 				 }
 
@@ -309,80 +376,186 @@ const app = new Vue({
 				 	$.each(val.inventoryItem.item_stone,function(k, v) {
 				 		if (v.id == val.stone_id) {
 				 			email = v.stones.email;
-				 			return false;
+			
 				 		}
 				 	});
 				 	if (val.stone_id == null || val.stone_id == '') {
+
 				 		checkTwo = false;
-				 		return false;
-				 	}
+				 		validate[index].errors.stone_id = true;
+
+				 	} 
 				 	if (!email) {
 				 		if (sizes) {
 					 		if (val.stone_size_id == null || val.stone_size_id == '') {
 						 		checkTwo = false;
-						 		return false;
-						 	}
+						 		validate[index].errors.stone_size_id = true;
+					
+						 	} 
 					 	}
 				 	}
 				 	
 				 }
 
-				 if (val.subtotal == 0) {
+				 if(!$.isNumeric(val.subtotal) || $.isNumeric(val.subtotal) && val.subtotal == 0 || val.subtotal == null || val.subtotal == '') {
 				 	checkTwo = false;
-				 }
+				 	validate[index].errors.subtotal = true;
+				 } 
 			});
 			if (checkTwo) {
 				this.stepTwo = true;
+				return true;
+			} else {
+				return false;
 			}
 
+		},
+		validationThree(){
 			// Step 3
-			this.stepThree = false;
-			if (this.firstName != '' 
-				&& this.lastName != '' 
-				&& this.phone != '' 
-				&& this.email != '' 
-				&& this.street != '' 
-				&& this.city != '' 
-				&& this.state != '' 
-				&& this.country != ''
-				&& this.zipcode != '') {
-				this.stepThree = true;
+			this.stepThree = true;
+			this.errors.firstName = false;
+			this.errors.lastName = false;
+			this.errors.phone = false;
+			this.errors.email = false;
+			this.errors.street = false;
+			this.errors.city = false;
+			this.errors.state = false;
+			this.errors.country = false;
+			this.errors.zipcode = false;
+
+
+			if(this.firstName == '') {
+				this.errors.firstName = true;
+				this.stepThree = false;
+			}
+			if(this.lastName == ''){
+				this.errors.lastName = true;
+				this.stepThree = false;
+			}
+			if(this.phone == ''){
+				this.errors.phone = true;
+				this.stepThree = false;
+			}
+			if(this.email == ''){
+				this.errors.email = true;
+				this.stepThree = false;
+			}
+			if(this.street == ''){
+				this.errors.street = true;
+				this.stepThree = false;
+			}
+			if(this.city == ''){
+				this.errors.city = true;
+				this.stepThree = false;
+			}
+			if(this.state == ''){
+				this.errors.state = true;
+				this.stepThree = false;
+			}
+			if(this.country == ''){
+				this.errors.country = true;
+				this.stepThree = false;
+			}
+			if(this.zipcode == ''){
+				this.errors.zipcode = true;
+				this.stepThree = false;
 			}
 
+			if (this.stepThree) {
+				return true;
+			}
+
+			return false;
+		},
+		validationFour() {
+			this.getTotals();
 			// Step 4
 			this.stepFour = false;
 			this.stepFive = false;
 			this.stepSix = false;
-			console.log('start');
+			this.errors.billingStreet = false;
+			this.errors.billingCity = false;
+			this.errors.billingState = false;
+			this.errors.billingCountry = false;
+			this.errors.billingZipcode = false;
+			this.errors.cardNumber = false;
+			this.errors.expMonth = false;
+			this.errors.expYear =false;
+			this.errors.cvv =false;
 
-			var cardReady = false;
-			if (this.cardNumber != '' && this.expMonth != '' && this.expYear != '' && this.cvv != '') {
-				cardReady = true;
-			}
-
-			// first check to see if the new totals = the original totals
-			if (parseFloat(this.totals._total).toFixed(2) - parseFloat(this.originalTotals._total).toFixed(2) == 0) { // update the form only
-
-				this.stepFour = true;
-				console.log('one');
-			} else if (this.billingStreet != ''
-				&& this.billingCity != ''
-				&& this.billingState != ''
-				&& this.billingCountry != ''
-				&& this.billingZipcode != ''
-				&& !cardReady) { // refund the payment, update the form, email customer with new payment form
-				this.stepFive = true;
-				console.log('two');
-			} else if (this.billingStreet != ''
-				&& this.billingCity != ''
-				&& this.billingState != ''
-				&& this.billingCountry != ''
-				&& this.billingZipcode != ''
-				&& cardReady) { // Refund the payment, update the form, resend payment to authorize
+			if(!this.sendPaymentForm) {
 				this.stepSix = true;
-				console.log('three');
+				return true;
+			} else {
+				if(this.billingStreet == ''){
+					this.errors.billingStreet = true;
+					this.stepFour = false;
+				}
+				if(this.billingCity == ''){
+					this.errors.billingCity = true;
+					this.stepFour = false;
+				}
+				if(this.billingState == ''){
+					this.errors.billingState = true;
+					this.stepFour = false;
+				}
+				if(this.billingCountry == ''){
+					this.errors.billingCountry = true;
+					this.stepFour = false;
+				}
+				if(this.billingZipcode == ''){
+					this.errors.billingZipcode = true;
+					this.stepFour = false;
+				}
+
+				// first check to see if the new totals = the original totals
+				if (parseFloat(this.totals._total).toFixed(2) - parseFloat(this.originalTotals._total).toFixed(2) == 0 && self.transaction) { // update the form only
+					
+					this.stepFour = true;
+
+					return true;
+					
+				} else {
+					if(!$.isNumeric(this.shippingTotal) || this.shippingTotal == null || this.shippingTotal == ''){
+						this.shippingTotal = 0;
+					}
+
+					var cardReady = true;
+					if(this.cardNumber == ''){
+						cardReady = false;
+						this.errors.cardNumber = true;
+			
+					}
+					if(this.expMonth == ''){
+						cardReady = false;
+						this.errors.expMonth = true;
+
+					}
+					if(this.expYear == ''){
+						cardReady = false;
+						this.errors.expYear = true;
+
+					}
+
+					if(this.cvv == ''){
+						cardReady = false;
+						this.errors.cvv = true;
+			
+					}
+
+					this.stepFive = true;
+					return true;
+				}
 			}
 
+			return false;
+		},
+		validation() {
+			// Step 1
+			this.stepOne = false;
+			if (this.selectedItems.length > 0) {
+				this.stepOne = true;
+			}
 
 		},
 		updateShipping(shipping) {
@@ -467,30 +640,37 @@ const app = new Vue({
 					if (response.data.status) {
 						this.formStatusFour = true;
 						this.progress = 30;
-						this.update();
+						
 					} else {
 						this.formErrors = true;
-						this.formErrorTwo = true;
-						this.authorizationErrorMessage = response.data.message;
+						this.formWarningRefund = true;
+						this.refundErrorMessage = response.data.message;
 						this.paymentResult = null;
 					}
+					if(!this.setSendPaymentForm) {
+						
+						this.authorizePayment();
+					} else {
+						this.update();
+					}
+					
 				});
 			} catch(e) {
 				this.formErrors = true;
-				this.formErrorTwo = true;
+				this.formWarningRefund = true;
 			}
 			
 		},
 		authorizePayment() {
 			this.progress = 50
-			this.formStatusThree = true;
+			this.formStatusSeven = true;
 			try {
 				axios.post('/invoices/authorize-payment').then(response => {
 					if (response.data.status) {
-						this.formStatusFour = true;
+						this.formStatusEight = true;
 						this.progress = 60;
 						this.paymentResult = response.data.result;
-						this.sendEmail();
+						this.update();
 					} else {
 						this.formErrors = true;
 						this.formErrorTwo = true;
@@ -515,14 +695,14 @@ const app = new Vue({
 					if (response.data.status) {
 						this.formStatusSix = true;
 						this.progress = 45;
-						this.newInvoice = response.data.new_invoice;
-						if(this.stepFour) {
-							this.forgetSession();
-						} else if(this.stepSix) {
-							this.authorizePayment();
-						} else {
+						this.newInvoice = response.data.invoice;
+						if(this.setSendPaymentForm) {
+							this.pushPaymentFormEmail();
+						} else if(this.setSendEmail) {
 							this.sendEmail();
-						}
+						} else {
+							this.forgetSession();
+						} 
 						
 					} else {
 						this.formErrors = true;
@@ -535,6 +715,32 @@ const app = new Vue({
 				this.formErrorThree = true;
 				this.newInvoice = null;
 			}
+		},
+		pushPaymentFormEmail() {
+			this.progress = 70;
+			this.formStatusSeven = true;
+			invoice_id = this.invoiceId;
+			var send = '/invoices/'+invoice_id+'/push-email-form';
+			try {
+				axios.post(send,{
+					'new_invoice':this.newInvoice,
+					'email_address':this.email
+				}).then(response => {
+					if (response.data.status) {
+						this.formStatusEight = true;
+						this.progress = 80;
+						this.forgetSession();
+					} else {
+						this.formErrors = true;
+						this.formErrorFour = true;
+					}
+				});
+			} catch(e) {
+				// statements
+				this.formErrors = true;
+				this.formErrorFour = true;
+			}
+			
 		},
 		sendEmail() {
 			this.progress = 70;
@@ -642,6 +848,8 @@ var vars = new Vue({
 		app.shippingTotal = this.$el.attributes.shippingTotal.value;
 		app.totals = JSON.parse(this.$el.attributes.totals.value);
 		app.originalTotals = JSON.parse(this.$el.attributes.originalTotals.value);
+		app.transaction = this.$el.attributes.transaction.value;
+		app.transactionId = this.$el.attributes.transactionId.value;
 		app.searchInventoryItem();
 		app.validation();
 	}

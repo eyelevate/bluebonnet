@@ -191,9 +191,10 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/invoices/store', 'InvoiceController@store')->name('invoice.store');
     Route::get('/invoices/{invoice}/show', 'InvoiceController@show')->name('invoice.show');
     Route::get('/invoices/{invoice}/edit', 'InvoiceController@edit')->name('invoice.edit');
-    Route::patch('/invoices/{invoice}', 'InvoiceController@update')->name('invoice.update');
+    Route::post('/invoices/{invoice}/update', 'InvoiceController@update')->name('invoice.update');
     Route::patch('/invoices/{invoice}/complete', 'InvoiceController@complete')->name('invoice.complete');
     Route::post('/invoices/{invoice}/refund', 'InvoiceController@refund')->name('invoice.refund');
+    Route::post('/invoices/{invoice}/refund-payment', 'InvoiceController@refundPayment')->name('invoice.refund_payment');
     Route::post('/invoices/{invoice}/send-email', 'InvoiceController@sendEmail')->name('invoice.email');
     Route::post('/invoices/reset', 'InvoiceController@reset')->name('invoice.reset');
     Route::patch('/invoices/{invoice}/revert', 'InvoiceController@revert')->name('invoice.revert');
@@ -201,6 +202,8 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::post('/invoices/forget-session', 'InvoiceController@forgetSession')->name('invoice.forget_session');
     Route::post('/invoices/authorize-payment', 'InvoiceController@authorizePayment')->name('invoice.authorize_payment');
     Route::post('/invoices/{invoice}/update-shipping', 'InvoiceController@updateShipping')->name('invoice.update_shipping');
+    Route::post('/invoices/{invoice}/push-email-form', 'InvoiceController@pushEmailForm')->name('invoice.push_email_form');
+    Route::get('/invoices/{invoice}/show-invoice-pdf', 'InvoiceController@showInvoicePdf')->name('invoice.show_invoice_pdf');
 
 
     Route::post('/invoices/push-email', 'InvoiceController@pushEmail')->name('invoice.push_email');
