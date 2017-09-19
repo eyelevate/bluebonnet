@@ -18,7 +18,6 @@ class ContactusController extends Controller
     {
         $theme = 2;
         $this->layout = $job->switchLayout($theme);
-        $this->layout = $job->switchLayout($theme);
     }
     
     public function index()
@@ -40,7 +39,11 @@ class ContactusController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
+     *  When customers leave a meassage through contact us section,
+     *  custmoer will leave thier name, phone, email, choice of subject and message
+     *  This is the section for store at db table call "contactuses"
+     *  when customer leave meassage, the status entity the status has to be set 1
+     *  which means indicate new message and after successfully store, shows to message "Success"
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -78,10 +81,10 @@ class ContactusController extends Controller
      * @param  \App\Contactus  $contactus
      * @return \Illuminate\Http\Response
      */
-    public function edit(Contactus $contactus)
-    {
-        return view('sizes.edit', compact('size'));
-    }
+    // public function edit(Contactus $contactus)
+    // {
+    //     return view('sizes.edit', compact('size'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -90,17 +93,17 @@ class ContactusController extends Controller
      * @param  \App\Contactus  $contactus
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Contactus $contactus)
-    {
-        $this->validate(request(), [
-            'size' => 'required|numeric'
-        ]);
+    // public function update(Request $request, Contactus $contactus)
+    // {
+    //     $this->validate(request(), [
+    //         'size' => 'required|numeric'
+    //     ]);
 
-        if ($size->update($request->all())) {
-            flash('You have successfully edited '.$size->size)->success();
-            return redirect()->route('size.index');
-        }
-    }
+    //     if ($size->update($request->all())) {
+    //         flash('You have successfully edited '.$size->size)->success();
+    //         return redirect()->route('size.index');
+    //     }
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -108,14 +111,14 @@ class ContactusController extends Controller
      * @param  \App\Contactus  $contactus
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Contactus $contactus)
-    {
-        $size_name = $size->size;
-        if ($size->delete()) {
-            flash('You have successfully deleted '.$size_name)->success();
-            return redirect()->back();
-        }
-    }
+    // public function destroy(Contactus $contactus)
+    // {
+    //     $size_name = $size->size;
+    //     if ($size->delete()) {
+    //         flash('You have successfully deleted '.$size_name)->success();
+    //         return redirect()->back();
+    //     }
+    // }
 
     public function markAsRead(Request $request, Contactus $contactus)
     {
@@ -126,7 +129,6 @@ class ContactusController extends Controller
             'status' => true,
             'set' => $contact_get
         ]);
-        
     }
 
     public function setAsArchive(Request $request, Contactus $contactus)
@@ -138,7 +140,6 @@ class ContactusController extends Controller
             'status' => true,
             'set' => $contact_get
         ]);
-
     }
 
     public function setAsDeleted(Request $request, Contactus $contactus)
@@ -150,5 +151,4 @@ class ContactusController extends Controller
             'set' => $contact_get
         ]);
     }
-
 }

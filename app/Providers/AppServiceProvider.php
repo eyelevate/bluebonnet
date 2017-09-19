@@ -49,7 +49,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('company', $company);
             });
 
-        // backend nav
+        // backend nav and aside
         view()->composer([
             'layouts.themes.backend.partials.nav',
              'layouts.themes.backend.partials.aside',
@@ -58,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
                 $active_invoices = \App\Invoice::where('status', '<', 5)->whereBetween('created_at', [date('Y-m-d 00:00:00'),date('Y-m-d 23:59:59')])->count();
                 $view->with('active_invoices', $active_invoices)
                 ->with('count_contactus', $count_contactus);
-                
             });
 
         // Send asset issues data globally to sidebar
