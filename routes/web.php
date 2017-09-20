@@ -243,6 +243,22 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/manges/{mange}/edit', 'MangeController@edit')->name('mange.edit');
     Route::patch('/manges/{mange}', 'MangeController@update')->name('mange.update');
 
+    // Reports
+    Route::get('/reports', 'ReportController@index')->name('report.index');
+    Route::get('/reports/create', 'ReportController@create')->name('report.create');
+    Route::delete('/reports/{report}', 'ReportController@destroy')->name('report.destroy');
+    Route::post('/reports/store', 'ReportController@store')->name('report.store');
+    Route::get('/reports/{report}/show', 'ReportController@show')->name('report.show');
+    Route::get('/reports/{report}/edit', 'ReportController@edit')->name('report.edit');
+    Route::patch('/reports/{report}', 'ReportController@update')->name('report.update');
+    Route::get('/reports/weeks', 'ReportController@weeks')->name('report.weeks');
+    Route::get('/reports/months', 'ReportController@months')->name('report.months');
+    Route::get('/reports/years', 'ReportController@years')->name('report.years');
+    Route::post('/reports/get-weeks-from-year', 'ReportController@getWeeksFromYear')->name('report.get_weeks_from_year');
+    Route::post('/reports/update-table-weeks', 'ReportController@updateTableWeeks')->name('report.update_table_weeks');
+    Route::post('/reports/get-months-from-year', 'ReportController@getMonthsFromYear')->name('report.get_months_from_year');
+    Route::post('/reports/update-table-months', 'ReportController@updateTableMonths')->name('report.update_table_months');
+    Route::post('/reports/get-years', 'ReportController@getYears')->name('report.get_years');
     // Size
     Route::get('/sizes', 'SizeController@index')->name('size.index');
     Route::get('/sizes/create', 'SizeController@create')->name('size.create');

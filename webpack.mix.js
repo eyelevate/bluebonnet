@@ -96,6 +96,11 @@ mix.js('resources/assets/js/views/invoice_items/edit.js','public/js/views/invoic
 // metal
 mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
 
+// Reports
+mix.js('resources/assets/js/views/reports/weeks.js','public/js/views/reports')
+   .js('resources/assets/js/views/reports/months.js','public/js/views/reports')
+   .js('resources/assets/js/views/reports/years.js','public/js/views/reports');
+
 // stone Size
 mix.js('resources/assets/js/views/stone_sizes/create.js','public/js/views/stone_sizes');
 
