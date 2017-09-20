@@ -634,7 +634,8 @@ class InvoiceController extends Controller
     public function done(Request $request,Invoice $invoice, Authorize $authorize, Job $job, InventoryItem $inventoryItem, User $user, Company $company, InvoiceItem $invoiceItem, ItemStone $itemStone)
     {
         // Prepare all the variables required for saving
-        $cart = session()->pull('cartFinish');
+        $cart = session()->get('cartFinish');
+
         $email = false;
         $this->validate(request(), [
             'first_name' => 'required|string|max:255',
@@ -656,7 +657,7 @@ class InvoiceController extends Controller
         ]);
 
         $company_info = $company->find(1);
-        $totals = $inventoryItem->prepareTotalsFinish($cart);
+        $totals = $inventoryItem->prepareTotalsAdmin($invoice);
         $due = $totals['_total'];
         $shipping = $request->shipping;
         $customer = [
@@ -679,8 +680,6 @@ class InvoiceController extends Controller
             'comment'=>NULL,
             'shipping'=>$invoice->shipping
         ]; 
-
-
 
         // Run this if we are running payments, basically if the email variable is false
 

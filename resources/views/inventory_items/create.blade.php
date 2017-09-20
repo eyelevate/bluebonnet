@@ -243,6 +243,7 @@
 	                	input-checked="false">
 	                </bootstrap-switch>
 	                <hr/>
+	                <!-- Images -->
 	                <bootstrap-control
 	                	use-label="true"
 	                	label="Image(s)"
@@ -282,7 +283,46 @@
 	                		
 	                	</template>
 	               	</bootstrap-control>
+	               	<hr/>
+	               	<!-- Videos -->
+	               	<bootstrap-control
+	                	use-label="true"
+	                	label="Video"
+	                    b-err="{{ $errors->has('video_src') }}"
+	                    b-error="{{ $errors->first('video_src') }}">
+	                	<template slot="control">
+	                		<div class="card videoPreviewCard col-12"  style="padding-top:20px;">
+	                			<div class="row-fluid">
+	                				<div v-for="v,k in videos">      				
+		                				<div class="col-xs-12 col-sm-6 col-md-4 pull-left">
+			                				<bootstrap-card
+			                					class="image-divs"
+			                					use-img-top="true"
+			                					use-header="true"
+			                					use-footer="true"
+			                					:img-top-src="v.src"
+			                					:img-top-class="card-img-top-inventory"
+			                				>
+			                					<template slot="header">
+			                						@{{ v.name }}
+			                					</template>
+			                					<template slot="footer">
+				                					<button type="button" class="btn btn-danger" @click="removeVideo(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+				                					<input type="hidden" :name="v.name" v-model="videos[k]['src']">	
+			                					</template>
+			                				</bootstrap-card>
+		                				</div>
+	                				</div>
+	                			</div>
 
+	                			
+	                			<div id="video-parent" class="card-block">
+	                				<input id="uploader" name="videos[]" type="file" multiple class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+	                			</div>
+	                		</div>
+	                		
+	                	</template>
+	               	</bootstrap-control>
 		        </div>
 			</template>
 

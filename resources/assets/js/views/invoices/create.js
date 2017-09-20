@@ -34,6 +34,7 @@ const app = new Vue({
 		stepTwo: false,
 		stepThree: false,
 		stepFour: false,
+		stepFive: false,
 		shipping: 1,
 		shippingTotal: 0,
 		progress: 0,
@@ -58,6 +59,8 @@ const app = new Vue({
 		paymentResult: null,
 		newInvoice: null,
 		setSendEmail: true,
+		sendPaymentForm: true,
+		invoiceId: '',
 		errors:{
 			firstName:false,
 			lastName:false,
@@ -138,6 +141,7 @@ const app = new Vue({
 			this.stepTwo= false;
 			this.stepThree= false;
 			this.stepFour= false;
+			this.stepFive = false;
 			this.shipping= 1;
 			this.shippingTotal = 0;
 			this.progress= 0;
@@ -161,7 +165,9 @@ const app = new Vue({
 			this.authorizationErrorMessage = '';
 			this.paymentResult = null;
 			this.newInvoice = null;
+			this.invoiceId = null;
 			this.setSendEmail = true;
+			this.sendPaymentForm = true;
 			this.errors = {
 				firstName:false,
 				lastName:false,
@@ -456,7 +462,7 @@ const app = new Vue({
 		},
 		validationFour() {
 			// Step 4
-			this.stepFour = true;
+			
 			this.errors.billingStreet = false;
 			this.errors.billingCity = false;
 			this.errors.billingState = false;
@@ -466,54 +472,57 @@ const app = new Vue({
 			this.errors.expMonth = false;
 			this.errors.expYear =false;
 			this.errors.cvv =false;
-
-			if(this.billingStreet == ''){
-				this.errors.billingStreet = true;
-				this.stepFour = false;
-			}
-			if(this.billingCity == ''){
-				this.errors.billingCity = true;
-				this.stepFour = false;
-			}
-			if(this.billingState == ''){
-				this.errors.billingState = true;
-				this.stepFour = false;
-			}
-			if(this.billingCountry == ''){
-				this.errors.billingCountry = true;
-				this.stepFour = false;
-			}
-			if(this.billingZipcode == ''){
-				this.errors.billingZipcode = true;
-				this.stepFour = false;
-			}
-			if(this.cardNumber == ''){
-				this.errors.cardNumber = true;
-				this.stepFour = false;
-			}
-			if(this.expMonth == ''){
-				this.errors.expMonth = true;
-				this.stepFour = false;
-			}
-			if(this.expYear == ''){
-				this.errors.expYear = true;
-				this.stepFour = false;
-			}
-
-			if(this.cvv == ''){
-				this.errors.cvv = true;
-				this.stepFour = false;
-			}
-
 			if(!$.isNumeric(this.shippingTotal) || this.shippingTotal == null || this.shippingTotal == ''){
 				this.shippingTotal = 0;
 			}
 
-			if (this.stepFour) {
-				return true;
-			}
+			if (this.sendPaymentForm) {
+				this.stepFour = true;
+				if(this.billingStreet == ''){
+					this.errors.billingStreet = true;
+					this.stepFour = false;
+				}
+				if(this.billingCity == ''){
+					this.errors.billingCity = true;
+					this.stepFour = false;
+				}
+				if(this.billingState == ''){
+					this.errors.billingState = true;
+					this.stepFour = false;
+				}
+				if(this.billingCountry == ''){
+					this.errors.billingCountry = true;
+					this.stepFour = false;
+				}
+				if(this.billingZipcode == ''){
+					this.errors.billingZipcode = true;
+					this.stepFour = false;
+				}
+				if(this.cardNumber == ''){
+					this.errors.cardNumber = true;
+					this.stepFour = false;
+				}
+				if(this.expMonth == ''){
+					this.errors.expMonth = true;
+					this.stepFour = false;
+				}
+				if(this.expYear == ''){
+					this.errors.expYear = true;
+					this.stepFour = false;
+				}
 
-			return false;
+				if(this.cvv == ''){
+					this.errors.cvv = true;
+					this.stepFour = false;
+				}
+				if (this.stepFour) {
+					return true;
+				}
+			} else {
+				this.stepFive = true;
+			}
+			
+			return true;
 		},
 		validation() {
 
@@ -584,7 +593,12 @@ const app = new Vue({
 					if (response.data.status) {
 						this.progress = 10;
 						this.formStatusTwo = true;
-						this.authorizePayment();
+						if(this.stepFive) {
+							this.store()
+						} else {
+							this.authorizePayment();
+						}
+						
 						
 					} else {
 						this.formErrors = true;
@@ -632,13 +646,17 @@ const app = new Vue({
 						this.formStatusSix = true;
 						this.progress = 50;
 						this.newInvoice = response.data.new_invoice;
-						console.log(this.setSendEmail);
-						if (this.setSendEmail) {
-							this.sendEmail();
+						this.invoiceId = this.newInvoice.id;
+						if (this.stepFive) {
+							this.pushPaymentFormEmail();
 						} else {
-							console.log( 'you should be here');
-							this.forgetSession();
+							if (this.setSendEmail) {
+								this.sendEmail();
+							} else {
+								this.forgetSession();
+							}
 						}
+						
 						
 					} else {
 						this.formErrors = true;
@@ -651,6 +669,32 @@ const app = new Vue({
 				this.formErrorThree = true;
 				this.newInvoice = null;
 			}
+		},
+		pushPaymentFormEmail() {
+			this.progress = 70;
+			this.formStatusSeven = true;
+			invoice_id = this.invoiceId;
+			var send = '/invoices/'+invoice_id+'/push-email-form';
+			try {
+				axios.post(send,{
+					'new_invoice':this.newInvoice,
+					'email_address':this.email
+				}).then(response => {
+					if (response.data.status) {
+						this.formStatusEight = true;
+						this.progress = 80;
+						this.forgetSession();
+					} else {
+						this.formErrors = true;
+						this.formErrorFour = true;
+					}
+				});
+			} catch(e) {
+				// statements
+				this.formErrors = true;
+				this.formErrorFour = true;
+			}
+			
 		},
 		sendEmail() {
 			this.progress = 60;
