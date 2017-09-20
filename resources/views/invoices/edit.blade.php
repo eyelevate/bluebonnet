@@ -314,7 +314,8 @@
                 <bootstrap-control class="form-group-no-border" >
                     <template slot="control">
                     	<label class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" checked @click="setSendPaymentForm">
+							<input type="checkbox" class="custom-control-input" checked v-model="sendPaymentForm" v-if="transaction">
+							<input type="checkbox" class="custom-control-input" v-model="sendPaymentForm" v-else>
 							<span class="custom-control-indicator"></span>
 							<span class="custom-control-description" >I have the customers credit card information.</span>
 						</label>

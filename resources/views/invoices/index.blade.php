@@ -95,7 +95,7 @@
                             <tr>
                                 <th>Shipping</th>
                                 <td >
-                                    @if($detail->shipping == 1)
+                                    @if($detail->status == 3)
         
                                     ${!! number_format($detail->shipping_total,2,'.',',') !!} <strong>({{ $detail->shipping_type }})</strong>    
                     

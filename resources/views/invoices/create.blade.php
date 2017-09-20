@@ -312,70 +312,82 @@
 		<template slot = "header"> Step 4 - Billing & Payment Information </template>
 		<template slot = "body">
             <div class="content">
-            	<!-- Same As Shipping -->
+            	<!-- Send Payment Form -->
                 <bootstrap-control class="form-group-no-border" >
                     <template slot="control">
                     	<label class="custom-control custom-checkbox">
-							<input type="checkbox" class="custom-control-input" @click="sameAsShipping">
+							<input type="checkbox" class="custom-control-input" checked v-model="sendPaymentForm" @click="validationFour">
+							
 							<span class="custom-control-indicator"></span>
-							<span class="custom-control-description">Same As Shipping?</span>
+							<span class="custom-control-description" >I have the customers credit card information.</span>
 						</label>
                     </template>
                 </bootstrap-control>
-            	<!-- Street -->
-            	<div class="row-fluid">
-					<div class="form-group" :class="{'has-danger': errors.billingStreet }">
-						<label class="form-control-label">Billing Street</label>
-						<input type="text" required v-model="billingStreet" name="billing_street" class="form-control" :class="{'form-control-danger': errors.billingStreet}"/>
-						<div class="form-control-feedback" v-if="errors.billingStreet">This is a required field</div>
+                <div v-if="sendPaymentForm">
+	            	<!-- Same As Shipping -->
+	                <bootstrap-control class="form-group-no-border" >
+	                    <template slot="control">
+	                    	<label class="custom-control custom-checkbox">
+								<input type="checkbox" class="custom-control-input" @click="sameAsShipping">
+								<span class="custom-control-indicator"></span>
+								<span class="custom-control-description">Same As Shipping?</span>
+							</label>
+	                    </template>
+	                </bootstrap-control>
+	            	<!-- Street -->
+	            	<div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingStreet }">
+							<label class="form-control-label">Billing Street</label>
+							<input type="text" required v-model="billingStreet" name="billing_street" class="form-control" :class="{'form-control-danger': errors.billingStreet}"/>
+							<div class="form-control-feedback" v-if="errors.billingStreet">This is a required field</div>
+						</div>
+					</div>
+	                <!-- Suite -->
+	                <bootstrap-control class="form-group-no-border" 
+	                    use-label = "true"
+	 					label = "Suite (optional)">
+	                    <template slot="control">
+	                    	<input name="billing_suite" type="text" v-model="billingSuite" class="form-control" />
+	                    </template>
+	                </bootstrap-control>
+
+	                <!-- City -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingCity }">
+							<label class="form-control-label">Billing City</label>
+							<input type="text" required v-model="billingCity" name="billing_city" class="form-control" :class="{'form-control-danger': errors.billingCity}"/>
+							<div class="form-control-feedback" v-if="errors.billingCity">This is a required field</div>
+						</div>
+					</div>
+
+	                <!-- state -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingState }">
+							<label class="form-control-label">Billing State</label>
+							
+							{{ Form::select('billing_state',$states,'',['class'=>'form-control','v-model'=>'billingState','v-bind:class'=>"{'form-control-danger':errors.billingState}"]) }}
+							<div class="form-control-feedback" v-if="errors.billingState">This is a required field</div>
+						</div>
+					</div>
+
+	                <!-- country -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingCountry }">
+							<label class="form-control-label">Billing Country</label>
+							{{ Form::select('billing_country',$countries,'US',['class'=>'form-control','v-model'=>'billingCountry','v-bind:class'=>"{'form-control-danger':errors.billingCountry}"]) }}
+							<div class="form-control-feedback" v-if="errors.billingCountry">This is a required field</div>
+						</div>
+					</div>
+
+	                <!-- Zipcode -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.billingZipcode }">
+							<label class="form-control-label">Billing Zipcode</label>
+							<input type="text" required v-model="billingZipcode" name="billingZipcode" class="form-control" :class="{'form-control-danger': errors.billingZipcode}"/>
+							<div class="form-control-feedback" v-if="errors.billingZipcode">This is a required field</div>
+						</div>
 					</div>
 				</div>
-                <!-- Suite -->
-                <bootstrap-control class="form-group-no-border" 
-                    use-label = "true"
- 					label = "Suite (optional)">
-                    <template slot="control">
-                    	<input name="billing_suite" type="text" v-model="billingSuite" class="form-control" />
-                    </template>
-                </bootstrap-control>
-
-                <!-- City -->
-                <div class="row-fluid">
-					<div class="form-group" :class="{'has-danger': errors.billingCity }">
-						<label class="form-control-label">Billing City</label>
-						<input type="text" required v-model="billingCity" name="billing_city" class="form-control" :class="{'form-control-danger': errors.billingCity}"/>
-						<div class="form-control-feedback" v-if="errors.billingCity">This is a required field</div>
-					</div>
-				</div>
-
-                <!-- state -->
-                <div class="row-fluid">
-					<div class="form-group" :class="{'has-danger': errors.billingState }">
-						<label class="form-control-label">Billing State</label>
-						
-						{{ Form::select('billing_state',$states,'',['class'=>'form-control','v-model'=>'billingState','v-bind:class'=>"{'form-control-danger':errors.billingState}"]) }}
-						<div class="form-control-feedback" v-if="errors.billingState">This is a required field</div>
-					</div>
-				</div>
-
-                <!-- country -->
-                <div class="row-fluid">
-					<div class="form-group" :class="{'has-danger': errors.billingCountry }">
-						<label class="form-control-label">Billing Country</label>
-						{{ Form::select('billing_country',$countries,'US',['class'=>'form-control','v-model'=>'billingCountry','v-bind:class'=>"{'form-control-danger':errors.billingCountry}"]) }}
-						<div class="form-control-feedback" v-if="errors.billingCountry">This is a required field</div>
-					</div>
-				</div>
-
-                <!-- Zipcode -->
-                <div class="row-fluid">
-					<div class="form-group" :class="{'has-danger': errors.billingZipcode }">
-						<label class="form-control-label">Billing Zipcode</label>
-						<input type="text" required v-model="billingZipcode" name="billingZipcode" class="form-control" :class="{'form-control-danger': errors.billingZipcode}"/>
-						<div class="form-control-feedback" v-if="errors.billingZipcode">This is a required field</div>
-					</div>
-				</div>
-
                 <hr/>
 				<div class="row-fluid">
 				<label>Shipping Type</label>
@@ -400,43 +412,44 @@
 					<div class="form-group" :class="{'has-danger': errors.shippingTotal }">
 						<label class="form-control-label">Shipping Total</label>
 						<div class="input-group">
-	                		<input type="text" required v-model="shippingTotal" name="shipping_total" class="form-control" :class="{'form-control-danger': errors.shippingTotal}"/>
+	                		<input type="text" required v-model="shippingTotal" name="shipping_total" class="form-control" :class="{'form-control-danger': errors.shippingTotal}" @blur="getTotals"/>
 	                		<div class="input-group-addon" @click="getTotals">Set</div>
 	                	</div>
 						<div class="form-control-feedback" v-if="errors.shippingTotal">This is a required field</div>
 					</div>
 				</div>
                 <hr/>
+                <div v-if="sendPaymentForm">
+	                <!-- card number -->
+	                <div class="row-fluid">
+						<div class="form-group" :class="{'has-danger': errors.cardNumber }">
+							<label class="form-control-label">Card Number</label>
+							<input type="text" required v-model="cardNumber" name="card_number" class="form-control" :class="{'form-control-danger': errors.cardNumber}"/>
+							<div class="form-control-feedback" v-if="errors.cardNumber">This is a required field</div>
+						</div>
+					</div>
 
-                <!-- card number -->
-                <div class="row-fluid">
-					<div class="form-group" :class="{'has-danger': errors.cardNumber }">
-						<label class="form-control-label">Card Number</label>
-						<input type="text" required v-model="cardNumber" name="card_number" class="form-control" :class="{'form-control-danger': errors.cardNumber}"/>
-						<div class="form-control-feedback" v-if="errors.cardNumber">This is a required field</div>
-					</div>
-				</div>
-
-                <div class="row">
-                	<!-- expiration month -->
-					<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.expMonth }">
-						<label class="form-control-label">Expiration Month</label>
-						<input type="text" required v-model="expMonth" name="exp_month" class="form-control" :class="{'form-control-danger': errors.expMonth}" maxlength="2"/>
-						<div class="form-control-feedback" v-if="errors.expMonth">This is a required field</div>
-					</div>
-	                <!-- expiration year -->
-	                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.expYear }">
-						<label class="form-control-label">Expiration Year</label>
-						<input type="text" required v-model="expYear" name="exp_year" class="form-control" :class="{'form-control-danger': errors.expYear}" maxlength="4"/>
-						<div class="form-control-feedback" v-if="errors.expYear">This is a required field</div>
-					</div>
-	                <!-- CVV -->
-	                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.cvv }">
-						<label class="form-control-label">CVV</label>
-						<input type="text" required v-model="cvv" name="cvv" class="form-control" :class="{'form-control-danger': errors.cvv}" maxlength="4"/>
-						<div class="form-control-feedback" v-if="errors.cvv">This is a required field</div>
-					</div>
-                </div>
+	                <div class="row">
+	                	<!-- expiration month -->
+						<div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.expMonth }">
+							<label class="form-control-label">Expiration Month</label>
+							<input type="text" required v-model="expMonth" name="exp_month" class="form-control" :class="{'form-control-danger': errors.expMonth}" maxlength="2"/>
+							<div class="form-control-feedback" v-if="errors.expMonth">This is a required field</div>
+						</div>
+		                <!-- expiration year -->
+		                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.expYear }">
+							<label class="form-control-label">Expiration Year</label>
+							<input type="text" required v-model="expYear" name="exp_year" class="form-control" :class="{'form-control-danger': errors.expYear}" maxlength="4"/>
+							<div class="form-control-feedback" v-if="errors.expYear">This is a required field</div>
+						</div>
+		                <!-- CVV -->
+		                <div class="form-group col-xs-12 col-sm-6 col-md-6 col-lg-4" :class="{'has-danger': errors.cvv }">
+							<label class="form-control-label">CVV</label>
+							<input type="text" required v-model="cvv" name="cvv" class="form-control" :class="{'form-control-danger': errors.cvv}" maxlength="4"/>
+							<div class="form-control-feedback" v-if="errors.cvv">This is a required field</div>
+						</div>
+	                </div>
+            	</div>
 	        </div>
 	        <hr/>
 	        <h3 class="text-center">Totals</h3>
@@ -471,7 +484,9 @@
 			<button type="button" class="btn btn-secondary" @click="back">Back</button>
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-success pull-right" v-if="stepFour" data-toggle="modal" data-target="#sendModal">Create</button>
-			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validationFour">Create</button>	
+				
+			<button type="button" class = "btn btn-success pull-right" v-elseif="stepFive" data-toggle="modal" data-target="#sendModal">Save & Send Customer Payment Form</button>
+			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validationFour">Validate</button>
 		</template>
 	</bootstrap-card>
 
@@ -489,17 +504,18 @@
 			<div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width:100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
 		</div>	
 		<label>@{{ progress }}% Complete</label>
-		<!-- Send Email -->
-        <bootstrap-control class="form-group-no-border" >
-            <template slot="control">
-            	<label class="custom-control custom-checkbox">
-					<input type="checkbox" class="custom-control-input" v-model="setSendEmail" checked>
-					<span class="custom-control-indicator"></span>
-					<span class="custom-control-description">Send Email To Customer?</span>
-				</label>
-            </template>
-        </bootstrap-control>
-		
+		<div v-if="stepFour">
+			<!-- Send Email -->
+	        <bootstrap-control class="form-group-no-border" >
+	            <template slot="control">
+	            	<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" v-model="setSendEmail" checked>
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">Send Email To Customer?</span>
+					</label>
+	            </template>
+	        </bootstrap-control>
+		</div>
 		<ul>
 			<li class="text-muted" v-if="formStatusOne">Preparing form to create session...</li>
 			<li class="text-success" v-if="formStatusOne">Successfully created session!</li>

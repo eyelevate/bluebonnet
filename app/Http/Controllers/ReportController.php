@@ -137,8 +137,8 @@ class ReportController extends Controller
         $dt = new Carbon();
         $today = $dt->now();
         $year = $today->year;
-        // $years = $report->prepareYears();
-        $years = [2017=>2017,2018=>2018];
+        $years = $report->prepareYears();
+        // $years = [2017=>2017,2018=>2018];
         $data = $report->prepareYearChart($year);
         $invoices = $report->prepareYearData($year);
         $totals = $report->prepareYearTotals($year);

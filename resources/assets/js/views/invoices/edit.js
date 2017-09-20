@@ -484,8 +484,17 @@ const app = new Vue({
 			this.errors.cvv =false;
 
 			if(!this.sendPaymentForm) {
-				this.stepSix = true;
-				return true;
+				// first check to see if the new totals = the original totals
+				if (parseFloat(this.totals._total).toFixed(2) - parseFloat(this.originalTotals._total).toFixed(2) == 0) { // update the form only
+					
+					this.stepFour = true;
+
+					return true;
+					
+				} else {
+					this.stepSix = true;
+					return true;
+				}
 			} else {
 				if(this.billingStreet == ''){
 					this.errors.billingStreet = true;
@@ -509,7 +518,11 @@ const app = new Vue({
 				}
 
 				// first check to see if the new totals = the original totals
-				if (parseFloat(this.totals._total).toFixed(2) - parseFloat(this.originalTotals._total).toFixed(2) == 0 && self.transaction) { // update the form only
+				if (this.transaction == "") {
+					this.stepFive = true;
+					return true;
+
+				} else if (parseFloat(this.totals._total).toFixed(2) - parseFloat(this.originalTotals._total).toFixed(2) == 0) { // update the form only
 					
 					this.stepFour = true;
 
@@ -647,12 +660,20 @@ const app = new Vue({
 						this.refundErrorMessage = response.data.message;
 						this.paymentResult = null;
 					}
-					if(!this.setSendPaymentForm) {
-						
-						this.authorizePayment();
-					} else {
+					if(this.stepFour) {
 						this.update();
+						return true;
+					} else {
+						if(this.sendPaymentForm) {
+							
+							this.authorizePayment();
+							return true;
+						} else {
+							this.update();
+							return true;
+						}
 					}
+					
 					
 				});
 			} catch(e) {
@@ -696,13 +717,22 @@ const app = new Vue({
 						this.formStatusSix = true;
 						this.progress = 45;
 						this.newInvoice = response.data.invoice;
-						if(this.setSendPaymentForm) {
-							this.pushPaymentFormEmail();
-						} else if(this.setSendEmail) {
-							this.sendEmail();
+						if (this.stepFour) {
+							if(this.setSendEmail) {
+								this.sendEmail();
+							} else {
+								this.forgetSession();
+							} 
 						} else {
-							this.forgetSession();
-						} 
+							if (this.paymentResult != null) {
+								this.sendEmail();
+							} else if(this.setSendPaymentForm) {
+								this.pushPaymentFormEmail();
+							} else {
+								this.forgetSession();
+							} 
+						}
+						
 						
 					} else {
 						this.formErrors = true;
@@ -777,7 +807,7 @@ const app = new Vue({
 						this.done = true;
 						this.formErrors = false;
 						// send user back to page
-						window.location.replace('/invoices');
+						// window.location.replace('/invoices');
 					} else {
 						this.formErrors = true;
 						this.formErrorFive = true;
@@ -848,7 +878,8 @@ var vars = new Vue({
 		app.shippingTotal = this.$el.attributes.shippingTotal.value;
 		app.totals = JSON.parse(this.$el.attributes.totals.value);
 		app.originalTotals = JSON.parse(this.$el.attributes.originalTotals.value);
-		app.transaction = this.$el.attributes.transaction.value;
+		app.transaction = (this.$el.attributes.transaction.value) ? true : false;
+		app.sendPaymentForm = (app.transaction) ? true : false;
 		app.transactionId = this.$el.attributes.transactionId.value;
 		app.searchInventoryItem();
 		app.validation();

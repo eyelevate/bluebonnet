@@ -7,7 +7,8 @@ const app = new Vue({
 			sizes: false,
 			stones_data: [],
 			metals_data: [],
-			images:[]
+			images:[],
+			videos:[]
 		}
 		
 	},
@@ -74,6 +75,76 @@ const app = new Vue({
 				tr.find('.active-button').addClass('hide');
 			}
 			
+		},
+		imageEvents(){
+			// set variables and file input
+			var upload = require('simple-upload-preview');
+			var file = $('input[name="imgs[]"]'); // <input type="file" /> 
+
+			// watch for change in 
+			$("#image-parent").on('change', file, function(event) {
+				// remove previous variables
+				app.images = [];
+
+				// iterate through files and update
+				file.each(function() {
+			        var $input = $(this);
+			        var inputFiles = this.files;
+			        if(inputFiles == undefined || inputFiles.length == 0) return;
+			        $.each(inputFiles,function(index, el) {
+			        	var reader = new FileReader();
+				        reader.onload = function(event) {
+				        	app.images.push({
+				        		"name": (el.name.length > 15) ? el.name.substring(0,15) + '...' :  el.name,
+				        		"primary":false,
+				        		"primary_name":'primary_image['+index+']',
+				        		"src":event.target.result
+				        	});
+				            $input.next().attr("src", event.target.result);
+				        };
+				        reader.onerror = function(event) {
+				            alert("ERROR: " + event.target.error.code);
+				        };
+				        reader.readAsDataURL(el);
+			        });
+			    });
+
+			});
+		},
+		videoEvents() {
+			// set variables and file input
+			var upload = require('simple-upload-preview');
+			var file = $('input[name="videos[]"]'); // <input type="file" /> 
+
+			// watch for change in 
+			$("#video-parent").on('change', file, function(event) {
+				// remove previous variables
+				app.images = [];
+
+				// iterate through files and update
+				file.each(function() {
+			        var $input = $(this);
+			        var inputFiles = this.files;
+			        if(inputFiles == undefined || inputFiles.length == 0) return;
+			        $.each(inputFiles,function(index, el) {
+			        	var reader = new FileReader();
+				        reader.onload = function(event) {
+				        	app.videos.push({
+				        		"name": (el.name.length > 15) ? el.name.substring(0,15) + '...' :  el.name,
+				        		"primary":false,
+				        		"primary_name":'primary_video['+index+']',
+				        		"src":event.target.result
+				        	});
+				            $input.next().attr("src", event.target.result);
+				        };
+				        reader.onerror = function(event) {
+				            alert("ERROR: " + event.target.error.code);
+				        };
+				        reader.readAsDataURL(el);
+			        });
+			    });
+
+			});
 		}
 	},
 	computed: {
@@ -83,7 +154,8 @@ const app = new Vue({
 
 	},
 	mounted() {
-
+		this.imageEvents();
+		this.videoEvents();
 	}
 });
 
@@ -104,41 +176,5 @@ $(document).ready(function() {
 
 
 inventory_items = {
-	events(){
-		// set variables and file input
-		var upload = require('simple-upload-preview');
-		var file = $('input[name="imgs[]"]'); // <input type="file" /> 
-
-		// watch for change in 
-		$("#image-parent").on('change', file, function(event) {
-			// remove previous variables
-			app.images = [];
-
-			// iterate through files and update
-			file.each(function() {
-		        var $input = $(this);
-		        var inputFiles = this.files;
-		        if(inputFiles == undefined || inputFiles.length == 0) return;
-		        $.each(inputFiles,function(index, el) {
-		        	var reader = new FileReader();
-			        reader.onload = function(event) {
-			        	app.images.push({
-			        		"name": (el.name.length > 15) ? el.name.substring(0,15) + '...' :  el.name,
-			        		"primary":false,
-			        		"primary_name":'primary_image['+index+']',
-			        		"src":event.target.result
-			        	});
-			            $input.next().attr("src", event.target.result);
-			        };
-			        reader.onerror = function(event) {
-			            alert("ERROR: " + event.target.error.code);
-			        };
-			        reader.readAsDataURL(el);
-		        });
-		    });
-
-		});
-
-
-	}
+	
 }

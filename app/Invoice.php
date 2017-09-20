@@ -273,16 +273,16 @@ class Invoice extends Model
         $new_invoice->subtotal = $totals['_subtotal'];
         $new_invoice->tax = $totals['_tax'];
         $new_invoice->total = $totals['_total'];
-        $new_invoice->tendered = $totals['_total'];
+        $new_invoice->tendered = (isset($payment['transaction_id'])) ? $totals['_total'] : NULL;
         $new_invoice->shipping_total = $totals['_shipping'];
         $new_invoice->payment_type = 1; // Credit Card
         $new_invoice->last_four = substr($card['card_number'], -4);
         $new_invoice->exp_month = $card['exp_month'];
         $new_invoice->exp_year = $card['exp_year'];
-        $new_invoice->transaction_id = $payment['transaction_id'];
+        $new_invoice->transaction_id = (isset($payment['transaction_id'])) ? $payment['transaction_id'] : NULL;
         $new_invoice->comment = $customer['comment'];
         $new_invoice->shipping = $customer['shipping'];
-        $new_invoice->status = 3; // Paid 
+        $new_invoice->status = (isset($payment['transaction_id'])) ? 3 : 2; // Paid / pending
 
         if ($new_invoice->save()) {
             return $new_invoice;
@@ -327,7 +327,7 @@ class Invoice extends Model
         $invoice->subtotal = $totals['_subtotal'];
         $invoice->tax = $totals['_tax'];
         $invoice->total = $totals['_total'];
-        $invoice->tendered = $totals['_total'];
+        $invoice->tendered = (isset($payment['transaction_id'])) ? $totals['_total'] : NULL;
         $invoice->shipping_total = $totals['_shipping'];
         $invoice->payment_type = 1; // Credit Card
         $invoice->last_four = substr($card['card_number'], -4);
