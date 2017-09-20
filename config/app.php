@@ -191,6 +191,9 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
 
+        // Infinety Alerts
+        Infinety\Alerts\AlertServiceProvider::class,
+
     ],
 
     /*

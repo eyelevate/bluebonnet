@@ -60,8 +60,9 @@ class ContactusController extends Controller
         $request->request->add(['status' => 1]);
         $request->merge(['phone'=>$phone]);
         $contactus->create(request()->all());
-        flash('Successfully created a Message! We will contact you as soon as possible ')->success();
-        return redirect()->route('home');
+        // Use the Infintey Alerts for success message
+        alert()->overlay('Thank you for the Message', 'We will get back to you as soon as possible.', 'success');
+        return back();
     }
 
     /**
