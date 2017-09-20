@@ -43,6 +43,7 @@
     "parse": "^1.10.0",
     "simple-upload-preview": "^0.2.0",
     "sliphover": "^2.1.3",
+    "sweetalert2": "^6.9.0",
     "vue-good-table": "^1.12.6",
     "vue-template-compiler": "^2.4.4",
     "vue2-bootstrap-table2": "^1.1.8"

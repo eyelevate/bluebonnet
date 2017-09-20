@@ -162,7 +162,6 @@ class Contactus extends Model
                 $first[$key]['phone_formatted'] = $job->formatPhone($value->phone);
                 $first[$key]['status_html'] = ($value->status == 1) ? 'callout-primary' :  'callout-muted';
                 $contactus['first'][$value->created_at->diffInDays()][$key] = $value;
-
             }
         }
 
