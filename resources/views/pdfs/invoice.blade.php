@@ -33,16 +33,16 @@
 			<table class="unstriped">
 				<thead>
 					<tr>
-						<th>Quantity</th>
+						<th class="text-center" width="100">Quantity</th>
 						<th>Description</th>
-						<th>Subtotal</th>
+						<th width="150">Subtotal</th>
 					</tr>
 				</thead>
 				<tbody>
 				@if(count($inv) > 0)
 					@foreach($inv->invoiceItems as $ii)
 					<tr>
-						<td>{{ $ii->quantity }}</td>
+						<td class="text-center">{{ $ii->quantity }}</td>
 						<td>{{ $ii->inventoryItem->name }} - {{ $ii->inventoryItem->desc }}</td>
 						<td>{{ $ii->subtotal_formatted }}</td>
 					</tr>
