@@ -4,7 +4,7 @@
 
 		<div class="grid-x" style="clear:both;">
 			<div class="small-6 medium-6 large-6 cell">
-				<h4 style="font-size:20px !important; font-weight:bold !important;">{{ $company->name }}</h4>
+				<h4 >{{ $company->name }}</h4>
 				<address style="line-height: 1; font-weight:100 !important; font-size:15px !important;">
 					{{ $company->street }}, Suite {{ $company->suite }}<br>
 					{{ ucfirst($company->city) }}, {{ strtoupper($company->state) }} {{ $company->zipcode }}<br>
@@ -12,7 +12,7 @@
 				</address>
 			</div>
 			<div class="auto  cell" style="float:right;line-height:1px; ">
-				<h3 style="font-size:30px !important;">INVOICE #{{ $inv->id_formatted }}</h3>
+				<h3>INVOICE #{{ $inv->id_formatted }}</h3>
 				
 			</div>
 			
@@ -20,7 +20,7 @@
 		<br/><br/><br/><br/>
 		<div class="grid-x" >
 			<div class="cell" >
-				<h4 style="font-size:20px !important; font-weight:bold !important;">{{ $inv->full_name }}</h4>
+				<h4 >{{ $inv->full_name }}</h4>
 				<address style="line-height: 1; font-weight:100 !important; font-size:15px !important;">
 					{{ $inv->full_street }}<br>
 					{{ ucfirst($inv->city) }}, {{ strtoupper($inv->state) }} {{ $inv->zipcode }}<br>
