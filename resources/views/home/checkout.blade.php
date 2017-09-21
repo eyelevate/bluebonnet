@@ -526,7 +526,7 @@
                     <a href="{{ route('home.cart') }}" class="btn btn-primary btn-block">Return to Cart</a>
                 </div>
                 <div class="col-6">
-                    <a href="#" class="btn btn-primary btn-block">Refund Policy</a>
+                    <a href="/frequently-asked-questions/#returnpolicy" id="return-link" class="btn btn-primary btn-block">Refund Policy</a>
                 </div>
             </div>
             <hr/>
@@ -573,4 +573,5 @@
 @section('variables')
 <div id="variable-root" 
     totals="{{ json_encode($totals) }}"></div>
+
 @endsection

@@ -79,7 +79,8 @@ mix.js('resources/assets/js/views/fingers/create.js','public/js/views/fingers');
 mix.js('resources/assets/js/views/home/index.js','public/js/views/home')
    .js('resources/assets/js/views/home/shop.js','public/js/views/home')
    .js('resources/assets/js/views/home/cart.js','public/js/views/home')
-   .js('resources/assets/js/views/home/checkout.js','public/js/views/home');
+   .js('resources/assets/js/views/home/checkout.js','public/js/views/home')
+   .js('resources/assets/js/views/home/pages.js','public/js/views/home');
 
 // inventory items
 mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/inventory_items')

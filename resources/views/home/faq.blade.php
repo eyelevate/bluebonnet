@@ -1,5 +1,15 @@
 @extends($layout)
 @section('scripts')
+
+{{--  How to?  --}}
+
+{{--  <script>
+$('#return-link').click(function(e) {
+    $('/frequently-asked-questions/#collapse6').collapse('show');        
+});
+</script>  --}}
+
+
 @endsection
 @section('header')
 @endsection
@@ -83,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
+    <div class="panel panel-default" id="returnpolicy">
       <div class="panel-heading">
         <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse6" class="panel-title expand">
             <div class="right-arrow pull-right">+</div>
