@@ -21,4 +21,5 @@ class Video extends Model
     {
         return $this->belongsTo(InventoryItem::class, 'inventory_item_id', 'id');
     }
+    
 }
