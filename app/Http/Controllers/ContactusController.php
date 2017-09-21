@@ -61,7 +61,7 @@ class ContactusController extends Controller
         $request->merge(['phone'=>$phone]);
         $contactus->create(request()->all());
         // Use the Infintey Alerts for success message
-        alert()->overlay('Thank you for the Message', 'We will get back to you as soon as possible.', 'success');
+        alert('Thank you for the Message', 'We will get back to you as soon as possible.');
         return back();
     }
 

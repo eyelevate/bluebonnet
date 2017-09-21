@@ -1,11 +1,14 @@
 @extends($layout)
+@section('styles')
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.9.0/sweetalert2.min.css">
+@endsection
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.9.0/sweetalert2.min.js"></script>
 @include('Alerts::alerts')
 <script type="text/javascript" src="{{ mix('/js/views/home/pages.js') }}"></script>
 @endsection
 @section('header')
-<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.9.0/sweetalert2.min.css">
+
 @endsection
 
 
