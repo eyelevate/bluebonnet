@@ -13,12 +13,30 @@
 				<div id="myCarousel" class="carousel inventory-carousel slide">
 					<!-- main slider carousel items -->
 					<div class="carousel-inner">
+						@php
+							$idx = -1;
+						@endphp
 						@if (count($inventoryItem->images) > 0)
-						@foreach($inventoryItem->images as $ikey => $image)
-						<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $ikey }}">
-							<img src="{{ asset(str_replace('public/', 'storage/', $image->featured_src)) }}" class="card-img-top-featured lazy mx-auto d-block img-fluid">
-						</div>
-						@endforeach
+							@foreach($inventoryItem->images as $ikey => $image)
+							@php
+								$idx++;
+							@endphp
+							<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $idx }}">
+								<img src="{{ asset(str_replace('public/', 'storage/', $image->featured_src)) }}" class="card-img-top-featured lazy mx-auto d-block img-fluid" style="max-height:350px;">
+							</div>
+							@endforeach
+						@endif
+						@if (count($inventoryItem->videos) > 0)
+							@foreach($inventoryItem->videos as $ikey => $video)
+							@php
+								$idx++;
+							@endphp
+							<div class="item carousel-item text-center" data-slide-number="{{ $idx }}">
+								<video style="width:100%; max-height:350px;" controls>
+	    							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
+	    						</video>
+							</div>
+							@endforeach
 						@endif
 					</div>
 					<!-- main slider carousel nav controls -->
@@ -27,12 +45,34 @@
 			</div>
 			<hr/>
 			<div class="row clearfix">
+				@php
+					$idx = -1;
+				@endphp
 				@if (count($inventoryItem->images) > 0)
 
 					@foreach($inventoryItem->images as $ikey => $image)
+					@php
+						$idx++;
+					@endphp
 					<div class="col-3 col-md-2 col-lg-2 pull-left {{ ($ikey == 0) ? 'active' : '' }}">
-						<a id="carousel-selector-{{ $ikey }}" class="{{ ($ikey == 0) ? 'selected' : '' }}" data-slide-to="{{ $ikey }}" data-target="#myCarousel">
+						<a id="carousel-selector-{{ $ikey }}" class="{{ ($ikey == 0) ? 'selected' : '' }}" data-slide-to="{{ $idx }}" data-target="#myCarousel">
 							<img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="img-fluid">
+						</a>
+					</div>
+					@endforeach
+
+				@endif
+				@if (count($inventoryItem->videos) > 0)
+
+					@foreach($inventoryItem->videos as $ikey => $video)
+					@php
+						$idx++;
+					@endphp
+					<div class="col-3 col-md-2 col-lg-2 pull-left">
+						<a id="carousel-selector-{{ $ikey }}" class="" data-slide-to="{{ $idx }}" data-target="#myCarousel">
+							<video style="width:100%; height:100%">
+    							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
+    						</video>
 						</a>
 					</div>
 					@endforeach

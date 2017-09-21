@@ -244,6 +244,7 @@
 	                </bootstrap-switch>
 
 	                <hr/>
+	                <!-- Images -->
 	                <bootstrap-control
 	                	use-label="true"
 	                	label="Image(s)"
@@ -343,6 +344,71 @@
 	                			
 	                			<div id="image-parent" class="card-block">
 	                				<input id="uploader" name="imgs[]" type="file" multiple class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+	                			</div>
+	                		</div>
+	                		
+	                	</template>
+	               	</bootstrap-control>
+	               	<!-- Videos -->
+	               	<bootstrap-control
+	                	use-label="true"
+	                	label="Video"
+	                    b-err="{{ $errors->has('video_src') }}"
+	                    b-error="{{ $errors->first('video_src') }}">
+	                	<template slot="control">
+	                		<div class="card videoPreviewCard col-12"  style="padding-top:20px;">
+	                			<div class="row-fluid">
+	                				<div v-for="v,k in oVideos">      				
+		                				<div class="col-xs-12 col-sm-6 col-md-4 pull-left">
+			                				<bootstrap-card
+			                					class="image-divs"
+			                					use-body="true"
+			                					use-header="true"
+			                					use-footer="true"
+			                				>
+			                					<template slot="header">
+			                						@{{ v.src_name }}
+			                					</template>
+			                					<template slot="body">
+			                						<video style="width:100%;">
+			                							<source :src="v.src_formatted" :type="v.type">
+			                						</video>
+			                					</template>
+			                					<template slot="footer">
+				                					<button type="button" class="btn btn-danger" @click="removeoVideo(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+				                					<input type="hidden" :name="v.name" v-model="oVideos[k]['src']">	
+			                					</template>
+			                				</bootstrap-card>
+		                				</div>
+	                				</div>
+	                				<div v-for="v,k in videos">      				
+		                				<div class="col-xs-12 col-sm-6 col-md-4 pull-left">
+			                				<bootstrap-card
+			                					class="image-divs"
+			                					use-body="true"
+			                					use-header="true"
+			                					use-footer="true"
+			                				>
+			                					<template slot="header">
+			                						@{{ v.name }}
+			                					</template>
+			                					<template slot="body">
+			                						<video style="width:100%;">
+			                							<source :src="v.src" :type="v.type">
+			                						</video>
+			                					</template>
+			                					<template slot="footer">
+				                					<button type="button" class="btn btn-danger" @click="removeVideo(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+				                					<input type="hidden" :name="v.name" v-model="videos[k]['src']">	
+			                					</template>
+			                				</bootstrap-card>
+		                				</div>
+	                				</div>
+	                			</div>
+
+	                			
+	                			<div id="video-parent" class="card-block">
+	                				<input id="video-uploader" name="videos[]" type="file" multiple class="form-control-file" aria-describedby="fileHelp" @change="setVideos($event)" >
 	                			</div>
 	                		</div>
 	                		
@@ -482,5 +548,6 @@
 	imageVariables="{{ json_encode($image_variables) }}"
 	stonesData="{{ (count($inventoryItem->itemStone) > 0) ? json_encode($inventoryItem->itemStone) : json_encode($stones)  }}"
 	metalsData="{{ (count($inventoryItem->itemMetal) > 0) ? json_encode($inventoryItem->itemMetal) : json_encode($metals)  }}"
+	oVideos="{{ json_encode($inventoryItem->videos) }}"
 ></div>
 @endsection

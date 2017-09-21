@@ -549,7 +549,8 @@
 	<template slot="footer">
 		<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 		<button type="button" class="btn btn-primary" @click="makeSession" v-if="formErrors">Try Again</button>
-		<button type="button" class="btn btn-primary" @click="makeSession" v-else>Update</button>
+		<button type="button" class="btn btn-primary" @click="makeSession" v-if="!formErrors && !done">Update</button>
+		<a href="{{ route('invoice.index') }}" class="btn btn-success" v-if="!formErrors && done">Done</a>
 	</template>
 </bootstrap-modal>
 

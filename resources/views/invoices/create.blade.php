@@ -485,8 +485,8 @@
 			<button type="button" class="btn btn-danger" @click="reset">Reset</button>
 			<button type="button" class = "btn btn-success pull-right" v-if="stepFour" data-toggle="modal" data-target="#sendModal">Create</button>
 				
-			<button type="button" class = "btn btn-success pull-right" v-elseif="stepFive" data-toggle="modal" data-target="#sendModal">Save & Send Customer Payment Form</button>
-			<button type="button" class = "btn btn-default pull-right disabled" v-else @mouseover="validationFour">Validate</button>
+			<button type="button" class = "btn btn-success pull-right" v-if="stepFive" data-toggle="modal" data-target="#sendModal">Save & Send Customer Payment Form</button>
+			<button type="button" class = "btn btn-default pull-right disabled" v-if="!stepFive && !stepFour" @mouseover="validationFour">Validate</button>
 		</template>
 	</bootstrap-card>
 

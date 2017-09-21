@@ -13,6 +13,7 @@ use App\Job;
 use App\Metal;
 use App\Stone;
 use App\StoneSize;
+use App\Video;
 use Illuminate\Http\Request;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
@@ -63,7 +64,7 @@ class InventoryItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Inventory $inventory, InventoryItem $inventory_item, Image $image)
+    public function store(Request $request, Inventory $inventory, InventoryItem $inventory_item, Image $image, Video $video)
     {
         $this->validate(request(), [
             'name' => 'required|string|max:255',
@@ -157,6 +158,24 @@ class InventoryItemController extends Controller
                     } 
                 }
             }
+            if (count($request->videos) > 0) {
+                foreach ($request->videos as $key => $value) {
+                    $path = Storage::putFile('public/videos', $value);
+
+                    // Featured images
+                    $vids = new Video();
+                    $vids->inventory_id = $inventory->id;
+                    $vids->inventory_item_id = $inventory_item->id;
+                    $vids->src = $path;
+                    $vids->type = $value->getMimeType();
+                    $vids->ordered = $key;
+                    $vids->save();
+                
+
+                }
+            }
+
+
             flash('Successfully added a new inventory item.')->success();
             return redirect()->route('inventory.index');
         }
@@ -217,6 +236,7 @@ class InventoryItemController extends Controller
         // ]);
 
         $original_images = $inventory_item->images;
+        $original_videos = $inventory_item->videos;
         $inventory_item->name = $request->name;
         $inventory_item->desc = $request->desc;
         $inventory_item->subtotal = $request->subtotal;
@@ -368,6 +388,52 @@ class InventoryItemController extends Controller
 
                 }
             }
+
+            // check for old videos
+            $old_videos_count = count($original_videos);
+            if ($old_videos_count > 0) {
+                // loop through the old images first
+                foreach ($original_videos as $old) {
+
+                    if (!array_key_exists($old->id,$request->ovideos)) {
+
+                        Storage::delete($old->src);
+                        $vids = Video::find($old->id);
+                        $vids->delete();
+                    }
+                }
+            } else {
+                if(count($inventory_item->videos) > 0) {
+                    foreach ($inventory_item->videos as $vids) {
+                        Storage::delete($vids->src);
+                    }
+                }
+                $inventory_item->videos()->delete();
+            }
+
+            if (count($request->videos) > 0) {
+                $last = $inventory_item->videos()->latest()->first();
+
+                $last_ordered = (isset($last)) ? $last->ordered : 0;
+                foreach ($request->videos as $key => $value) {
+                    $last_ordered++;
+                    $path = Storage::putFile('public/videos', $value);
+
+                    // Featured images
+                    $vids = new Video();
+                    $vids->inventory_id = $inventory_item->inventory_id;
+                    $vids->inventory_item_id = $inventory_item->id;
+                    $vids->src = $path;
+                    $vids->type = $value->getMimeType();
+                    $vids->ordered = $last_ordered;
+                    $vids->save();
+                
+
+                }
+            }
+
+
+
             flash('Successfully updated an inventory item.')->success();
             return redirect()->route('inventory.index');
         }

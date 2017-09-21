@@ -260,7 +260,7 @@
 			                					use-header="true"
 			                					use-footer="true"
 			                					:img-top-src="i.src"
-			                					:img-top-class="card-img-top-inventory"
+			                					img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ i.name }}
@@ -297,14 +297,17 @@
 		                				<div class="col-xs-12 col-sm-6 col-md-4 pull-left">
 			                				<bootstrap-card
 			                					class="image-divs"
-			                					use-img-top="true"
+			                					use-body="true"
 			                					use-header="true"
 			                					use-footer="true"
-			                					:img-top-src="v.src"
-			                					:img-top-class="card-img-top-inventory"
 			                				>
 			                					<template slot="header">
 			                						@{{ v.name }}
+			                					</template>
+			                					<template slot="body">
+			                						<video style="width:100%;">
+			                							<source :src="v.src" :type="v.type">
+			                						</video>
 			                					</template>
 			                					<template slot="footer">
 				                					<button type="button" class="btn btn-danger" @click="removeVideo(k)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
@@ -317,7 +320,7 @@
 
 	                			
 	                			<div id="video-parent" class="card-block">
-	                				<input id="uploader" name="videos[]" type="file" multiple class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+	                				<input id="video-uploader" name="videos[]" type="file" multiple class="form-control-file" aria-describedby="fileHelp" @change="setVideos($event)" >
 	                			</div>
 	                		</div>
 	                		

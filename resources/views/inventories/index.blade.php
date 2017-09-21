@@ -72,10 +72,28 @@
 							            <div id="myCarousel-{{ $ii->id }}" class="carousel inventory-carousel slide">
 							                <!-- main slider carousel items -->
 							                <div class="carousel-inner">
+							                @php
+							                	$idx = -1;
+							                @endphp
 						                	@if (count($ii->images) > 0)
 						                    	@foreach($ii->images as $ikey => $image)
-						                    	<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $ikey }}">
+						                    	@php
+								                	$idx++;
+								                @endphp
+						                    	<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $idx }}">
 							                        <img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="img-fluid mx-auto d-block">
+							                    </div>
+						                    	@endforeach
+						                    @endif
+						                    @if (count($ii->videos) > 0)
+						                    	@foreach($ii->videos as $ikey => $video)
+						                    	@php
+								                	$idx++;
+								                @endphp
+						                    	<div class="item carousel-item text-center" data-slide-number="{{ $idx }}">
+							                        <video style="width:100%;" controls>
+			                							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
+			                						</video>
 							                    </div>
 						                    	@endforeach
 						                    @endif
@@ -84,19 +102,43 @@
 
 
 							                <div class="carousel-indicators ">
+							                @php
+							                	$idx = -1;
+							                @endphp
+							                <div class="row">
 							                @if (count($ii->images) > 0)
-							                 	<div class="row">
+
+							                 	
 								                 	@foreach($ii->images as $ikey => $image)
+								                 	@php
+									                	$idx++;
+									                @endphp
 								                 	<div class="col-2 {{ ($ikey == 0) ? 'active' : '' }}">
-								                        <a id="carousel-selector-0" class="{{ ($ikey == 0) ? 'selected' : '' }}" data-slide-to="{{ $ikey }}" data-target="#myCarousel-{{ $ii->id }}">
+								                        <a id="carousel-selector-0" class="{{ ($ikey == 0) ? 'selected' : '' }}" data-slide-to="{{ $idx }}" data-target="#myCarousel-{{ $ii->id }}">
 								                            <img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="img-fluid">
 								                        </a>
 								                    </div>
 								                 	@endforeach
-							                 	</div>
+							                 	
 							                @endif
-							   
+							   				@if (count($ii->videos) > 0)
+
+								                 	@foreach($ii->videos as $vkey => $video)
+								                 	@php
+									                	$idx++;
+									                @endphp
+								                 	<div class="col-2 {{ ($vkey == 0) ? 'active' : '' }}">
+								                        <a id="carousel-selector-0" class="{{ ($vkey == 0) ? 'selected' : '' }}" data-slide-to="{{ $idx }}" data-target="#myCarousel-{{ $ii->id }}">
+								                        	<video style="width:100%; height:100%">
+					                							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
+					                						</video>
+								                        </a>
+								                    </div>
+								                 	@endforeach
+					
+							                @endif
 							                </div>
+							            </div>
 							        </div>
 							    </div>
 

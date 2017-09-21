@@ -62,6 +62,11 @@ class InventoryItem extends Model
         return $this->hasMany(Image::class, 'inventory_item_id', 'id');
     }
 
+    public function videos()
+    {
+        return $this->hasMany(Video::class, 'inventory_item_id', 'id');
+    }
+
     public function itemMetal()
     {
         return $this->hasMany(ItemMetal::class, 'inventory_item_id', 'id');
@@ -480,6 +485,7 @@ class InventoryItem extends Model
 
     public function prepareDataSingle($data)
     {   
+        $job = new Job();
         $itemStone = new ItemStone;
         $itemSize = new ItemSize;
         if (isset($data)) {
@@ -502,6 +508,14 @@ class InventoryItem extends Model
                 $data['primary_src'] = asset(str_replace('public/','storage/',$primary_src));
                 $data['non_primary_imgs'] = $non_primary_imgs;
 
+            }
+
+            if($data->videos) {
+                foreach ($data->videos as $key => $value) {
+                    $data['videos'][$key]['name'] = 'ovideos['.$value->id.']';
+                    $data['videos'][$key]['src_name'] = $job->stringToDotDotDot($value->src); 
+                    $data['videos'][$key]['src_formatted'] = asset(str_replace('public/', 'storage/', $value->src));
+                }
             }
         }
         return $data;

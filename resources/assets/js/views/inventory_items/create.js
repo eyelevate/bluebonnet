@@ -8,7 +8,8 @@ const app = new Vue({
 			stones_data: [],
 			metals_data: [],
 			images:[],
-			videos:[]
+			videos:[],
+			video:[]
 		}
 		
 	},
@@ -39,8 +40,28 @@ const app = new Vue({
 				}
 			});
 
+			if (imgs.length == 0) {
+				$("#video-uploader").val('');
+			}
+
 			// set data
 			this.images = imgs;
+		},
+		setVideos($event) {
+			this.video = $($event.target).val();
+
+		},
+		removeVideo(key){
+			videos = this.videos;
+			vids = [];
+			$.each(videos, function(index, val) {
+				if (key !== index) {
+					vids.push(val);
+				}
+			});
+
+			// set data
+			this.videos = vids;
 		},
 		setMetals() {
 			metals = (this.metals) ? false : true;
@@ -94,6 +115,7 @@ const app = new Vue({
 			        $.each(inputFiles,function(index, el) {
 			        	var reader = new FileReader();
 				        reader.onload = function(event) {
+
 				        	app.images.push({
 				        		"name": (el.name.length > 15) ? el.name.substring(0,15) + '...' :  el.name,
 				        		"primary":false,
@@ -119,7 +141,7 @@ const app = new Vue({
 			// watch for change in 
 			$("#video-parent").on('change', file, function(event) {
 				// remove previous variables
-				app.images = [];
+				app.videos = [];
 
 				// iterate through files and update
 				file.each(function() {
@@ -127,11 +149,13 @@ const app = new Vue({
 			        var inputFiles = this.files;
 			        if(inputFiles == undefined || inputFiles.length == 0) return;
 			        $.each(inputFiles,function(index, el) {
+			        	console.log(el);
 			        	var reader = new FileReader();
 				        reader.onload = function(event) {
 				        	app.videos.push({
 				        		"name": (el.name.length > 15) ? el.name.substring(0,15) + '...' :  el.name,
 				        		"primary":false,
+				        		"type":el.type,
 				        		"primary_name":'primary_video['+index+']',
 				        		"src":event.target.result
 				        	});
@@ -169,7 +193,6 @@ const vars = new Vue({
 
 
 $(document).ready(function() {
-	inventory_items.events();
 
 });
 
