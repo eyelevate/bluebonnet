@@ -2,9 +2,8 @@
 
 @section('content')
 
-	<div class="container-fluid">
-		<div class="row-fluid clearfix" >
-			<div class="col-5" style="display: inline-block;">
+		<div class="grid-x" style="clear:both;">
+			<div class="small-6 medium-6 large-6 cell">
 				<h4 style="font-size:20px !important; font-weight:bold !important;">{{ $company->name }}</h4>
 				<address style="line-height: 1; font-weight:100 !important; font-size:15px !important;">
 					{{ $company->street }}, Suite {{ $company->suite }}<br>
@@ -12,15 +11,15 @@
 					<abbr title="Phone">P:&nbsp;{{ $company->phone }}</abbr> 
 				</address>
 			</div>
-			<div class="col-6 text-right" style="display: inline-block">
-				<h3 style="font-size:30px !important;">INVOICE</h3>
-				<strong style="font-size:30px !important;">#{{ $inv->id_formatted }}</strong>
+			<div class="auto  cell" style="float:right;line-height:1px; ">
+				<h3 style="font-size:30px !important;">INVOICE #{{ $inv->id_formatted }}</h3>
+				
 			</div>
 			
 		</div>
-
-		<div class="row-fluid clearfix" >
-			<div class="col-5" style="display: inline-block;">
+		<br/><br/><br/><br/><br/>
+		<div class="grid-x" >
+			<div class="cell" >
 				<h4 style="font-size:20px !important; font-weight:bold !important;">{{ $inv->full_name }}</h4>
 				<address style="line-height: 1; font-weight:100 !important; font-size:15px !important;">
 					{{ $inv->full_street }}<br>
@@ -28,12 +27,10 @@
 					<abbr title="Phone">P:&nbsp;{{ $inv->phone_formatted }}</abbr> 
 				</address>
 			</div>
-
-			
 		</div>
-
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-condensed">
+		<br/><br/><br/>
+		<div class="grid-x">
+			<table class="unstriped">
 				<thead>
 					<tr>
 						<th>Quantity</th>
@@ -52,7 +49,8 @@
 					@endforeach
 				@endif
 				</tbody>
-				<tfoot>
+				<tfoot style="">
+
 					<tr>
 						<th class="text-right" colspan="2" style="font-weight:bold !important;">Quantity:</th>
 						<td>{{ $inv->quantity }}</td>
@@ -67,7 +65,7 @@
 					</tr>
 					<tr>
 						<th class="text-right" colspan="2" style="font-weight:bold !important;">Shipping:</th>
-						<td>{{ $inv->shipping_total_formatted }} <strong style="font-weight:bold !important;">({{ $inv->shipping_type }})</strong></td>
+						<td>{{ $inv->shipping_total_formatted }} ({{ $inv->shipping_type }})</td>
 					</tr>
 					<tr>
 						<th class="text-right" colspan="2" style="font-weight:bold !important;">Total Due:</th>
@@ -86,14 +84,14 @@
 				</tfoot>
 			</table>
 		</div>
-		<div class="row-fluid clearfix" >
-			<div class="col-12">
-				<p class="text-center" style="font-size:14px !important; font-weight:lighter !important;">Make all checks payable to <strong style="font-weight:bold !important;">{{ $company->name }}</strong></p>
-				<p class="text-center" style="font-size:14px !important; font-weight:lighter !important;">If you have any questions or concerns please call us at <strong style="font-weight:bold !important;">{{ $company->phone }}</strong></p>
+		<div class="grid-x" >
+			<div class="cell">
+				<p class="text-center" style="font-size:14px !important; font-weight:lighter !important;">Make all checks payable to <span style="font-weight:bold !important;">{{ $company->name }}</span></p>
+				<p class="text-center" style="font-size:14px !important; font-weight:lighter !important;">If you have any questions or concerns please call us at <span style="font-weight:bold !important;">{{ $company->phone }}</span></p>
 			</div>
 		</div>
 
-	</div>
-</div>
+	
+
 
 @endsection
