@@ -17,7 +17,7 @@
 			</div>
 			
 		</div>
-		<br/><br/><br/><br/><br/>
+		<br/><br/><br/><br/>
 		<div class="grid-x" >
 			<div class="cell" >
 				<h4 style="font-size:20px !important; font-weight:bold !important;">{{ $inv->full_name }}</h4>

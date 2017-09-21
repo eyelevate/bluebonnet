@@ -567,7 +567,7 @@ class Invoice extends Model
             // Shipping Address
             $street = (isset($data->users)) ? $data->users->street : $data->street;
             $suite = (isset($data->users)) ? $data->users->suite : $data->suite;
-            $full_street = (isset($suite)) ? $street.' #'.$suite : $street;
+            $full_street = (isset($suite) && trim($suite) != '') ? $street.' #'.$suite : $street;
             $city = (isset($data->users)) ? $data->users->city : $data->city;
             $state = (isset($data->users)) ? $data->users->state : $data->state;
             $country = (isset($data->users)) ? $data->users->country : $data->country;
