@@ -748,7 +748,7 @@ const app = new Vue({
 		},
 		pushPaymentFormEmail() {
 			this.progress = 70;
-			this.formStatusSeven = true;
+			this.formStatusNine = true;
 			invoice_id = this.invoiceId;
 			var send = '/invoices/'+invoice_id+'/push-email-form';
 			try {
@@ -757,7 +757,7 @@ const app = new Vue({
 					'email_address':this.email
 				}).then(response => {
 					if (response.data.status) {
-						this.formStatusEight = true;
+						this.formStatusTen = true;
 						this.progress = 80;
 						this.forgetSession();
 					} else {
@@ -774,14 +774,14 @@ const app = new Vue({
 		},
 		sendEmail() {
 			this.progress = 70;
-			this.formStatusSeven = true;
+			this.formStatusNine = true;
 			try {
 				axios.post('/invoices/push-email',{
 					'new_invoice':this.newInvoice,
 					'email_address':this.email
 				}).then(response => {
 					if (response.data.status) {
-						this.formStatusEight = true;
+						this.formStatusTen = true;
 						this.progress = 80;
 						this.forgetSession();
 					} else {
