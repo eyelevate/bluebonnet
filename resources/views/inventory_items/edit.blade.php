@@ -14,7 +14,7 @@
 </ol>
 
 <div class="container-fluid">
-	{!! Form::open(['method'=>'patch','route'=>['inventory_item.update',$inventoryItem->id],'enctype'=>'multipart/form-data']) !!}
+	{!! Form::open(['id'=>'item-form','method'=>'patch','route'=>['inventory_item.update',$inventoryItem->id],'enctype'=>'multipart/form-data']) !!}
 
 		<bootstrap-card use-header = "true" use-body="true" use-footer = "true">
 			<template slot = "header"> Create An Inventory Item </template>
@@ -529,7 +529,7 @@
 
 			<template slot = "footer">
 				<a href="{{ route('inventory.index') }}" class="btn btn-secondary">Back</a>
-				<button type="submit" class = "btn btn-primary">Save</button>
+				<button type="button" class = "btn btn-primary" @click="submitForm">Save</button>
 			</template>
 		</bootstrap-card>
 		{!! Form::close() !!}
@@ -537,7 +537,14 @@
 @endsection
 
 @section('modals')
-
+<bootstrap-modal id="send-form-modal" b-size="modal-lg">
+	<template slot="header">Please Wait!</template>
+	<template slot="body">
+		<p class="text-center">Loading Form Images / Videos... This can take up to 20 seconds depending on the size of the resource.</p>
+		<h1 class="text-center"><i class="fa fa-spinner fa-spin" aria-hidden="true"></i><h1>
+	</template>
+	<template slot="footer"></template>
+</bootstrap-modal>
 @endsection
 
 @section('variables')

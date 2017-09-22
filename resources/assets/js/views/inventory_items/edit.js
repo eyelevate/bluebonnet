@@ -177,6 +177,11 @@ const app = new Vue({
 			    });
 
 			});
+		},
+		submitForm(){
+			console.log('here');
+			$('#send-form-modal').modal('show');
+			$( "#item-form" ).submit();
 		}
 	},
 	computed: {
