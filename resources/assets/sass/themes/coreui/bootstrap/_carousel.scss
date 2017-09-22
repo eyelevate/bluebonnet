@@ -62,15 +62,15 @@
   align-items: center; // 2. vertically center contents
   justify-content: center; // 3. horizontally center contents
   width: $carousel-control-width;
-  color: $carousel-control-color;
+  color:#333;
   text-align: center;
-  opacity: $carousel-control-opacity;
+  opacity: .9;
   // We can't have a transition here because WebKit cancels the carousel
   // animation if you trip this while in the middle of another animation.
 
   // Hover/focus state
   @include hover-focus {
-    color: $carousel-control-color;
+    color: #555;
     text-decoration: none;
     outline: 0;
     opacity: .9;
