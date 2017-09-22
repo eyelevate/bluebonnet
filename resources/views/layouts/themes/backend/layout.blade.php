@@ -23,7 +23,7 @@
     <title>{{ $company->name }} - Admin Page</title>
 
     <!-- Icons -->
-    {{-- <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}"> --}}
+    <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
 
