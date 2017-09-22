@@ -7,6 +7,7 @@ const app = new Vue({
 		pw: '',
 		remember: false,
 		checkShipping: true,
+		shipping:1
 	},
 	methods: {
 		removeRow($event, $row) {
@@ -45,7 +46,7 @@ const app = new Vue({
 			}).then(response => {
 
 				this.totals = response.data.totals;
-				this.checkShipping = (response.data.totals._shipping) ? true : false;
+				this.checkShipping = (this.shipping=="1") ? true : false;
 
 			});
 		},

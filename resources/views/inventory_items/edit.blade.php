@@ -298,7 +298,7 @@
 	                			</div>
 	                			<div class="row-fluid hidden-md-up">
 	                				<div v-for="i,k in images">      				
-		                				<div class="col-12" v-if="i.primary">
+		                				<div class="col-4 pull-left" v-if="i.primary">
 			                				<bootstrap-card
 			                					class="image-divs card-inverse bg-success"
 			                					use-img-top="true"
@@ -317,7 +317,7 @@
 			                					</template>
 			                				</bootstrap-card>
 		                				</div>
-		                				<div class="col-12" v-else>
+		                				<div class="col-4 pull-left" v-else>
 			                				<bootstrap-card
 			                					class="image-divs bg-light"
 			                					use-img-top="true"
