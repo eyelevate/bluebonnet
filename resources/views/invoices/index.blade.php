@@ -95,17 +95,16 @@
                             <tr>
                                 <th>Shipping</th>
                                 <td >
-                                    @if($detail->status == 3)
-        
-                                    ${!! number_format($detail->shipping_total,2,'.',',') !!} <strong>({{ $detail->shipping_type }})</strong>    
-                    
-                                    @else
+                                    @if($detail->status == 2)
                                     <div class="input-group">
                                         <input class="form-control" type="text" value="{{ $detail->shipping_total }}"  placeholder="update shipping total here">
                                         <div class="input-group-addon btn btn-primary" @click="updateShipping({{ $dkey }}, $event)">Set</div>
                                     </div>
                                     
-                                    <span id="shippingError-{{ $dkey }}" class="text-danger"></span>
+                                    <span id="shippingError-{{ $dkey }}" class="text-danger"></span>   
+                    
+                                    @else
+                                    ${!! number_format($detail->shipping_total,2,'.',',') !!} <strong>({{ $detail->shipping_type }})</strong> 
                                     @endif
                                 </td>
                             </tr>

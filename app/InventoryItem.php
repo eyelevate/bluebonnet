@@ -360,7 +360,7 @@ class InventoryItem extends Model
             $totals['tax'] = ($shipping) ? '$'.number_format($tax,2,'.',',') : 'Priced Later';
             $totals['_tax'] =  ($shipping) ? $tax :  0;
             $totals['shipping'] = ($shipping) ? '$0.00' : 'Priced Later';
-            $totals['_shipping'] = $shipping;
+            $totals['_shipping'] = 0;
 
         }
 

@@ -16,6 +16,7 @@ const app = new Vue({
 
 				remove.parents('.item').remove();
 				this.totals = response.data.totals;
+				$(".cart-number").html(response.data.remaining);
 			});
 		}
 	},

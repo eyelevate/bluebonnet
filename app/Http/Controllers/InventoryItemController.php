@@ -634,12 +634,14 @@ class InventoryItemController extends Controller
         $row = $request->row;
 
         session()->forget('cart.'.$row);
+        $remaining = count(session()->get('cart'));
         $totals = $inventoryItem->prepareTotals(session()->get('cart'));
 
         return response()->json([
             'status' => true,
             'data'=>session()->get('cart'),
-            'totals'=>$totals
+            'totals'=>$totals,
+            'remaining'=>$remaining
         ]);
     }
 

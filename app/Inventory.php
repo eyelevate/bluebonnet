@@ -22,11 +22,6 @@ class Inventory extends Model
     ];
 
 
-    public function inventoryItems()
-    {
-        return $this->hasMany(InventoryItem::class, 'inventory_id', 'id');
-    }
-
     public function prepareSelect()
     {
         $select = [''=>'select inventory group'];

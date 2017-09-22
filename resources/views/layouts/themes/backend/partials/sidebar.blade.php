@@ -59,9 +59,9 @@
                             <a class="nav-link" href="{{ route('company.index') }}"><i class="icon-arrow-right-circle"></i> Company <span class="badge badge-info">{{ $companies_count }}</span></a>
                         </li>
 
-                        <li class="nav-item">
+{{--                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('fee.index') }}"><i class="icon-arrow-right-circle"></i> Fees <span class="badge badge-info">{{ $fee_count }}</span></a>
-                        </li>
+                        </li> --}}
 
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('finger.index') }}"><i class="icon-arrow-right-circle"></i> Finger Sizes <span class="badge badge-info">{{ $finger_count }}</span></a>
@@ -81,10 +81,10 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('stone.index') }}"><i class="icon-arrow-right-circle"></i> Stone Types <span class="badge badge-info">{{ $stone_count }}</span></a>
                         </li>
-                        <li class="nav-item">
+{{--                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('vendor.index') }}"><i class="icon-arrow-right-circle"></i> Vendors <span class="badge badge-info">{{ $vendor_count }}</span></a>
                         </li>
-
+ --}}
                     </ul>
                 </li>
 
