@@ -192,7 +192,7 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="1" {{ old('shipping') ? (old('shipping') == 1) ? 'checked' : '' : 'checked' }} @click="updateShipping(1)">
+                            <input type="radio" name="shipping" value="1" v-model="shipping" {{ old('shipping') ? (old('shipping') == 1) ? 'checked' : '' : 'checked' }} @click="updateShipping(1)">
                             &nbsp;2 Day <small>(Free Shipping)</small>
                         </label>
                     </div>
@@ -200,7 +200,7 @@
                     <div class="col-12">
                         
                         <label class="form-control-label">
-                            <input type="radio" name="shipping" value="2" {{ (old('shipping') == 2) ? 'checked' : '' }} @click="updateShipping(2)">
+                            <input type="radio" name="shipping" value="2" v-model="shipping" {{ (old('shipping') == 2) ? 'checked' : '' }} @click="updateShipping(2)">
                             &nbsp;Next Day <small>(Priced by weight and insurance)</small>
                         </label>
                     </div>
