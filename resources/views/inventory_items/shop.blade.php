@@ -41,14 +41,23 @@
 	
 					</div>
 						{{--  Inventory Carousel Controls  --}}
-							<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+							
+						<a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+							<div class="indicator-left">
 								<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 								<span class="sr-only">Previous</span>
-							</a>
-							<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+							</div>
+						</a>	
+					
+					
+						<a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+							<div class="indicator-right">
 								<span class="carousel-control-next-icon" aria-hidden="true"></span>
 								<span class="sr-only">Next</span>
-							</a>
+							</div>
+						</a>	
+
+							
 				</div>
 		
 
