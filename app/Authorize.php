@@ -94,7 +94,8 @@ class Authorize extends Model
 
 	    // Create the controller and get the response
 	    $controller = new AnetController\CreateTransactionController($request);
-	    $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+	    // $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::SANDBOX);
+	    $response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 	    
 	    $results = ['status'=>false];
 	    $check = false;
@@ -168,7 +169,8 @@ class Authorize extends Model
 
 		$controller = new AnetController\GetTransactionDetailsController($request);
 
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		// $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		// if (($response != null) && ($response->getMessages()->getResultCode() == "Ok"))
 		// {
 
@@ -217,7 +219,8 @@ class Authorize extends Model
 		$request->setRefId($refId);
 		$request->setTransactionRequest( $transactionRequest);
 		$controller = new AnetController\CreateTransactionController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		// $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION)
 		$result = [];
 		if ($response != null)
 		{
@@ -294,7 +297,8 @@ class Authorize extends Model
 		$request->setRefId($refId);
 		$request->setTransactionRequest( $transactionRequestType);
 		$controller = new AnetController\CreateTransactionController($request);
-		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		// $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
+		$response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		$result = [];
 		if ($response != null)
 		{
