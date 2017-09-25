@@ -86,7 +86,7 @@
     <!-- Bootstrap and necessary plugins -->
     <!--   Core JS Files   -->
     <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/themes/coreui/dashboard-plugins.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/themes/coreui/pace.min.js') }}"></script>
     
     <!-- Custom scripts required by this view -->
     <script type="text/javascript" src="{{ mix('/js/views/admins/general.js') }}"></script>
