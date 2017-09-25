@@ -77,7 +77,7 @@
 
     <!-- Bootstrap and necessary plugins -->
     <script type="text/javascript" src="{{ mix('/js/app.js') }}"></script>
-    <script type="text/javascript" src="{{ mix('/js/themes/coreui/dashboard-plugins.js') }}"></script>
+    <script type="text/javascript" src="{{ mix('/js/themes/coreui/pace.min.js') }}"></script>
     <script type="text/javascript" src="{{ mix('/js/themes/coreui/coreui.js') }}"></script>
     <!-- Custom scripts required by this view -->
     <script type="text/javascript" src="{{ mix('/js/themes/coreui/main.js') }}"></script>
