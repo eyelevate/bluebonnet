@@ -42,63 +42,63 @@ mix.sass('resources/assets/fonts/themes/ionicons/scss/ionicons.scss','public/css
 // Page Specific Mix
 
 // Admins
-mix.js('resources/assets/js/views/admins/login.js','public/js/views/admins')
-   .js('resources/assets/js/views/admins/general.js','public/js/views/admins')
-   .js('resources/assets/js/views/admins/index.js','public/js/views/admins')
-   .js('resources/assets/js/views/admins/home.js','public/js/views/admins')
-   .js('resources/assets/js/views/admins/charts.js','public/js/views/admins')
-   .sass('resources/assets/sass/views/admins/general.scss','public/css/views/admins');
+// mix.js('resources/assets/js/views/admins/login.js','public/js/views/admins')
+//    .js('resources/assets/js/views/admins/general.js','public/js/views/admins')
+//    .js('resources/assets/js/views/admins/index.js','public/js/views/admins')
+//    .js('resources/assets/js/views/admins/home.js','public/js/views/admins')
+//    .js('resources/assets/js/views/admins/charts.js','public/js/views/admins')
+//    .sass('resources/assets/sass/views/admins/general.scss','public/css/views/admins');
 
-// Auth
-mix.js('resources/assets/js/views/auth/login.js','public/js/views/auth')
-   .js('resources/assets/js/views/auth/register.js','public/js/views/auth');
+// // Auth
+// mix.js('resources/assets/js/views/auth/login.js','public/js/views/auth')
+//    .js('resources/assets/js/views/auth/register.js','public/js/views/auth');
 
-// Collection
-mix.js('resources/assets/js/views/collections/create.js','public/js/views/collections')
-   .js('resources/assets/js/views/collections/set.js','public/js/views/collections');
+// // Collection
+// mix.js('resources/assets/js/views/collections/create.js','public/js/views/collections')
+//    .js('resources/assets/js/views/collections/set.js','public/js/views/collections');
 
-// Companies
-mix.js('resources/assets/js/views/companies/create.js','public/js/views/companies');
+// // Companies
+// mix.js('resources/assets/js/views/companies/create.js','public/js/views/companies');
 
-// Finger
-mix.js('resources/assets/js/views/fingers/create.js','public/js/views/fingers');
+// // Finger
+// mix.js('resources/assets/js/views/fingers/create.js','public/js/views/fingers');
 
-// Home
-mix.js('resources/assets/js/views/home/index.js','public/js/views/home')
-   .js('resources/assets/js/views/home/shop.js','public/js/views/home')
-   .js('resources/assets/js/views/home/cart.js','public/js/views/home')
-   .js('resources/assets/js/views/home/checkout.js','public/js/views/home')
-   .js('resources/assets/js/views/home/pages.js','public/js/views/home');
+// // Home
+// mix.js('resources/assets/js/views/home/index.js','public/js/views/home')
+//    .js('resources/assets/js/views/home/shop.js','public/js/views/home')
+//    .js('resources/assets/js/views/home/cart.js','public/js/views/home')
+//    .js('resources/assets/js/views/home/checkout.js','public/js/views/home')
+//    .js('resources/assets/js/views/home/pages.js','public/js/views/home');
 
-// inventory items
-mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/inventory_items')
-   .js('resources/assets/js/views/inventory_items/edit.js','public/js/views/inventory_items')
-   .js('resources/assets/js/views/inventory_items/shop.js','public/js/views/inventory_items');
+// // inventory items
+// mix.js('resources/assets/js/views/inventory_items/create.js','public/js/views/inventory_items')
+//    .js('resources/assets/js/views/inventory_items/edit.js','public/js/views/inventory_items')
+//    .js('resources/assets/js/views/inventory_items/shop.js','public/js/views/inventory_items');
 
-// invoices
-mix.js('resources/assets/js/views/invoices/finish.js','public/js/views/invoices')
-   .js('resources/assets/js/views/invoices/create.js','public/js/views/invoices')
-   .js('resources/assets/js/views/invoices/edit.js','public/js/views/invoices');
-// invoice items
-mix.js('resources/assets/js/views/invoice_items/edit.js','public/js/views/invoice_items');
+// // invoices
+// mix.js('resources/assets/js/views/invoices/finish.js','public/js/views/invoices')
+//    .js('resources/assets/js/views/invoices/create.js','public/js/views/invoices')
+//    .js('resources/assets/js/views/invoices/edit.js','public/js/views/invoices');
+// // invoice items
+// mix.js('resources/assets/js/views/invoice_items/edit.js','public/js/views/invoice_items');
 
-// metal
-mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
+// // metal
+// mix.js('resources/assets/js/views/metals/create.js','public/js/views/metals');
 
-// Reports
-mix.js('resources/assets/js/views/reports/weeks.js','public/js/views/reports')
-   .js('resources/assets/js/views/reports/months.js','public/js/views/reports')
-   .js('resources/assets/js/views/reports/years.js','public/js/views/reports');
+// // Reports
+// mix.js('resources/assets/js/views/reports/weeks.js','public/js/views/reports')
+//    .js('resources/assets/js/views/reports/months.js','public/js/views/reports')
+//    .js('resources/assets/js/views/reports/years.js','public/js/views/reports');
 
-// stone Size
-mix.js('resources/assets/js/views/stone_sizes/create.js','public/js/views/stone_sizes');
+// // stone Size
+// mix.js('resources/assets/js/views/stone_sizes/create.js','public/js/views/stone_sizes');
 
-// stone
-mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones')
-   .js('resources/assets/js/views/stones/edit.js','public/js/views/stones');
+// // stone
+// mix.js('resources/assets/js/views/stones/create.js','public/js/views/stones')
+//    .js('resources/assets/js/views/stones/edit.js','public/js/views/stones');
 
-// size
-mix.js('resources/assets/js/views/sizes/create.js','public/js/views/sizes');
+// // size
+// mix.js('resources/assets/js/views/sizes/create.js','public/js/views/sizes');
 
 //Video
-mix.copyDirectory('resources/assets/video','public/video');
+// mix.copyDirectory('resources/assets/video','public/video');
