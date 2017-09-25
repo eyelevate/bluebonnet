@@ -91,7 +91,8 @@ class Instagram extends Model
     	$grab = [];
     	if ($instagram) {
     		try {
-	            $feed = $instagram->getUserFeed($instagram->account_id);
+
+	            $feed = $instagram->timeline->getUserFeed($instagram->account_id);
 	            // The getPopularFeed() has an "items" property, which we need.
 	            $items = $feed->fullResponse->items;
 	            // dd($items);
