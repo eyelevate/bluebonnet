@@ -6,7 +6,10 @@
     <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
     <link rel="icon" type="image/png" href="./assets/img/favicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>{{ $company->name }}</title>
+    <title>{{ $company->name }} - custom design jewelry</title>
+    <meta name="keywords"  content="freyas fine jewelery, box, custom, set, design, near, me, brands, stores, jewelers, for sale, men, women, engagement, rings, necklaces, bracelets, bands, moissanite, lab created, certified, special, dallas, texas, sale, quality, guarantee, best, in town, top, rated"/>
+    <meta name="description"  content="Freyas Fine Jewelry best custom made designs for your engagement or personal desires. Best in town, top rated, quality assurance. Dallas, Texas."/>
+    <meta name="robots" content="index,follow" />
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -14,7 +17,7 @@
     <link href="https://fonts.googleapis.com/css?family=Rubik:400,700,200" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.4.1/css/simple-line-icons.css">
-    <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- CSS Files -->
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/app.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ mix('/css/themes/theme2/theme2.css') }}">
