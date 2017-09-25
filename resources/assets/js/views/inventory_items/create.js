@@ -99,7 +99,7 @@ const app = new Vue({
 		},
 		imageEvents(){
 			// set variables and file input
-			var upload = require('simple-upload-preview');
+			// var upload = require('simple-upload-preview');
 			var file = $('input[name="imgs[]"]'); // <input type="file" /> 
 
 			// watch for change in 
@@ -135,7 +135,7 @@ const app = new Vue({
 		},
 		videoEvents() {
 			// set variables and file input
-			var upload = require('simple-upload-preview');
+			// var upload = require('simple-upload-preview');
 			var file = $('input[name="videos[]"]'); // <input type="file" /> 
 
 			// watch for change in 
@@ -196,14 +196,3 @@ const vars = new Vue({
 		app.metals_data = JSON.parse(this.$el.attributes.metals.value);
     }
 });
-
-
-$(document).ready(function() {
-
-});
-
-
-
-inventory_items = {
-	
-}

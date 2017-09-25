@@ -83,7 +83,7 @@
 	                	<template slot="control">
 	                		<div class="card imagePreviewCard col-12" >
 	                			<img id="preview" class="card-img-top"/>
-	                			<div class="card-block">
+	                			<div id="image-parent" class="card-block">
 	                				<input id="uploader" name="img" type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
 	                				<input type="hidden"  value="" name="img_src"/>
 	                				<input type="hidden"  value="" name="featured_src"/>
