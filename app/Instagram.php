@@ -157,9 +157,10 @@ class Instagram extends Model
     	$debug = false;
         $truncatedDebug = false;
         $instagram = new \InstagramAPI\Instagram($debug,$truncatedDebug);
+        // dd($instagram);
         try {
-            $instagram->setUser(env('INSTAGRAM_USERNAME'),env('INSTAGRAM_PASSWORD'));
-            $instagram->login();
+            // $instagram->setUser(env('INSTAGRAM_USERNAME'),env('INSTAGRAM_PASSWORD'));
+            $instagram->login(env('INSTAGRAM_USERNAME'),env('INSTAGRAM_PASSWORD'));
         } catch (Exception $e) {
             return false;
         }
