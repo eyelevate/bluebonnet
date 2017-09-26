@@ -68,7 +68,7 @@ class CollectionController extends Controller
         
 
         // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
-        $resized_image_uri = $image->crop($request->img,1250, 1250);
+        $resized_image_uri = $image->crop($request->img,625, 625);
         $path = Storage::putFile('public/collections', new File($resized_image_uri));
         
 
@@ -77,7 +77,7 @@ class CollectionController extends Controller
 
         // check if featured is set to true if true then create a resize of the image to 1902x1070
         if ($request->featured == 'on') {
-            $resized_featured_uri = $image->resize($request->img, 2500, 1250);
+            $resized_featured_uri = $image->resize($request->img, 1250, 625);
             $featured_path = Storage::putFile('public/collections', new File($resized_image_uri));
             unlink($resized_featured_uri);
             $request->merge(['featured_src'=>$featured_path]);
@@ -144,7 +144,7 @@ class CollectionController extends Controller
             // remove old image
             Storage::delete($collection->img_src);
             // add new image
-            $resized_image_uri = $image->crop($request->img,1250, 1250);
+            $resized_image_uri = $image->crop($request->img,625, 625);
             $path = Storage::putFile('public/collections', new File($resized_image_uri));
 
             //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
@@ -158,7 +158,7 @@ class CollectionController extends Controller
 
             // Check for any new images and add accordingly
             if ($request->featured == 'on') {
-                $resized_featured_uri = $image->resize($request->img, 2220, 1210);
+                $resized_featured_uri = $image->resize($request->img, 1250, 625);
                 $featured_path = Storage::putFile('public/collections', new File($resized_image_uri));
                 unlink($resized_featured_uri);
                 $request->merge(['featured_src'=>$featured_path]);

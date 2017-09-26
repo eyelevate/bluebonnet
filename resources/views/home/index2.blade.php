@@ -25,12 +25,6 @@
 				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Eco Friendly</h3>
 				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
 			</div>
-			<div class="carousel-item">
-				<img class="d-block img-fluid lazy" src="img/themes/theme2/Edited/slider-6.jpg" alt="Third slide">
-				<h2 class="text-uppercase text-center header-h2 hidden-sm-down">Here for You</h2>
-				<h3 class="text-uppercase text-center header-h3 hidden-md-up">Here for You</h3>
-				<p class="text-center"><a class="btn btn-primary" href="{{ route('home.shop') }}">Shop Our Collections</a></p>
-			</div>
 		</div>
 	</div>
 </div>
@@ -49,7 +43,7 @@
 		@foreach($featured_items as $item)
 		<div class="col-xs-12 col-sm-6">
 			<div class="card">
-				<img class="card-img-top card-img-top-featured lazy mx-auto d-block" data-original="{{ $item->primary_img_src }}" alt="Card image cap">
+				<img class="card-img-top card-img-top-featured lazy mx-auto d-block" data-original="{{ $item->primary_img_src }}" alt="{{ $item->name }}">
 				<div class="card-block text-center" style="">
 					<p class="card-text" style="margin:0px;padding:0px;">
 						<h3 style="margin-bottom:0px;">{{ $item->name }}</h3>
@@ -65,7 +59,7 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
-				<img class="card-img-top card-img-top-collection-featured lazy mx-auto d-block" data-original="{{ asset(str_replace('public/', 'storage/', $featured_collection->featured_src)) }}" alt="Card image cap">
+				<img class="card-img-top card-img-top-collection-featured lazy mx-auto d-block" data-original="{{ asset(str_replace('public/', 'storage/', $featured_collection->featured_src)) }}" alt="{{ $featured_collection->name }}">
 				<div class="card-block text-center">
 					<p class="card-text text-center">
 						<h3 style="margin-bottom:0px;">{{ $featured_collection->name }}</h3>
