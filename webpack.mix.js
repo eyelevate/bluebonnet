@@ -34,6 +34,8 @@ mix.sass('resources/assets/sass/themes/theme2/theme2.scss','public/css/themes/th
    .js('resources/assets/js/themes/theme2/theme2.js','public/js/themes/theme2');
 // Ionicons
 mix.sass('resources/assets/fonts/themes/ionicons/scss/ionicons.scss','public/css/themes/ionicons');
+// Favicon
+mix.copyDirectory('resources/assets/img/favicon','public/img/favicon');
 
 
 // Vue good tables
