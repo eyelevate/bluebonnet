@@ -3,11 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-<<<<<<< HEAD
-    <link rel="icon" type="image/x-icon" href="{{ asset('public/img/favicon.ico') }}">
-=======
-    <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
->>>>>>> 8a0a7264d44194aa79df6facffdfa7968863f38b
+    <link rel="icon" type="image/x-icon" href="{{ asset('storage/favicon/favicon.ico') }}">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>{{ $company->name }} - custom design jewelry</title>
     <meta name="keywords"  content="freyas fine jewelery, box, custom, set, design, near, me, brands, stores, jewelers, for sale, men, women, engagement, rings, necklaces, bracelets, bands, moissanite, lab created, certified, special, dallas, texas, sale, quality, guarantee, best, in town, top, rated"/>
