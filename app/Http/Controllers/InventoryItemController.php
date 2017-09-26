@@ -123,14 +123,13 @@ class InventoryItemController extends Controller
                     }
                 }
             }
-            
 
             // loop primary images array check for true set primary if true also compare to imgs and remove deleted images
             if (count($request->imgs) > 0) {
                 foreach ($request->imgs as $key => $value) {
                     if (isset($request->primary_image[$key])) {
                         // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
-                        $resized_image_uri = $image->resize($request->imgs[$key],480,480);
+                        $resized_image_uri = $image->fit($request->imgs[$key],480);
                         $path = Storage::putFile('public/inventory_items', new File($resized_image_uri));
 
                         //Now delete temporary intervention image as we have moved it to Storage folder with Laravel filesystem.
@@ -140,7 +139,7 @@ class InventoryItemController extends Controller
                         $featured_src = NULL;
                         $primary_image = $request->primary_image[$key] == 'true' ? true : false;
 
-                        $resized_featured_uri = $image->resize($request->imgs[$key],600,600);
+                        $resized_featured_uri = $image->fit($request->imgs[$key],600);
                         $featured_path = Storage::putFile('public/inventory_items',new File($resized_image_uri));
                         unlink($resized_featured_uri);
                         $featured_src = $featured_path;

@@ -102,4 +102,30 @@ class Image extends Model
         return $saved_image_uri;
 
     }
+
+    /**
+     * Crop and Resize image and sends it to tmp file
+     *
+     * @return path to tmp image (public/tmp)
+     */
+     public function fit($file, $width, $height = null, $callback = null, $position = 'center')
+     {
+         // crop image to 1:1 aspect ratio and then resize to width variable amount
+         $fit = \Intervention::make($file);
+         $fit->fit($width,$height, $callback, $position);
+         $fit_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME).'.'.$file->getClientOriginalExtension();
+ 
+         // Check to see if tmp file exists
+         if(!is_dir(public_path('tmp'))) {
+             
+             // path does not exist so create it
+ 
+             Storage::makeDirectory('public/tmp');
+         }
+         $fit->save(public_path("storage/tmp/{$fit_name}"));
+         $saved_image_uri = "{$fit->dirname}/{$fit->basename}";
+         $fit->destroy();
+         return $saved_image_uri;
+ 
+     }
 }
