@@ -140,7 +140,7 @@ class InventoryItemController extends Controller
                         $featured_src = NULL;
                         $primary_image = $request->primary_image[$key] == 'true' ? true : false;
 
-                        $resized_featured_uri = $image->resize($request->imgs[$key],900,900);
+                        $resized_featured_uri = $image->resize($request->imgs[$key],600,600);
                         $featured_path = Storage::putFile('public/inventory_items',new File($resized_image_uri));
                         unlink($resized_featured_uri);
                         $featured_src = $featured_path;
