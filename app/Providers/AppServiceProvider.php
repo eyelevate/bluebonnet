@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 use Mapper;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        
+        // make sure all production links are in https
+        if (env('APP_ENV') == 'production') {
+            \URL::forceScheme('https'); 
+        }
         // Layouts
         view()->composer([
             'layouts.themes.backend.login',
