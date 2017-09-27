@@ -73,7 +73,7 @@
 					@php
 						$idx++;
 					@endphp
-					<div class="col-3 col-md-2 col-lg-2 pull-left {{ ($ikey == 0) ? 'active' : '' }}">
+					<div class="col-3 col-md-2 col-lg-2 pull-left {{ ($ikey == 0) ? 'active' : '' }}" style="margin-top: 10px">
 						<a id="carousel-selector-{{ $ikey }}" class="{{ ($ikey == 0) ? 'selected' : '' }}" data-slide-to="{{ $idx }}" data-target="#myCarousel">
 							<img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="img-fluid">
 						</a>
@@ -87,7 +87,7 @@
 					@php
 						$idx++;
 					@endphp
-					<div class="col-3 col-md-2 col-lg-2 pull-left">
+					<div class="col-3 col-md-2 col-lg-2 pull-left" style="margin-top: 10px">
 						<a id="carousel-selector-{{ $ikey }}" class="" data-slide-to="{{ $idx }}" data-target="#myCarousel">
 							<video style="width:100%; height:100%">
     							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
