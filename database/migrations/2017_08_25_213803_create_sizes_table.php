@@ -15,7 +15,7 @@ class CreateSizesTable extends Migration
     {
         Schema::create('sizes', function (Blueprint $table) {
             $table->increments('id');
-            $table->float('size', 3, 1);
+            $table->float('size', 4, 2);
             $table->string('name');
             $table->softDeletes();
             $table->timestamps();
