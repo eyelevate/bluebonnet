@@ -18,6 +18,12 @@ class FingersTableSeeder extends Seeder
             'updated_at' => Carbon::now()
         ]);
         DB::table('fingers')->insert([
+            'size' => 4.25,
+            'name' => 'Size 4 1/4 ( 1-27/32 in. | 47.1mm )',
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+        DB::table('fingers')->insert([
             'size' => 4.5,
             'name' => 'Size 4 1/2 ( 1-7/8 in. | 47.8mm )',
             'created_at' => Carbon::now(),
