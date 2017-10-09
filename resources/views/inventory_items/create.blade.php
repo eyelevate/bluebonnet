@@ -349,8 +349,8 @@
 								</tr>
 							</thead>
 							<tbody>
-							@if (count($stone->stoneSizes) > 0)
-								@foreach($stone->stoneSizes as $size)
+							@if (count($stone->sizes) > 0)
+								@foreach($stone->sizes as $size)
 								<tr>
 									<td>
 										<bootstrap-control>
@@ -366,7 +366,7 @@
 						                </bootstrap-control>
 
 									</td>
-									<td>{{ $size->sizes->name }}</td>
+									<td>{{ $size->name }}</td>
 									<td><input value="{{ $size->price }}" class="form-control active-input" name="itemSize[{{ $size->id }}][price]" style="width:200px;"/></td>
 								</tr>
 								@endforeach
