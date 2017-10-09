@@ -40,7 +40,6 @@ class SizeController extends Controller
     public function store(Request $request, Size $size, Stone $stone)
     {
         $this->validate(request(), [
-            'carat'=> 'required|numeric',
             'size' => 'required|numeric',
             'name' => 'required|string'
         ]);
