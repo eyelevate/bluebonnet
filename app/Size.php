@@ -16,18 +16,29 @@ class Size extends Model
      */
     protected $fillable = [
         'size',
+        'carat',
         'name'
     ];
+
+    public function stoneSizes()
+    {
+        return $this->hasMany(StoneSize::class, 'size_id', 'id');
+    }
+
 
      #public
     public function prepareTableColumns()
     {
         $columns =  [
             [
-                'label'=>'Size',
-                'field'=> 'size',
+                'label'=>'Carat',
+                'field'=> 'carat',
                 'filterable'=> true
             
+            ], [
+                'label'=>'MM',
+                'field'=> 'size',
+                'filterable'=> true
             ], [
                 'label'=>'Name',
                 'field'=> 'name',
@@ -42,7 +53,7 @@ class Size extends Model
                 'label'=>'Action',
                 'field'=> 'action',
                 'html'=>true
-            ]        ];
+            ]];
 
         return json_encode($columns);
     }
@@ -51,7 +62,12 @@ class Size extends Model
     {
         $columns =  [
             [
-                'label'=>'Size',
+                'label'=>'Carat',
+                'field'=> 'carat',
+                'filterable'=> true
+            
+            ], [
+                'label'=>'MM',
                 'field'=> 'size',
                 'filterable'=> true
             
@@ -70,20 +86,17 @@ class Size extends Model
 
     public function prepareTableRows($rows)
     {
-        // check if exists
-        if (isset($rows)) {
-            foreach ($rows as $key => $value) {
-                // append last column to table here
-                $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
-                $last_column .= '</div>';
-                $rows[$key]['action'] = $last_column;
+        $rows->transform(function($value, $key){
+            $value['input_name'] = "stone_size[{$value->id}]";
+            $last_column = '<button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#viewModal-'.$value->id.'" type="button">view</button>';
+            $value['action'] = $last_column;
+            return $value;
+        });
 
-                //size input name
-                $rows[$key]['input_name'] = 'stone_size[{$value->id}]';
-            }
-        }
         return $rows;
     }
+
+
 
     public function prepareData($rows)
     {

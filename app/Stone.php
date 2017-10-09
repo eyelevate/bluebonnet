@@ -44,25 +44,14 @@ class Stone extends Model
 
     public function prepareData($data)
     {
-        if (count($data) > 0) {
-            foreach ($data as $key => $value) {
-                if (isset($data[$key]['email'])) {
-                    if ($data[$key]['email'] == false) {
-                        $data[$key]['email_status'] = 'False';
-                    } else {
-                        $data[$key]['email_status'] = 'True';
-                    }
-                    if (isset($data[$key]->stoneSizes)) {
-                        $data[$key]['sizes'] = $value->stoneSizes;
-                        if (isset($data[$key]['sizes'])) {
-                            foreach ($data[$key]['sizes'] as $sskey => $ssvalue) {
-                                $data[$key]['sizes'][$sskey]['name'] = $ssvalue->sizes->name;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        $data->transform(function($value,$key){
+            $value['email_status'] = ($value->email) ? 'True' : 'False';
+            $size_ids = $value->stoneSizes()->pluck('size_id')->toArray();
+            $size = new Size;
+            $value['sizes'] = $size->whereIn('id',$size_ids)->orderBy('carat','asc')->get();
+
+            return $value;
+        });
 
         return $data;
     }

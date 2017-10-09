@@ -14,7 +14,7 @@ class StonesTableSeeder extends Seeder
         DB::table('stones')->insert([
             'name' => 'Moissanite Forever One E-F',
             'desc' => 'test type 1',
-            'price' => 200.00,
+            'price' => 0.00,
             'email' => false,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
@@ -22,7 +22,7 @@ class StonesTableSeeder extends Seeder
         DB::table('stones')->insert([
             'name' => 'Moissanite Forever One G-H',
             'desc' => 'test type 1',
-            'price' => 400.00,
+            'price' => 0.00,
             'email' => false,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()

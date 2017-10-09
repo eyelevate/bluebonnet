@@ -15,7 +15,7 @@ class CreateFingersTable extends Migration
     {
         Schema::create('fingers', function (Blueprint $table) {
             $table->increments('id');
-            $table->float('size', 4, 2);
+            $table->float('size', 5, 3);
             $table->string('name');
             $table->softDeletes();
             $table->timestamps();

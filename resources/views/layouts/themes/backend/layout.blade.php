@@ -16,7 +16,7 @@
     <meta name="description" content="">
     <meta name="author" content="Wondo Choung">
     <meta name="keyword" content="">
-    <link rel="shortcut icon" href="img/favicon.png">
+    <link rel="icon" type="image/x-icon" href="{{ asset('storage/favicon/favicon.ico') }}?v=2">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 

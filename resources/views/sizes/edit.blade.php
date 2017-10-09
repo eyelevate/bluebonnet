@@ -26,31 +26,44 @@
 			<template slot = "body">
 	            <div class="content">
 	            	
-	            	<!-- Size -->
-	                <bootstrap-input class="form-group-no-border {{ $errors->has('size') ? ' has-danger' : '' }}" 
+	            	<!-- Carat -->
+	                <bootstrap-control class="form-group-no-border {{ $errors->has('carat') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Size"
-	                    b-placeholder="Size"
-	                    b-name="size"
-	                    b-type="text"
-	                    b-value="{{ old('size') ? old('size') : $size->size }}"
-	                    b-err="{{ $errors->has('size') }}"
-	                    b-error="{{ $errors->first('size') }}"
+	 					label = "Carat"
 	                    >
-	                </bootstrap-input>
+	                    <template slot="control">
+	                    	<input type="text" class="form-control" name="carat" value="{{ old('carat') ? old('carat') : $size->carat }}">
+	                    	@if ($errors->has('carat'))
+	                    	<div class="form-control-feedback">{{ $errors->first('carat') }}</div>
+	                    	@endif
+	                    </template>
+	                </bootstrap-control>
+
+	            	<!-- Size -->
+	                <bootstrap-control class="form-group-no-border {{ $errors->has('size') ? ' has-danger' : '' }}" 
+	                    use-label = "true"
+	 					label = "Size in millimeters"
+	                    >
+	                    <template slot="control">
+	                    	<input type="text" class="form-control" name="size" value="{{ old('size') ? old('size') : $size->size }}">
+	                    	@if ($errors->has('size'))
+	                    	<div class="form-control-feedback">{{ $errors->first('size') }}</div>
+	                    	@endif
+	                    </template>
+	                </bootstrap-control>
 
 					<!-- Description -->
-	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
+					<bootstrap-control class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Name"
-	                    b-placeholder="Name"
-	                    b-name="name"
-	                    b-type="text"
-	                    b-value="{{ old('name') ? old('name') : $size->name }}"
-	                    b-err="{{ $errors->has('name') }}"
-	                    b-error="{{ $errors->first('name') }}"
 	                    >
-	                </bootstrap-input>
+	                    <template slot="control">
+	                    	<input type="text" class="form-control" name="name" value="{{ old('name') ? old('name') : $size->name }}">
+	                    	@if ($errors->has('name'))
+	                    	<div class="form-control-feedback">{{ $errors->first('name') }}</div>
+	                    	@endif
+	                    </template>
+	                </bootstrap-control>
 		        </div>
 			</template>
 

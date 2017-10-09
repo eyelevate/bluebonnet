@@ -15,7 +15,7 @@ class FingerController extends Controller
     public function index(Finger $finger)
     {
         $columns = $finger->prepareTableColumns();
-        $rows = $finger->prepareTableRows($finger->all());
+        $rows = $finger->prepareTableRows($finger->orderBy('size','asc')->get());
         return view('fingers.index', compact(['columns','rows']));
     }
 

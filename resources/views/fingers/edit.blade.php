@@ -39,11 +39,11 @@
 	                    >
 	                </bootstrap-input>
 
-					<!-- Description -->
+					<!-- Unit -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Name"
-	                    b-placeholder="Name"
+	 					label = "Unit"
+	                    b-placeholder="Unit"
 	                    b-name="name"
 	                    b-type="text"
 	                    b-value="{{ old('name') ? old('name') : $finger->name }}"

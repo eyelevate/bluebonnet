@@ -24,7 +24,7 @@
 			<template slot = "body">
 	            <div class="content">
 	            	
-	            	<!-- Name -->
+	            	<!-- Size -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('size') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
 	 					label = "Size"
@@ -37,11 +37,11 @@
 	                    >
 	                </bootstrap-input>
 
-					<!-- Description -->
+					<!-- Name -->
 	                <bootstrap-input class="form-group-no-border {{ $errors->has('name') ? ' has-danger' : '' }}" 
 	                    use-label = "true"
-	 					label = "Name"
-	                    b-placeholder="Name"
+	 					label = "Unit"
+	                    b-placeholder="E.g. 4 1/4 (2-1/4 in. || 60mm)"
 	                    b-name="name"
 	                    b-type="text"
 	                    b-value="{{ old('name') }}"
