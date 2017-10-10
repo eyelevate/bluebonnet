@@ -28,6 +28,11 @@ class StoneSize extends Model
         return $this->belongsTo(Stone::class, 'stone_id', 'id');
     }
 
+    public function itemSizes()
+    {
+        return $this->hasMany(ItemSize::class, 'stone_size_id', 'id');   
+    }
+
     public function prepareSelect($data)
     {
         $select = [];

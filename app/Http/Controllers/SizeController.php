@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\InventoryItem;
+use App\ItemSize;
 use App\Size;
 use App\Stone;
 use App\StoneSize;
@@ -44,8 +46,39 @@ class SizeController extends Controller
             'name' => 'required|string'
         ]);
         flash('Successfully created a Stone Size!')->success();
-        $size->create(request()->all());
+        $s = $size->create(request()->all());
+        if ($s) {
+            $inventory_items = InventoryItem::all();
+            $stones = $stone->all();
+            if (count($stones) > 0) {
+                $stones->each(function($value,$key) use ($s, $inventory_items) {
+                    if (!$value->email) {
+                        $stoneSize = new StoneSize;
+                        $stoneSize->size_id = $s->id;
+                        $stoneSize->stone_id = $value->id;
+                        $stoneSize->price = 0;
+                        if($stoneSize->save()) {
+                            // update any item sizes if available
+                            if(count($inventory_items) > 0) {
+                                $inventory_items->each(function($ivalue,$ikey) use ($stoneSize){
+                                    $itemSize = new ItemSize;
+                                    $itemSize->inventory_item_id = $ivalue->id;
+                                    $itemSize->stone_size_id = $stoneSize->id;
+                                    $itemSize->price = 0;
+                                    $itemSize->active = false;
+                                    $itemSize->save();
+                                    return $ivalue;
+                                });
+                            }
+                            
+                        }
+                    }
 
+                    return $value;
+                });
+            }
+            
+        }
         return redirect()->route('size.index');
     }
 
@@ -99,6 +132,12 @@ class SizeController extends Controller
     public function destroy(Size $size)
     {
         $size_name = $size->size;
+        
+        if (count($size->stoneSizes) > 0) {
+            foreach ($size->stoneSizes as $ss) {
+                $ss->itemSizes()->delete();               
+            }
+        }
         $size->stoneSizes()->delete();
         if ($size->delete()) {
             flash('You have successfully deleted '.$size_name)->success();
