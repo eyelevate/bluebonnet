@@ -121,18 +121,34 @@ class InventoryItemController extends Controller
                             if (!$stone->email) {
                                 if (count($v) > 0) {
                                     foreach ($v as $size_id => $value) {
-                                        $stoneSize = new StoneSize;
-                                        $stoneSize->size_id = $size_id;
-                                        $stoneSize->stone_id = $stone_id;
-                                        $stoneSize->price = (isset($value['price'])) ? $value['price'] : 0;
-                                        if ($stoneSize->save()) {
-                                            $isize = new ItemSize();
-                                            $isize->inventory_item_id = $inventory_item->id;
-                                            $isize->stone_size_id = $stoneSize->id;
-                                            $isize->price = $value['price'];
-                                            $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
-                                            $isize->save();
+                                        $ss = StoneSize::where('size_id',$size_id)->where('stone_id',$stone_id)->get();
+                                        if (count($ss) > 0) {
+                                            $ss->each(function($ssv, $ssk) use($inventory_item,$value) {
+                                                $stone_size_id = $ssv->id;
+                                                $isize = new ItemSize();
+                                                $isize->inventory_item_id = $inventory_item->id;
+                                                $isize->stone_size_id = $stone_size_id;
+                                                $isize->price = $value['price'];
+                                                $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                                                $isize->save();  
+                                            });
+                                        } else {
+                                            $stoneSize = new StoneSize;
+                                            $stoneSize->size_id = $size_id;
+                                            $stoneSize->stone_id = $stone_id;
+                                            $stoneSize->price = 0;
+                                            if ($stoneSize->save()) {
+                                                $isize = new ItemSize();
+                                                $isize->inventory_item_id = $inventory_item->id;
+                                                $isize->stone_size_id = $stoneSize->id;
+                                                $isize->price = $value['price'];
+                                                $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                                                $isize->save();        
+                                            }
                                         }
+
+                                        
+                                        
                                     }
                                 }
                             }
