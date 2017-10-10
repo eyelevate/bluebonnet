@@ -34,6 +34,9 @@ class HomeController extends Controller
         $theme = 2;
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
+
+        // TODO -- remove before going live
+        flash('Website is under construction. You can view our products but will not be able to create an invoice. Please be patient as we prepare to go live. Thank you!')->error();
     }
 
     /**
@@ -267,6 +270,8 @@ class HomeController extends Controller
 
     public function finish(Request $request, Authorize $authorize, Job $job, InventoryItem $inventoryItem, User $user, Invoice $invoice, Company $company, InvoiceItem $invoiceItem, ItemStone $itemStone)
     {
+        
+
         // Prepare all the variables required for saving
         $cart = session()->get('cart');
         $email = ($request->shipping== 1) ? $itemStone->checkEmailAll($cart) : true;
@@ -305,6 +310,9 @@ class HomeController extends Controller
                 'billing_zipcode' => 'required|string|max:255',
             ]);
         }
+
+        // TODO -- remove before going live
+        return redirect()->back();
 
         
         $company_info = $company->find(1);

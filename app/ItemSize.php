@@ -53,10 +53,6 @@ class ItemSize extends Model
                     } 
                     
                 }
-            }
-
-            if (count($itemSizes) > 0) {
-
                 foreach ($itemSizes as $iskey => $isvalue) {
                     if ($isvalue->active) {
                         $select[$isvalue->stoneSizes->stone_id][$isvalue->id] = $isvalue->stoneSizes->sizes->name;
@@ -65,6 +61,7 @@ class ItemSize extends Model
                 }
             }
         }
+
 
         return $select;
     }
