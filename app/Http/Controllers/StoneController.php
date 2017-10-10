@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\InventoryItem;
+use App\ItemStone;
+use App\ItemSize;
 use App\Size;
 use App\Stone;
 use App\StoneSize;
@@ -42,7 +45,7 @@ class StoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Stone $stone, Size $size)
+    public function store(Request $request, Stone $stone, Size $size, InventoryItem $inventoryItem)
     {
         $this->validate(request(), [
             'name' => 'required|string|max:255'
@@ -51,8 +54,49 @@ class StoneController extends Controller
         $request->merge(['email'=>($request->email == 'on') ? true : false]);
 
         // Save the first request data to stones
-        $stone->create($request->all());
+        $s = $stone->create($request->all());
+        if ($s) {
+            if (!$s->email) {
+                $inventoryItems = $inventoryItem->all();
+                if (count($inventoryItems) > 0) {
+                    $inventoryItems->each(function($value,$key) use ($s) {
+                        $itemStone = new ItemStone;
+                        $itemStone->stone_id = $s->id;
+                        $itemStone->inventory_item_id = $value->id;
+                        $itemStone->price = 0;
+                        $itemStone->active = false;
+                        $itemStone->save();
+                    });
+                }
+                $sizes = $size->all();
+                if (count($sizes) > 0) {
+                    $sizes->each(function($value,$key) use($s, $inventoryItems) {
+                        // item stone
 
+                        // stone sizes and item size
+                        $stoneSize = new StoneSize;
+                        $stoneSize->size_id = $value->id;
+                        $stoneSize->stone_id = $s->id;
+                        $stoneSize->price = 0;
+                        if($stoneSize->save()) {
+                            if(count($inventoryItems) > 0) {
+                                $inventoryItems->each(function($ivalue,$ikey) use ($stoneSize) {
+                                    $itemSize = new ItemSize;
+                                    $itemSize->stone_size_id = $stoneSize->id;
+                                    $itemSize->inventory_item_id = $ivalue->id;
+                                    $itemSize->price = 0;
+                                    $itemSize->active = false;
+                                    $itemSize->save();
+                                });
+                            }
+                            
+                        }
+
+                    });
+                }
+            }
+            
+        }
         flash('Successfully created a stone!')->success();
         return redirect()->route('stone.index');
         
