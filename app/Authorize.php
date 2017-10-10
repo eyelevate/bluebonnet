@@ -220,7 +220,7 @@ class Authorize extends Model
 		$request->setTransactionRequest( $transactionRequest);
 		$controller = new AnetController\CreateTransactionController($request);
 		// $response = $controller->executeWithApiResponse( \net\authorize\api\constants\ANetEnvironment::SANDBOX);
-		$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION)
+		$response = $controller->executeWithApiResponse(\net\authorize\api\constants\ANetEnvironment::PRODUCTION);
 		$result = [];
 		if ($response != null)
 		{
