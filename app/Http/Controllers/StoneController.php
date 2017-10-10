@@ -156,6 +156,13 @@ class StoneController extends Controller
     public function destroy(Stone $stone)
     {
         $stone_name = $stone->name;
+        if (count($stone->stoneSizes) > 0) {
+            foreach ($stone->stoneSizes as $ss) {
+                $ss->itemSizes()->delete();               
+            }
+        }
+
+        $stone->itemStones()->delete();
         if ($stone->delete()) {
             flash('You have successfully deleted '.$stone_name)->success();
             return redirect()->back();

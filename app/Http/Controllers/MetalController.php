@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\InventoryItem;
+use App\ItemMetal;
 use App\Metal;
 use Illuminate\Http\Request;
 
@@ -35,14 +37,27 @@ class MetalController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Metal $metal)
+    public function store(Request $request, Metal $metal, InventoryItem $inventoryItem)
     {
         $this->validate(request(), [
             'name' => 'required|string|max:255'
         ]);
 
         flash('Successfully created a Metal!')->success();
-        $metal->create(request()->all());
+        $m = $metal->create(request()->all());
+        if ($m) {
+            $inventoryItems = $inventoryItem->all();
+            if (count($inventoryItems) > 0) {
+                $inventoryItems->each(function($value,$key) use($m) {
+                    $itemMetal = new ItemMetal;
+                    $itemMetal->inventory_item_id = $value->id;
+                    $itemMetal->metal_id = $m->id;
+                    $itemMetal->price = 0;
+                    $itemMetal->active = false;
+                    $itemMetal->save();
+                });
+            }
+        }
         return redirect()->route('metal.index');
     }
 
@@ -96,6 +111,7 @@ class MetalController extends Controller
     public function destroy(Metal $metal)
     {
         $metal_name = $metal->name;
+        $metal->itemMetals()->delete();
         if ($metal->delete()) {
             flash('You have successfully deleted '.$metal_name)->success();
             return redirect()->back();

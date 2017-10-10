@@ -20,6 +20,12 @@ class Metal extends Model
         'price'
     ];
 
+    public function itemMetals()
+    {
+        return $this->hasMany(ItemMetal::class, 'metal_id', 'id');
+    }
+
+
     public function prepareSelect($data)
     {
         $select = [''=>'Select Metal Type'];

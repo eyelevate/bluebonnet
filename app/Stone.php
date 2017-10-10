@@ -27,6 +27,10 @@ class Stone extends Model
     {
         return $this->hasMany(StoneSize::class,'stone_id','id');
     }
+    public function itemStones()
+    {
+        return $this->hasMany(ItemStone::class,'stone_id','id');
+    }
 
 
     #public
