@@ -44,21 +44,8 @@ class SizeController extends Controller
             'name' => 'required|string'
         ]);
         flash('Successfully created a Stone Size!')->success();
-        $sizes = $size->create(request()->all());
-        if($sizes) {
-            // update stone_sizes
-            $stones = $stone->where('email',false)->get();
-            $stones->each(function($value,$key) use ($sizes){
+        $size->create(request()->all());
 
-                $stoneSize = new StoneSize;
-                $stoneSize->size_id = $sizes->id;
-                $stoneSize->stone_id = $value->id;
-                $stoneSize->price = 0;
-                $stoneSize->save();
-                return $value;
-            });
-
-        }
         return redirect()->route('size.index');
     }
 

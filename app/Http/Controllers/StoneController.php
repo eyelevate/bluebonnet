@@ -42,7 +42,7 @@ class StoneController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Stone $stone)
+    public function store(Request $request, Stone $stone, Size $size)
     {
         $this->validate(request(), [
             'name' => 'required|string|max:255'
@@ -51,21 +51,9 @@ class StoneController extends Controller
         $request->merge(['email'=>($request->email == 'on') ? true : false]);
 
         // Save the first request data to stones
-        $save = $stone->create($request->all());
-        if ($save) {
-            if ($save->email == false) {
-                $stone_sizes = $request->stone_size;
-                foreach ($stone_sizes as $key => $value) {
-                    $sz = new StoneSize;
-                    $sz->size_id = $key;
-                    $sz->stone_id = $save->id;
-                    $sz->price = $value;
-                    $sz->save(); 
-                }
-            }
+        $stone->create($request->all());
 
-            flash('Successfully created a stone!')->success();
-        } 
+        flash('Successfully created a stone!')->success();
         return redirect()->route('stone.index');
         
     }
@@ -110,19 +98,8 @@ class StoneController extends Controller
 
         // Save the first request data to stones
         $save = $stone->update($request->all());
-        if ($save) {
-            if ($request->email == false) {
-                $stone_sizes = $request->stone_size;
-                foreach ($stone_sizes as $key => $value) {
-                    $sz = StoneSize::find($key);
-                    $sz->price = $value;
-                    $sz->save(); 
-                }
+        flash('Successfully updated a stone!')->success();
 
-            }
-            
-            flash('Successfully updated a stone!')->success();
-        } 
         return redirect()->route('stone.index');
     }
 

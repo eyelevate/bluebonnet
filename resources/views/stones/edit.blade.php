@@ -74,31 +74,6 @@
 	                	input-name="email"
 	                	input-checked="{{ old('email') ? old('email') : ($stone->email) ? 'true' : 'false' }}">
 	                </bootstrap-switch>
-
-	                <!-- Stone Sizes -->
-	                <hr/>
-	                <div v-if="!checkEmail">
-		                <label>Stone Sizes</label>
-		                <div class="table-responsive">
-		                	<table class="table table-condensed table-hover">
-		                		<thead>
-		                			<tr>
-		                				<th>Size</th>
-		                				<th>Name</th>
-		                				<th>+ Price</th>
-		                			</tr>
-		                		</thead>
-		                		<tbody>
-		                		<tr v-for="s in sizes">
-		                			<td>@{{ s.size }}</td>
-		                			<td>@{{ s.name }}</td>
-		                			<td width="200"><input :name="s.input_name" :value="s.price" class="form-control"/></td>
-		                		</tr>
-
-		                		</tbody>
-		                	</table>
-		                </div>	
-	                </div>
 	                
 	            </div>
 			</template>

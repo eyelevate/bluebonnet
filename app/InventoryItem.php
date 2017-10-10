@@ -517,6 +517,8 @@ class InventoryItem extends Model
                     $data['videos'][$key]['src_formatted'] = asset(str_replace('public/', 'storage/', $value->src));
                 }
             }
+
+
         }
         return $data;
     }   

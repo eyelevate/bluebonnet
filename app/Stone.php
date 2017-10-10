@@ -46,9 +46,23 @@ class Stone extends Model
     {
         $data->transform(function($value,$key){
             $value['email_status'] = ($value->email) ? 'True' : 'False';
-            $size_ids = $value->stoneSizes()->pluck('size_id')->toArray();
             $size = new Size;
-            $value['sizes'] = $size->whereIn('id',$size_ids)->orderBy('carat','asc')->get();
+            $value['sizes'] = $size->orderBy('carat','asc')->get();
+
+            return $value;
+        });
+
+
+        return $data;
+    }
+
+    public function prepareDataEdit($data)
+    {
+        $data->transform(function($value,$key){
+            $value['email_status'] = ($value->email) ? 'True' : 'False';
+            $size = new Size;
+            $sizes = $size->orderBy('carat','asc')->get();
+            
 
             return $value;
         });

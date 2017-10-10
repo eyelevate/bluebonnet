@@ -76,18 +76,7 @@
 					b-label="Email">		
 				</bootstrap-readonly>
 
-				<!-- Stone Sizes -->
-				@if (!$row->email)
-				<hr/>
-				<label>Stone Sizes</label>
-				<bootstrap-table
-					:columns="{{ $size_columns }}"
-					:rows="{{ (count($row->stoneSizes) > 0) ? $row->stoneSizes : $size_rows }}"
-					:paginate="true"
-					:global-search="true"
-					:line-numbers="true"/>
-				</bootstrap-table>
-				@endif
+
 			</template>
 			
 			<template slot="footer">

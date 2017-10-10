@@ -174,12 +174,12 @@
 	                				</tr>
 	                			</thead>
 	                			<tbody>
-	                				<tr v-for="metal in metals_data">
+	                				<tr v-for="metal,k in metals_data">
 	                					<td>
 	                						<bootstrap-control>
 							                	<template slot="control">
 										            <label class="switch switch-text switch-success" >
-										                <input id="switch-input-on" :name="'itemMetal[' + metal.id+'][active]'" type="checkbox" class="switch-input" checked @click="activateRow($event)">
+										                <input id="switch-input-on" :name="'itemMetal[' + metal.id+'][active]'" type="checkbox" class="switch-input" checked @click="activateRow($event)" >
 										                <span class="switch-label" data-on="Yes" data-off="No"></span>
 										                <span class="switch-handle" ></span>
 										            </label>    
@@ -188,7 +188,7 @@
 							                </bootstrap-control>
 	                					</td>
 	                					<td>@{{ metal.name }}</td>
-	                					<td><input type="text" :value="metal.price" :name="'itemMetal[' + metal.id+'][price]'" class="form-control active-input" /></td>
+	                					<td><input type="text" :value="metal.price" :name="'itemMetal[' + metal.id+'][price]'" class="form-control active-input" v-model="metals_data[k].price"/></td>
 	                				</tr>
 	                			</tbody>
 	                		</table>
@@ -357,7 +357,7 @@
 						                	<template slot="control">
 
 									            <label class="switch switch-text switch-success" >
-									                <input id="switch-input-on" name="itemSize[{{$size->id}}][active]" type="checkbox" class="switch-input" checked @click="activateRow($event)">
+									                <input id="switch-input-on" name="itemSize[{{ $stone->id }}][{{$size->id}}][active]" type="checkbox" class="switch-input" checked @click="activateRow($event)">
 									                <span class="switch-label" data-on="Yes" data-off="No"></span>
 									                <span class="switch-handle" ></span>
 									            </label>    
@@ -367,7 +367,7 @@
 
 									</td>
 									<td>{{ $size->name }}</td>
-									<td><input value="{{ $size->price }}" class="form-control active-input" name="itemSize[{{ $size->id }}][price]" style="width:200px;"/></td>
+									<td><input value="{{ $size->price }}" class="form-control active-input" name="itemSize[{{ $stone->id}}][{{ $size->id }}][price]" style="width:200px;"/></td>
 								</tr>
 								@endforeach
 							@endif

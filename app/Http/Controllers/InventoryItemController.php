@@ -66,6 +66,7 @@ class InventoryItemController extends Controller
      */
     public function store(Request $request, Inventory $inventory, InventoryItem $inventory_item, Image $image, Video $video)
     {
+        // dd($request->itemMetal);
         $this->validate(request(), [
             'name' => 'required|string|max:255',
             'subtotal' => 'required'
@@ -91,7 +92,7 @@ class InventoryItemController extends Controller
                         $im = new ItemMetal();
                         $im->inventory_item_id = $inventory_item->id;
                         $im->metal_id = $key;
-                        $im->price = (isset($value['price'])) ? $value['price'] : null;
+                        $im->price = $value['price'];
                         $im->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
                         $im->save();
                     }
@@ -104,21 +105,38 @@ class InventoryItemController extends Controller
                         $istone = new ItemStone();
                         $istone->inventory_item_id = $inventory_item->id;
                         $istone->stone_id = $key;
-                        $istone->price = (isset($value['price'])) ? $value['price'] : null;
+                        $istone->price = $value['price'];
                         $istone->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
                         $istone->save();
                     }
                 }
+                // create stone_sizes 
+
+
                 if ($inventory_item->sizes) {
                     // add item sizes 
                     if (count($request->itemSize) > 0) {
-                        foreach ($request->itemSize as $key => $value) {
-                            $isize = new ItemSize();
-                            $isize->inventory_item_id = $inventory_item->id;
-                            $isize->stone_size_id = $key;
-                            $isize->price = (isset($value['price'])) ? $value['price'] : null;
-                            $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
-                            $isize->save();
+                        foreach ($request->itemSize as $stone_id => $v) {
+                            $stone = Stone::find($stone_id);
+                            if (!$stone->email) {
+                                if (count($v) > 0) {
+                                    foreach ($v as $size_id => $value) {
+                                        $stoneSize = new StoneSize;
+                                        $stoneSize->size_id = $size_id;
+                                        $stoneSize->stone_id = $stone_id;
+                                        $stoneSize->price = (isset($value['price'])) ? $value['price'] : 0;
+                                        if ($stoneSize->save()) {
+                                            $isize = new ItemSize();
+                                            $isize->inventory_item_id = $inventory_item->id;
+                                            $isize->stone_size_id = $stoneSize->id;
+                                            $isize->price = $value['price'];
+                                            $isize->active = (isset($value['active'])) ? ($value['active'] == 'on') ? true : false : false;
+                                            $isize->save();
+                                        }
+                                    }
+                                }
+                            }
+                            
                         }
                     }
                 }
@@ -213,7 +231,7 @@ class InventoryItemController extends Controller
     {
 
         $inventoryItem = $inventoryItem->prepareDataSingle($inventoryItem);
-        $stones = $stone->prepareData($inventoryItem->itemStone);
+        $stones = $stone->prepareDataEdit($inventoryItem->itemStone);
         $metals = $metal->all();
         $image_variables = $image->prepareVariableInventoryItems($inventoryItem->images);
         return view('inventory_items.edit',compact(['inventoryItem','image_variables','stones','metals']));
