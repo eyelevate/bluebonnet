@@ -530,8 +530,9 @@ class InventoryItem extends Model
             foreach ($data as $key => $value) {
                 if ($value->images) {
                     $first = $value->images()->where('primary',true)->first();
+                    $second = $value->images()->first();
                     $last = $value->images()->where('primary',false)->orderBy('ordered','asc')->get();
-                    $data[$key]['primary_img_src'] = ($first) ? asset(str_replace('public/', 'storage/', $first->featured_src)) : null;
+                    $data[$key]['primary_img_src'] = ($first) ? asset(str_replace('public/', 'storage/', $first->featured_src)) : ($second) ? asset(str_replace('public/', 'storage/', $second->img_src)) : null;
 
                 }
                 
