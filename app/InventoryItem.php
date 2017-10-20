@@ -531,7 +531,7 @@ class InventoryItem extends Model
                 if ($value->images) {
                     $first = $value->images()->where('primary',true)->first();
                     $last = $value->images()->where('primary',false)->orderBy('ordered','asc')->get();
-                    $data[$key]['primary_img_src'] = asset(str_replace('public/', 'storage/', $first->featured_src));
+                    $data[$key]['primary_img_src'] = ($first->featured_src) ? asset(str_replace('public/', 'storage/', $first->featured_src)) : null;
 
                 }
                 
