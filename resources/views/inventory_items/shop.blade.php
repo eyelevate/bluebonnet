@@ -21,15 +21,9 @@
 							@php
 								$idx++;
 							@endphp
-								@if($image->featured_src != null)
-								<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $idx }}">
-									<img src="{{ asset(str_replace('public/', 'storage/', $image->featured_src)) }}" class="card-img-top-featured lazy mx-auto d-block img-fluid" style="max-height:350px;">
-								</div>
-								@else
-								<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $idx }}">
-									<img src="{{ asset(str_replace('public/', 'storage/', $image->img_src)) }}" class="card-img-top-featured lazy mx-auto d-block img-fluid" style="max-height:350px;">
-								</div>
-								@endif
+							<div class="{{ ($image->primary == true) ? 'active' : '' }} item carousel-item text-center" data-slide-number="{{ $idx }}">
+								<img src="{{ asset(str_replace('public/', 'storage/', $image->featured_src)) }}" class="card-img-top-featured lazy mx-auto d-block img-fluid" style="max-height:350px;">
+							</div>
 							@endforeach
 						@endif
 						@if (count($inventoryItem->videos) > 0)
