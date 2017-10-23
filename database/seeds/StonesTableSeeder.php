@@ -13,29 +13,21 @@ class StonesTableSeeder extends Seeder
     {
         DB::table('stones')->insert([
             'name' => 'Moissanite Forever One E-F',
-            'desc' => 'test type 1',
+            'desc' => 'Colorless VVS Clarity Quality Moissanite',
             'price' => 0.00,
             'email' => false,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
         DB::table('stones')->insert([
-            'name' => 'Moissanite Forever One G-H',
-            'desc' => 'test type 1',
+            'name' => 'Semi Mount',
+            'desc' => 'No Center Stone',
             'price' => 0.00,
             'email' => false,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
        	DB::table('stones')->insert([
-            'name' => 'Lab Grown Diamond',
-            'desc' => 'Contact By Email',
-            'price' => 0.00,
-            'email' => true,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ]);
-        DB::table('stones')->insert([
             'name' => 'Certified Diamond',
             'desc' => 'Contact By Email',
             'price' => 0.00,
@@ -43,5 +35,15 @@ class StonesTableSeeder extends Seeder
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
+        DB::table('stones')->insert([
+            'name' => 'Lab Grown Diamond',
+            'desc' => 'Contact By Email',
+            'price' => 0.00,
+            'email' => true,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+        
+        
     }
 }

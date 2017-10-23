@@ -193,6 +193,8 @@ return [
 
         // Infinety Alerts
         Infinety\Alerts\AlertServiceProvider::class,
+        // Mobile Detection
+        Riverskies\Laravel\MobileDetect\MobileDetectServiceProvider::class,
 
     ],
 
@@ -248,6 +250,7 @@ return [
         'Mapper' => Cornford\Googlmapper\Facades\MapperFacade::class,
         'GoogleMaps' => 'GoogleMaps\Facade\GoogleMapsFacade',
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'MobileDetect' => Riverskies\Laravel\MobileDetect\Facades\MobileDetect::class
     ],
 
 ];

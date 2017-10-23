@@ -168,6 +168,7 @@ Route::group(['middleware' => ['check:3']], function () {
     Route::get('/inventories/{inventory}/show', 'InventoryController@show')->name('inventory.show');
     Route::get('/inventories/{inventory}/edit', 'InventoryController@edit')->name('inventory.edit');
     Route::patch('/inventories/{inventory}', 'InventoryController@update')->name('inventory.update');
+    Route::post('/inventories/reorder', 'InventoryController@reorder')->name('inventory.reorder');;
 
     
     // Inventory Item

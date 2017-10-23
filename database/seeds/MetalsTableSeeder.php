@@ -35,28 +35,28 @@ class MetalsTableSeeder extends Seeder
         DB::table('metals')->insert([
             'name' => '18K White',
             'desc' => 'Gold',
-            'price' => 0.00,
+            'price' => 100,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
         DB::table('metals')->insert([
             'name' => '18K Rose',
             'desc' => 'Gold',
-            'price' =>0.00,
+            'price' =>100,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
        	DB::table('metals')->insert([
             'name' => '18K Yellow',
             'desc' => 'Gold',
-            'price' => 0.00,
+            'price' => 100,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);
         DB::table('metals')->insert([
             'name' => 'Platinum',
-            'desc' => 'Rare',
-            'price' => 0.00,
+            'desc' => '90/10 Platinum',
+            'price' => 300,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now()
         ]);

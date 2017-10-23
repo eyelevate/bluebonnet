@@ -32,7 +32,12 @@
 								$idx++;
 							@endphp
 							<div class="item carousel-item text-center" data-slide-number="{{ $idx }}">
+								@desktop
 								<video style="width:100%; max-height:350px;" autoplay loop muted>
+								@elsedesktop
+								<video style="width:100%; max-height:350px;" controls loop muted>
+								@enddesktop
+
 	    							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
 	    						</video>
 							</div>
@@ -89,7 +94,11 @@
 					@endphp
 					<div class="col-3 col-md-2 col-lg-2 pull-left" style="margin-top: 10px">
 						<a id="carousel-selector-{{ $ikey }}" class="" data-slide-to="{{ $idx }}" data-target="#myCarousel">
-							<video style="width:100%; height:100%">
+							@desktop
+							<video style="width:100%; height:100%;" autoplay loop muted>
+							@elsedesktop
+							<video style="width:100%; height:100%;">
+							@enddesktop
     							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
     						</video>
 						</a>

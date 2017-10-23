@@ -15,11 +15,13 @@ class InventoryController extends Controller
      */
     public function index(Inventory $inventory, InventoryItem $inventory_item)
     {
-        $inventories = $inventory->all();
+        $inventories = $inventory->prepareForIndex($inventory->all());
+        $newOrder = $inventory->orderBy('ordered','asc')->pluck('id')->toArray();
+
         $columns = $inventory_item->prepareTableColumns();
         $rows = $inventory_item->prepareTableRows($inventories);
 
-        return view('inventories.index',compact(['inventories','columns','rows']));
+        return view('inventories.index',compact(['inventories','columns','rows','newOrder']));
     }
 
     /**
@@ -44,6 +46,9 @@ class InventoryController extends Controller
              'name' => 'required|string|max:255'
         ]);
         flash('Successfully created an Inventory!')->success();
+        $last = $inventory->orderBy('id','desc')->first();
+        $next = ($last) ? $last->ordered + 1 : 1;
+        $request->request->add(['ordered' => $next]);
         $inventory->create($request->all());
         return redirect()->route('inventory.index');
     }
@@ -67,7 +72,7 @@ class InventoryController extends Controller
      */
     public function edit(Inventory $inventory)
     {
-        //
+        return view('inventories.edit',compact(['inventory']));
     }
 
     /**
@@ -79,7 +84,12 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        //
+        $this->validate(request(), [
+             'name' => 'required|string|max:255'
+        ]);
+        flash('Successfully updated an Inventory!')->success();
+        $inventory->update($request->all());
+        return redirect()->route('inventory.index');    
     }
 
     /**
@@ -90,6 +100,26 @@ class InventoryController extends Controller
      */
     public function destroy(Inventory $inventory)
     {
-        //
+
+        $inventory->inventoryItems()->delete();
+        $delete = $inventory->delete();
+        if ($delete) {
+            flash('Successfully removed all inventories and inventory items associated.')->success();
+            return redirect()->back();
+        }
+    }
+
+    public function reorder(Request $request, Inventory $inventory) {
+        collect($request->newOrder)->map(function ($value,$key) {
+            $inventory = new Inventory();
+            $inv = $inventory->find($value);
+            $inv->update(['ordered'=>$key+1]);  
+  
+        });
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Successfully reordered inventory!'
+        ]);
     }
 }

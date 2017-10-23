@@ -2,7 +2,7 @@
 @section('styles')	
 @endsection
 @section('scripts')
-<script type="text/javascript" src="{{ mix('/js/views/admins/index.js') }}"></script>
+<script type="text/javascript" src="{{ mix('/js/views/inventories/index.js') }}"></script>
 @endsection
 
 @section('content')
@@ -15,15 +15,10 @@
 	
 	<bootstrap-card use-header="true" use-body="true" use-footer="true">
 		<template slot="header">
-			<ul class="nav nav-pills card-header-pills">
-			@if(count($inventories))
-				@foreach($inventories as $key => $inventory)
-				<li class="nav-item">
-					<a class="nav-link {{ ($key == 0) ? 'active' :  '' }}" href="#item-{{ $inventory->id }}" data-toggle="tab" role="tab">{{ $inventory->name }} <span class="badge badge-primary">{{ count($inventory->inventoryItems) }}</span></a>
-				</li>
-				@endforeach
-			@endif
-				
+			<ul id="inventory-list" class="nav nav-pills card-header-pills">
+				<li class="nav-item" v-for="inventory, key in inventories">
+					<a :id="'nav-link-'+inventory.id" class="nav-link parsing" :class="{ 'active': inventory.active_state === true }"  :href="'#item-'+inventory.id" data-toggle="tab" role="tab" @click="setTab(inventory.id,key,$event)">@{{ inventory.name }} <span class="badge badge-primary">@{{ inventory.count_items }}</span></a>
+				</li>				
 			</ul>
 		</template>
 		<template slot="body">
@@ -40,9 +35,30 @@
 						:line-numbers="true"/>
 					</bootstrap-table>
 					<hr/>
-		    		<a href="{{ route('inventory_item.create',$v->id) }}" class="btn btn-success btn-block">Add {{ $v->name }}</a>
+					<div class="row-fluid">
+						<div>
+							<a href="{{ route('inventory_item.create',$v->id) }}" class="btn btn-success btn-block">Add {{ $v->name }} Item</a>	
+						</div>
+					</div>
+					<br/>
+					<div class="row-fluid">
+
+						<div>
+							<a href="{{ route('inventory.edit',$v->id) }}" class="btn btn-info btn-block">Edit {{ $v->name }}</a>	
+						</div>
+					</div>
+					<br/>
+					<div class="row-fluid">
+		    			<div>
+		    				<button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteInventory-{{ $v->id }}">Delete {{ $v->name }}</button>			
+		    			</div>
+		    		</div>
+					
+					</div>
+		    		
 			    </div>
 			</div>
+			
 			@endforeach
 		@endif	
 		</div>
@@ -60,6 +76,16 @@
 @section('modals')
 @if(count($rows))
 	@foreach($rows as $v)
+		{!! Form::open(['method'=>'delete','route'=>['inventory.destroy',$v->id]]) !!}
+		<bootstrap-modal id="deleteInventory-{{ $v->id }}">
+			<template slot="header">Delete Inventory?</template>
+			<template slot="body">You will lose all items associated with this group. Are you sure you want to delete inventory - {{ $v->name }}?</template>
+			<template slot="footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-danger">Delete</button>	
+			</template>
+		{!! Form::close() !!}
+		</bootstrap-modal>
 		@if (count($v->inventoryItems) >0)
 			@foreach($v->inventoryItems as $ii)
 				<bootstrap-modal id="viewModal-{{ $ii->id }}" b-size="modal-lg">
@@ -161,14 +187,6 @@
 								b-label="Description">		
 							</bootstrap-readonly>
 							<hr/>
-							<!-- Collection -->
-							<bootstrap-readonly
-								use-input="true"
-								b-value="{{ $ii->collection_name}}"
-								use-label="true"
-								b-label="Collection">		
-							</bootstrap-readonly>
-							<hr/>
 							<!-- Subtotal -->
 							<bootstrap-readonly
 								use-input="true"
@@ -185,30 +203,17 @@
 								b-label="Taxable">		
 							</bootstrap-readonly>
 							<hr/>
-							<!-- Metals -->
-							<bootstrap-readonly
-								use-input="true"
-								b-value="{{ $ii->metals_status }}"
-								use-label="true"
-								b-label="Metal Selection?">		
-							</bootstrap-readonly>
+
+							<!-- Sizes -->
+							<div>
+								<label>Sizes?</label>
+								<div class="row-fluid">
+									{!! $ii->active_status !!}	
+								</div>
+									
+							</div>
 							<hr/>
-							<!-- Stones -->
-							<bootstrap-readonly
-								use-input="true"
-								b-value="{{ $ii->stones_status }}"
-								use-label="true"
-								b-label="Stones Selection?">		
-							</bootstrap-readonly>
-							<hr/>
-							<!-- Fingers -->
-							<bootstrap-readonly
-								use-input="true"
-								b-value="{{ $ii->fingers_status }}"
-								use-label="true"
-								b-label="Ring Size Selection?">		
-							</bootstrap-readonly>
-							<hr/>
+
 							<!-- Active -->
 							<div>
 								<label>Active?</label>
@@ -218,7 +223,7 @@
 									
 							</div>
 							<hr/>
-							<!-- Active -->
+							<!-- Featured -->
 							<div>
 								<label>Featured?</label>
 								<div class="row-fluid">
@@ -256,4 +261,10 @@
 @endsection
 
 @section('variables')
+<div id="variable-root"
+	inventories="{{ json_encode($inventories) }}"
+	newOrder="{{ json_encode($newOrder) }}"
+>
+	
+</div>
 @endsection

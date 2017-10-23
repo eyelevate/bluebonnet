@@ -267,6 +267,7 @@ class InventoryItemController extends Controller
         //     'name' => 'required|string|max:255',
         //     'subtotal' => 'required'
         // ]);
+        // dd($request);
 
         $original_images = $inventory_item->images;
         $original_videos = $inventory_item->videos;
@@ -425,18 +426,30 @@ class InventoryItemController extends Controller
             // check for old videos
             $old_videos_count = count($original_videos);
             if ($old_videos_count > 0) {
-                // loop through the old images first
-                foreach ($original_videos as $old) {
-                    if ($request->ovideos != null) {
-                        if (!array_key_exists($old->id,$request->ovideos)) {
-
-                            Storage::delete($old->src);
-                            $vids = Video::find($old->id);
-                            $vids->delete();
-                        }
+                if ($request->ovideos == null) {
+                    // loop through the old images first
+                    foreach ($original_videos as $old) {
+                        Storage::delete($old->src);
+                        $vids = Video::find($old->id);
+                        $vids->delete();
+                        
                     }
-                    
+                    $inventory_item->videos()->delete();
+                } else {
+                    // loop through the old images first
+                    foreach ($original_videos as $old) {
+                        if ($request->ovideos != null) {
+                            if (!array_key_exists($old->id,$request->ovideos)) {
+
+                                Storage::delete($old->src);
+                                $vids = Video::find($old->id);
+                                $vids->delete();
+                            }
+                        }
+                        
+                    }
                 }
+                
             } else {
                 if(count($inventory_item->videos) > 0) {
                     foreach ($inventory_item->videos as $vids) {

@@ -18,7 +18,8 @@ class Inventory extends Model
      */
     protected $fillable = [
         'name',
-        'desc'
+        'desc',
+        'ordered'
     ];
 
     public function inventoryItems()
@@ -39,51 +40,51 @@ class Inventory extends Model
         return $select;
     }
 
+    public function prepareForIndex()
+    {
+        $collection = collect($this->orderBy('name', 'asc')->get())->map(function ($value,$key) {
+            $value['count_items'] = count($value->inventoryItems);
+            $value['active_state'] = ($value->ordered == 1) ? true : false;
+            return $value;
+        })->sortBy('ordered')->values();
+        return $collection;
+    }
+
     public function prepareForSet($collection_id)
     {
         $job = new Job();
         $itms = new InventoryItem();
         $inventories =  $this->orderBy('name', 'asc')->get();
-        if (count($inventories) > 0) {
-            foreach ($inventories as $key =>$value) {
-                if (isset($inventories[$key]->desc)) {
-                    $inventories[$key]['desc'] = $job->stringToDotDotDot($value->desc, 40);
-                }
+        $inventories->transform(function($value, $key) use ($itms,$job, $collection_id){
+            $value['desc'] = $job->stringToDotDotDot($value->desc, 40);
 
+            $value->inventoryItems->transform(function($ivalue, $ikey) use ($collection_id, $job) {
+                $ivalue['collection_set'] = $ivalue->collectionItem()->where('collection_id',$collection_id)->exists();
+                $ivalue['desc'] = $job->stringToDotDotDot($ivalue->desc);
+                $primary_img = $ivalue->images()->where('primary',true)->first();
+                $ivalue['primary_src'] =asset(str_replace('public/', 'storage/', $primary_img->img_src));
 
-                if (isset($inventories[$key]->inventoryItems)) {
-                    foreach ($inventories[$key]->inventoryItems as $ikey => $ivalue) {
-                        // collection item
-                        $inventories[$key]['inventoryItems'][$ikey]['collection_set'] = false;
-                        if (count($ivalue->collectionItem) > 0) {
-                            foreach ($ivalue->collectionItem as $collection) {
-                                $pivot_collection_id = $collection->pivot->collection_id;
-                                if ($pivot_collection_id == $collection_id) {
-                                    $inventories[$key]['inventoryItems'][$ikey]['collection_set'] = true;
-                                    break;
-                                }
-                            }
-                        }
+                $non_primary_imgs = $ivalue->images()->where('primary',false)->orderBy('ordered', 'asc')->get();
+                $ivalue['non_primary_imgs'] = $non_primary_imgs;
 
-                        if (isset($inventories[$key]['inventoryItems'][$ikey]['desc'])) {
-                            $inventories[$key]['inventoryItems'][$ikey]['desc'] = $job->stringToDotDotDot($ivalue->desc, 40);
-                        }
-                        $inventories[$key]['inventoryItems'][$ikey]['collectionItem'] = (count($ivalue->collectionItem) > 0) ? $ivalue->collectionItem : [];
-                        if (count($ivalue->images) > 0) {
-                            foreach ($ivalue->images as $iikey => $iivalue) {
-                                $primary_img = $ivalue->images()->where('primary', true)->first();
-                                $primary_src = ($primary_img) ? $primary_img->img_src : null;
-                                
-                                $non_primary_imgs = $ivalue->images()->where('primary', false)->orderBy('ordered', 'asc')->get();
-                                $inventories[$key]['inventoryItems'][$ikey]['primary_src'] = asset(str_replace('public/', 'storage/', $primary_src));
-                                $inventories[$key]['inventoryItems'][$ikey]['non_primary_imgs'] = $non_primary_imgs;
-                            }
-                        }
-                    }
-                }
-            }
-        }
+                return $ivalue;
+            });
+
+            return $value;
+        });
+
         return $inventories;
+    }
+
+    public function reorder($ordered, $id)
+    {
+        $ordered++;
+        if($this->find($id)->update(['ordered'=>$ordered])) {
+            return true;
+        }
+
+        return false;
+
     }
 
 
