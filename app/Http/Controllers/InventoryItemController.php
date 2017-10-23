@@ -427,13 +427,15 @@ class InventoryItemController extends Controller
             if ($old_videos_count > 0) {
                 // loop through the old images first
                 foreach ($original_videos as $old) {
+                    if ($request->ovideos != null) {
+                        if (!array_key_exists($old->id,$request->ovideos)) {
 
-                    if (!array_key_exists($old->id,$request->ovideos)) {
-
-                        Storage::delete($old->src);
-                        $vids = Video::find($old->id);
-                        $vids->delete();
+                            Storage::delete($old->src);
+                            $vids = Video::find($old->id);
+                            $vids->delete();
+                        }
                     }
+                    
                 }
             } else {
                 if(count($inventory_item->videos) > 0) {
