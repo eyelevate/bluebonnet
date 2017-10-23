@@ -97,7 +97,7 @@
 							@desktop
 							<video style="width:100%; height:100%;" autoplay loop muted>
 							@elsedesktop
-							<video style="width:100%; height:100%;">
+							<video style="width:100%; height:100%;" controls>
 							@enddesktop
     							<source src="{{ asset(str_replace('public/', 'storage/', $video->src)) }}" type="{{ $video->type }}">
     						</video>
