@@ -68,7 +68,7 @@ class CollectionController extends Controller
         
 
         // store the newly created and resized image into the storage folder with a unique token as a name and return the path for db storage
-        $resized_image_uri = $image->crop($request->img,625, 625);
+        $resized_image_uri = $image->resize($request->img,625, 625);
         $path = Storage::putFile('public/collections', new File($resized_image_uri));
         
 
