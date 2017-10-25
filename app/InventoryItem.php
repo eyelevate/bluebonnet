@@ -84,7 +84,7 @@ class InventoryItem extends Model
 
     public function collectionItem()
     {
-        return $this->belongsToMany(InventoryItem::class,'collection_item','inventory_item_id','collection_id');
+        return $this->belongsToMany(Collection::class,'collection_item','inventory_item_id','collection_id');
     }
 
     #public
