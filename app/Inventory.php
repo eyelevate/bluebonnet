@@ -69,7 +69,7 @@ class Inventory extends Model
 
                 return $ivalue;
             });
-
+            dump($value);
             return $value;
         });
 
