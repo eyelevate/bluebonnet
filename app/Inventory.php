@@ -59,7 +59,6 @@ class Inventory extends Model
             $value['desc'] = $job->stringToDotDotDot($value->desc, 40);
 
             $value->inventoryItems->transform(function($ivalue, $ikey) use ($collection_id, $job) {
-                dump($ivalue->collectionItem()->where('collection_id',$collection_id)->where('inventory_item_id',$ivalue->id)->get());
                 $ivalue['collection_set'] = $ivalue->collectionItem()->where('collection_id',$collection_id)->exists();
                 $ivalue['desc'] = $job->stringToDotDotDot($ivalue->desc);
                 $primary_img = $ivalue->images()->where('primary',true)->first();
@@ -70,9 +69,11 @@ class Inventory extends Model
 
                 return $ivalue;
             });
-            // dump($value);
+            
             return $value;
         });
+
+        dump($inventories);
 
         return $inventories;
     }
