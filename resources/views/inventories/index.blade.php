@@ -53,8 +53,7 @@
 		    				<button type="button" class="btn btn-danger btn-block" data-toggle="modal" data-target="#deleteInventory-{{ $v->id }}">Delete {{ $v->name }}</button>			
 		    			</div>
 		    		</div>
-					
-					</div>
+
 		    		
 			    </div>
 			</div>
