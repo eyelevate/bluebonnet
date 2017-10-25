@@ -73,8 +73,6 @@ class Inventory extends Model
             return $value;
         });
 
-        dump($inventories);
-
         return $inventories;
     }
 
