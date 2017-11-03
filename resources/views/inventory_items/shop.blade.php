@@ -115,7 +115,7 @@
 			<p>${{ number_format($inventoryItem->subtotal, 2,".",",") }} (base price before tax and options)</p>
 			<p>{{ $inventoryItem->desc }}</p>
 			<p><strong>
-				While this one-of-a-kind ring has sold, we are able to create a unique version just for you. Gemstones are natural materials; production could take up to 8 weeks as a stone would have to be specially sourced. Requested modifications are subject to revised production timelines and pricing. Please contact us for more information.
+				This piece is made to order, meaning 24 hours after your order is placed, we begin making your personalized jewelry from scratch. Please allow 2-3 weeks for us to manufacture and ship your order. All designs are owned by Freya's Fine Jewelry.
 			</strong></p>
 			<div class="row-fluid">
 				<hr/>

@@ -31,6 +31,18 @@
 @endsection
 
 @section('content')
+<section id="aboutus" class="container">
+	<div class="row-fluid">
+		<h2 class="text-center header-h2 hidden-sm-down">About Us</h2>
+		<h3 class="text-center header-h3 hidden-md-up">About Us</h3>
+	</div>	
+	<div class="row">
+		<blockquote class="blockquote">
+			<p class="mb-0">Freya's Fine Jewelry originally started out in Dallas, Texas and specialized in assisting jewelers with making custom jewelry designs. We are now expanding our business by making our own unique line of jewelry as well as offering custom designs that are available for everyone. The jewelry industry is ever-changing, and our goal is to keep up with the latest designs and ideas so we can give our customers a quality product that they will be proud to own.</p>
+			<footer class="blockquote-footer">CEO & Owner: <cite title="Source Title">K Huh</cite></footer>
+		</blockquote>
+	</div>
+</section>
 <div class="container-fluid" style="margin-top:100px;">
 	<div class="row-fluid">
 		<h2 class="text-center header-h2 hidden-sm-down">Instant. Magnetic. Enduring. It's Alchemy.</h2>
