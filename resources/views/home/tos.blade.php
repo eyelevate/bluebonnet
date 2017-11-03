@@ -24,7 +24,7 @@ Once we have received your order, you will receive an email acknowledging the de
 
 Please note that this does not guarantee the availability of the merchandise and that ALL ORDERS ARE SUBJECT TO AVAILABILITY. Although we make every effort to feature in stock pieces in our boutique, occasionally we may sell out of featured items. If we are unable to complete your order, you will be notified via email within 5 business days and will not be charged for orders that cannot be fulfilled.
 
-ONCE AN ORDER HAS BEEN PLACED, WE ARE NOT ABLE TO MODIFY OR CANCEL YOUR ORDER. We reserve the right to decline your order in the event that we are unable to obtain authorization for payment, there are shipping restrictions for a particular item, or we do not have the item in stock.
+ We reserve the right to decline your order in the event that we are unable to obtain authorization for payment, there are shipping restrictions for a particular item, or we do not have the item in stock.
 
 Items in your shopping bag are not reserved and may be purchased by other clients. You may choose to register your email address to the waiting list for notification of arrival of a selected piece.
 </p>
@@ -72,7 +72,7 @@ If an item needs to be repaired, please email us at info@FreyasFineJewelry.com f
     </div>
     <p class="mb-1">
 
-We currently accept payments by Visa, MasterCard,  American Express or Paypal. Payment will be debited and cleared from your account upon order confirmation. In filling out the payment requirements, you confirm that you are an authorized user of the credit/debit card. All credit/debit cardholders are subject to validation checks and authorization by the card issuer. 
+We currently accept payments by Visa, MasterCard,  American Express or Discover. Payments will be debited and cleared from your account upon order confirmation. In filling out the payment requirements, you confirm that you are an authorized user of the credit/debit card. All credit/debit cardholders are subject to validation checks and authorization by the card issuer. 
 
 If the issuer of the credit/debit card rejects authorization of payment to Freya's Fine Jewelry, we will not be held liable for any delay or non-delivery.
 </p>
