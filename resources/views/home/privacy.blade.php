@@ -62,12 +62,7 @@
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">Security</h5>
       </div>
-      <p class="mb-1">
-        We are committed to ensuring that your information is secure. In order to prevent unauthorized access or disclosure, we have put in place suitable physical, electronic and managerial procedures to safeguard and secure the information we collect online.
-
-        Freya's Fine Jewelry provides the use of a secure server (SSL) when you place an order. SSL ensures that all your information is encrypted before it is sent out. Following an order all access to personal information is limited and protected against unauthorized use. 
-
-      </p>
+      <p class="mb-1">We are committed to ensuring that your information is secure. In order to prevent unauthorized access or disclosure, we have put in place a physical, electronic and managerial procedures to safeguard and secure the information we collect online. Freya's Fine Jewelry provides the use of a secure server (SSL) when you place an order. SSL ensures that all your information is encrypted before it is sent out. Following an order all access to personal information is limited and protected against unauthorized use.</p>
 
       <hr>
 
@@ -83,18 +78,13 @@
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1">Controlling Your Personal Information</h5>
       </div>
-      <p class="mb-1">
-
-        You may choose to restrict the collection or use of your personal information in the following ways:
-
-        whenever you are asked to fill in a form on the website, look for the box that you can click to indicate that you do not want the information to be used by anybody for direct marketing purposes
-        if you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by writing to or emailing us at info@FreyasFineJewelry.com
-
-        We will not sell, distribute or lease your personal information to third parties unless we have your permission or are required by law to do so. We may use your personal information to send you promotional information about third parties which we think you may find interesting if you tell us that you wish this to happen.
-
-        You may request details of personal information which we hold about you under the Data Protection Act 1998. A small fee will be payable. If you would like a copy of the information held on you please write to  info@FreyasFineJewelry.com.
-
-      If you believe that any information we are holding on you is incorrect or incomplete, please write to or email us at the above address. We will promptly correct any information found to be incorrect.</p>
+      <p class="mb-1">You may choose to restrict the collection or use of your personal information in the following ways:</p>
+      <ol>
+        <li>We will not sell, distribute or lease your personal information to third parties unless we have your  permission or are required by law to do so. We may use your personal information to send you promotional information about third parties which we think you may find interesting if you tell us that you wish this to happen.</li>
+      
+        <li>You may request details of personal information which we hold about you under the Data Protection Act 1998. If you would like a copy of the information held on you please write to  info@FreyasFineJewelry.com.</li>
+      </ol>
+      <p class="mb-1">If you believe that any information we are holding on you is incorrect or incomplete, please write to or email us at the above address. We will promptly correct any information found to be incorrect.</p>
     </p>
     <hr>
   </div>
