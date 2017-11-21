@@ -17,7 +17,6 @@
                     <li class="col-12 text-center"><h5 class="text-center"><strong>Contact Us</strong></h5></li>
                     <li class="col-12 text-center">{{ $company->street }}, Suite #420</li>
                     <li class="col-12 text-center">{{ ucFirst($company->city) }}, {{ strtoupper($company->state) }} {{ $company->zipcode }}</li>
-                    <li class="col-12 text-center">{{ $company->phone }}</li>
                     <li class="col-12 text-center">{{ $company->email }}</li>
                     <li class="col-12 text-center">
                         <button type="button" data-toggle="modal" data-target="#map" class="btn btn-sm btn-primary">map</button>
