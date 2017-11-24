@@ -9,17 +9,15 @@
 <div class="container main content">
 
   <section id="section-1" class="section">
-    <div class="row">
-      <div class="col-md-12 col-lg-3">
-        <h2 class="h2">Custom</h2>
-      </div>
-    </div>
+
     <div class="row">    
       <div class="col-md-12 col-lg-3 ">
-        <p>Create a beautiful, one-of-a-kind commitment ring or future heirloom by partnering with our fine jewelry experts to bring your vision to life. Our custom process offers two distinct approaches: original designs realized from sketch to finish, or bespoke adaptations of our collection pieces.</p>
+        <h2 class="h2">The Process</h2>
+        <hr>
+        <p>We like to start our custom orders out by having a consultation with you. This canbe done in person, over the phone, or via email. We want to work with you first hand to bring your design ideas to life. Our customers are always welcome to show us referencepictures to help guide us in the right direction</p>
       </div>
       <div class="col-md-12 col-lg-9">
-        <img src="img/themes/theme1/pageimages/customrings1.jpg" />
+        <img src="img/themes/theme1/pageimages/sketch.jpg" />
       </div>
     </div>
   </section>
@@ -34,11 +32,11 @@
 
     <div class="row">
       <div class="col-md-12 col-lg-6">
-        <img src="img/themes/theme1/pageimages/customrings2.jpg" />
+        <img src="img/themes/theme1/pageimages/wireframe.jpg" />
       </div>
       <div class="col-md-12 col-lg-6">
-        <h2 class="h2">One-of-a-Kind Jewelry</h2>
-        <p>We believe that every love story is unique. Bring your dream to life with our custom designed and hand-made ceremonial rings or fine jewelry. From design inspiration to diamond education and stone sourcing, private sessions with Anna allow you to share in every step of the creative journey.
+        <p>Once the idea is in place, one of our professionals will begin building a 3D model of your design. Our certified CAD designers will ensure that your piece turns out as it was discussed in your consultation. Once completed, we will send you renders of your jewelry from multiple angles, allowing you to see exactly what the finished model will look like.
+        </p>
 <br />
 
 <br />
@@ -49,7 +47,47 @@ We know that this process may be unfamiliar to many of our customers and are com
     </div>
   </section>
 
-  <section id="section-3">
+  <hr>
+
+    <section id="section-3">
+    <div class="row">
+      <div class="col-lg-6">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <p>As soon as you approve the renders we’ve sent you, we will print a 3d model of your piece. This 3d model will then be cast into the metal of your choosing. We use top of the line equipment to ensure your casting comes out perfectly.
+        </p>
+<br />
+</div>
+      <div class="col-md-12 col-lg-6">
+        <img src="img/themes/theme1/pageimages/wax.jpg" />
+      </div>
+    </div>
+  </section>
+
+<hr>
+      <section id="section-4">
+    <div class="row">
+      <div class="col-lg-6">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 col-lg-6">
+        <img src="img/themes/theme1/pageimages/finished.jpg" />
+      </div>
+      <div class="col-md-12 col-lg-6">
+        <p>Lastly, one of our experienced jewelers will take your raw casting and turn it into a finished work of art. We always give a final inspection to each of our finished pieces, to ensure that our customers are receiving the absolute best work we can provide.
+        </p>
+<br />
+
+</div>
+    </div>
+  </section>
+
+  <section id="section-5">
     <div class="row d-flex justify-content-center">
       <div class="col-6">
                     <hr>
@@ -59,7 +97,11 @@ We know that this process may be unfamiliar to many of our customers and are com
     </div>
   </section>
 
-  <section id="section-4">
+  <hr>
+  <br />
+
+{{--  
+  <section id="section-6">
     <div class="row d-flex justify-content-center">
       <div class="col-12">
         <img src="img/themes/theme1/pageimages/customrings3.jpg" />
@@ -72,7 +114,7 @@ We know that this process may be unfamiliar to many of our customers and are com
       <div class="col-12">
         <img src="img/themes/theme1/pageimages/customrings4.jpg" />
       </div>
-    </div>
+    </div>  --}}
   </section>
 
 </div>

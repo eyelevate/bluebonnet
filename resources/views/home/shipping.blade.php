@@ -50,8 +50,9 @@
             Next Business Day, delivery typically by 10:30 a.m.
         </div>
     </div>
-    <div class="row">
-        <div class="col-5">
+    <hr>
+     <div class="row">
+    {{--     <div class="col-5">
             International Shipping
         </div>
         <div class="col-2">
@@ -59,10 +60,8 @@
         </div>
         <div class="col-5">
             Time-definite delivery typically in 3–10 business days  
-        </div>
-    </div>
+        </div>  --}}
 
-    <hr>
     <ul>
         <li>
             Please note that delivery refers only to delivery time and not to the time needed to prepare your order. 
@@ -77,16 +76,17 @@
             If you require faster delivery please contact <a href="mailto:info@freyasfinejewelry.com">info@freyasfinejewelry.com</a> and we will be happy to work with you to expedite your order.
         </li>
     </ul>
+    </div>
     <hr>
-
+    <div class="row">
     UPS only delivers Monday-Friday, therefore Overnight Delivery shipped on a Friday will arrive on Monday.
     Shipping times are approximate.
     <br>
     Business days are Monday through Friday, excluding holidays.
-    <br>
-    International Orders will all ship FedEx International Ground with customer responsible for incurring any customs/duties fees.
+    {{--  <br>
+    International Orders will all ship FedEx International Ground with customer responsible for incurring any customs/duties fees.  --}}
 
-    <hr>
+    </div>
 
 </div>
 

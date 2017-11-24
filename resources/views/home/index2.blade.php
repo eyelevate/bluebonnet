@@ -85,7 +85,7 @@
 	<section id="instagram">
 		<div class="row text-center">
 			<h4 class="col-12" style="margin-bottom:0px;">@Freyas_Fine_Jewelry</h4>
-			<p class="col-12">Everything shiny and new on instagram</p>
+			<hr>
 		</div>
 		<div class="container-fluid slip">
 			<div class="grid row hidden-sm-down">
