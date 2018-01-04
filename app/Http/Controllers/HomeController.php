@@ -35,8 +35,8 @@ class HomeController extends Controller
         $this->layout = $job->switchLayout($theme);
         $this->view = $job->switchHomeView($theme);
 
-        // TODO -- remove before going live
-        flash('Website is under construction. You can view our products but will not be able to create an invoice. Please be patient as we prepare to go live. Thank you!')->error();
+        // // TODO -- remove before going live
+        // flash('Website is under construction. You can view our products but will not be able to create an invoice. Please be patient as we prepare to go live. Thank you!')->error();
     }
 
     /**
@@ -55,9 +55,7 @@ class HomeController extends Controller
         $feed = [];
         if ($ig['status']) {
             $feed = $ig['data'];
-        } else {
-            flash($ig['data'])->warning();
-        }
+        } 
 
         // featured collection (Randomly Selected)
         $featured_collection = $collection->where('featured', true)->where('active', true)->inRandomOrder()->first();
@@ -311,8 +309,8 @@ class HomeController extends Controller
             ]);
         }
 
-        // TODO -- remove before going live
-        return redirect()->back();
+        // // TODO -- remove before going live
+        // return redirect()->back();
 
         
         $company_info = $company->find(1);

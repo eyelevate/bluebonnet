@@ -126,7 +126,7 @@ class CompanyController extends Controller
      */
     public function destroy(Company $company)
     {
-        if ($collection->delete())
+        if ($company->delete())
         {
             flash('You have successfully deleted a collection.')->success();
             return redirect()->route('collection.index');
