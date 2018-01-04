@@ -19,6 +19,17 @@ $('#return-link').click(function(e) {
 
 <div class="container">
   <h1 style="margin-bottom: 25px; text-align: center;">Frequently Asked Questions</h1>
+  <div class="row">
+  <h3 style="margin-bottom: 25px;">
+  Basic jewelry care
+  </h3>
+  </div>
+  <div class="row">
+  <p>
+  Wear and tear on your jewelry is inevitable, but we want to help you ensure your jewelrystays beautiful and sparkling for as long as possible. We recommend our customers remove their jewelry while they are working outside, cooking, showering, exercising, sleeping, or working with harsh chemicals such as bleach or chlorine. By following thesefew guidelines, your jewelry will stay cleaner for longer, and should also help keep repairs and maintenance at a minimum.
+  </p>
+  </div>
+  <hr>
   {{-- Shop & Custom Orders   --}}
   <h3 style="margin-bottom: 25px;">Custom Orders</h3>
 
@@ -80,7 +91,7 @@ $('#return-link').click(function(e) {
         </div>
       </div>
     </div>
-    <div class="panel panel-default">
+    {{--  <div class="panel panel-default">
       <div class="panel-heading">
         <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse5" class="panel-title expand">
           <div class="right-arrow pull-right">+</div>
@@ -92,7 +103,7 @@ $('#return-link').click(function(e) {
           We serve customers around the world via FedEx International Priority. Shipping times vary, depending on the destination country, and take approximately 3–15 business days. All pieces are fully insured during transit time and are subject to all duties and taxes imposed by the destination country.
         </div>
       </div>
-    </div>
+    </div>  --}}
     <div class="panel panel-default" id="returnpolicy">
       <div class="panel-heading">
         <h4 data-toggle="collapse" data-parent="#accordion" href="#collapse6" class="panel-title expand">

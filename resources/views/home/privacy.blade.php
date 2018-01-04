@@ -18,7 +18,7 @@
     change our privacy policy, an automated email will be sent to our users.
   </p>
   <hr>
-  <div class="list-group">
+  {{--  <div class="list-group">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1">What We Collect</h5>
     </div>
@@ -98,7 +98,7 @@
 
     By using this web site, you consent to the collection and use of information by Freya's Fine Jewelry.
   </p>
-  <hr>
+  <hr>  --}}
 
 </div>
 
