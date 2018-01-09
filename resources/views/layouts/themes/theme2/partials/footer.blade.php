@@ -30,9 +30,8 @@
                 <ul>
                     <li class="col-12 text-center"><h5 class="text-center"><strong>Follow Us</strong></h5></li>
                     <li class="col-12 text-center social-icons-footer">
-                        <a href="#" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <a href="https://www.facebook.com/FreyasFineJewelry/" target="_blank"><i class="fa fa-facebook"></i></a>
                         <a href="https://www.instagram.com/Freyas_Fine_Jewelry/" target="_blank"><i class="fa fa-instagram"></i></a>
-                        <a href="#" target="_blank"><i class="fa fa-twitter"></i></a>
                     </li>
                     <li class="col-12 text-center"></li>
                 </ul>
