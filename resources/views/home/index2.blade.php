@@ -88,7 +88,7 @@
 			<hr>
 		</div>
 		<div class="container-fluid slip">
-			<div class="grid row hidden-sm-down">
+			<div class="grid row hidden-sm-down instagram-bootstrap-row">
 			@if(count($feed) > 0)
 				@foreach($feed as $key => $value)
 				<div class="grid-item">
