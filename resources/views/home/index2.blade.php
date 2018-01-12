@@ -96,7 +96,7 @@
 					@if($value['type'] == 1)
 					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" style="width:100%; height:100%;">
 					@else
-					<video class="grid-item" controls style="width:100%; height:100%;">
+					<video controls style="width:100%; height:100%;">
 						<source src="{{ $value['src'] }}" type="video/mp4">
 						Your browser does not support HTML5 video.
 					</video>	
