@@ -88,22 +88,20 @@
 			<hr>
 		</div>
 		<div class="container-fluid slip">
-			<div class="row hidden-sm-down instagram-bootstrap-row">
+			<div class="grid row hidden-sm-down instagram-bootstrap-row">
 			@if(count($feed) > 0)
 				@foreach($feed as $key => $value)
 				
 
 					@if($value['type'] == 1)
-					<div class="col-4">
+					<div class="grid-item">
 					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" style="width:100%; height:100%;">
 					</div>
 					@else
-					<div class="col-4">
-					<video controls style="width:100%; height:100%;">
+					<video class="grid-item" controls style="width:100%; height:100%;">
 						<source src="{{ $value['src'] }}" type="video/mp4">
 						Your browser does not support HTML5 video.
-					</video>
-					</div>	
+					</video>	
 					@endif
 					</div>
 				@endforeach
