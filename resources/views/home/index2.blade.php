@@ -91,12 +91,10 @@
 			<div class="grid row hidden-sm-down instagram-bootstrap-row">
 			@if(count($feed) > 0)
 				@foreach($feed as $key => $value)
-				
+				<div class="grid-item">
 
 					@if($value['type'] == 1)
-					<div class="grid-item">
 					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" style="width:100%; height:100%;">
-					</div>
 					@else
 					<video class="grid-item" controls style="width:100%; height:100%;">
 						<source src="{{ $value['src'] }}" type="video/mp4">
