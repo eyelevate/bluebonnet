@@ -88,11 +88,10 @@
 			<hr>
 		</div>
 		<div class="container-fluid slip">
-			<div class="grid row hidden-sm-down instagram-bootstrap-row">
+			<div class="grid row hidden-sm-down">
 			@if(count($feed) > 0)
 				@foreach($feed as $key => $value)
 				<div class="grid-item">
-
 					@if($value['type'] == 1)
 					<img class="lazy" src="{{ $value['src'] }}" title="{{ htmlspecialchars($value['caption']) }}" style="width:100%; height:100%;">
 					@else
@@ -101,7 +100,7 @@
 						Your browser does not support HTML5 video.
 					</video>	
 					@endif
-					</div>
+				</div>
 				@endforeach
 			@endif
 			</div>
