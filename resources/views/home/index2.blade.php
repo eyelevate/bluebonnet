@@ -55,7 +55,9 @@
 		@foreach($featured_items as $item)
 		<div class="col-xs-12 col-sm-6">
 			<div class="card">
+					<a href="{{ route('inventory_item.shop',$item->id) }}">
 				<img class="card-img-top card-img-top-featured lazy mx-auto d-block" data-original="{{ $item->primary_img_src }}" alt="{{ $item->name }}">
+					</a>
 				<div class="card-block text-center" style="">
 					<p class="card-text" style="margin:0px;padding:0px;">
 						<h3 style="margin-bottom:0px;">{{ $item->name }}</h3>
@@ -71,7 +73,9 @@
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
+					<a href="{{ route('collection.show',$featured_collection->id) }}">
 				<img class="card-img-top card-img-top-collection-featured lazy mx-auto d-block" data-original="{{ asset(str_replace('public/', 'storage/', $featured_collection->featured_src)) }}" alt="{{ $featured_collection->name }}">
+					</a>
 				<div class="card-block text-center">
 					<p class="card-text text-center">
 						<h3 style="margin-bottom:0px;">{{ $featured_collection->name }}</h3>

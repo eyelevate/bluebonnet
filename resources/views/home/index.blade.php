@@ -157,7 +157,7 @@
 				@else
 				<video controls height="200" width=200 style="width:100%">
 					<source src="{{ $value['src'] }}" type="video/mp4">
-					Your browser does not support HTML5 video.
+					Your browser does not support HTML5 video. 
 				</video>	
 				@endif
 			</div>

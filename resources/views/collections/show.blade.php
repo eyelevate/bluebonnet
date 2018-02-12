@@ -20,7 +20,8 @@
 			use-body="true" 
 			use-img-top="true" 
 			img-top-class="card-img-top-items mx-auto d-block"
-			img-top-src="{{ $item->primary_src }}">
+			img-top-src="{{ $item->primary_src }}"
+			href="{{ route('inventory_item.shop',$item->id) }}">
 				<template slot="body">
 					<div class="text-center">
 						<h5>{{ $item->name }}</h5>
