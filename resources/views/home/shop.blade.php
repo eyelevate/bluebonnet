@@ -31,8 +31,10 @@
 	<div class="row">
 		@if (count($collections) > 0)
 			@foreach($collections as $collection)
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+			<a href="{{ route('collection.show',$collection->id) }}">
 			<theme1-shop-card 
-			class="col-xs-12 col-sm-6 col-md-6 col-lg-4"
+			class="col-12"
 			use-body="true" 
 			use-img-top="true" 
 			img-top-class="card-img-top-items mx-auto d-block"
@@ -46,6 +48,8 @@
 					
 				</template>
 			</theme1-shop-card>
+		</a>
+	</div>
 			@endforeach
 		@endif
 	</div>
