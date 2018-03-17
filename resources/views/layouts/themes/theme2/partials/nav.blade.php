@@ -13,6 +13,12 @@
                 </li>
             </ul>
             <ul class="navbar-nav flex-row d-flex justify-content-center">
+                <li class="col-12 text-center">{{ $company->street }}, Suite #420 {{ ucFirst($company->city) }}, {{ strtoupper($company->state) }} {{ $company->zipcode }}</li>
+            </ul>
+            <ul class="navbar-nav flex-row d-flex justify-content-center">
+                <li class="col-12 text-center">{{ $company->phone }}</li> 
+            </ul>
+            <ul class="navbar-nav flex-row d-flex justify-content-center">
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('home.shop') }}">SHOP</a>
                 </li>
@@ -21,6 +27,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/custom">CUSTOM</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/moissanite">MOISANNITE?</a>
                 </li>
                 @if(auth()->check())
 

@@ -23,6 +23,7 @@ Route::post('/address-validate', 'HomeController@addressValidate')->name('home.a
 Route::post('/update-shipping', 'HomeController@updateShipping')->name('home.update_shipping');
 Route::post('/update-shipping-finish', 'HomeController@updateShippingFinish')->name('home.update_shipping_finish');
 Route::get('/terms-of-service', 'HomeController@tos')->name('home.tos');
+Route::get('/moissanite', 'HomeController@moissanite')->name('home.moissnaite');
 Route::get('/checkout', 'HomeController@checkout')->name('home.checkout');
 Route::post('/finish', 'HomeController@finish')->name('home.finish');
 Route::post('/attempt-login', 'HomeController@attemptLogin')->name('home.attempt_login');
