@@ -66,6 +66,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/custom">CUSTOM</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/moissanite">MOISANNITE?</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav">
                     @if (auth()->check())
@@ -108,6 +111,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/custom">CUSTOM</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/moissanite">MOISANNITE?</a>
                 </li>
             </ul>
 
@@ -154,6 +160,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/custom">CUSTOM</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/moissanite">MOISANNITE?</a>
             </li>
         </ul>
         <ul class="navbar-nav">
