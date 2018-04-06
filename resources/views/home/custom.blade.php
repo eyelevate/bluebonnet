@@ -14,7 +14,7 @@
       <div class="col-md-12 col-lg-3 ">
         <h2 class="h2">The Process</h2>
         <hr>
-        <p>We like to start our custom orders out by having a consultation with you. This canbe done in person, over the phone, or via email. We want to work with you first hand to bring your design ideas to life. Our customers are always welcome to show us referencepictures to help guide us in the right direction</p>
+        <p>We like to start our custom orders out by having a consultation with you. This can be done in person, over the phone, or via email. We want to work with you first hand to bring your design ideas to life. Our customers are always welcome to show us reference pictures to help guide us in the right direction</p>
       </div>
       <div class="col-md-12 col-lg-9">
         <img src="img/themes/theme1/pageimages/sketch.jpg" />
